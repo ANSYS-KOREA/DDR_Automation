@@ -1,0 +1,88 @@
+#################################################################################
+#	Header
+#
+#	DDR Generation & Data-rate [Mbps]
+#	DDR2	-	400,	533,	667,	800
+#	DDR3	-	800,	1066,	1333,	1600,	1866,	2133
+#	DDR4	-	1600,	1866,	2133,	2400,	2666,	2933,	3200
+#	DDR5	-	3200,	3600,	4000,	4800,	5000,	5120,	5333,	5600,	6400
+#	LPDDR2	-	800,	1067
+#	LPDDR3	-	1600,	2133
+#	LPDDR4	-	3200,	4267
+#	LPDDR5	-	6400,	8533
+#################################################################################
+[EM] = False
+
+[Tran] = False
+
+[Eye] = True
+	#################################################################################
+	# Input File Types
+	# 	Ansys Electronics Desktop - *.aedt
+	# 	Comma delimited data file - *.csv
+	# 	Hspice TR output file - *.tr# (TBD)
+	#################################################################################
+	<Setup>
+		(Input File) = D:\1_Work\20220106_DDR_Compliance\0_DB\LPDDR4_20220203\Examples\Galileo_R21_DDR_SSN_siwave.aedt
+		# Design, Report : Only for *.aedt Input File Typ
+		(Design) = Circuit1
+		(Report) = Transient1
+		(DDR) = DDR4
+		(Datarate) = 2133
+
+	<Net Classification>
+		# = Net Name / Group / Analze Group
+		# ex) DQ0 / DQ / Byte0
+		= V(U1A1_M_DQ_10__C2)	/	DQ	/	None
+		= V(U1A1_M_DQ_11__C2)	/	DQ	/	None
+		= V(U1A1_M_DQ_12__E2)	/	DQ	/	None
+		= V(U1A1_M_DQ_13__E2)	/	DQ	/	None
+		= V(U1A1_M_DQ_14__D2)	/	DQ	/	None
+		= V(U1A1_M_DQ_15__E2)	/	DQ	/	None
+		= V(U1A1_M_DQ_8__B2)		/	DQ	/	None
+		= V(U1A1_M_DQ_9__C2)		/	DQ	/	None
+		= V(U1B5_M_DQ_0__B2)		/	DQ	/	None
+		= V(U1B5_M_DQ_1__C2) 	/	DQ	/	None
+		= V(U1B5_M_DQ_2__C2)		/	DQ	/	None
+		= V(U1B5_M_DQ_3__C2)		/	DQ	/	None
+		= V(U1B5_M_DQ_4__E2)		/	DQ	/	None
+		= V(U1B5_M_DQ_5__E2)		/	DQ	/	None
+		= V(U1B5_M_DQ_6__D2)		/	DQ	/	None
+		= V(U1B5_M_DQ_7__E2)		/	DQ	/	None
+
+		
+	<Option>
+		(Eye Offset) = 5
+		(Vref Method) = Auto
+		#(Vref Method) = Manual, 380
+		(Analyze Method) = Default
+		(Plot Eye) = True
+		(Export Excel Report) = True, 200, Default, D:\1_Work\20220106_DDR_Compliance\2_Results\Test.xlsx
+
+		
+
+		
+	
+[Comp] = False
+
+[Net Identification]
+	# The priority of the net group classification specified between "<" and ">" symbols is same as the order written below.
+	# <Ignore> : this string in net name will be ignored during net identifying process
+	# ? : arbitrary number	
+	<DQ>	= DQ?,DQ_?
+	<DQS>	= DQS?, DQS_?
+	<ADDR> = ADDR?,ADDR_?, CA?, CA_?, MA?, MA_?, A?, A_?
+	<CLK>	= CLK?, CLK_?, CK?, CK_?
+	<DM>	= DM?, DM_?
+	<Ignore> =U1A1
+
+
+
+
+
+
+
+
+
+
+
