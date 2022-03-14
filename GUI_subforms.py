@@ -700,7 +700,7 @@ class NetForm(Form):
 			
 				# for Old Eye
 				else:
-					pass
+					self._DataGridView.Rows.Clear()
 
 			else:
 				pass
@@ -926,21 +926,39 @@ class NetForm(Form):
 			EXIT()
 
 	def Button_CloseClick(self, sender, e):
-		try:
-			Log("[Net Classification]")
-			Log("	<Target Nets>")
-			for row in self._DataGridView.Rows:
-				if row.Cells[0].Value:
-					Log("		= %s, %s" % (row.Cells[1].Value, row.Cells[4].Value))
+		if sub_DB.Result_Flag:
+			try:
+				Log("	<Eye Analyze Results>")
+				Log("		= Net Name, Eye Width[ps], Timing Margin[ps], Analyze Group, Signal Group, Matched String")
+				for row in self._DataGridView.Rows:
+					if row.Cells[0].Value:
+						Log("		= %s, %s, %s, %s, %s, %s" % (row.Cells[1].Value, row.Cells[5].Value, row.Cells[6].Value, row.Cells[4].Value, row.Cells[2].Value, row.Cells[3].Value))
 
-			sub_DB.Net_Form = self
-			self.Close()
+				sub_DB.Net_Form = self
+				self.Close()
 
-		except Exception as e:
-			Log("[Close Net Form] = Failed")
-			Log(str(e))
-			MessageBox.Show("Fail to close Net Classification Form","Warning")			
-			EXIT()
+			except Exception as e:
+				Log("	<Close Eye Analyze Results Form> = Failed")
+				Log(str(e))
+				MessageBox.Show("Fail to Close Eye Analyze Results Form","Warning")			
+				EXIT()
+
+		else:
+			try:
+				Log("[Net Classification]")
+				Log("	<Target Nets>")
+				for row in self._DataGridView.Rows:
+					if row.Cells[0].Value:
+						Log("		= %s, %s, %s, %s" % (row.Cells[1].Value, row.Cells[2].Value, row.Cells[3].Value, row.Cells[4].Value))
+
+				sub_DB.Net_Form = self
+				self.Close()
+
+			except Exception as e:
+				Log("[Close Net Form] = Failed")
+				Log(str(e))
+				MessageBox.Show("Fail to close Net Classification Form","Warning")			
+				EXIT()
 
 class CalForm(Form):
 	def __init__(self, Location):
@@ -1001,7 +1019,7 @@ class OptionForm(Form):
 		TreeNode_EM = System.Windows.Forms.TreeNode("EM Extractor")
 		TreeNode_Tran = System.Windows.Forms.TreeNode("Circuit Simulator")
 		TreeNode_Eye = System.Windows.Forms.TreeNode("Eye Analyzer")
-		TreeNode_Comp = System.Windows.Forms.TreeNode("Compliance Test")
+		#TreeNode_Comp = System.Windows.Forms.TreeNode("Compliance Test")
 		self._TreeView = System.Windows.Forms.TreeView()
 
 		self._GroupBox_General = System.Windows.Forms.GroupBox()
@@ -1013,7 +1031,8 @@ class OptionForm(Form):
 		self._Button_Import_Resource = System.Windows.Forms.Button()
 		self._Button_Import_Def = System.Windows.Forms.Button()
 		self._Button_Import_Conf = System.Windows.Forms.Button()
-		self._Button_OutputExcelFile = System.Windows.Forms.Button()		
+		self._Button_OutputExcelFile = System.Windows.Forms.Button()
+		self._Button_Compliance = System.Windows.Forms.Button()
 		self._Button_Cancel = System.Windows.Forms.Button()
 		self._Button_OK = System.Windows.Forms.Button()
 		
@@ -1048,6 +1067,7 @@ class OptionForm(Form):
 
 		self._CheckBox_PlotEye = System.Windows.Forms.CheckBox()
 		self._CheckBox_ExportExcelReport = System.Windows.Forms.CheckBox()
+		self._CheckBox_Compiance = System.Windows.Forms.CheckBox()
 		
 		self._folderBrowserDialog1 = System.Windows.Forms.FolderBrowserDialog()
 		self._openFileDialog1 = System.Windows.Forms.OpenFileDialog()
@@ -1068,13 +1088,12 @@ class OptionForm(Form):
 		TreeNode_Tran.Text = "Circuit Simulator"
 		TreeNode_Eye.Name = "Eye Analyzer"
 		TreeNode_Eye.Text = "Eye Analyzer"
-		TreeNode_Comp.Name = "Compliance Test"
-		TreeNode_Comp.Text = "Compliance Test"
+		#TreeNode_Comp.Name = "Compliance Test"
+		#TreeNode_Comp.Text = "Compliance Test"
 		self._TreeView.Nodes.AddRange(System.Array[System.Windows.Forms.TreeNode](
 			[TreeNode_EM,
 			TreeNode_Tran,
-			TreeNode_Eye,
-			TreeNode_Comp]))
+			TreeNode_Eye]))
 		self._TreeView.Size = System.Drawing.Size(232, 404)
 		self._TreeView.TabIndex = 0
 		self._TreeView.NodeMouseClick += self.TreeViewNodeMouseClick
@@ -1121,7 +1140,9 @@ class OptionForm(Form):
 		self._GroupBox_Tran.Text = "Circuit Simulator"
 		# 
 		# GroupBox_Eye
-		# 
+		#
+		self._GroupBox_Eye.Controls.Add(self._Button_Compliance)
+		self._GroupBox_Eye.Controls.Add(self._CheckBox_Compiance)
 		self._GroupBox_Eye.Controls.Add(self._ComboBox_ReportFormat)
 		self._GroupBox_Eye.Controls.Add(self._Label_ReportFormat)
 		self._GroupBox_Eye.Controls.Add(self._Label_mV)
@@ -1201,13 +1222,25 @@ class OptionForm(Form):
 		# Button_OutputExcelFile
 		# 
 		self._Button_OutputExcelFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_OutputExcelFile.Location = System.Drawing.Point(498, 235)
+		self._Button_OutputExcelFile.Location = System.Drawing.Point(498, 189)
 		self._Button_OutputExcelFile.Name = "Button_OutputExcelFile"
 		self._Button_OutputExcelFile.Size = System.Drawing.Size(36, 23)
 		self._Button_OutputExcelFile.TabIndex = 55
 		self._Button_OutputExcelFile.Text = "..."
 		self._Button_OutputExcelFile.UseVisualStyleBackColor = True
 		self._Button_OutputExcelFile.Click += self.Button_OutputExcelFileClick
+		# 
+		# Button_Compliance
+		# 
+		self._Button_Compliance.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Compliance.Location = System.Drawing.Point(404, 235)
+		self._Button_Compliance.Name = "Button_Compliance"
+		self._Button_Compliance.Size = System.Drawing.Size(121, 23)
+		self._Button_Compliance.TabIndex = 69
+		self._Button_Compliance.Text = "Compliance Setup"
+		self._Button_Compliance.UseVisualStyleBackColor = True
+		self._Button_Compliance.Visible = False
+		self._Button_Compliance.Click += self.Button_ComplianceClick
 		# 
 		# Button_OK
 		# 
@@ -1325,7 +1358,7 @@ class OptionForm(Form):
 		# Label_ImageWidth
 		# 
 		self._Label_ImageWidth.Font = System.Drawing.Font("Arial", 9)
-		self._Label_ImageWidth.Location = System.Drawing.Point(73, 198)
+		self._Label_ImageWidth.Location = System.Drawing.Point(73, 152)
 		self._Label_ImageWidth.Name = "Label_ImageWidth"
 		self._Label_ImageWidth.Size = System.Drawing.Size(103, 28)
 		self._Label_ImageWidth.TabIndex = 47
@@ -1335,7 +1368,7 @@ class OptionForm(Form):
 		# Label_ImageWidth_Unit
 		# 
 		self._Label_ImageWidth_Unit.Font = System.Drawing.Font("Arial", 9)
-		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(269, 198)
+		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(269, 152)
 		self._Label_ImageWidth_Unit.Name = "Label_ImageWidth_Unit"
 		self._Label_ImageWidth_Unit.Size = System.Drawing.Size(51, 28)
 		self._Label_ImageWidth_Unit.TabIndex = 49
@@ -1345,9 +1378,9 @@ class OptionForm(Form):
 		# Label_ReportFormat
 		# 		
 		self._Label_ReportFormat.Font = System.Drawing.Font("Arial", 9)
-		self._Label_ReportFormat.Location = System.Drawing.Point(326, 198)
+		self._Label_ReportFormat.Location = System.Drawing.Point(326, 152)
 		self._Label_ReportFormat.Name = "Label_ReportFormat"
-		self._Label_ReportFormat.Size = System.Drawing.Size(99, 28)
+		self._Label_ReportFormat.Size = System.Drawing.Size(95, 28)
 		self._Label_ReportFormat.TabIndex = 66
 		self._Label_ReportFormat.Text = "Report Format :"
 		self._Label_ReportFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft		
@@ -1355,7 +1388,7 @@ class OptionForm(Form):
 		# Label_OutputExcelFile
 		# 
 		self._Label_OutputExcelFile.Font = System.Drawing.Font("Arial", 9)
-		self._Label_OutputExcelFile.Location = System.Drawing.Point(73, 232)
+		self._Label_OutputExcelFile.Location = System.Drawing.Point(73, 186)
 		self._Label_OutputExcelFile.Name = "Label_OutputExcelFile"
 		self._Label_OutputExcelFile.Size = System.Drawing.Size(113, 28)
 		self._Label_OutputExcelFile.TabIndex = 53
@@ -1381,7 +1414,7 @@ class OptionForm(Form):
 		# Label_V_Border3
 		# 
 		self._Label_V_Border3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		self._Label_V_Border3.Location = System.Drawing.Point(22, 156)
+		self._Label_V_Border3.Location = System.Drawing.Point(22, 225)
 		self._Label_V_Border3.Name = "Label_V_Border3"
 		self._Label_V_Border3.Size = System.Drawing.Size(512, 2)
 		self._Label_V_Border3.TabIndex = 59		
@@ -1415,7 +1448,7 @@ class OptionForm(Form):
 		self._ComboBox_ReportFormat.FormattingEnabled = True
 		self._ComboBox_ReportFormat.Items.AddRange(System.Array[System.Object](
 			["Default"]))
-		self._ComboBox_ReportFormat.Location = System.Drawing.Point(418, 202)
+		self._ComboBox_ReportFormat.Location = System.Drawing.Point(418, 156)
 		self._ComboBox_ReportFormat.Name = "ComboBox_ReportFormat"
 		self._ComboBox_ReportFormat.Size = System.Drawing.Size(74, 23)
 		self._ComboBox_ReportFormat.TabIndex = 67
@@ -1472,7 +1505,7 @@ class OptionForm(Form):
 		# 
 		self._TextBox_ImageWidth.BackColor = System.Drawing.SystemColors.Window
 		self._TextBox_ImageWidth.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_ImageWidth.Location = System.Drawing.Point(180, 201)
+		self._TextBox_ImageWidth.Location = System.Drawing.Point(180, 155)
 		self._TextBox_ImageWidth.Name = "TextBox_ImageWidth"
 		self._TextBox_ImageWidth.Size = System.Drawing.Size(83, 23)
 		self._TextBox_ImageWidth.Text = "200"
@@ -1482,7 +1515,7 @@ class OptionForm(Form):
 		# 
 		self._TextBox_OutputExcelFile.BackColor = System.Drawing.SystemColors.Window
 		self._TextBox_OutputExcelFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_OutputExcelFile.Location = System.Drawing.Point(180, 235)
+		self._TextBox_OutputExcelFile.Location = System.Drawing.Point(180, 189)
 		self._TextBox_OutputExcelFile.Name = "TextBox_OutputExcelFile"
 		self._TextBox_OutputExcelFile.Size = System.Drawing.Size(312, 23)
 		self._TextBox_OutputExcelFile.TabIndex = 54
@@ -1490,7 +1523,7 @@ class OptionForm(Form):
 		# CheckBox_PlotEye
 		# 
 		self._CheckBox_PlotEye.Font = System.Drawing.Font("Arial", 9)
-		self._CheckBox_PlotEye.Location = System.Drawing.Point(50, 120)
+		self._CheckBox_PlotEye.Location = System.Drawing.Point(50, 232)
 		self._CheckBox_PlotEye.Name = "CheckBox_PlotEye"
 		self._CheckBox_PlotEye.Size = System.Drawing.Size(136, 29)
 		self._CheckBox_PlotEye.TabIndex = 45
@@ -1503,7 +1536,7 @@ class OptionForm(Form):
 		# CheckBox_ExportExcelReport
 		# 
 		self._CheckBox_ExportExcelReport.Font = System.Drawing.Font("Arial", 9)
-		self._CheckBox_ExportExcelReport.Location = System.Drawing.Point(50, 166)
+		self._CheckBox_ExportExcelReport.Location = System.Drawing.Point(50, 120)
 		self._CheckBox_ExportExcelReport.Name = "CheckBox_ExportExcelReport"
 		self._CheckBox_ExportExcelReport.Size = System.Drawing.Size(136, 29)
 		self._CheckBox_ExportExcelReport.TabIndex = 46
@@ -1512,6 +1545,18 @@ class OptionForm(Form):
 		self._CheckBox_ExportExcelReport.Checked = True
 		self._CheckBox_ExportExcelReport.UseVisualStyleBackColor = True
 		self._CheckBox_ExportExcelReport.CheckedChanged += self.CheckBox_ExportExcelReportCheckedChanged
+		# 
+		# CheckBox_Compiance
+		# 
+		self._CheckBox_Compiance.Font = System.Drawing.Font("Arial", 9)
+		self._CheckBox_Compiance.Location = System.Drawing.Point(240, 232)
+		self._CheckBox_Compiance.Name = "CheckBox_Compiance"
+		self._CheckBox_Compiance.Size = System.Drawing.Size(162, 29)
+		self._CheckBox_Compiance.TabIndex = 68
+		self._CheckBox_Compiance.Text = "Check DDR Compliance"
+		self._CheckBox_Compiance.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		self._CheckBox_Compiance.UseVisualStyleBackColor = True
+		self._CheckBox_Compiance.CheckedChanged += self.CheckBox_CompianceCheckedChanged
 		# 
 		# openFileDialog1
 		# 
@@ -1706,6 +1751,9 @@ class OptionForm(Form):
 			MessageBox.Show("Fail to check eye plot","Warning")			
 			EXIT()
 
+	def CheckBox_CompianceCheckedChanged(self, sender, e):		
+		self._Button_Compliance.Visible = sender.Checked
+
 	def ComboBox_VrefSelectedIndexChanged(self, sender, e):
 		try:
 			if sender.SelectedIndex == 0: # Auto Vref
@@ -1754,6 +1802,9 @@ class OptionForm(Form):
 			Log(str(e))
 			MessageBox.Show("Fail to set excel report","Warning")			
 			EXIT()
+
+	def Button_ComplianceClick(self, sender, e):
+		pass
 
 	def Button_OKClick(self, sender, e):
 		try:

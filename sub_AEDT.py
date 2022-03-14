@@ -3,6 +3,8 @@ import sub_ScriptEnv
 import sub_DB
 import time
 
+from sub_functions import *
+
 AEDT = {}				
 
 def Get_AEDT_Version():

@@ -79,6 +79,7 @@ class Eye_Form(Form):
 		self._Button_ViewNet = System.Windows.Forms.Button()
 		self._Button_Analyze = System.Windows.Forms.Button()
 		self._Button_ViewResult = System.Windows.Forms.Button()
+		self._Button_ImgShow = System.Windows.Forms.Button()
 		self._Button_Debug = System.Windows.Forms.Button()
 
 		self._openFileDialog1 = System.Windows.Forms.OpenFileDialog()
@@ -219,6 +220,7 @@ class Eye_Form(Form):
 		self._Options_ToolStripMenuItem.Name = "Options_ToolStripMenuItem"
 		self._Options_ToolStripMenuItem.Size = System.Drawing.Size(152, 22)
 		self._Options_ToolStripMenuItem.Text = "Options"
+		#self._Options_ToolStripMenuItem.Enabled = False
 		self._Options_ToolStripMenuItem.Click += self.Options_ToolStripMenuItemClick
 		# 
 		# Help_ToolStripMenuItem
@@ -326,16 +328,18 @@ class Eye_Form(Form):
 		self._GroupBox_Setup.Controls.Add(self._Label_Datarate)
 		self._GroupBox_Setup.Controls.Add(self._Label_DDRGen)
 		self._GroupBox_Setup.Controls.Add(self._Label_InputFile)
-		self._GroupBox_Setup.Font = System.Drawing.Font("Arial", 9)
+		self._GroupBox_Setup.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)
 		self._GroupBox_Setup.Location = System.Drawing.Point(12, 104)
 		self._GroupBox_Setup.Name = "GroupBox_Setup"
 		self._GroupBox_Setup.Size = System.Drawing.Size(685, 150)
 		self._GroupBox_Setup.TabIndex = 8
 		self._GroupBox_Setup.TabStop = False
-		self._GroupBox_Setup.Text = "Compliance Test Setup"
+		self._GroupBox_Setup.Text = "DDR Eye Analyzer Setup"		
 		# 
 		# GroupBox_OldEye
 		# 
+		self._GroupBox_OldEye.Controls.Add(self._Button_ImgShow)
+		self._GroupBox_OldEye.Controls.Add(self._ComboBox_AC_ADDR)
 		self._GroupBox_OldEye.Controls.Add(self._ComboBox_AC_ADDR)
 		self._GroupBox_OldEye.Controls.Add(self._ComboBox_AC_DQ)
 		self._GroupBox_OldEye.Controls.Add(self._GroupBox_UnitOld)
@@ -358,7 +362,7 @@ class Eye_Form(Form):
 		self._GroupBox_OldEye.Controls.Add(self._TextBox_AC_DQ)
 		self._GroupBox_OldEye.Controls.Add(self._TextBox_AC_ADDR)
 		self._GroupBox_OldEye.Controls.Add(self._PictureBox_OldEye)		
-		self._GroupBox_OldEye.Font = System.Drawing.Font("Arial", 9)
+		self._GroupBox_OldEye.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)
 		self._GroupBox_OldEye.Location = System.Drawing.Point(12, 260)
 		self._GroupBox_OldEye.Name = "GroupBox_OldEye"
 		self._GroupBox_OldEye.Size = System.Drawing.Size(879, 510)
@@ -371,7 +375,8 @@ class Eye_Form(Form):
 		# 
 		self._GroupBox_UnitOld.Controls.Add(self._Label_TimeUnitOld)
 		self._GroupBox_UnitOld.Controls.Add(self._Label_VoltageUnitOld)
-		self._GroupBox_UnitOld.Location = System.Drawing.Point(18, 27)
+		self._GroupBox_UnitOld.Font = System.Drawing.Font("Arial", 9)
+		self._GroupBox_UnitOld.Location = System.Drawing.Point(18, 27)		
 		self._GroupBox_UnitOld.Name = "GroupBox_UnitOld"
 		self._GroupBox_UnitOld.Size = System.Drawing.Size(106, 66)
 		self._GroupBox_UnitOld.TabIndex = 38
@@ -380,6 +385,8 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_NewEye
 		#		
+		self._GroupBox_NewEye.Controls.Add(self._Button_ImgShow)
+		self._GroupBox_NewEye.Controls.Add(self._ComboBox_AC_ADDR)
 		self._GroupBox_NewEye.Controls.Add(self._Label_Info)
 		self._GroupBox_NewEye.Controls.Add(self._CheckBox_EditEnable_NewEye)
 		self._GroupBox_NewEye.Controls.Add(self._TextBox_TdIVW)
@@ -387,7 +394,7 @@ class Eye_Form(Form):
 		self._GroupBox_NewEye.Controls.Add(self._TextBox_VcentDQ)
 		self._GroupBox_NewEye.Controls.Add(self._TextBox_VdIVW)
 		self._GroupBox_NewEye.Controls.Add(self._PictureBox_NewEye)
-		self._GroupBox_NewEye.Font = System.Drawing.Font("Arial", 9)
+		self._GroupBox_NewEye.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)
 		self._GroupBox_NewEye.Location = System.Drawing.Point(12, 260)
 		self._GroupBox_NewEye.Name = "GroupBox_NewEye"
 		self._GroupBox_NewEye.Size = System.Drawing.Size(879, 510)
@@ -400,7 +407,8 @@ class Eye_Form(Form):
 		# 
 		self._GroupBox_UnitNew.Controls.Add(self._Label_TimeUnitNew)
 		self._GroupBox_UnitNew.Controls.Add(self._Label_VoltageUnitNew)
-		self._GroupBox_UnitNew.Location = System.Drawing.Point(18, 27)
+		self._GroupBox_UnitNew.Font = System.Drawing.Font("Arial", 9)
+		self._GroupBox_UnitNew.Location = System.Drawing.Point(18, 27)		
 		self._GroupBox_UnitNew.Name = "GroupBox_UnitNew"
 		self._GroupBox_UnitNew.Size = System.Drawing.Size(150, 66)
 		self._GroupBox_UnitNew.TabIndex = 38
@@ -600,6 +608,7 @@ class Eye_Form(Form):
 		# CheckedListBox_ReportName
 		# 
 		self._CheckedListBox_ReportName.FormattingEnabled = True
+		self._CheckedListBox_ReportName.Font = System.Drawing.Font("Arial", 9)
 		self._CheckedListBox_ReportName.Location = System.Drawing.Point(451, 57)
 		self._CheckedListBox_ReportName.Name = "CheckedListBox_ReportName"
 		self._CheckedListBox_ReportName.Size = System.Drawing.Size(198, 52)
@@ -835,7 +844,7 @@ class Eye_Form(Form):
 		# Button_Analyze
 		# 
 		self._Button_Analyze.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_Analyze.Location = System.Drawing.Point(703, 159)
+		self._Button_Analyze.Location = System.Drawing.Point(703, 161)
 		self._Button_Analyze.Name = "Button_Analyze"
 		self._Button_Analyze.Size = System.Drawing.Size(188, 42)
 		self._Button_Analyze.TabIndex = 35
@@ -847,7 +856,7 @@ class Eye_Form(Form):
 		# Button_ViewResult
 		# 
 		self._Button_ViewResult.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_ViewResult.Location = System.Drawing.Point(703, 207)
+		self._Button_ViewResult.Location = System.Drawing.Point(703, 211)
 		self._Button_ViewResult.Name = "Button_ViewResult"
 		self._Button_ViewResult.Size = System.Drawing.Size(188, 42)
 		self._Button_ViewResult.TabIndex = 35
@@ -855,6 +864,18 @@ class Eye_Form(Form):
 		self._Button_ViewResult.UseVisualStyleBackColor = True
 		self._Button_ViewResult.Enabled = False
 		self._Button_ViewResult.Click += self.Button_ViewResultClick
+		# 
+		# Button_ImgShow
+		#
+		self._Button_ImgShow.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+		self._Button_ImgShow.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_ImgShow.Location = System.Drawing.Point(818, 8)
+		self._Button_ImgShow.Name = "Button_ImgShow"
+		self._Button_ImgShow.Size = System.Drawing.Size(60, 28)
+		self._Button_ImgShow.TabIndex = 43
+		self._Button_ImgShow.Text = 'Hide'
+		self._Button_ImgShow.UseVisualStyleBackColor = True
+		self._Button_ImgShow.Click += self.Button_ImgShowClick
 		# 
 		# Button_Debug
 		# 
@@ -921,6 +942,7 @@ class Eye_Form(Form):
 		#self.MaximumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)		
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
+		self.Image_flag = False
 		self.Controls.Add(self._Button_Debug)
 		self.Controls.Add(self._GroupBox_NewEye)
 		self.Controls.Add(self._Button_Analyze)
@@ -1402,6 +1424,7 @@ class Eye_Form(Form):
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
 		try:
 			# Initialization
+			sub_DB.Net_Form.Init_Flag = True
 			self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Window
 			self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
 			self._ComboBox_DataRate.Enabled = True
@@ -1628,6 +1651,7 @@ class Eye_Form(Form):
 			# Show Option Form for Eye Analyzer		
 			''''''''''''''''''''''''''''''''''''' '''
 			result = sub_DB.Option_Form.ShowDialog()		
+			self._Options_ToolStripMenuItem.Enabled = True
 
 			# Press OK Button in Option Form
 			if result == DialogResult.OK:
@@ -1736,13 +1760,13 @@ class Eye_Form(Form):
 					#########################
 					#   Eye Plot            #
 					#########################
-					try:
-						Log("	<Eye Plot> = Start")
+					try:						
 						sub_DB.Cal_Form.Text = "Plotting Eye..."	
 						sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT"
 						sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
 
 						if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+							Log("	<Eye Plot> = Start")
 							# *.aedt input
 							if sub_DB.InputFile_Flag == 1:
 								sub_DB.Excel_Img_File = []
@@ -1868,7 +1892,10 @@ class Eye_Form(Form):
 
 								sub_AEDT.AEDT["Project"].SaveAs(AEDT_File, True)
 								sub_ScriptEnv.Shutdown()
-						Log("	<Eye Plot> = Done")
+							Log("	<Eye Plot> = Done")
+
+						else:
+							Log("	<Eye Plot> = False")
 
 					except Exception as e:						
 						Log("	<Launch Eye Plot> = Failed")
@@ -1879,25 +1906,30 @@ class Eye_Form(Form):
 					#########################
 					#  Create Excel Report  #
 					#########################
-					try:
-						Log("	<Create Excel Report> = Start")
+					try:						
 						sub_DB.Cal_Form.Text = "Creating Report..."	
 						sub_DB.Cal_Form._Label_Vref.Text = "Creating Excel Report - %s" % sub_DB.Option_Form._TextBox_OutputExcelFile.Text.split("\\")[-1]
 						sub_DB.Cal_Form._ProgressBar_Vref.Value += 1				
 
 						if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+							Log("	<Create Excel Report> = Start")
 							if sub_DB.InputFile_Flag == 1:
 								Create_Excel_Report()
 							elif sub_DB.InputFile_Flag == 2:
 								Create_Excel_Report_Imported()
+							Log("	<Create Excel Report> = Done")
+
+						else:
+							Log("	<Create Excel Report> = False")
 
 						sub_DB.Cal_Form.Close()
 						self.Cursor = Cursors.Default			
 						sub_DB.Cal_Form.Cursor = Cursors.Default
 
+						sub_DB.Result_Flag = True
 						sub_DB.Net_Form.ShowDialog()
-						#sub_DB.Net_Form.Init_Flag = True
-						Log("	<Create Excel Report> = Done")
+						sub_DB.Result_Flag = False
+						#sub_DB.Net_Form.Init_Flag = True						
 
 					except Exception as e:						
 						Log("	<Launch Create Excel Report> = Failed")
@@ -1909,6 +1941,7 @@ class Eye_Form(Form):
 					#  Save Log File        #
 					#########################
 					try:
+						Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 						Log("[Save Log] = Done")
 						LogSave()
 
@@ -1935,10 +1968,27 @@ class Eye_Form(Form):
 			EXIT()
 		
 	def Button_ViewResultClick(self, sender, e):
-		sub_DB.Net_Form._DataGridView.Columns[5].DisplayIndex = 2
-		sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 3
-		sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
-		sub_DB.Net_Form.ShowDialog()
+		try:
+			Log("[View Eye Analyze Result]")
+			sub_DB.Result_Flag = True
+			sub_DB.Net_Form._DataGridView.Columns[5].DisplayIndex = 2
+			sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 3
+			sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
+			sub_DB.Net_Form.ShowDialog()
+			sub_DB.Result_Flag = False
+
+		except Exception as e:			
+			Log("[View Eye Analyze Result] = Fail")
+			Log(str(e))
+			MessageBox.Show("Fail to View Eye Analyze Result","Warning")			
+			EXIT()
+
+	def Button_ImgShowClick(self, sender, e):
+		self.Image_flag = not self.Image_flag
+		if self.Image_flag:
+			self._Button_ImgShow.Text = "Show"
+		else:
+			self._Button_ImgShow.Text = "Hide"		
 
 	''' For Debuggin '''
 	def Button_DebugClick(self, sender, e):
