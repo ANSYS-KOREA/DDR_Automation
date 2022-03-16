@@ -24,7 +24,7 @@
 		(Data-rate) = 800, 1066, 1333, 1600, 1866, 2133
 	<DDR4>
 		(Data-rate) = 1600
-			= 1866, 2133, 2400, 2666, 2933, 3200
+			= 1866, 2133, 2400, 2666, 2933, 3200, 3733
 	<DDR5>
 		(Data-rate) = 3200, 3600, 4000, 4800, 5000, 5120, 5333, 5600, 6400
 	<LPDDR2>
@@ -208,8 +208,13 @@
 	<DDR4-3200>
 		(Rx Mask Voltage)		= TBD
 		(Rx Timing Window Total)		= TBD
+
+	<DDR4-3733>
+		(Rx Mask Voltage)		= TBD
+		(Rx Timing Window Total)		= TBD
 		
 [Comp Spec]
+
 
 
 
