@@ -939,7 +939,7 @@ class Eye_Form(Form):
 		# 
 		self.ClientSize = System.Drawing.Size(904, 780)
 		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
-		#self.MaximumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)		
+		#self.MaximumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
 		self.Image_flag = False
