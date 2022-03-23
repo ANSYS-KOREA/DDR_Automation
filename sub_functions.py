@@ -166,8 +166,8 @@ def Cal_Vref_AEDT(self, Location):
 
 		# Initialize
 		Log("		(AEDT Launch) = Done")
-		oProject = sub_AEDT.AEDT["Project"]
-		oDesign = sub_AEDT.AEDT["Design"]
+		oProject = sub_DB.AEDT["Project"]
+		oDesign = sub_DB.AEDT["Design"]
 		oModule = oDesign.GetModule("ReportSetup")
 		Report_Name = []
 		Report_Name = self._CheckedListBox_ReportName.CheckedItems
@@ -620,8 +620,8 @@ def Measure_Eye(self, Location):
 
 def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag):
 	try:
-		oProject = sub_AEDT.AEDT["Project"]
-		oDesign = sub_AEDT.AEDT["Design"]
+		oProject = sub_DB.AEDT["Project"]
+		oDesign = sub_DB.AEDT["Design"]
 		oModule = oDesign.GetModule("ReportSetup")	
 		Log("		(AEDT Setup) = Done")
 
@@ -775,9 +775,9 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 
 def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag):
 	try:
-		oProject = sub_AEDT.AEDT["Project"]
-		oDesign = sub_AEDT.AEDT["Design"]
-		oModule = sub_AEDT.AEDT["Module"]
+		oProject = sub_DB.AEDT["Project"]
+		oDesign = sub_DB.AEDT["Design"]
+		oModule = sub_DB.AEDT["Module"]
 		Log("		(AEDT Setup) = Done")
 
 		# Delete duplicate reports
@@ -817,6 +817,7 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 			"EyeMeasurementPoint:="	, (1/(float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000))/2
 		])
 		oModule.ImportIntoReport(Report_Name, Import_file)
+		
 		oModule.DeleteTraces(["%s:=" % Report_Name, ["V(net_1)"]])
 		Log("		(Plot Eye) = Done")
 
@@ -906,7 +907,7 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 	except Exception as e:		
 		Log("	<Eye Plot> = Failed")
 		Log(str(e))
-		MessageBox.Show("Fail to plot eye","Warning")						
+		MessageBox.Show("Fail to plot eye\n","Warning")						
 		EXIT()
 
 def Create_Excel_Report():
@@ -1046,8 +1047,16 @@ def Create_Excel_Report():
 	
 		# Save and Release
 		xlbook.SaveAs(Save_File)
-		xlApp = None
-		xlbook = None
+		#xlbook.Close()
+		#xlApp.Quit()
+		ReleaseObject(Col_Header)
+		ReleaseObject(Row_Header)
+		ReleaseObject(Data_Cell)
+		ReleaseObject(Merge_Cell)
+		ReleaseObject(xlsheet)
+		ReleaseObject(xlbook)
+		ReleaseObject(xlApp)
+
 		Log("		(File Save) = Done, %s" % Save_File)
 
 	except Exception as e:		
@@ -1189,8 +1198,20 @@ def Create_Excel_Report_Imported():
 		# Auto Fit
 		xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[2, 7]].Columns.AutoFit()
 		Log("		(Column Width AutoFit) = Done")
-	
+
+		# Save and Release
 		xlbook.SaveAs(Save_File)
+		#xlbook.Close()
+		#xlApp.Quit()
+		ReleaseObject(Col_Header)
+		ReleaseObject(Row_Header)
+		ReleaseObject(Data_Cell)
+		ReleaseObject(Merge_Cell)
+		ReleaseObject(xlsheet)
+		ReleaseObject(xlsheet_table)
+		ReleaseObject(xlbook)
+		ReleaseObject(xlApp)
+
 		Log("		(File Save) = Done, %s" % Save_File)
 
 	except Exception as e:		
@@ -1203,7 +1224,7 @@ def Interpolate_1st(x1,y1,x2,y2,y3):
 	x = abs(y3-y1)*(x2-x1)/abs(y2-y1)+x1
 	return int(round(x))
 
-def Gen_waveform_file(Input_File, Plot_list):
+def Gen_waveform_file(Input_File, Plot_list, Group_flag):
 	try:
 		Log("		(Get Waveform)")
 		Save_File = sub_DB.temp_dir + "\\temp.csv"
@@ -1216,17 +1237,31 @@ def Gen_waveform_file(Input_File, Plot_list):
 		xlApp.DisplayAlerts = False
 		xlbook = xlApp.Workbooks.Open(Save_File)
 		xlsheet = xlbook.Worksheets.Item[1]
-	
-		col_idx = 2
-		while(xlsheet.Cells[1, col_idx].Value2 != None):
-			keyword = xlsheet.Cells[1, col_idx].Value2.split("[")[0].strip()
-			if not keyword in Plot_list:
-				xlsheet.Columns(col_idx).Delete()
-			else:
-				col_idx += 1
+
+		if Group_flag:
+			for i in range(0, len(Plot_list)):
+				# Replace not allowed symbol for trace name
+				xlsheet.Cells[1, i+2].Value2 = xlsheet.Cells[1, i+2].Value2.replace("-","_")
+		else:	
+			col_idx = 2
+			while(xlsheet.Cells[1, col_idx].Value2 != None):			
+				keyword = xlsheet.Cells[1, col_idx].Value2.split("[")[0].strip().replace("-","_")
+				if not keyword in Plot_list:
+					xlsheet.Columns(col_idx).Delete()
+				else:
+					col_idx += 1
+			# Replace not allowed symbol for trace name
+			xlsheet.Cells[1, 2].Value2 = xlsheet.Cells[1, 2].Value2.replace("-","_")
 
 		xlbook.SaveAs(Save_File)
-		xlApp.quit()
+
+		xlbook.Close()
+		xlApp.Quit()
+
+		ReleaseObject(xlsheet)
+		ReleaseObject(xlbook)
+		ReleaseObject(xlApp)
+
 		Log("			= Save File Done")
 		return Save_File
 
@@ -1247,6 +1282,10 @@ def LogSave():
 
 def EXIT():
 	LogSave()	
-	if "App" in sub_AEDT.AEDT.keys():
+	if "App" in sub_DB.AEDT.keys():
 		sub_ScriptEnv.Release()
 	os._exit(0)
+
+def ReleaseObject(obj):	
+	System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
+	System.GC.Collect()

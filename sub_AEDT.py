@@ -5,7 +5,7 @@ import time
 
 from sub_functions import *
 
-AEDT = {}				
+
 
 def Get_AEDT_Version():
 	import os
@@ -65,9 +65,9 @@ def Get_AEDT_Info(self, File):
 
 		#self._ComboBox_Design.SelectedIndex = 0
 
-		AEDT["App"] = oApp
-		AEDT["Desktop"] = oDesktop
-		AEDT["Project"] = oProject
+		sub_DB.AEDT["App"] = oApp
+		sub_DB.AEDT["Desktop"] = oDesktop
+		sub_DB.AEDT["Project"] = oProject
 
 		# Set Active Design
 		if "(Design)<Setup>[EYE]" in sub_DB.Uenv:		
@@ -100,16 +100,11 @@ def Get_AEDT_Info(self, File):
 		EXIT()
 
 def Set_AEDT_PlotTemplate():
-	if "App" in AEDT.keys():
-		oApp = AEDT["App"]
-		oDesktop = AEDT["Desktop"]
-	else:
-		oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Get_AEDT_Version())
-
+	oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Get_AEDT_Version())	
 	oDesktop.RestoreWindow()
 	oProject = oDesktop.NewProject()
-	oProject.InsertDesign("Circuit Design", "Circuit1", "None", "")
-	oDesign = oProject.SetActiveDesign("Circuit1")
+	oProject.InsertDesign("Circuit Design", "Circuit", "None", "")
+	oDesign = oProject.SetActiveDesign("Circuit")
 	oEditor = oDesign.SetActiveEditor("SchematicEditor")
 	oEditor.CreateComponent(
 		[
@@ -188,9 +183,9 @@ def Set_AEDT_PlotTemplate():
 		])
 	oModule = oDesign.GetModule("ReportSetup")
 
-	AEDT["App"] = oApp
-	AEDT["Desktop"] = oDesktop
-	AEDT["Project"] = oProject
-	AEDT["Design"] = oDesign
-	AEDT["Editor"] = oEditor
-	AEDT["Module"] = oModule
+	sub_DB.AEDT["App"] = oApp
+	sub_DB.AEDT["Desktop"] = oDesktop
+	sub_DB.AEDT["Project"] = oProject
+	sub_DB.AEDT["Design"] = oDesign
+	sub_DB.AEDT["Editor"] = oEditor
+	sub_DB.AEDT["Module"] = oModule

@@ -638,18 +638,15 @@ class NetForm(Form):
 				self.Init_Flag = False
 				# Get Simulated Waveform List
 				if sub_DB.InputFile_Flag == 1: # for *.aedt input
-					oDesign = sub_AEDT.AEDT["Design"]
+					oDesign = sub_DB.AEDT["Design"]
 					oModule = oDesign.GetModule("ReportSetup")
 
 					Report_Name = []
 					Report_Name = sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems
 					Netlist = []
 					for report in Report_Name:
-						for net in oModule.GetReportTraceNames(report):
-							Netlist.append(net)
-
-					#Report_Name = sub_DB.Eye_Form._ComboBox_ReportName.Text
-					#Netlist = oModule.GetReportTraceNames(Report_Name)
+						for net in oModule.GetReportTraceNames(report):							
+							Netlist.append(net.replace("-","_"))
 
 					sub_DB.Netlist = Netlist
 
@@ -1009,6 +1006,7 @@ class CalForm(Form):
 
 class OptionForm(Form):
 	def __init__(self, idx):
+		# Select DDR Wizard Process
 		global process_idx
 		process_idx = idx
 		self.InitializeComponent()
@@ -1599,23 +1597,23 @@ class OptionForm(Form):
 				self._GroupBox_EM.Visible = True
 				self._GroupBox_Tran.Visible = False
 				self._GroupBox_Eye.Visible = False
-				self._GroupBox_Comp.Visible = False
+				#self._GroupBox_Comp.Visible = False
 			elif process_idx == 1:
 				self._GroupBox_EM.Visible = False
 				self._GroupBox_Tran.Visible = True
 				self._GroupBox_Eye.Visible = False
-				self._GroupBox_Comp.Visible = False
+				#self._GroupBox_Comp.Visible = False
 			elif process_idx == 2:
 				self._GroupBox_EM.Visible = False
 				self._GroupBox_Tran.Visible = False
 				self._GroupBox_Eye.Visible = True
-				self._GroupBox_Comp.Visible = False
+				#self._GroupBox_Comp.Visible = False
 				self._TreeView.SelectedNode = self._TreeView.Nodes[2]
-			elif process_idx == 3:
-				self._GroupBox_EM.Visible = False
-				self._GroupBox_Tran.Visible = False
-				self._GroupBox_Eye.Visible = False
-				self._GroupBox_Comp.Visible = True
+			#elif process_idx == 3:
+			#	self._GroupBox_EM.Visible = False
+			#	self._GroupBox_Tran.Visible = False
+			#	self._GroupBox_Eye.Visible = False
+			#	self._GroupBox_Comp.Visible = True
 
 			if sub_DB.Debug_Mode:
 				self._TextBox_EyeOffset.Text = "5"			
@@ -1804,7 +1802,8 @@ class OptionForm(Form):
 			EXIT()
 
 	def Button_ComplianceClick(self, sender, e):
-		pass
+		# TODO : Link Compliance Check Option and Previous Process
+		sub_DB.Compliance_Form.ShowDialog()
 
 	def Button_OKClick(self, sender, e):
 		try:
@@ -1864,3 +1863,488 @@ class OptionForm(Form):
 			Log(str(e))
 			MessageBox.Show("Fail to cancel option","Warning")			
 			EXIT()
+
+class ComplianceForm(Form):
+	def __init__(self):
+		self.InitializeComponent()
+	
+	def InitializeComponent(self):		
+		self._components = System.ComponentModel.Container()
+		self._contextMenuStrip1 = System.Windows.Forms.ContextMenuStrip(self._components)
+		self._showAllToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._showCheckItemOnlyToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._toolStripSeparator1 = System.Windows.Forms.ToolStripSeparator()
+		self._checkAllToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._uncheckAllToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._autoCheckToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+
+		self._DataGridView = System.Windows.Forms.DataGridView()
+		dataGridViewCellStyle11 = System.Windows.Forms.DataGridViewCellStyle()
+		self._Col_TestCheck = System.Windows.Forms.DataGridViewCheckBoxColumn()
+		self._Col_TestItem = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_RequiredGroup = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_IdentifiedGroup = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Note = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Ref = System.Windows.Forms.DataGridViewComboBoxColumn()
+		self._Col_Target = System.Windows.Forms.DataGridViewComboBoxColumn()
+		self._Col_Description = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Info = System.Windows.Forms.DataGridViewButtonColumn()
+		
+		self._Label_DQ_Timing = System.Windows.Forms.Label()
+		self._Label_ADDR_Timing = System.Windows.Forms.Label()
+		self._Label_DQS_Timing = System.Windows.Forms.Label()
+		self._Label_CLK_Timing = System.Windows.Forms.Label()
+		self._Label_Diff_Timing = System.Windows.Forms.Label()
+		self._Label_Vref_Timing = System.Windows.Forms.Label()
+
+		self._Button_ShowHide = System.Windows.Forms.Button()
+
+		self._DataGridView.BeginInit()
+		self._contextMenuStrip1.SuspendLayout()
+		self.SuspendLayout()
+		# 
+		# DataGridView
+		# 
+		self._DataGridView.AllowUserToAddRows = False
+		self._DataGridView.AllowUserToDeleteRows = False
+		self._DataGridView.AllowUserToResizeColumns = False
+		self._DataGridView.AllowUserToResizeRows = False
+		dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control
+		dataGridViewCellStyle11.Font = System.Drawing.Font("Microsoft Sans Serif", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 129)
+		dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText
+		dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
+		dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+		dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True
+		self._DataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11
+		self._DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+		self._DataGridView.Columns.AddRange(System.Array[System.Windows.Forms.DataGridViewColumn](
+			[self._Col_TestCheck,
+			self._Col_TestItem,
+			self._Col_RequiredGroup,
+			self._Col_IdentifiedGroup,
+			self._Col_Note,
+			self._Col_Ref,
+			self._Col_Target,
+			self._Col_Info]))
+		self._DataGridView.ContextMenuStrip = self._contextMenuStrip1
+		self._DataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+		self._DataGridView.Location = System.Drawing.Point(12, 12)
+		self._DataGridView.Name = "DataGridView"
+		self._DataGridView.RowHeadersVisible = False
+		self._DataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+		self._DataGridView.Size = System.Drawing.Size(999, 805)
+		self._DataGridView.TabIndex = 38
+		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick		
+		# 
+		# contextMenuStrip1
+		# 
+		self._contextMenuStrip1.Items.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
+			[self._showAllToolStripMenuItem,
+			self._showCheckItemOnlyToolStripMenuItem,
+			self._toolStripSeparator1,
+			self._checkAllToolStripMenuItem,
+			self._uncheckAllToolStripMenuItem,
+			self._autoCheckToolStripMenuItem]))
+		self._contextMenuStrip1.Name = "contextMenuStrip1"
+		self._contextMenuStrip1.Size = System.Drawing.Size(199, 120)
+		# 
+		# showAllToolStripMenuItem
+		# 
+		self._showAllToolStripMenuItem.Name = "showAllToolStripMenuItem"
+		self._showAllToolStripMenuItem.Size = System.Drawing.Size(198, 22)
+		self._showAllToolStripMenuItem.Text = "Show All"
+		self._showAllToolStripMenuItem.Click += self.ShowAllToolStripMenuItemClick
+		# 
+		# showCheckItemOnlyToolStripMenuItem
+		# 
+		self._showCheckItemOnlyToolStripMenuItem.Name = "showCheckItemOnlyToolStripMenuItem"
+		self._showCheckItemOnlyToolStripMenuItem.Size = System.Drawing.Size(198, 22)
+		self._showCheckItemOnlyToolStripMenuItem.Text = "Show Check Item Only"
+		self._showCheckItemOnlyToolStripMenuItem.Click += self.ShowCheckItemOnlyToolStripMenuItemClick
+		# 
+		# toolStripSeparator1
+		# 
+		self._toolStripSeparator1.Name = "toolStripSeparator1"
+		self._toolStripSeparator1.Size = System.Drawing.Size(195, 6)
+		# 
+		# checkAllToolStripMenuItem
+		# 
+		self._checkAllToolStripMenuItem.Name = "checkAllToolStripMenuItem"
+		self._checkAllToolStripMenuItem.Size = System.Drawing.Size(198, 22)
+		self._checkAllToolStripMenuItem.Text = "Check All"
+		self._checkAllToolStripMenuItem.Click += self.CheckAllToolStripMenuItemClick
+		# 
+		# uncheckAllToolStripMenuItem
+		# 
+		self._uncheckAllToolStripMenuItem.Name = "uncheckAllToolStripMenuItem"
+		self._uncheckAllToolStripMenuItem.Size = System.Drawing.Size(198, 22)
+		self._uncheckAllToolStripMenuItem.Text = "Uncheck All"
+		self._uncheckAllToolStripMenuItem.Click += self.UncheckAllToolStripMenuItemClick
+		# 
+		# autoCheckToolStripMenuItem
+		# 
+		self._autoCheckToolStripMenuItem.Name = "autoCheckToolStripMenuItem"
+		self._autoCheckToolStripMenuItem.Size = System.Drawing.Size(198, 22)
+		self._autoCheckToolStripMenuItem.Text = "Auto Check"
+		self._autoCheckToolStripMenuItem.Click += self.AutoCheckToolStripMenuItemClick
+		# 
+		# Col_TestCheck
+		# 
+		self._Col_TestCheck.HeaderText = ""
+		self._Col_TestCheck.Name = "Col_TestCheck"
+		self._Col_TestCheck.ReadOnly = True
+		self._Col_TestCheck.Width = 26
+		# 
+		# Col_TestItem
+		# 
+		self._Col_TestItem.HeaderText = "Test Items"
+		self._Col_TestItem.Name = "Col_TestItem"
+		self._Col_TestItem.ReadOnly = True
+		self._Col_TestItem.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+		self._Col_TestItem.Width = 80
+		self._Col_TestItem.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+		# 
+		# Col_RequiredGroup
+		# 
+		self._Col_RequiredGroup.HeaderText = "Required Net Group"
+		self._Col_RequiredGroup.Name = "Col_RequiredGroup"
+		self._Col_RequiredGroup.ReadOnly = True
+		self._Col_RequiredGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+		self._Col_RequiredGroup.Width = 80
+		# 
+		# Col_IdentifiedGroup
+		# 
+		self._Col_IdentifiedGroup.HeaderText = "Identified Net Group"
+		self._Col_IdentifiedGroup.Name = "Col_IdentifiedGroup"
+		self._Col_IdentifiedGroup.ReadOnly = True
+		self._Col_IdentifiedGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+		self._Col_IdentifiedGroup.Width = 80
+		# 
+		# Col_Note
+		# 
+		self._Col_Note.HeaderText = "Note"
+		self._Col_Note.Name = "Col_Note"
+		self._Col_Note.ReadOnly = True
+		self._Col_Note.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+		self._Col_Note.Width = 200
+		# 
+		# Col_Ref
+		# 
+		self._Col_Ref.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		self._Col_Ref.HeaderText = "Reference Net"
+		self._Col_Ref.Name = "Col_Ref"
+		self._Col_Ref.Width = 150
+		# 
+		# Col_Target
+		# 
+		self._Col_Target.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		self._Col_Target.HeaderText = "Target Net"
+		self._Col_Target.Name = "Col_Target"
+		self._Col_Target.Width = 150
+		# 
+		# Col_Description
+		# 
+		self._Col_Description.HeaderText = "Detailed Description"
+		self._Col_Description.Name = "Col_Description"
+		self._Col_Description.ReadOnly = True
+		self._Col_Description.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+		self._Col_Description.Width = 400
+		# 
+		# Col_Info
+		# 
+		self._Col_Info.HeaderText = "Info"
+		self._Col_Info.Name = "Col_Info"
+		self._Col_Info.ReadOnly = True
+		self._Col_Info.Text = "Info"
+		self._Col_Info.UseColumnTextForButtonValue = True
+		self._Col_Info.Width = 40
+		self._Col_Info.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter		
+		# 
+		# Label_DQ_Timing
+		# 
+		self._Label_DQ_Timing.BackColor = System.Drawing.Color.Black
+		self._Label_DQ_Timing.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_DQ_Timing.ForeColor = System.Drawing.Color.White
+		self._Label_DQ_Timing.Location = System.Drawing.Point(13, 46)
+		self._Label_DQ_Timing.Name = "Label_DQ_Timing"
+		self._Label_DQ_Timing.Size = System.Drawing.Size(781, 20)
+		self._Label_DQ_Timing.TabIndex = 39
+		self._Label_DQ_Timing.Text = "Data Timing"
+		self._Label_DQ_Timing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		# 
+		# Label_ADDR_Timing
+		# 
+		self._Label_ADDR_Timing.BackColor = System.Drawing.Color.Black
+		self._Label_ADDR_Timing.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_ADDR_Timing.ForeColor = System.Drawing.Color.White
+		self._Label_ADDR_Timing.Location = System.Drawing.Point(13, 174)
+		self._Label_ADDR_Timing.Name = "Label_ADDR_Timing"
+		self._Label_ADDR_Timing.Size = System.Drawing.Size(781, 20)
+		self._Label_ADDR_Timing.TabIndex = 40
+		self._Label_ADDR_Timing.Text = "Address Timing"
+		self._Label_ADDR_Timing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		# 
+		# Label_DQS_Timing
+		# 
+		self._Label_DQS_Timing.BackColor = System.Drawing.Color.Black
+		self._Label_DQS_Timing.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_DQS_Timing.ForeColor = System.Drawing.Color.White
+		self._Label_DQS_Timing.Location = System.Drawing.Point(13, 266)
+		self._Label_DQS_Timing.Name = "Label_DQS_Timing"
+		self._Label_DQS_Timing.Size = System.Drawing.Size(781, 20)
+		self._Label_DQS_Timing.TabIndex = 41
+		self._Label_DQS_Timing.Text = "Data Strobe Timing"
+		self._Label_DQS_Timing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		# 
+		# Label_CLK_Timing
+		# 
+		self._Label_CLK_Timing.BackColor = System.Drawing.Color.Black
+		self._Label_CLK_Timing.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_CLK_Timing.ForeColor = System.Drawing.Color.White
+		self._Label_CLK_Timing.Location = System.Drawing.Point(13, 322)
+		self._Label_CLK_Timing.Name = "Label_CLK_Timing"
+		self._Label_CLK_Timing.Size = System.Drawing.Size(781, 20)
+		self._Label_CLK_Timing.TabIndex = 42
+		self._Label_CLK_Timing.Text = "Clock Timing"
+		self._Label_CLK_Timing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		# 
+		# Label_Diff_Timing
+		# 
+		self._Label_Diff_Timing.BackColor = System.Drawing.Color.Black
+		self._Label_Diff_Timing.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Diff_Timing.ForeColor = System.Drawing.Color.White
+		self._Label_Diff_Timing.Location = System.Drawing.Point(13, 486)
+		self._Label_Diff_Timing.Name = "Label_Diff_Timing"
+		self._Label_Diff_Timing.Size = System.Drawing.Size(781, 20)
+		self._Label_Diff_Timing.TabIndex = 43
+		self._Label_Diff_Timing.Text = "Differential & Single-ended Requirements for Strobe and Clock"
+		self._Label_Diff_Timing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		# 
+		# Label_Vref_Timing
+		# 
+		self._Label_Vref_Timing.BackColor = System.Drawing.Color.Black
+		self._Label_Vref_Timing.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Vref_Timing.ForeColor = System.Drawing.Color.White
+		self._Label_Vref_Timing.Location = System.Drawing.Point(13, 650)
+		self._Label_Vref_Timing.Name = "Label_Vref_Timing"
+		self._Label_Vref_Timing.Size = System.Drawing.Size(781, 20)
+		self._Label_Vref_Timing.TabIndex = 44
+		self._Label_Vref_Timing.Text = "Reference Voltage Tolerance for Data and Address"
+		self._Label_Vref_Timing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+		# 
+		# Button_ShowHide
+		# 
+		self._Button_ShowHide.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_ShowHide.Location = System.Drawing.Point(332, 692)
+		self._Button_ShowHide.Name = "Button_ShowHide"
+		self._Button_ShowHide.Size = System.Drawing.Size(189, 25)
+		self._Button_ShowHide.TabIndex = 45
+		self._Button_ShowHide.Text = "Show Reference && Target Net"
+		self._Button_ShowHide.UseVisualStyleBackColor = True
+		self._Button_ShowHide.Click += self.Button_ShowHideClick
+		# 
+		# ComplianceForm
+		# 
+		#self.Shownetflag = False
+		self.Shownetflag = False
+		self.ClientSize = System.Drawing.Size(1032, 912)		
+		self.Controls.Add(self._Button_ShowHide)
+		self.Controls.Add(self._Label_Vref_Timing)
+		self.Controls.Add(self._Label_Diff_Timing)
+		self.Controls.Add(self._Label_CLK_Timing)
+		self.Controls.Add(self._Label_DQS_Timing)
+		self.Controls.Add(self._Label_ADDR_Timing)
+		self.Controls.Add(self._Label_DQ_Timing)
+		self.Controls.Add(self._DataGridView)
+		self.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+		IconFile = path + "\\Resources\\LOGO.ico"
+		self.Icon = Icon(IconFile)
+		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+		self.Name = "ComplianceForm"
+		self.Text = "Setting for DDR Compliacne Check"		
+		self.Load += self.ComplianceFormLoad
+		self._DataGridView.EndInit()
+		self._contextMenuStrip1.ResumeLayout(False)
+		self.ResumeLayout(False)
+
+	def ComplianceFormLoad(self, sender, e):
+		#################################################################
+		########## Add Rows for Compliacne Parameters ###################
+		#################################################################
+		#0
+		self._DataGridView.Rows.Add(False, "tDS", "DQ, DQS", "N/A", "Data Setup Time")
+		self._DataGridView.Rows.Add(False, "tDS", "DQ, DQS", "N/A", "Data Setup Time")
+		self._DataGridView.Rows.Add(False, "tDH", "DQ, DQS", "N/A", "Data Hold Time")
+		self._DataGridView.Rows.Add(False, "tDQSQ", "DQ, DQS", "N/A", "Strobe to Data Skew")
+		self._DataGridView.Rows.Add(False, "tQH", "DQ, DQS", "N/A", "Data Output Hold Time")
+		self._DataGridView.Rows.Add(False, "tDIPW", "DQ, (DM)", "N/A", "Input Pulse Width")
+		self._DataGridView.Rows.Add(False, "tVAC(DQ)", "DQ", "N/A", "Valid Transition Time")		
+		#7
+		self._DataGridView.Rows.Add(False, "tIS", "ADDR, CLK", "N/A", "Address Setup Time")
+		self._DataGridView.Rows.Add(False, "tIH", "ADDR, CLK", "N/A", "Address Hold Time")
+		self._DataGridView.Rows.Add(False, "tIPW", "ADDR", "N/A", "Input Pulse Width")
+		self._DataGridView.Rows.Add(False, "tVAC(ADDR)", "ADDR", "N/A", "Valid Transition Time")		
+		#11
+		self._DataGridView.Rows.Add(False, "tDQSL", "DQS", "N/A", "Diff. Input Low Pulse Width")
+		self._DataGridView.Rows.Add(False, "tDQSH", "DQS", "N/A", "Diff. Input High Pulse Width")		
+		#13
+		self._DataGridView.Rows.Add(False, "tCK(avg)", "CLK", "N/A", "Average Clock Period")
+		self._DataGridView.Rows.Add(False, "tCH(avg)", "CLK", "N/A", "Average Clock High Pulse Width")
+		self._DataGridView.Rows.Add(False, "tCL(avg)", "CLK", "N/A", "Average Clock Low Pulse Width")		
+		self._DataGridView.Rows.Add(False, "tCK(abs)", "CLK", "N/A", "Absolute Clock Period")
+		self._DataGridView.Rows.Add(False, "tCH(abs)", "CLK", "N/A", "Absolute Clock High Pulse Width")
+		self._DataGridView.Rows.Add(False, "tCL(abs)", "CLK", "N/A", "Absolute Clock Low Pulse Width")		
+		self._DataGridView.Rows.Add(False, "tJIT(per)", "CLK", "N/A", "Clock Period Jitter")
+		self._DataGridView.Rows.Add(False, "tJIT(cc)", "CLK", "N/A", "Clock Cycle to Cycle Period Jitter")		
+		#21
+		self._DataGridView.Rows.Add(False, "tDVAC(DQS)", "DQS", "N/A", "Allowed Time Before Ringback for DQS")
+		self._DataGridView.Rows.Add(False, "VSEH(DQS)", "DQS", "N/A", "Single-ended High Level for Strobes")
+		self._DataGridView.Rows.Add(False, "VSEL(DQS)", "DQS", "N/A", "Single-ended Low Level for Strobes")
+		self._DataGridView.Rows.Add(False, "VIX(DQS)", "DQS", "N/A", "Diff. Input Cross Point Voltage")
+		self._DataGridView.Rows.Add(False, "tDVAC(CLK)", "CLK", "N/A", "Allowed Time Before Ringback for CLK")
+		self._DataGridView.Rows.Add(False, "VSEH(CLK)", "CLK", "N/A", "Single-ended High Level for CLK")
+		self._DataGridView.Rows.Add(False, "VSEL(CLK)", "CLK", "N/A", "Single-ended Low Level for CLK")
+		self._DataGridView.Rows.Add(False, "VIX(CLK)", "CLK", "N/A", "Diff. Input Cross Point Voltage")		
+		#29
+		self._DataGridView.Rows.Add(False, "VRefDQ(DC)", "Vref", "N/A", "Average of VRef(t)")
+		# Set Row Height to 18
+		for i in range(0, 30):		
+			self._DataGridView.Rows[i].Height = 18
+
+		#################################################################
+		########## Add Tooltips for Detailed Description ################
+		#################################################################
+		# ToolTips
+		# 1
+		self._DataGridView.Rows[1].Cells[4].ToolTipText = "Data setup time to DQS, DQQS# referenced to Vih(ac)/Vil(ac) levels"
+		self._DataGridView.Rows[2].Cells[4].ToolTipText = "Data hold time from DQS, DQS# referenced to Vih(dc)/Vil(dc) levels"
+		self._DataGridView.Rows[3].Cells[4].ToolTipText = "DQS, DQS# to DQ skew, per group, per access"
+		self._DataGridView.Rows[4].Cells[4].ToolTipText = "DQ output hold time from DQS, DQS#"
+		self._DataGridView.Rows[5].Cells[4].ToolTipText = "DQ and DM input pulse width for each input"
+		self._DataGridView.Rows[6].Cells[4].ToolTipText = "Required time for valid DQ transition"		
+		# 7
+		self._DataGridView.Rows[7].Cells[4].ToolTipText = "Address setupt time to CLK, CLK# referenced to Vih(ac)/Vil(ac) levels"
+		self._DataGridView.Rows[8].Cells[4].ToolTipText = "Address hold time from CLK, CLK# referenced to Vih(dc)/Vil(dc) levels"
+		self._DataGridView.Rows[9].Cells[4].ToolTipText = "Address input pulse width for each input"
+		self._DataGridView.Rows[10].Cells[4].ToolTipText = "Required time for valid address transition"		
+		# 11
+		self._DataGridView.Rows[11].Cells[4].ToolTipText = "DQS, DQS# differential input low pulse width"
+		self._DataGridView.Rows[12].Cells[4].ToolTipText = "DQS, DQS# differential input high pulse width"		
+		self._DataGridView.Rows[24].Cells[4].ToolTipText = "Differential input cross point voltage relative to VDD/2 for DQS, DQS#"
+		self._DataGridView.Rows[28].Cells[4].ToolTipText = "Differential input cross point voltage relative to VDD/2 for CLK, CLK#"
+		
+		#################################################################
+		###### Add Diveder and Set Label Position and Width #############
+		#################################################################
+		# Add Divider
+		self._DataGridView.Rows[0].DividerHeight = 20		
+		self._DataGridView.Rows[0].Height = 20		
+		self._DataGridView.Rows[6].DividerHeight = 20
+		self._DataGridView.Rows[6].Height += 20		
+		self._DataGridView.Rows[10].DividerHeight = 20
+		self._DataGridView.Rows[10].Height += 20		
+		self._DataGridView.Rows[12].DividerHeight = 20
+		self._DataGridView.Rows[12].Height += 20		
+		self._DataGridView.Rows[20].DividerHeight = 20
+		self._DataGridView.Rows[20].Height += 20		
+		self._DataGridView.Rows[28].DividerHeight = 20
+		self._DataGridView.Rows[28].Height += 20
+		# Set Label Position
+		self._Label_DQ_Timing.Location = System.Drawing.Point(13, 43)
+		self._Label_ADDR_Timing.Location = System.Drawing.Point(13, 171)
+		self._Label_DQS_Timing.Location = System.Drawing.Point(13, 263)
+		self._Label_CLK_Timing.Location = System.Drawing.Point(13, 319)
+		self._Label_Diff_Timing.Location = System.Drawing.Point(13, 483)
+		self._Label_Vref_Timing.Location = System.Drawing.Point(13, 647)
+		# Set Label Width
+		self._Label_DQ_Timing.Width = 506
+		self._Label_ADDR_Timing.Width = 506
+		self._Label_DQS_Timing.Width = 506
+		self._Label_CLK_Timing.Width = 506
+		self._Label_Diff_Timing.Width = 506
+		self._Label_Vref_Timing.Width = 506
+
+		#################################################################
+		############## Set BackColor for Checked Rows ###################
+		#################################################################
+		for row in self._DataGridView.Rows:
+			if row.Cells[0].Value:
+				row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+			else:
+				row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+
+		##################################################################################################
+		############## Set Column Display and Reference & Target Net Column Unvisible  ###################
+		##################################################################################################
+		self._DataGridView.Columns[7].DisplayIndex = 5
+		self._DataGridView.Columns[5].Visible = False
+		self._DataGridView.Columns[6].Visible = False
+
+		#######################################################################
+		############## Set Size of DataGridView and Client  ###################
+		#######################################################################
+		#self._DataGridView.Rows[1].Cells[5].Items.Add("Test")
+		#self._DataGridView.Rows[1].Cells[5].Value = self._DataGridView.Rows[1].Cells[5].Items[0]		
+
+		self._DataGridView.Size = System.Drawing.Size(509, 675)
+		self.ClientSize = System.Drawing.Size(529, 722)
+		
+	def DataGridViewColumnHeaderMouseClick(self, sender, e):
+		# TODO : Compliance Option Form DataGridView Column Header Mouse Click
+		pass
+	
+	def Button_ShowHideClick(self, sender, e):		
+		self.Shownetflag = not self.Shownetflag
+		if self.Shownetflag:
+			self._Button_ShowHide.Text = "Hide Reference && Target Net"
+			self._DataGridView.Columns[5].Visible = True
+			self._DataGridView.Columns[6].Visible = True
+			
+			self._Label_DQ_Timing.Width = 806
+			self._Label_ADDR_Timing.Width = 806
+			self._Label_DQS_Timing.Width = 806
+			self._Label_CLK_Timing.Width = 806
+			self._Label_Diff_Timing.Width = 806
+			self._Label_Vref_Timing.Width = 806			
+			
+			self._Button_ShowHide.Location = System.Drawing.Point(632, 692)
+			
+			self._DataGridView.Size = System.Drawing.Size(809, 675)
+			self.ClientSize = System.Drawing.Size(829, 722)
+			
+		else:
+			self._Button_ShowHide.Text = "Show Reference && Target Net"
+			self._DataGridView.Columns[5].Visible = False
+			self._DataGridView.Columns[6].Visible = False
+			
+			self._Label_DQ_Timing.Width = 506
+			self._Label_ADDR_Timing.Width = 506
+			self._Label_DQS_Timing.Width = 506
+			self._Label_CLK_Timing.Width = 506
+			self._Label_Diff_Timing.Width = 506
+			self._Label_Vref_Timing.Width = 506			
+			
+			self._Button_ShowHide.Location = System.Drawing.Point(332, 692)
+			
+			self._DataGridView.Size = System.Drawing.Size(509, 675)
+			self.ClientSize = System.Drawing.Size(529, 722)
+
+	def ShowAllToolStripMenuItemClick(self, sender, e):
+		# TODO : Compliance Option Form 'Show All' ToolStripMenu
+		pass
+
+	def ShowCheckItemOnlyToolStripMenuItemClick(self, sender, e):
+		# TODO : Compliance Option Form 'Show Checked Item Only' ToolStripMenu
+		pass
+
+	def CheckAllToolStripMenuItemClick(self, sender, e):
+		# TODO : Compliance Option Form 'Check All' ToolStripMenu
+		pass
+
+	def UncheckAllToolStripMenuItemClick(self, sender, e):
+		# TODO : Compliance Option Form 'Uncheck All' ToolStripMenu
+		pass
+
+	def AutoCheckToolStripMenuItemClick(self, sender, e):
+		# TODO : Compliance Option Form 'Auto Check' ToolStripMenu
+		pass

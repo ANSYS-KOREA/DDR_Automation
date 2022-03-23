@@ -11,9 +11,11 @@ Log = ""
 Eye_Option_Init_Flag = True
 Eye_Analyze_Flag = True
 
-Debug_Mode = False
+Debug_Mode = True
 Cenv = {}
 Uenv = {}
+
+AEDT = {}
 
 # Eye_flag
 #   True = New Eye
