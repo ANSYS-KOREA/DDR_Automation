@@ -128,6 +128,9 @@ def Shutdown(Module=None):
             try:
                 scopeID = Module.oDesktop.ScopeID
                 Module.oDesktop.QuitApplication()
+                import sub_functions
+                sub_funcitons.ReleaseObject(Module.oDesktop)
+                
             except:
                 pass
         else:
@@ -159,6 +162,9 @@ def Release(Module=None):
             try:
                 scopeID = Module.oDesktop.ScopeID
                 Module.oDesktop = None
+                import sub_functions
+                sub_funcitons.ReleaseObject(Module.oDesktop)
+                
             except:
                 pass
         else:

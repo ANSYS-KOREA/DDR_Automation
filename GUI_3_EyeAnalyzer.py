@@ -1223,7 +1223,11 @@ class Eye_Form(Form):
 	def Button_ImportClick(self, sender, e):
 		try:
 			dialog = OpenFileDialog()
-			dialog.InitialDirectory = path
+			if sub_DB.Debug_Mode:
+				dialog.InitialDirectory = r"D:\1_Work\20220106_DDR_Compliance\0_DB\0_Input_Examples"
+			else:
+				dialog.InitialDirectory = path
+			
 			dialog.Filter = "AEDT Project file|*.aedt|Comma delimited data file|*.csv"
 
 			if dialog.ShowDialog(self) == DialogResult.OK:
@@ -1264,7 +1268,7 @@ class Eye_Form(Form):
 						Waveform = {}
 						with open(sub_DB.Eye_Form._TextBox_InputFile.Text) as fp:
 							# Read the fist line
-							temp_data = fp.readline().replace("\"","").replace(" ","").strip().split(",")
+							temp_data = fp.readline().replace("\"","").replace(" ","").replace("-","_").strip().split(",")
 
 							# Delete global & local variable data
 							for i in range(0, len(temp_data)):
@@ -1295,7 +1299,7 @@ class Eye_Form(Form):
 
 						Log("	<Read WaveFrom>")
 						for cell in data:
-							key = cell[0].split("[")[0]
+							key = cell[0].split("[")[0].replace("-","_")
 							del cell[0]
 							Waveform[key] = cell
 							Log("		= %s" % key)
@@ -1320,11 +1324,11 @@ class Eye_Form(Form):
 						else:
 							MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
 						sub_DB.Waveform = Waveform
-
+						
 						# Create Netlist
 						Netlist = []
 						for i in range(0, len(temp_data)):
-							Netlist.append(temp_data[i].split("[")[0])
+							Netlist.append(temp_data[i].split("[")[0].replace("-","_"))
 						sub_DB.Netlist = Netlist
 
 						# Check input csv file time resolution
@@ -1380,7 +1384,7 @@ class Eye_Form(Form):
 			# Initialization 
 			self._CheckedListBox_ReportName.Items.Clear()		
 
-			oProject = sub_AEDT.AEDT["Project"]
+			oProject = sub_DB.AEDT["Project"]
 			oDesign = oProject.SetActiveDesign(self._ComboBox_Design.SelectedItem)
 			Log("[AEDT Design] = %s" % self._ComboBox_Design.Text)
 
@@ -1408,8 +1412,8 @@ class Eye_Form(Form):
 			self._ComboBox_DDRGen.Enabled = True
 		
 			# Back-up the AEDT Info
-			sub_AEDT.AEDT["Design"] = oDesign
-			sub_AEDT.AEDT["Module"] = oModule
+			sub_DB.AEDT["Design"] = oDesign
+			sub_DB.AEDT["Module"] = oModule
 
 		except Exception as e:			
 			Log("[AEDT Design] = Failed")
@@ -1743,7 +1747,7 @@ class Eye_Form(Form):
 						sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
 
 						for row in sub_DB.Net_Form._DataGridView.Rows:
-							if row.Cells[0].Value:
+							if row.Cells[0].Value:								
 								row.Cells[5].Value = str(Eye_Measure_Results[row.Cells[1].Value][0])
 								row.Cells[6].Value = str(Eye_Measure_Results[row.Cells[1].Value][2])
 						sub_DB.Net_Form.Init_Flag = False
@@ -1868,30 +1872,34 @@ class Eye_Form(Form):
 								key_list = Plot_list.keys()
 								key_list.sort()
 								Log("		(Report Name)")
-								for key in key_list:						
+								for key in key_list:
 									if key == "None":
+										AEDT_File = AEDT_File.split(".")[0] + "_NonGroup." + AEDT_File.split(".")[-1]
+										print AEDT_File
 										for net in Plot_list[key]:								
 											for row in sub_DB.Net_Form._DataGridView.Rows:
 												if net == row.Cells[1].Value:
 													Report_Name = row.Cells[3].Value
 													break
 											sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT - %s" % Report_Name
-											sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
-											Import_file = Gen_waveform_file(self._TextBox_InputFile.Text, net)
+											sub_DB.Cal_Form._ProgressBar_Vref.Value += 1											
+											Import_file = Gen_waveform_file(self._TextBox_InputFile.Text, net, False)
 											Log("			= %s" % Report_Name)
 											Plot_Eye_Import(Report_Name, Import_file, [net], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
 											os.remove(Import_file)
 								
 									else:
+										AEDT_File = AEDT_File.split(".")[0] + "_Group." + AEDT_File.split(".")[-1]
+										print AEDT_File
 										sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT - %s" % key
-										sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
-										Import_file = Gen_waveform_file(self._TextBox_InputFile.Text, Plot_list[key])
+										sub_DB.Cal_Form._ProgressBar_Vref.Value += 1										
+										Import_file = Gen_waveform_file(self._TextBox_InputFile.Text, Plot_list[key], True)
 										Log("			= %s" % key)
 										Plot_Eye_Import(key, Import_file, Plot_list[key], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
 										os.remove(Import_file)
 
-								sub_AEDT.AEDT["Project"].SaveAs(AEDT_File, True)
-								sub_ScriptEnv.Shutdown()
+								sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
+								sub_ScriptEnv.Release()
 							Log("	<Eye Plot> = Done")
 
 						else:
@@ -1984,6 +1992,7 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Button_ImgShowClick(self, sender, e):
+		# TODO : Button Image Show Click Event
 		self.Image_flag = not self.Image_flag
 		if self.Image_flag:
 			self._Button_ImgShow.Text = "Show"
