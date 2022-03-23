@@ -1,6 +1,7 @@
 import os
 import time
 import re
+import traceback
 import System.Drawing
 import System.Windows.Forms
 import sub_ScriptEnv
@@ -174,7 +175,7 @@ class EnvEditor(Form):
 
 		except Exception as e:
 			Log("[EnvEditor ResizeEnd] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to resize Editor GUI","Warning")			
 			EXIT()
 
@@ -224,7 +225,7 @@ class EnvEditor(Form):
 
 		except Exception as e:		
 			Log("[EnvEditor Load] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load Editor","Warning")			
 			EXIT()
 
@@ -258,7 +259,7 @@ class EnvEditor(Form):
 
 		except Exception as e:		
 			Log("[EnvEditor Treeview Node Mouse Click] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to Select node in Editor","Warning")			
 			EXIT()
 
@@ -275,7 +276,7 @@ class EnvEditor(Form):
 
 		except Exception as e:		
 			Log("[EnvEditor Key Press] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to Press Key in Editor","Warning")			
 			EXIT()
 
@@ -293,7 +294,7 @@ class EnvEditor(Form):
 
 		except Exception as e:
 			Log("[Enable EnvEditor] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to make EnvEditor editable","Warning")			
 			EXIT()
 
@@ -316,7 +317,7 @@ class EnvEditor(Form):
 
 		except Exception as e:		
 			Log("[Save EnvEditor] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to save EnvEditor","Warning")			
 			EXIT()
 
@@ -351,7 +352,7 @@ class EnvEditor(Form):
 
 		except Exception as e:		
 			Log("[Save As EnvEditor] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to save as EnvEditor","Warning")			
 			EXIT()
 
@@ -390,7 +391,7 @@ class EnvEditor(Form):
 
 		except Exception as e:		
 			Log("[Close EnvEditor] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to close EnvEditor","Warning")			
 			EXIT()
 
@@ -628,7 +629,7 @@ class NetForm(Form):
 
 		except Exception as e:		
 			Log("[NetFrom ResizeEnd] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to resize Net Classification GUI","Warning")			
 			EXIT()
 
@@ -710,7 +711,7 @@ class NetForm(Form):
 
 		except Exception as e:		
 			Log("[Net Form Load] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load Net Classification Form","Warning")			
 			EXIT()
 
@@ -723,7 +724,7 @@ class NetForm(Form):
 
 		except Exception as e:		
 			Log("[Net Form Key Press] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to press key in Net Classificiton Form","Warning")			
 			EXIT()
 
@@ -758,7 +759,7 @@ class NetForm(Form):
 
 		except Exception as e:		
 			Log("[Net From Column Header Click] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to sort Column of Net Classificaion Form","Warning")			
 			EXIT()
 
@@ -781,7 +782,7 @@ class NetForm(Form):
 
 		except Exception as e:		
 			Log("[Net Update] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to updated net classify result","Warning")			
 			EXIT()
 
@@ -823,7 +824,7 @@ class NetForm(Form):
 
 		except Exception as e:		
 			Log("[Auto Group] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to group target traces","Warning")			
 			EXIT()
 					
@@ -918,7 +919,7 @@ class NetForm(Form):
 
 		except Exception as e:		
 			Log("[Net Identify] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to identify target nets","Warning")			
 			EXIT()
 
@@ -936,7 +937,7 @@ class NetForm(Form):
 
 			except Exception as e:
 				Log("	<Close Eye Analyze Results Form> = Failed")
-				Log(str(e))
+				Log(traceback.format_exc())
 				MessageBox.Show("Fail to Close Eye Analyze Results Form","Warning")			
 				EXIT()
 
@@ -953,7 +954,7 @@ class NetForm(Form):
 
 			except Exception as e:
 				Log("[Close Net Form] = Failed")
-				Log(str(e))
+				Log(traceback.format_exc())
 				MessageBox.Show("Fail to close Net Classification Form","Warning")			
 				EXIT()
 
@@ -1624,7 +1625,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Option Form Load] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load Option Form","Warning")			
 			EXIT()
 
@@ -1663,7 +1664,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Option Form ResizeEnd] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to resize Option Form GUI","Warning")			
 			EXIT()
 				
@@ -1693,7 +1694,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Option Form Treeview Node Mouse Click] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to Select node in Option Form","Warning")			
 			EXIT()
 
@@ -1709,7 +1710,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Resource Directory] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to change resource directory","Warning")			
 			EXIT()
 
@@ -1720,7 +1721,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Load Definition File, Option] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load DDR Wizard definition file, Option","Warning")			
 			EXIT()
 
@@ -1731,7 +1732,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Load Configuration File, Option] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load DDR Wizard configuration file, Option","Warning")			
 			EXIT()
 
@@ -1745,7 +1746,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Check Eye Plot] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to check eye plot","Warning")			
 			EXIT()
 
@@ -1763,7 +1764,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Vref Select] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to change Vref calculating method","Warning")			
 			EXIT()
 
@@ -1780,7 +1781,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Check Excel Report] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to check excel report","Warning")			
 			EXIT()
 		
@@ -1797,7 +1798,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Setup Excel Report] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to set excel report","Warning")			
 			EXIT()
 
@@ -1849,7 +1850,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Setup Option] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to set eye analyzing options","Warning")			
 			EXIT()
 
@@ -1860,7 +1861,7 @@ class OptionForm(Form):
 
 		except Exception as e:			
 			Log("[Cancel Option] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to cancel option","Warning")			
 			EXIT()
 

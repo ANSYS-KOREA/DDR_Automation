@@ -3,7 +3,7 @@ import re
 import time
 import clr
 import shutil
-
+import traceback
 import sub_ScriptEnv
 import sub_AEDT
 import sub_DB
@@ -324,7 +324,7 @@ def Cal_Vref_AEDT(self, Location):
 
 	except Exception as e:		
 		Log("	<AEDT Vref Calculation> = Failed")
-		Log(str(e))
+		Log(traceback.format_exc())
 		MessageBox.Show("Fail to AEDT Calculate Vref","Warning")		
 		EXIT()
 
@@ -353,7 +353,7 @@ def Cal_Vref_WaveForm():
 
 	except Exception as e:		
 		Log("	<CSV Vref Calculation> = Failed")
-		Log(str(e))
+		Log(traceback.format_exc())
 		MessageBox.Show("Fail to CSV Calculate Vref","Warning")		
 		EXIT()
 
@@ -614,7 +614,7 @@ def Measure_Eye(self, Location):
 
 	except Exception as e:		
 		Log("	<Eye Analyze> = Failed")
-		Log(str(e))
+		Log(traceback.format_exc())
 		MessageBox.Show("Fail to analyze eye","Warning")						
 		EXIT()
 
@@ -769,7 +769,7 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 
 	except Exception as e:		
 		Log("	<Eye Plot> = Failed")
-		Log(str(e))
+		Log(traceback.format_exc())
 		MessageBox.Show("Fail to plot eye","Warning")						
 		EXIT()
 
@@ -906,8 +906,8 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 
 	except Exception as e:		
 		Log("	<Eye Plot> = Failed")
-		Log(str(e))
-		MessageBox.Show("Fail to plot eye\n","Warning")						
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to plot eye","Warning")						
 		EXIT()
 
 def Create_Excel_Report():
@@ -1061,7 +1061,7 @@ def Create_Excel_Report():
 
 	except Exception as e:		
 		Log("	<Create Excel Report> = Failed")
-		Log(str(e))
+		Log(traceback.format_exc())
 		MessageBox.Show("Fail to create excel report","Warning")						
 		EXIT()
 
@@ -1216,7 +1216,7 @@ def Create_Excel_Report_Imported():
 
 	except Exception as e:		
 		Log("	<Create Excel Report> = Failed")
-		Log(str(e))
+		Log(traceback.format_exc())
 		MessageBox.Show("Fail to create excel report","Warning")						
 		EXIT()
 
@@ -1267,7 +1267,7 @@ def Gen_waveform_file(Input_File, Plot_list, Group_flag):
 
 	except Exception as e:		
 		Log("	<Eye Plot> = Failed")
-		Log(str(e))
+		Log(traceback.format_exc())
 		MessageBox.Show("Fail to plot eye","Warning")						
 		EXIT()
 

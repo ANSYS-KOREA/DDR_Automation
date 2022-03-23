@@ -2,6 +2,7 @@ import os
 import sub_ScriptEnv
 import sub_DB
 import time
+import traceback
 
 from sub_functions import *
 
@@ -95,7 +96,7 @@ def Get_AEDT_Info(self, File):
 
 	except Exception as e:		
 		Log("[AEDT Launch] : Failed")
-		Log(str(e))
+		Log(traceback.format_exc())
 		MessageBox.Show("Fail to run AEDT","Warning")		
 		EXIT()
 
