@@ -6,6 +6,7 @@ import System.Windows.Forms
 import sub_ScriptEnv
 import sub_AEDT
 import sub_DB
+import traceback
 
 from GUI_subforms import *
 from sub_functions import *
@@ -1010,7 +1011,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Eye_FormLoad] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load Eye Analyzer main GUI","Warning")			
 			EXIT()
 
@@ -1047,7 +1048,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Eye_FormResizeEnd] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to resize Eye Analyzer main GUI","Warning")			
 			EXIT()
 
@@ -1073,7 +1074,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Load Definition File] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load DDR Wizard definition file","Warning")
 			EXIT()
 
@@ -1086,7 +1087,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Edit Definition File] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to edit DDR Wizard definition file","Warning")
 			EXIT()
 
@@ -1114,7 +1115,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Load Configuration File] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load DDR Wizard configuration file","Warning")
 			EXIT()
 
@@ -1131,7 +1132,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Edit Configuration File] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to edit DDR Wizard configuration file","Warning")
 			EXIT()
 
@@ -1146,7 +1147,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Option Form Launch] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load Option Form","Warning")
 			EXIT()
 
@@ -1361,7 +1362,7 @@ class Eye_Form(Form):
 
 					except Exception as e:
 						Log("[Input CSV File Parsing] = Failed")
-						Log(str(e))
+						Log(traceback.format_exc())
 						MessageBox.Show("Input csv file parsing has been failed.\n\nPlease check the input file,\n\t%s." % File.split("\\")[-1],"Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
 						self._TextBox_InputFile.Text = ""
 
@@ -1375,7 +1376,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Input File Import] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")			
 			EXIT()
 
@@ -1417,7 +1418,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[AEDT Design] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to set AEDT Design","Warning")
 			EXIT()
 
@@ -1483,7 +1484,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[DDR type] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to set DDR type","Warning")
 			EXIT()
 
@@ -1586,7 +1587,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[DDR datarate] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to set DDR datarate","Warning")
 			EXIT()
 
@@ -1608,7 +1609,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Net Form Launch] = Failed")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to launch Net Classification Form","Warning")			
 			EXIT()
 
@@ -1679,7 +1680,7 @@ class Eye_Form(Form):
 
 					except Exception as e:						
 						Log("	<Progress Form Launch> = Failed")
-						Log(str(e))
+						Log(traceback.format_exc())
 						MessageBox.Show("Fail to launch Progress Form","Warning")						
 						EXIT()
 
@@ -1710,7 +1711,7 @@ class Eye_Form(Form):
 
 					except Exception as e:						
 						Log("	<Launch Vref Calculation> = Failed")
-						Log(str(e))
+						Log(traceback.format_exc())
 						MessageBox.Show("Fail to launch Vref Calcultation","Warning")						
 						EXIT()
 
@@ -1757,7 +1758,7 @@ class Eye_Form(Form):
 
 					except Exception as e:						
 						Log("	<Launch Eye Analyze> = Failed")
-						Log(str(e))
+						Log(traceback.format_exc())
 						MessageBox.Show("Fail to launch Eye Analyze","Warning")						
 						EXIT()
 
@@ -1874,8 +1875,7 @@ class Eye_Form(Form):
 								Log("		(Report Name)")
 								for key in key_list:
 									if key == "None":
-										AEDT_File = AEDT_File.split(".")[0] + "_NonGroup." + AEDT_File.split(".")[-1]
-										print AEDT_File
+										AEDT_File = AEDT_File.split(".")[0] + "_NonGroup." + AEDT_File.split(".")[-1]										
 										for net in Plot_list[key]:								
 											for row in sub_DB.Net_Form._DataGridView.Rows:
 												if net == row.Cells[1].Value:
@@ -1889,8 +1889,7 @@ class Eye_Form(Form):
 											os.remove(Import_file)
 								
 									else:
-										AEDT_File = AEDT_File.split(".")[0] + "_Group." + AEDT_File.split(".")[-1]
-										print AEDT_File
+										AEDT_File = AEDT_File.split(".")[0] + "_Group." + AEDT_File.split(".")[-1]										
 										sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT - %s" % key
 										sub_DB.Cal_Form._ProgressBar_Vref.Value += 1										
 										Import_file = Gen_waveform_file(self._TextBox_InputFile.Text, Plot_list[key], True)
@@ -1907,7 +1906,7 @@ class Eye_Form(Form):
 
 					except Exception as e:						
 						Log("	<Launch Eye Plot> = Failed")
-						Log(str(e))
+						Log(traceback.format_exc())
 						MessageBox.Show("Fail to launch Eye Plot","Warning")						
 						EXIT()
 
@@ -1941,7 +1940,7 @@ class Eye_Form(Form):
 
 					except Exception as e:						
 						Log("	<Launch Create Excel Report> = Failed")
-						Log(str(e))
+						Log(traceback.format_exc())
 						MessageBox.Show("Fail to launch create excel report","Warning")
 						EXIT()
 					
@@ -1955,7 +1954,7 @@ class Eye_Form(Form):
 
 					except Exception as e:						
 						Log("[Save Log] = Failed")
-						Log(str(e))
+						Log(traceback.format_exc())
 						MessageBox.Show("Fail to save log file","Warning")
 						EXIT()
 				# for Old Eye
@@ -1971,7 +1970,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[Eye Analyze Start] = Fail")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to start Eye Analyze","Warning")			
 			EXIT()
 		
@@ -1987,7 +1986,7 @@ class Eye_Form(Form):
 
 		except Exception as e:			
 			Log("[View Eye Analyze Result] = Fail")
-			Log(str(e))
+			Log(traceback.format_exc())
 			MessageBox.Show("Fail to View Eye Analyze Result","Warning")			
 			EXIT()
 
