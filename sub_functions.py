@@ -198,7 +198,7 @@ def Cal_Vref_AEDT(self, Location):
 		pre_var_string = ""
 		for i in range(1, len(temp_data)):
 			if "-" in temp_data[i]:
-				var_string = temp_data[i].split("-")[-1].strip().replace("\"","")
+				var_string = temp_data[i].split("]")[-1].split("-")[-1].strip().replace("\"","")				
 			else:
 				var_string = ""
 				break
@@ -222,15 +222,19 @@ def Cal_Vref_AEDT(self, Location):
 				PlotList.append(sub_DB.Net_Form._DataGridView.Rows[i].Cells[1].Value.replace("\"","").split("[")[0].strip())
 
 		# Create Variable List
-		Global_Varlist = oProject.GetVariables()
-		Local_Varlist = oDesign.GetVariables()
 		Var_list = []
 		Var_list.append("Time:=")
 		Var_list.append(["All"])
-		for var in Global_Varlist:
-			Var_list.append(var + ":=")
-			Var_list.append(["All"])
-
+		Sim_type = oDesign.GetDesignType()			
+		if Sim_type == "Circuit Netlist":
+			pass
+		else:
+			Global_Varlist = oProject.GetVariables()
+			Local_Varlist = oDesign.GetVariables()					
+			for var in Global_Varlist:
+				Var_list.append(var + ":=")
+				Var_list.append(["All"])
+		
 		oModule.CreateReport("temp_eye", "Eye Diagram", "Rectangular Plot", self._ComboBox_SolutionName.Text, 
 		[
 			"NAME:Context",
@@ -631,14 +635,18 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 		Log("		(Delete Duplicate Reports) = Done")
 
 		# Create Variable List
-		Global_Varlist = oProject.GetVariables()
-		Local_Varlist = oDesign.GetVariables()
 		Var_list = []
 		Var_list.append("Time:=")
 		Var_list.append(["All"])
-		for var in Global_Varlist:
-			Var_list.append(var + ":=")
-			Var_list.append(["All"])
+		Sim_type = oDesign.GetDesignType()			
+		if Sim_type == "Circuit Netlist":
+			pass
+		else:
+			Global_Varlist = oProject.GetVariables()
+			Local_Varlist = oDesign.GetVariables()					
+			for var in Global_Varlist:
+				Var_list.append(var + ":=")
+				Var_list.append(["All"])
 		Log("		(Create Variable List) = Done")
 
 		# Plot Eye
@@ -685,6 +693,12 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 							, ["NAME:Min", "Value:=", str(vmin) + "mV"]
 							, ["NAME:Max", "Value:=", str(vmax) + "mV"]]]])
 			else:
+				print Report_Name
+				print eyename
+				print sub_DB.var_string
+				print vmin
+				print vmax
+
 				oModule.ChangeProperty(["NAME:AllTabs",
 						  ["NAME:Eye", ["NAME:PropServers", Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps"
 							, ["NAME:Rectangular Plot", "Value:=", False]]],
@@ -1271,6 +1285,20 @@ def Gen_waveform_file(Input_File, Plot_list, Group_flag):
 		MessageBox.Show("Fail to plot eye","Warning")						
 		EXIT()
 
+def Check_spec():	
+	try:
+		Log("	<Check DDR Specification>")
+		# for New Eye
+		if sub_DB.Eyeflag:
+			pass
+		else:
+			pass
+	except Exception as e:		
+		Log("	<Check DDR Specification> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to plot eye","Warning")						
+		EXIT()
+
 def Log(msg):
 
 	sub_DB.Log += "\n" + time.strftime('%H:%M:%S') + "\t" + msg
@@ -1282,8 +1310,9 @@ def LogSave():
 
 def EXIT():
 	LogSave()	
-	if "App" in sub_DB.AEDT.keys():
-		sub_ScriptEnv.Release()
+	#if "App" in sub_DB.AEDT.keys():
+	#	sub_ScriptEnv.Release()
+	sub_ScriptEnv.Release()
 	os._exit(0)
 
 def ReleaseObject(obj):	

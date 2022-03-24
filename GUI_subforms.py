@@ -647,7 +647,7 @@ class NetForm(Form):
 					Netlist = []
 					for report in Report_Name:
 						for net in oModule.GetReportTraceNames(report):							
-							Netlist.append(net.replace("-","_"))
+							Netlist.append(net)
 
 					sub_DB.Netlist = Netlist
 
