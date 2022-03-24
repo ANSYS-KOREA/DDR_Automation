@@ -1391,10 +1391,15 @@ class Eye_Form(Form):
 
 			# Get Solutions
 			self._ComboBox_SolutionName.Items.Clear()
-			oModule = oDesign.GetModule("SimSetup")
-			for solution in oModule.GetAllSolutionSetups():
-				self._ComboBox_SolutionName.Items.Add(solution)
-			self._ComboBox_SolutionName.SelectedIndex = 0
+			Sim_type = oDesign.GetDesignType()			
+			if Sim_type == "Circuit Netlist":
+				self._ComboBox_SolutionName.Items.Add("TRAN")
+				self._ComboBox_SolutionName.SelectedIndex = 0
+			else:
+				oModule = oDesign.GetModule("SimSetup")
+				for solution in oModule.GetAllSolutionSetups():
+					self._ComboBox_SolutionName.Items.Add(solution)
+				self._ComboBox_SolutionName.SelectedIndex = 0
 
 			# Get Reports
 			oModule = oDesign.GetModule("ReportSetup")
@@ -1594,6 +1599,8 @@ class Eye_Form(Form):
 	def Button_ViewNetClick(self, sender, e):
 		try:
 			# Target Net Setup
+			# TODO : Handle TBD Spec.
+			Check_spec()
 			sub_DB.Net_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
 			sub_DB.Net_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
 			sub_DB.Net_Form.Text = "Target Net Setup - " + sub_DB.Uenv["File"].split("\\")[-1]
@@ -1827,6 +1834,8 @@ class Eye_Form(Form):
 										sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
 										Log("			= %s" % key)
 										Plot_Eye(key, Plot_list[key], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
+
+								sub_ScriptEnv.Release()
 					
 							# *.csv input
 							elif sub_DB.InputFile_Flag == 2: # *.csv input
