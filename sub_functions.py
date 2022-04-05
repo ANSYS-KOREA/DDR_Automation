@@ -771,9 +771,9 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 			imgh = imgw / 5 * 4
 			img_path = sub_DB.Option_Form._TextBox_OutputExcelFile.Text
 			img_path = img_path.replace("\\"+img_path.split("\\")[-1],"")
-			oModule.ExportImageToFile(Report_Name, img_path + "\\" + Report_Name + ".bmp", imgw * 2, imgh * 2)
-			sub_DB.Excel_Img_File.append(img_path + "\\" + Report_Name + ".bmp")
-			Log("			= Save Image File, %s" % img_path + "\\" + Report_Name + ".bmp")
+			oModule.ExportImageToFile(Report_Name, img_path + "\\" + Report_Name + ".gif", imgw * 2, imgh * 2)
+			sub_DB.Excel_Img_File.append(img_path + "\\" + Report_Name + ".gif")
+			Log("			= Save Image File, %s" % img_path + "\\" + Report_Name + ".gif")
 
 	except Exception as e:		
 		Log("	<Eye Plot> = Failed")
@@ -908,9 +908,9 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 			imgh = imgw / 5 * 4
 			img_path = sub_DB.Option_Form._TextBox_OutputExcelFile.Text
 			img_path = img_path.replace("\\"+img_path.split("\\")[-1],"")
-			oModule.ExportImageToFile(Report_Name, img_path + "\\" + Report_Name + ".bmp", imgw * 2, imgh * 2)
-			sub_DB.Excel_Img_File.append(img_path + "\\" + Report_Name + ".bmp")
-			Log("			= Save Image File, %s" % img_path + "\\" + Report_Name + ".bmp")
+			oModule.ExportImageToFile(Report_Name, img_path + "\\" + Report_Name + ".gif", imgw * 2, imgh * 2)
+			sub_DB.Excel_Img_File.append(img_path + "\\" + Report_Name + ".gif")
+			Log("			= Save Image File, %s" % img_path + "\\" + Report_Name + ".gif")
 
 	except Exception as e:		
 		Log("	<Eye Plot> = Failed")
