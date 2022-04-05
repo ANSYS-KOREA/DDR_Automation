@@ -152,11 +152,11 @@
 		(DC Threshold Voltage - DQ)	= 100
 		(AC Threshold Voltage - CA) 	= 135, 125
 		(DC Threshold Voltage - CA) 	= 100
-		(DQ Setup Time - AC135)		= TBD
-		(DQ Hold Time - DC100)		= TBD
-		(ADDR Setup Time - AC135)	= TBD
-		(ADDR Setup Time - AC125)	= TBD
-		(ADDR Hold Time - DC100)	= TBD
+		(DQ Setup Time - AC135)		= 68!
+		(DQ Hold Time - DC100)		= 70!
+		(ADDR Setup Time - AC135)	= 65!
+		(ADDR Setup Time - AC125)	= 150!
+		(ADDR Hold Time - DC100)	= 100!
 		(VDD) 				= 1500
 		(VREFDQ)			= 750
 		(VREFCA) 			= 750
@@ -166,11 +166,11 @@
 		(DC Threshold Voltage - DQ)	= 100
 		(AC Threshold Voltage - CA) 	= 135, 125
 		(DC Threshold Voltage - CA)	= 100
-		(DQ Setup Time - AC135)		= TBD
-		(DQ Hold Time - DC100)		= TBD
-		(ADDR Setup Time - AC135)	= TBD
-		(ADDR Setup Time - AC125)	= TBD
-		(ADDR Hold Time - DC100)	= TBD
+		(DQ Setup Time - AC135)		= 53!
+		(DQ Hold Time - DC100)		= 55!
+		(ADDR Setup Time - AC135)	= 60!
+		(ADDR Setup Time - AC125)	= 135!
+		(ADDR Hold Time - DC100)	= 95!
 		(VDD) 				= 1500
 		(VREFDQ) 			= 750
 		(VREFCA) 			= 750
@@ -194,24 +194,24 @@
 		(Rx Timing Window Total)		= 0.2
 		
 	<DDR4-2400>
-		(Rx Mask Voltage)		= TBD
-		(Rx Timing Window Total)		= TBD
+		(Rx Mask Voltage)		= 130!
+		(Rx Timing Window Total)		= 0.2!
 		
 	<DDR4-2666>
-		(Rx Mask Voltage)		= TBD
-		(Rx Timing Window Total)		= TBD
+		(Rx Mask Voltage)		= 120!
+		(Rx Timing Window Total)		= 0.22!
 		
 	<DDR4-2933>
-		(Rx Mask Voltage)		= TBD
-		(Rx Timing Window Total)		= TBD
+		(Rx Mask Voltage)		= 115!
+		(Rx Timing Window Total)		= 0.23!
 		
 	<DDR4-3200>
-		(Rx Mask Voltage)		= TBD
-		(Rx Timing Window Total)		= TBD
+		(Rx Mask Voltage)		= 110!
+		(Rx Timing Window Total)		= 0.23!
 
 	<DDR4-3733>
-		(Rx Mask Voltage)		= TBD
-		(Rx Timing Window Total)		= TBD
+		(Rx Mask Voltage)		= 105!
+		(Rx Timing Window Total)		= 0.24!
 		
 [Comp Spec]
 
