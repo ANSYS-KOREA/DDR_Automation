@@ -1,5 +1,6 @@
 import os
 import time
+import sys
 
 import System.Drawing
 import System.Windows.Forms
@@ -1236,6 +1237,8 @@ class Eye_Form(Form):
 				self._TextBox_InputFile.Text = File			
 				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension
 
+				Initial()
+
 				# for *.aedt File
 				if extension == "aedt":
 					Log("[Input File Type] = AEDT")
@@ -1383,6 +1386,7 @@ class Eye_Form(Form):
 	def ComboBox_DesignSelectedIndexChanged(self, sender, e):
 		try:
 			# Initialization 
+			sub_DB.Net_Form.Init_Flag = True
 			self._CheckedListBox_ReportName.Items.Clear()		
 
 			oProject = sub_DB.AEDT["Project"]
@@ -1429,7 +1433,8 @@ class Eye_Form(Form):
 
 	def CheckedListBox_ReportNameSelectedIndexChanged(self, sender, e):
 
-		pass		
+		sub_DB.Net_Form.Init_Flag = True
+		
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
 		try:

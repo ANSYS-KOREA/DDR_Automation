@@ -693,12 +693,6 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 							, ["NAME:Min", "Value:=", str(vmin) + "mV"]
 							, ["NAME:Max", "Value:=", str(vmax) + "mV"]]]])
 			else:
-				print Report_Name
-				print eyename
-				print sub_DB.var_string
-				print vmin
-				print vmax
-
 				oModule.ChangeProperty(["NAME:AllTabs",
 						  ["NAME:Eye", ["NAME:PropServers", Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps"
 							, ["NAME:Rectangular Plot", "Value:=", False]]],
@@ -1318,3 +1312,8 @@ def EXIT():
 def ReleaseObject(obj):	
 	System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
 	System.GC.Collect()
+
+def Initial():
+	sub_ScriptEnv.Release()
+	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()	
+	sub_DB.Net_Form.Init_Flag = True
