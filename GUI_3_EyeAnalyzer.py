@@ -1433,8 +1433,7 @@ class Eye_Form(Form):
 
 	def CheckedListBox_ReportNameSelectedIndexChanged(self, sender, e):
 
-		sub_DB.Net_Form.Init_Flag = True
-		
+		sub_DB.Net_Form.Init_Flag = True		
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
 		try:
@@ -1519,10 +1518,21 @@ class Eye_Form(Form):
 					for key in sub_DB.Cenv:
 						if keyword in key:
 							if "Rx Mask Voltage" in key:
-								self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0]
+								if "!" in sub_DB.Cenv[key][0]:									
+									MessageBox.Show("The JEDEC specification, ""VdIVW"" for the %s-%s you chose has not been decided yet, so the DDR Wizard has set the value arbitrarily based on the specification of the commercial DDR product." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+									self._TextBox_VdIVW.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:									
+									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0]
 								Log("	<VdIVW> : %s" % self._TextBox_VdIVW.Text)
+
 							elif "Rx Timing Window Total" in key:
-								self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0]
+								if "!" in sub_DB.Cenv[key][0]:
+									MessageBox.Show("The JEDEC specification, ""TdIVW"" for the ""%s-%s"" you chose has not been decided yet, so the DDR Wizard has set the value arbitrarily based on the specification of the commercial DDR product." % (self._ComboBox_DDRGen.Text,	self._ComboBox_DataRate.Text),"Warning")
+									self._TextBox_TdIVW.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0]
 								Log("	<TdIVW> : %s" % self._TextBox_TdIVW.Text)
 
 				elif self._ComboBox_DDRGen.Text == "DDR5":
