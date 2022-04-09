@@ -8,7 +8,6 @@ Option_Form = ""
 temp_dir = ""
 Log = ""
 
-Eye_Option_Init_Flag = True
 Eye_Analyze_Flag = True
 
 Debug_Mode = True

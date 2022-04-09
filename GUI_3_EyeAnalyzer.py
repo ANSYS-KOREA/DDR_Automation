@@ -1684,7 +1684,7 @@ class Eye_Form(Form):
 			if result == DialogResult.OK:
 				# for New Eye		
 				if sub_DB.Eyeflag:
-				
+					
 					#	Get Location for Progress Form
 					x_axis = self.Location.X + self.Size.Width/2
 					y_axis = self.Location.Y + self.Size.Height/2

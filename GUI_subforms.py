@@ -910,6 +910,29 @@ class NetForm(Form):
 					else: # Un-check
 						self._DataGridView.Rows.Add(False, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
 
+				# Back-up the Current Displayed Row and Matched Name
+				Backup_row = []
+				Name = []
+				for row in self._DataGridView.Rows:
+					Backup_row.append(row)
+					Name.append(row.Cells[3].Value)
+
+				# "abc" -> [a, b, c] -> ord(a) + ord(b) + ord(c) = val
+				# sort val and get index => Name_idx
+				Name_idx = []
+				for name in Name:
+					temp_list = list(name)
+					val = 0
+					for text in temp_list:
+						val += ord(text)
+					Name_idx.append(val)
+				Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
+
+				# Clear row and add row as sorted sequentially
+				self._DataGridView.Rows.Clear()
+				for i in range(0, len(Name_idx)):
+					self._DataGridView.Rows.Add(Backup_row[Name_idx[i]])
+
 				for row in self._DataGridView.Rows:
 					if row.Cells[0].Value:
 						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
