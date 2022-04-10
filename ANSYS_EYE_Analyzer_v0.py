@@ -17,10 +17,10 @@ from System.Windows.Forms import *
 path = os.path.dirname(os.path.abspath(__file__))
 
 # Create Temp Directory
-temp_time = time.strftime('%Y%m%d_%H%M%S')
-temp_dir = path + '\\temp_' + temp_time
-os.makedirs(temp_dir)
-sub_DB.temp_dir = temp_dir
+#temp_time = time.strftime('%Y%m%d_%H%M%S')
+#temp_dir = path + '\\temp_' + temp_time
+#os.makedirs(temp_dir)
+#sub_DB.temp_dir = temp_dir
 
 # Record Log. Header
 sub_DB.Log += "############################################################"

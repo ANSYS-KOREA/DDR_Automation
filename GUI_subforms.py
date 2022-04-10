@@ -139,7 +139,7 @@ class EnvEditor(Form):
 		self.Controls.Add(self._TreeView)
 		IconFile = path + "\\Resources\\LOGO.ico"
 		self.Icon = Icon(IconFile)
-		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent		
 		self.Name = "Env_Editor"
 		self.Text = "Ansys DDR Wizard Env. File Editor"
 		self.Load += self.EnvEditorLoad
@@ -589,7 +589,7 @@ class NetForm(Form):
 		self.Controls.Add(self._DataGridView)
 		IconFile = path + "\\Resources\\LOGO.ico"
 		self.Icon = Icon(IconFile)
-		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
 		self.Name = "Net_Form"
 		self.Text = "Target Net Setup"		
@@ -1022,7 +1022,7 @@ class CalForm(Form):
 		self.Controls.Add(self._Label_Vref)
 		IconFile = path + "\\Resources\\LOGO.ico"
 		self.Icon = Icon(IconFile)
-		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(Location[0], Location[1])		
 		self.Name = "Cal_Form"
 		self.Text = ""
@@ -1539,7 +1539,7 @@ class OptionForm(Form):
 		self._TextBox_OutputExcelFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._TextBox_OutputExcelFile.Location = System.Drawing.Point(180, 189)
 		self._TextBox_OutputExcelFile.Name = "TextBox_OutputExcelFile"
-		self._TextBox_OutputExcelFile.Size = System.Drawing.Size(312, 23)
+		self._TextBox_OutputExcelFile.Size = System.Drawing.Size(312, 23)				
 		self._TextBox_OutputExcelFile.TabIndex = 54
 		# 
 		# CheckBox_PlotEye
@@ -1601,7 +1601,7 @@ class OptionForm(Form):
 		self.Controls.Add(self._Button_Cancel)
 		IconFile = path + "\\Resources\\LOGO.ico"
 		self.Icon = Icon(IconFile)
-		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Option_Form"
 		self.Text = "Ansys DDR Wizard Options"
 		self.Load += self.Option_FormLoad
@@ -1639,12 +1639,7 @@ class OptionForm(Form):
 			#	self._GroupBox_Eye.Visible = False
 			#	self._GroupBox_Comp.Visible = True
 
-			if sub_DB.Debug_Mode:
-				self._TextBox_EyeOffset.Text = "5"			
-				self._CheckBox_PlotEye.Checked = True
-				self._CheckBox_ExportExcelReport.Checked = True
-				self._TextBox_ImageWidth.Text = "200"
-				self._TextBox_OutputExcelFile.Text = "D:\\1_Work\\20220106_DDR_Compliance\\2_Results\\Test.xlsx"
+			self._TextBox_OutputExcelFile.Text = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".xlsx"
 
 		except Exception as e:			
 			Log("[Option Form Load] = Failed")
@@ -2183,7 +2178,7 @@ class ComplianceForm(Form):
 		self.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
 		IconFile = path + "\\Resources\\LOGO.ico"
 		self.Icon = Icon(IconFile)
-		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "ComplianceForm"
 		self.Text = "Setting for DDR Compliacne Check"		
 		self.Load += self.ComplianceFormLoad

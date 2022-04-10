@@ -176,7 +176,7 @@ def Cal_Vref_AEDT(self, Location):
 
 		# find total simulation time
 		# Export Report using "ExportToFile" to find total simulation time		
-		File = sub_DB.temp_dir + "\\temp.csv"
+		File = sub_DB.result_dir + "\\temp.csv"
 		oModule.UpdateReports([Report_Name[0]])
 		oModule.ExportToFile(Report_Name[0], File)		
 
@@ -191,6 +191,7 @@ def Cal_Vref_AEDT(self, Location):
 				else:
 					break
 		fp.close()
+		
 		t_unit = temp_data[0].split("[")[-1].split("]")[0]
 
 		#	Get Variable string
@@ -263,12 +264,12 @@ def Cal_Vref_AEDT(self, Location):
 		oModule.AddTraceCharacteristics("temp_eye", "EyeJitterP2P", ["0"], ["Full"])
 	
 		# Export Eye Measure Data .\Resources\temp.csv
-		legend_file = sub_DB.temp_dir + "\\temp1.csv"		
+		legend_file = sub_DB.result_dir + "\\temp1.csv"		
 		oModule.ExportTableToFile("temp_eye", legend_file, "Legend")
-		Log("		(Export Eye Measure Data) = Done")
+		Log("		(Export Eye Measure Data) = Done")		
 	
 		# Export Uniform Report	
-		File = sub_DB.temp_dir + "\\Waveforms.csv"		
+		File = sub_DB.result_dir + "\\Waveforms.csv"		
 		oModule.UpdateReports(["temp_eye"])
 		oModule.ExportUniformPointsToFile("temp_eye", File, "0ns", t_total, "1ps", False)
 		sub_DB.Waveform_File = File
@@ -323,7 +324,7 @@ def Cal_Vref_AEDT(self, Location):
 	
 		time.sleep(0.5)	
 
-		sub_DB.Vref = Vref	
+		sub_DB.Vref = Vref
 		return Vref
 
 	except Exception as e:		
@@ -675,23 +676,44 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 		for eyename in PlotList:			
 			if sub_DB.var_string == "":
 				oModule.ChangeProperty(["NAME:AllTabs",
-						  ["NAME:Eye", ["NAME:PropServers", Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps"
-							, ["NAME:Rectangular Plot", "Value:=", False]]],
-						  ["NAME:Attributes", ["NAME:PropServers", Report_Name + ":" + eyename + ":Curve1:Eye"], ["NAME:ChangedProps"
-							, ["NAME:View Type", "Value:=", "Line"]
-							, ["NAME:Line Color", "R:=", 0, "G:=", 0, "B:=", 255]
-							, ["NAME:Line Width", "Value:=", "2"]]],
-						  ["NAME:Legend", ["NAME:PropServers", Report_Name + ":Legend"], ["NAME:ChangedProps"
-							, ["NAME:Show Trace Name", "Value:=", False]
-							, ["NAME:Show Variation Key", "Value:=", False]
-							, ["NAME:Show Solution Name", "Value:=", True]]],
-						  ["NAME:Axis", ["NAME:PropServers", Report_Name + ":AxisY1"], ["NAME:ChangedProps"
-							, ["NAME:Display Name", "Value:=", False]]],
-						  ["NAME:Scaling", ["NAME:PropServers", Report_Name + ":AxisY1"], ["NAME:ChangedProps"
-							, ["NAME:Specify Min", "Value:=", True]
-							, ["NAME:Specify Max", "Value:=", True]
-							, ["NAME:Min", "Value:=", str(vmin) + "mV"]
-							, ["NAME:Max", "Value:=", str(vmax) + "mV"]]]])
+											["NAME:Eye",
+												["NAME:PropServers", Report_Name + ":EyeDisplayTypeProperty"],
+												["NAME:ChangedProps",
+													["NAME:Rectangular Plot", "Value:=", False]
+												]
+											],
+											["NAME:Attributes",
+												["NAME:PropServers", Report_Name + ":" + eyename + ":Curve1:Eye"],
+												["NAME:ChangedProps",
+													["NAME:View Type", "Value:=", "Line"],
+													["NAME:Line Color", "R:=", 0, "G:=", 0, "B:=", 255],
+													["NAME:Line Width", "Value:=", "2"]
+												]
+											],
+											["NAME:Legend",
+												["NAME:PropServers", Report_Name + ":Legend"],
+												["NAME:ChangedProps",
+													["NAME:Show Trace Name", "Value:=", False],
+													["NAME:Show Variation Key", "Value:=", False],
+													["NAME:Show Solution Name", "Value:=", True]
+												]
+											],
+											["NAME:Axis",
+												["NAME:PropServers", Report_Name + ":AxisY1"],
+												["NAME:ChangedProps",
+													["NAME:Display Name", "Value:=", False]
+												]
+											],
+											["NAME:Scaling",
+												["NAME:PropServers", Report_Name + ":AxisY1"],
+												["NAME:ChangedProps",
+													["NAME:Specify Min", "Value:=", True],
+													["NAME:Specify Max", "Value:=", True],
+													["NAME:Min", "Value:=", str(vmin) + "mV"],
+													["NAME:Max", "Value:=", str(vmax) + "mV"]
+												]
+											]
+										])
 			else:
 				oModule.ChangeProperty(["NAME:AllTabs",
 						  ["NAME:Eye", ["NAME:PropServers", Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps"
@@ -734,9 +756,9 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 				["NAME:ChangedProps",["NAME:Show Variation Key","Value:=", False]]]])
 		Log("			= Show Variation Key, False")
 	
-		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
-				["NAME:ChangedProps",["NAME:DockMode","Value:=", "Dock Left"]]]])
-		Log("			= Legend Location (Dock Left)")
+		#oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
+		#		["NAME:ChangedProps",["NAME:DockMode","Value:=", "Dock Left"]]]])
+		#Log("			= Legend Location (Dock Left)")
 	
 	
 		Vref = float(sub_DB.Eye_Form._TextBox_VcentDQ.Text)
@@ -872,9 +894,9 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 				["NAME:ChangedProps",["NAME:Show Variation Key","Value:=", False]]]])
 		Log("			= Show Variation Key, False")
 	
-		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
-				["NAME:ChangedProps",["NAME:DockMode","Value:=", "Dock Left"]]]])
-		Log("			= Legend Location (Dock Left)")
+		#oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
+		#		["NAME:ChangedProps",["NAME:DockMode","Value:=", "Dock Left"]]]])
+		#Log("			= Legend Location (Dock Left)")
 	
 		Vref = float(sub_DB.Eye_Form._TextBox_VcentDQ.Text)
 		V_high = Vref + float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
@@ -1055,8 +1077,8 @@ def Create_Excel_Report():
 	
 		# Save and Release
 		xlbook.SaveAs(Save_File)
-		#xlbook.Close()
-		#xlApp.Quit()
+		xlbook.Close()
+		xlApp.Quit()
 		ReleaseObject(Col_Header)
 		ReleaseObject(Row_Header)
 		ReleaseObject(Data_Cell)
@@ -1209,8 +1231,8 @@ def Create_Excel_Report_Imported():
 
 		# Save and Release
 		xlbook.SaveAs(Save_File)
-		#xlbook.Close()
-		#xlApp.Quit()
+		xlbook.Close()
+		xlApp.Quit()
 		ReleaseObject(Col_Header)
 		ReleaseObject(Row_Header)
 		ReleaseObject(Data_Cell)
@@ -1235,7 +1257,7 @@ def Interpolate_1st(x1,y1,x2,y2,y3):
 def Gen_waveform_file(Input_File, Plot_list, Group_flag):
 	try:
 		Log("		(Get Waveform)")
-		Save_File = sub_DB.temp_dir + "\\temp.csv"
+		Save_File = sub_DB.result_dir + "\\temp.csv"
 
 		shutil.copy(Input_File, Save_File)
 		Log("			= Copy File Done")
@@ -1298,7 +1320,7 @@ def Log(msg):
 	sub_DB.Log += "\n" + time.strftime('%H:%M:%S') + "\t" + msg
 
 def LogSave():	
-	f = open(sub_DB.temp_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
+	f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
 	f.write(sub_DB.Log)
 	f.close()
 
