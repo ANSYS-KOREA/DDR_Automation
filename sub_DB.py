@@ -5,12 +5,15 @@ Env_Form = ""
 Cal_Form = ""
 Option_Form = ""
 
+File = ""
+Input_File = ""
 temp_dir = ""
+result_dir = ""
 Log = ""
 
 Eye_Analyze_Flag = True
 
-Debug_Mode = True
+Debug_Mode = False
 Cenv = {}
 Uenv = {}
 

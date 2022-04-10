@@ -34,10 +34,10 @@ sub_DB.Option_Form = GUI_subforms.OptionForm(2)
 sub_DB.Net_Form = GUI_subforms.NetForm()
 
 # Create Temp Directory
-path = os.path.dirname(os.path.abspath(__file__))
-temp_time = time.strftime('%Y%m%d_%H%M%S')
-temp_dir = path + '\\temp_' + temp_time
-sub_DB.temp_dir = temp_dir
+#path = os.path.dirname(os.path.abspath(__file__))
+#temp_time = time.strftime('%Y%m%d_%H%M%S')
+#temp_dir = path + '\\temp_' + temp_time
+#sub_DB.temp_dir = temp_dir
 
 ###################################################################################################
 ################## EM Analysis Process ############################################################

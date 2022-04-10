@@ -958,7 +958,7 @@ class Eye_Form(Form):
 		self.MainMenuStrip = self._MenuStrip
 		IconFile = path + "\\Resources\\LOGO.ico"
 		self.Icon = Icon(IconFile)
-		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Eye_Form"
 		self.Text = "ANSYS DDR Eye Analyzer"
 		self.Load += self.Eye_FormLoad
@@ -1225,16 +1225,20 @@ class Eye_Form(Form):
 	def Button_ImportClick(self, sender, e):
 		try:
 			dialog = OpenFileDialog()
-			if sub_DB.Debug_Mode:
-				dialog.InitialDirectory = r"D:\1_Work\20220106_DDR_Compliance\0_DB\0_Input_Examples"
-			else:
-				dialog.InitialDirectory = path
-			
+			dialog.InitialDirectory = sub_DB.Uenv["(Initial Input File Directory)<Setup>[Eye]"][0]
 			dialog.Filter = "AEDT Project file|*.aedt|Comma delimited data file|*.csv"
 
 			if dialog.ShowDialog(self) == DialogResult.OK:
-				File = dialog.FileName			
-				self._TextBox_InputFile.Text = File			
+				File = dialog.FileName
+				sub_DB.File = File
+				result_dir = File.split(".")[0] + "_DDR_Results"
+				sub_DB.Input_File = dialog.SafeFileName
+				if os.path.isdir(result_dir):
+					sub_DB.result_dir = result_dir
+				else:
+					os.makedirs(result_dir)
+					sub_DB.result_dir = result_dir
+				self._TextBox_InputFile.Text = File
 				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension
 
 				Initial()
@@ -1243,9 +1247,11 @@ class Eye_Form(Form):
 				if extension == "aedt":
 					Log("[Input File Type] = AEDT")
 					Log("	<Input File> = %s" % File)
+					self.TopMost = True
 					self.Cursor = Cursors.WaitCursor				
 					sub_AEDT.Get_AEDT_Info(self, File)
 					self.Cursor = Cursors.Default
+					self.TopMost = False
 
 					self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
 					self._ComboBox_Design.BackColor = System.Drawing.SystemColors.Info				
@@ -1636,7 +1642,7 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Button_AnalyzeClick(self, sender, e):
-		try:
+		try:			
 			Log("[Eye Analyze Start] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 			# Initiallization
 			sub_DB.Excel_Img_File = []
@@ -1661,6 +1667,13 @@ class Eye_Form(Form):
 
 				# *.aedt Input
 				if sub_DB.InputFile_Flag == 1:
+					if sub_DB.AEDT == {}:
+						self.TopMost = True
+						self.Cursor = Cursors.WaitCursor
+						sub_AEDT.Get_AEDT_Info(self, sub_DB.File)
+						self.Cursor = Cursors.Default
+						self.TopMost = False
+						sub_DB.AEDT["Design"] = sub_DB.AEDT["Project"].SetActiveDesign(self._ComboBox_Design.SelectedItem)						
 					max_val = 5 + 4 + iter1
 					if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
 						max_val = max_val + iter				
@@ -1850,13 +1863,15 @@ class Eye_Form(Form):
 										Log("			= %s" % key)
 										Plot_Eye(key, Plot_list[key], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
 
-								sub_ScriptEnv.Release()
+								#sub_ScriptEnv.Release()
+								sub_ScriptEnv.Shutdown()
+								sub_DB.AEDT = {}
 					
 							# *.csv input
 							elif sub_DB.InputFile_Flag == 2: # *.csv input
 								sub_DB.Excel_Img_File = []
 
-								AEDT_File = self._TextBox_InputFile.Text.split(".")[0] + ".aedt"
+								AEDT_File = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".aedt"
 								MessageBox.Show("The eye diagram will plot in Ansys Electronics Desktop.\n\n"+
 								AEDT_File ,"Information",MessageBoxButtons.OK, MessageBoxIcon.Information)
 
@@ -1874,6 +1889,7 @@ class Eye_Form(Form):
 								Log("		(Y-axis Max.) = %s[mV]" % vmax)
 								Log("		(Y-axis Min.) = %s[mV]" % vmin)
 
+								self.TopMost = True
 								sub_AEDT.Set_AEDT_PlotTemplate()
 								Log("		(Plot Template) = Done")
 
@@ -1922,7 +1938,9 @@ class Eye_Form(Form):
 										os.remove(Import_file)
 
 								sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
-								sub_ScriptEnv.Release()
+								#sub_ScriptEnv.Release()
+								sub_ScriptEnv.Shutdown()
+								self.TopMost = False
 							Log("	<Eye Plot> = Done")
 
 						else:
@@ -1957,6 +1975,7 @@ class Eye_Form(Form):
 						self.Cursor = Cursors.Default			
 						sub_DB.Cal_Form.Cursor = Cursors.Default
 
+						os.startfile(sub_DB.result_dir)
 						sub_DB.Result_Flag = True
 						sub_DB.Net_Form.ShowDialog()
 						sub_DB.Result_Flag = False
@@ -1981,6 +2000,7 @@ class Eye_Form(Form):
 						Log(traceback.format_exc())
 						MessageBox.Show("Fail to save log file","Warning")
 						EXIT()
+
 				# for Old Eye
 				else:
 					pass
