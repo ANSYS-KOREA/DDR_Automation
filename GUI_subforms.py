@@ -661,44 +661,39 @@ class NetForm(Form):
 				Uenv["File"] = file
 				sub_DB.Uenv = Uenv
 
-				# for New Eye
-				if sub_DB.Eyeflag:
-					self._DataGridView.Rows.Clear()
-					LVitem_List = []
-					iter = 0
-					for net in Netlist:			
-						Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv) # Match = "Group prefix / Net Number prefix"
-						if Group_idx == 1: # for DQ Group -> Check
-							self._DataGridView.Rows.Add(True, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
-						else: # Un-check
-							self._DataGridView.Rows.Add(False, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
+				self._DataGridView.Rows.Clear()
+				LVitem_List = []
+				iter = 0
+				for net in Netlist:			
+					Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv) # Match = "Group prefix / Net Number prefix"
+					if Group_idx == 1: # for DQ Group -> Check
+						self._DataGridView.Rows.Add(True, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
+					else: # Un-check
+						self._DataGridView.Rows.Add(False, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
 				
-					# Back-up the Current Displayed Row and Matched Name
-					Backup_row = []
-					Name = []
-					for row in self._DataGridView.Rows:
-						Backup_row.append(row)
-						Name.append(row.Cells[3].Value)
+				# Back-up the Current Displayed Row and Matched Name
+				Backup_row = []
+				Name = []
+				for row in self._DataGridView.Rows:
+					Backup_row.append(row)
+					Name.append(row.Cells[3].Value)
 
-					# "abc" -> [a, b, c] -> ord(a) + ord(b) + ord(c) = val
-					# sort val and get index => Name_idx
-					Name_idx = []
-					for name in Name:
-						temp_list = list(name)
-						val = 0
-						for text in temp_list:
-							val += ord(text)
-						Name_idx.append(val)
-					Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
+				# "abc" -> [a, b, c] -> ord(a) + ord(b) + ord(c) = val
+				# sort val and get index => Name_idx
+				Name_idx = []
+				for name in Name:
+					temp_list = list(name)
+					val = 0
+					for text in temp_list:
+						val += ord(text)
+					Name_idx.append(val)
+				Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
 
-					# Clear row and add row as sorted sequentially
-					self._DataGridView.Rows.Clear()
-					for i in range(0, len(Name_idx)):
-						self._DataGridView.Rows.Add(Backup_row[Name_idx[i]])
+				# Clear row and add row as sorted sequentially
+				self._DataGridView.Rows.Clear()
+				for i in range(0, len(Name_idx)):
+					self._DataGridView.Rows.Add(Backup_row[Name_idx[i]])
 			
-				# for Old Eye
-				else:
-					self._DataGridView.Rows.Clear()
 
 			else:
 				pass
@@ -900,45 +895,41 @@ class NetForm(Form):
 			sub_DB.Uenv["File"] = File
 			self.Text = "Target Net Setup - " + sub_DB.Uenv["File"].split("\\")[-1]
 
-			if sub_DB.Eyeflag:
-				LVitem_List = []
-				iter = 0
-				for net in sub_DB.Netlist:			
-					Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv)
-					if Group_idx == 1: # for DQ Group -> Check
-						self._DataGridView.Rows.Add(True, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
-					else: # Un-check
-						self._DataGridView.Rows.Add(False, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
+			LVitem_List = []
+			iter = 0
+			for net in sub_DB.Netlist:			
+				Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv)
+				if Group_idx == 1: # for DQ Group -> Check
+					self._DataGridView.Rows.Add(True, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
+				else: # Un-check
+					self._DataGridView.Rows.Add(False, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
 
-				# Back-up the Current Displayed Row and Matched Name
-				Backup_row = []
-				Name = []
-				for row in self._DataGridView.Rows:
-					Backup_row.append(row)
-					Name.append(row.Cells[3].Value)
+			# Back-up the Current Displayed Row and Matched Name
+			Backup_row = []
+			Name = []
+			for row in self._DataGridView.Rows:
+				Backup_row.append(row)
+				Name.append(row.Cells[3].Value)
 
-				# "abc" -> [a, b, c] -> ord(a) + ord(b) + ord(c) = val
-				# sort val and get index => Name_idx
-				Name_idx = []
-				for name in Name:
-					temp_list = list(name)
-					val = 0
-					for text in temp_list:
-						val += ord(text)
-					Name_idx.append(val)
-				Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
+			# "abc" -> [a, b, c] -> ord(a) + ord(b) + ord(c) = val
+			# sort val and get index => Name_idx
+			Name_idx = []
+			for name in Name:
+				temp_list = list(name)
+				val = 0
+				for text in temp_list:
+					val += ord(text)
+				Name_idx.append(val)
+			Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
 
-				# Clear row and add row as sorted sequentially
-				self._DataGridView.Rows.Clear()
-				for i in range(0, len(Name_idx)):
-					self._DataGridView.Rows.Add(Backup_row[Name_idx[i]])
+			# Clear row and add row as sorted sequentially
+			self._DataGridView.Rows.Clear()
+			for i in range(0, len(Name_idx)):
+				self._DataGridView.Rows.Add(Backup_row[Name_idx[i]])
 
-				for row in self._DataGridView.Rows:
-					if row.Cells[0].Value:
-						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
-
-			else:
-				pass
+			for row in self._DataGridView.Rows:
+				if row.Cells[0].Value:
+					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
 
 		except Exception as e:		
 			Log("[Net Identify] = Failed")
@@ -1163,6 +1154,7 @@ class OptionForm(Form):
 		# 
 		# GroupBox_Eye
 		#
+		self._GroupBox_Eye.Controls.Add(self._Label_OutputExcelFile)
 		self._GroupBox_Eye.Controls.Add(self._Button_Compliance)
 		self._GroupBox_Eye.Controls.Add(self._CheckBox_Compiance)
 		self._GroupBox_Eye.Controls.Add(self._ComboBox_ReportFormat)
@@ -1177,8 +1169,7 @@ class OptionForm(Form):
 		self._GroupBox_Eye.Controls.Add(self._Label_V_Border2)		
 		self._GroupBox_Eye.Controls.Add(self._Label_V_Border1)
 		self._GroupBox_Eye.Controls.Add(self._Button_OutputExcelFile)
-		self._GroupBox_Eye.Controls.Add(self._TextBox_OutputExcelFile)
-		self._GroupBox_Eye.Controls.Add(self._Label_OutputExcelFile)
+		self._GroupBox_Eye.Controls.Add(self._TextBox_OutputExcelFile)		
 		self._GroupBox_Eye.Controls.Add(self._Label_ImageWidth_Unit)
 		self._GroupBox_Eye.Controls.Add(self._TextBox_ImageWidth)				
 		self._GroupBox_Eye.Controls.Add(self._Label_ImageWidth)
@@ -1250,6 +1241,7 @@ class OptionForm(Form):
 		self._Button_OutputExcelFile.TabIndex = 55
 		self._Button_OutputExcelFile.Text = "..."
 		self._Button_OutputExcelFile.UseVisualStyleBackColor = True
+		self._Button_OutputExcelFile.Visible = False
 		self._Button_OutputExcelFile.Click += self.Button_OutputExcelFileClick
 		# 
 		# Button_Compliance
@@ -1412,9 +1404,10 @@ class OptionForm(Form):
 		self._Label_OutputExcelFile.Font = System.Drawing.Font("Arial", 9)
 		self._Label_OutputExcelFile.Location = System.Drawing.Point(73, 186)
 		self._Label_OutputExcelFile.Name = "Label_OutputExcelFile"
-		self._Label_OutputExcelFile.Size = System.Drawing.Size(113, 28)
+		self._Label_OutputExcelFile.Size = System.Drawing.Size(313, 28)
 		self._Label_OutputExcelFile.TabIndex = 53
-		self._Label_OutputExcelFile.Text = "Output Excel File :"
+		self._Label_OutputExcelFile.Text = "Result Directory : " + sub_DB.result_dir
+		self._Label_OutputExcelFile.Visible = False
 		self._Label_OutputExcelFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		# 
 		# Label_V_Border1
@@ -1539,7 +1532,9 @@ class OptionForm(Form):
 		self._TextBox_OutputExcelFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._TextBox_OutputExcelFile.Location = System.Drawing.Point(180, 189)
 		self._TextBox_OutputExcelFile.Name = "TextBox_OutputExcelFile"
-		self._TextBox_OutputExcelFile.Size = System.Drawing.Size(312, 23)				
+		self._TextBox_OutputExcelFile.Size = System.Drawing.Size(312, 23)
+		self._TextBox_OutputExcelFile.Text = ""
+		self._TextBox_OutputExcelFile.Visible = False
 		self._TextBox_OutputExcelFile.TabIndex = 54
 		# 
 		# CheckBox_PlotEye
@@ -1639,7 +1634,8 @@ class OptionForm(Form):
 			#	self._GroupBox_Eye.Visible = False
 			#	self._GroupBox_Comp.Visible = True
 
-			self._TextBox_OutputExcelFile.Text = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".xlsx"
+			if self._TextBox_OutputExcelFile.Text == "":
+				self._TextBox_OutputExcelFile.Text = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".xlsx"
 
 		except Exception as e:			
 			Log("[Option Form Load] = Failed")
@@ -1821,7 +1817,7 @@ class OptionForm(Form):
 			EXIT()
 
 	def Button_ComplianceClick(self, sender, e):
-		# TODO : Link Compliance Check Option and Previous Process
+
 		sub_DB.Compliance_Form.ShowDialog()
 
 	def Button_OKClick(self, sender, e):
@@ -1917,6 +1913,7 @@ class ComplianceForm(Form):
 		self._Label_Vref_Timing = System.Windows.Forms.Label()
 
 		self._Button_ShowHide = System.Windows.Forms.Button()
+		self._Button_Close = System.Windows.Forms.Button()
 
 		self._DataGridView.BeginInit()
 		self._contextMenuStrip1.SuspendLayout()
@@ -1953,6 +1950,7 @@ class ComplianceForm(Form):
 		self._DataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
 		self._DataGridView.Size = System.Drawing.Size(999, 805)
 		self._DataGridView.TabIndex = 38
+		self._DataGridView.KeyPress += self.DataGridViewKeyPress
 		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick		
 		# 
 		# contextMenuStrip1
@@ -2011,7 +2009,7 @@ class ComplianceForm(Form):
 		# 
 		self._Col_TestCheck.HeaderText = ""
 		self._Col_TestCheck.Name = "Col_TestCheck"
-		self._Col_TestCheck.ReadOnly = True
+		self._Col_TestCheck.ReadOnly = False
 		self._Col_TestCheck.Width = 26
 		# 
 		# Col_TestItem
@@ -2162,11 +2160,22 @@ class ComplianceForm(Form):
 		self._Button_ShowHide.UseVisualStyleBackColor = True
 		self._Button_ShowHide.Click += self.Button_ShowHideClick
 		# 
-		# ComplianceForm
+		# Button_Close
 		# 
-		#self.Shownetflag = False
+		self._Button_Close.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Close.Location = System.Drawing.Point(12, 692)
+		self._Button_Close.Name = "Button_Close"
+		self._Button_Close.Size = System.Drawing.Size(189, 25)
+		self._Button_Close.TabIndex = 46
+		self._Button_Close.Text = "Save && Close"
+		self._Button_Close.UseVisualStyleBackColor = True
+		self._Button_Close.Click += self.Button_CloseClick
+		# 
+		# ComplianceForm
+		#		
 		self.Shownetflag = False
 		self.ClientSize = System.Drawing.Size(1032, 912)		
+		self.Controls.Add(self._Button_Close)
 		self.Controls.Add(self._Button_ShowHide)
 		self.Controls.Add(self._Label_Vref_Timing)
 		self.Controls.Add(self._Label_Diff_Timing)
@@ -2178,7 +2187,8 @@ class ComplianceForm(Form):
 		self.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
 		IconFile = path + "\\Resources\\LOGO.ico"
 		self.Icon = Icon(IconFile)
-		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
+		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
+		self.Location = System.Drawing.Point(sub_DB.Option_Form.Location.X + sub_DB.Option_Form.Size.Width*2, sub_DB.Option_Form.Location.Y + sub_DB.Option_Form.Size.Height)
 		self.Name = "ComplianceForm"
 		self.Text = "Setting for DDR Compliacne Check"		
 		self.Load += self.ComplianceFormLoad
@@ -2186,7 +2196,6 @@ class ComplianceForm(Form):
 		self._contextMenuStrip1.ResumeLayout(False)
 		self.ResumeLayout(False)
 
-	def ComplianceFormLoad(self, sender, e):
 		#################################################################
 		########## Add Rows for Compliacne Parameters ###################
 		#################################################################
@@ -2283,14 +2292,86 @@ class ComplianceForm(Form):
 		self._Label_Diff_Timing.Width = 506
 		self._Label_Vref_Timing.Width = 506
 
-		#################################################################
-		############## Set BackColor for Checked Rows ###################
-		#################################################################
+	def ComplianceFormLoad(self, sender, e):
+		if self.Shownetflag:
+			self.Button_ShowHideClick(self, sender)
+
+		# Get Target Net Group
+		group = []
+		for row in sub_DB.Net_Form._DataGridView.Rows:
+			if row.Cells[2].Value not in group:
+				group.append(row.Cells[2].Value)
+
+		DQ_Net = []
+		DQS_Net = []
+		DM_Net = []
+		ADDR_Net = []
+		CLK_Net = []
+		VREF_Net = []
+
+
 		for row in self._DataGridView.Rows:
-			if row.Cells[0].Value:
-				row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
-			else:
-				row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+			row.Cells[0].Value = False
+
+		if "DQ" in group and "DQS" in group:
+			self._DataGridView.Rows[1].Cells[0].Value = True
+			self._DataGridView.Rows[2].Cells[0].Value = True
+			self._DataGridView.Rows[3].Cells[0].Value = True
+			self._DataGridView.Rows[4].Cells[0].Value = True
+
+			self._DataGridView.Rows[1].Cells[5].Items.Add(["A","B"])
+			self._DataGridView.Rows[1].Cells[6].Items.Add("B")
+			
+			#self._DataGridView.Rows[2].Cells[6].Value = True
+			#self._DataGridView.Rows[3].Cells[6].Value = True
+			#self._DataGridView.Rows[4].Cells[6].Value = True
+
+
+		if "DQ" in group:
+			self._DataGridView.Rows[5].Cells[0].Value = True
+			self._DataGridView.Rows[6].Cells[0].Value = True
+
+		if "DM" in group:
+			self._DataGridView.Rows[5].Cells[0].Value = True
+
+		if "ADDR" in group and "CLK" in group:
+			self._DataGridView.Rows[7].Cells[0].Value= True
+			self._DataGridView.Rows[8].Cells[0].Value= True
+
+		if "ADDR" in group:
+			self._DataGridView.Rows[9].Cells[0].Value = True
+			self._DataGridView.Rows[10].Cells[0].Value = True
+
+		if "DQS" in group:
+			self._DataGridView.Rows[11].Cells[0].Value = True
+			self._DataGridView.Rows[12].Cells[0].Value = True
+			self._DataGridView.Rows[21].Cells[0].Value = True
+			self._DataGridView.Rows[22].Cells[0].Value = True
+			self._DataGridView.Rows[23].Cells[0].Value = True
+			self._DataGridView.Rows[24].Cells[0].Value = True
+
+		if "CLK" in group:
+			self._DataGridView.Rows[13].Cells[0].Value = True
+			self._DataGridView.Rows[14].Cells[0].Value = True
+			self._DataGridView.Rows[15].Cells[0].Value= True
+			self._DataGridView.Rows[16].Cells[0].Value= True
+			self._DataGridView.Rows[17].Cells[0].Value= True
+			self._DataGridView.Rows[18].Cells[0].Value= True
+			self._DataGridView.Rows[19].Cells[0].Value= True
+			self._DataGridView.Rows[20].Cells[0].Value= True
+			self._DataGridView.Rows[25].Cells[0].Value= True
+			self._DataGridView.Rows[26].Cells[0].Value= True
+			self._DataGridView.Rows[27].Cells[0].Value= True
+			self._DataGridView.Rows[28].Cells[0].Value= True		
+
+		if "VREF" in group:
+			self._DataGridView.Rows[29].Cells[0].Value= True
+
+		#######################################################################
+		############## Set Size of DataGridView and Client  ###################
+		#######################################################################
+		self._DataGridView.Size = System.Drawing.Size(509, 675)
+		self.ClientSize = System.Drawing.Size(529, 722)
 
 		##################################################################################################
 		############## Set Column Display and Reference & Target Net Column Unvisible  ###################
@@ -2299,15 +2380,28 @@ class ComplianceForm(Form):
 		self._DataGridView.Columns[5].Visible = False
 		self._DataGridView.Columns[6].Visible = False
 
-		#######################################################################
-		############## Set Size of DataGridView and Client  ###################
-		#######################################################################
-		#self._DataGridView.Rows[1].Cells[5].Items.Add("Test")
-		#self._DataGridView.Rows[1].Cells[5].Value = self._DataGridView.Rows[1].Cells[5].Items[0]		
-
-		self._DataGridView.Size = System.Drawing.Size(509, 675)
-		self.ClientSize = System.Drawing.Size(529, 722)
+		#################################################################
+		############## Set BackColor for Checked Rows ###################
+		#################################################################
+		for row in self._DataGridView.Rows:
+			if row.Cells[0].Value:
+				row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+			else:
+				row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
 		
+	def DataGridViewKeyPress(self, sender, e):
+		try:
+			# Spacebar = Check/Uncheck all the selected rows
+			if e.KeyChar == chr(32):
+				for row in self._DataGridView.SelectedRows:
+					row.Cells[0].Value = not row.Cells[0].Value
+
+		except Exception as e:		
+			Log("[Net Form Key Press] = Failed")
+			Log(traceback.format_exc())
+			MessageBox.Show("Fail to press key in Net Classificiton Form","Warning")			
+			EXIT()
+
 	def DataGridViewColumnHeaderMouseClick(self, sender, e):
 		# TODO : Compliance Option Form DataGridView Column Header Mouse Click
 		pass
@@ -2347,6 +2441,9 @@ class ComplianceForm(Form):
 			
 			self._DataGridView.Size = System.Drawing.Size(509, 675)
 			self.ClientSize = System.Drawing.Size(529, 722)
+
+	def Button_CloseClick(self, sender, e):
+		self.Close()
 
 	def ShowAllToolStripMenuItemClick(self, sender, e):
 		# TODO : Compliance Option Form 'Show All' ToolStripMenu

@@ -943,7 +943,7 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 def Create_Excel_Report():
 	try:
 		xlApp = Excel.ApplicationClass()
-		xlApp.Caption = "DDR EYE"
+		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 
@@ -954,7 +954,7 @@ def Create_Excel_Report():
 		xlsheet.Name = "EYE Diagrams"
 		Log("		(Launch Excel) = Done")
 
-		Save_File = sub_DB.Option_Form._TextBox_OutputExcelFile.Text
+		#Save_File = sub_DB.Option_Form._TextBox_OutputExcelFile.Text
 
 		imgw = int(sub_DB.Option_Form._TextBox_ImageWidth.Text)
 		imgh = imgw / 5 * 4
@@ -1076,9 +1076,10 @@ def Create_Excel_Report():
 		Log("		(Column Width AutoFit) = Done")
 	
 		# Save and Release
-		xlbook.SaveAs(Save_File)
-		xlbook.Close()
-		xlApp.Quit()
+		#xlbook.SaveAs(Save_File)
+		#xlbook.Close()
+		#xlApp.Quit()
+		xlApp.DisplayAlerts = True
 		ReleaseObject(Col_Header)
 		ReleaseObject(Row_Header)
 		ReleaseObject(Data_Cell)
@@ -1087,7 +1088,7 @@ def Create_Excel_Report():
 		ReleaseObject(xlbook)
 		ReleaseObject(xlApp)
 
-		Log("		(File Save) = Done, %s" % Save_File)
+		#Log("		(File Save) = Done, %s" % Save_File)
 
 	except Exception as e:		
 		Log("	<Create Excel Report> = Failed")
@@ -1097,19 +1098,18 @@ def Create_Excel_Report():
 
 def Create_Excel_Report_Imported():
 	try:
-		xlApp = Excel.ApplicationClass()
-		xlApp.Caption = "DDR EYE"
+		xlApp = Excel.ApplicationClass()		
+		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
-
 		xlbook = xlApp.Workbooks.Add()
-	
+		
 		# Create Eye Diagram Image Report Worksheet
 		xlsheet = xlbook.Worksheets['Sheet1']
 		xlsheet.Name = "EYE Diagrams"
 		Log("		(Launch Excel) = Done")
 	
-		Save_File = sub_DB.Option_Form._TextBox_OutputExcelFile.Text
+		#Save_File = sub_DB.Option_Form._TextBox_OutputExcelFile.Text
 
 		imgw = int(sub_DB.Option_Form._TextBox_ImageWidth.Text)
 		imgh = imgw / 5 * 4
@@ -1230,9 +1230,10 @@ def Create_Excel_Report_Imported():
 		Log("		(Column Width AutoFit) = Done")
 
 		# Save and Release
-		xlbook.SaveAs(Save_File)
-		xlbook.Close()
-		xlApp.Quit()
+		#xlbook.SaveAs(Save_File)
+		#xlbook.Close()
+		#xlApp.Quit()
+		xlApp.DisplayAlerts = True
 		ReleaseObject(Col_Header)
 		ReleaseObject(Row_Header)
 		ReleaseObject(Data_Cell)
@@ -1242,7 +1243,7 @@ def Create_Excel_Report_Imported():
 		ReleaseObject(xlbook)
 		ReleaseObject(xlApp)
 
-		Log("		(File Save) = Done, %s" % Save_File)
+		#Log("		(File Save) = Done, %s" % Save_File)
 
 	except Exception as e:		
 		Log("	<Create Excel Report> = Failed")
