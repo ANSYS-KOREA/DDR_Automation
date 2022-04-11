@@ -6,8 +6,6 @@ import traceback
 
 from sub_functions import *
 
-
-
 def Get_AEDT_Version():
 	import os
 	max = 0.0
@@ -43,6 +41,7 @@ def Get_AEDT_Dir():
 
 def Get_AEDT_Info(self, File):
 	try:
+		Delete_LockFile(File)
 		Version = Get_AEDT_Version()
 		Log("[AEDT Version] : %s" % Version)
 		oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Version)
@@ -100,8 +99,8 @@ def Get_AEDT_Info(self, File):
 		MessageBox.Show("Fail to run AEDT","Warning")		
 		EXIT()
 
-def Set_AEDT_PlotTemplate():
-	oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Get_AEDT_Version())	
+def Set_AEDT_PlotTemplate():	
+	oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Get_AEDT_Version())
 	oDesktop.RestoreWindow()
 	oProject = oDesktop.NewProject()
 	oProject.InsertDesign("Circuit Design", "Circuit", "None", "")
@@ -190,3 +189,8 @@ def Set_AEDT_PlotTemplate():
 	sub_DB.AEDT["Design"] = oDesign
 	sub_DB.AEDT["Editor"] = oEditor
 	sub_DB.AEDT["Module"] = oModule
+
+def Delete_LockFile(File):
+	File = File + ".lock"
+	if os.path.isfile(File):		
+		os.remove(File)

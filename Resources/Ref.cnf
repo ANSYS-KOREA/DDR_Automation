@@ -48,12 +48,16 @@
 	# The priority of the net group classification specified between "<" and ">" symbols is the same as the order written below.
 	# <Ignore> : this string in net name will be ignored during net identifying process
 	# ? : arbitrary number in range [0~99]
-	<DQ>	= DQ_?
+	<DQ>	= DQ_?, D_?
 	<DQS>	= DQS?, DQS_?, DQSN?, DQSN_?, DQS_N?, DQS_N_?
 	<ADDR> = ADDR?,ADDR_?, CA?, CA_?, MA?, MA_?, A?, A_?
 	<CLK>	= CLK?, CLK_?, CLKN?, CLKN_?, CLK_N?, CLK_N_?, CK?, CK_?, CKN?, CKN_?, CK_N?, CK_N_?
 	<DM>	= DM?, DM_?
 	<Ignore>
+
+
+
+
 
 
 

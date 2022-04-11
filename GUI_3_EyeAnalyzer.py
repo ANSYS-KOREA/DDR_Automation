@@ -387,8 +387,7 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_NewEye
 		#		
-		self._GroupBox_NewEye.Controls.Add(self._Button_ImgShow)
-		self._GroupBox_NewEye.Controls.Add(self._ComboBox_AC_ADDR)
+		self._GroupBox_NewEye.Controls.Add(self._Button_ImgShow)		
 		self._GroupBox_NewEye.Controls.Add(self._Label_Info)
 		self._GroupBox_NewEye.Controls.Add(self._CheckBox_EditEnable_NewEye)
 		self._GroupBox_NewEye.Controls.Add(self._TextBox_TdIVW)
@@ -963,6 +962,7 @@ class Eye_Form(Form):
 		self.Text = "ANSYS DDR Eye Analyzer"
 		self.Load += self.Eye_FormLoad
 		self.ResizeEnd += self.Eye_FormResizeEnd
+		self.FormClosing += self.Eye_FormFormClosing
 		self._MenuStrip.ResumeLayout(False)
 		self._MenuStrip.PerformLayout()
 		self._GroupBox_Setup.ResumeLayout(False)
@@ -1253,6 +1253,11 @@ class Eye_Form(Form):
 					self.Cursor = Cursors.Default
 					self.TopMost = False
 
+					self._ComboBox_Design.Enabled = True
+					self._CheckedListBox_ReportName.Enabled = True
+					self._ComboBox_SolutionName.Enabled = True
+					self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Window
+
 					self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
 					self._ComboBox_Design.BackColor = System.Drawing.SystemColors.Info				
 					self._ComboBox_Design.SelectedIndex = 0
@@ -1271,7 +1276,6 @@ class Eye_Form(Form):
 					self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Control
 					self._ComboBox_SolutionName.Text = "N/A"
 					self._ComboBox_SolutionName.Enabled = False
-					self._CheckedListBox_ReportName.Enabled = False
 
 					# Read Input csv file, Backup Netlist and Waveforms
 					try:
@@ -1619,8 +1623,7 @@ class Eye_Form(Form):
 
 	def Button_ViewNetClick(self, sender, e):
 		try:
-			# Target Net Setup
-			# TODO : Handle TBD Spec.
+			# Target Net Setup			
 			Check_spec()
 			sub_DB.Net_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
 			sub_DB.Net_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
@@ -1667,13 +1670,14 @@ class Eye_Form(Form):
 
 				# *.aedt Input
 				if sub_DB.InputFile_Flag == 1:
-					if sub_DB.AEDT == {}:
-						self.TopMost = True
-						self.Cursor = Cursors.WaitCursor
-						sub_AEDT.Get_AEDT_Info(self, sub_DB.File)
-						self.Cursor = Cursors.Default
-						self.TopMost = False
-						sub_DB.AEDT["Design"] = sub_DB.AEDT["Project"].SetActiveDesign(self._ComboBox_Design.SelectedItem)						
+					#if sub_DB.AEDT == {}:
+					#	self.TopMost = True
+					#	self.Cursor = Cursors.WaitCursor
+					#	sub_AEDT.Get_AEDT_Info(self, sub_DB.File)
+					#	self.Cursor = Cursors.Default
+					#	self.TopMost = False
+					#	sub_DB.AEDT["Design"] = sub_DB.AEDT["Project"].SetActiveDesign(self._ComboBox_Design.SelectedItem)
+
 					max_val = 5 + 4 + iter1
 					if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
 						max_val = max_val + iter				
@@ -1864,8 +1868,8 @@ class Eye_Form(Form):
 										Plot_Eye(key, Plot_list[key], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
 
 								#sub_ScriptEnv.Release()
-								sub_ScriptEnv.Shutdown()
-								sub_DB.AEDT = {}
+								#sub_ScriptEnv.Shutdown()
+								#sub_DB.AEDT = {}
 					
 							# *.csv input
 							elif sub_DB.InputFile_Flag == 2: # *.csv input
@@ -1890,8 +1894,11 @@ class Eye_Form(Form):
 								Log("		(Y-axis Min.) = %s[mV]" % vmin)
 
 								self.TopMost = True
+								sub_DB.Cal_Form.TopMost = True
 								sub_AEDT.Set_AEDT_PlotTemplate()
 								Log("		(Plot Template) = Done")
+								self.TopMost = False
+								sub_DB.Cal_Form.TopMost = False
 
 								# Get Group List
 								Group = []
@@ -1937,10 +1944,21 @@ class Eye_Form(Form):
 										Plot_Eye_Import(key, Import_file, Plot_list[key], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
 										os.remove(Import_file)
 
-								sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
+								if os.path.isfile(AEDT_File):									
+									sub_DB.AEDT["Desktop"].CloseProject(AEDT_File.split("\\")[-1].split(".")[0])
+									os.remove(AEDT_File)
+									if os.path.isfile(AEDT_File + ".lock"):
+										os.remove(AEDT_File + ".lock")
+									sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
+									sub_ScriptEnv.Release()									
+									sub_DB.AEDT = {}
+								else:
+									sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
+									sub_ScriptEnv.Release()
+									sub_DB.AEDT = {}
+
 								#sub_ScriptEnv.Release()
-								sub_ScriptEnv.Shutdown()
-								self.TopMost = False
+								#sub_ScriptEnv.Shutdown()								
 							Log("	<Eye Plot> = Done")
 
 						else:
@@ -2040,7 +2058,11 @@ class Eye_Form(Form):
 		if self.Image_flag:
 			self._Button_ImgShow.Text = "Show"
 		else:
-			self._Button_ImgShow.Text = "Hide"		
+			self._Button_ImgShow.Text = "Hide"
+
+	def Eye_FormFormClosing(self, sender, e):
+		sub_ScriptEnv.Release()		
+		os._exit(0)
 
 	''' For Debuggin '''
 	def Button_DebugClick(self, sender, e):
