@@ -444,6 +444,7 @@ class NetForm(Form):
 		self._DataGridView.Columns[3].ReadOnly = True
 		self._DataGridView.KeyPress += self.DataGridViewKeyPress
 		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick
+		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
 		# 
 		# Col_TargetNet
 		# 
@@ -460,7 +461,7 @@ class NetForm(Form):
 		# Col_Group
 		# 
 		self._Col_Group.HeaderText = "Group"
-		self._Col_Group.Items.AddRange(System.Array[System.Object](["DM","DQ","DQS","CLK","ADDR","OTHER"]))
+		self._Col_Group.Items.AddRange(System.Array[System.Object](["DM","DQ","DQS_P","DQS_N","CLK_P","CLK_N","ADDR","OTHER"]))
 		self._Col_Group.Name = "Col_Group"
 		self._Col_Group.Width = 100	
 		# 
@@ -575,7 +576,7 @@ class NetForm(Form):
 		# Net_Form
 		#
 		self.ClientSize = System.Drawing.Size(483, 882)
-		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
+		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height/4)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
 		self.Controls.Add(self._ComboBox_AnalyzeGroup)
@@ -666,6 +667,7 @@ class NetForm(Form):
 				iter = 0
 				for net in Netlist:			
 					Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv) # Match = "Group prefix / Net Number prefix"
+					#if Group_idx == 1 or Group_idx == 2: # for DQ & DQS Group -> Check
 					if Group_idx == 1: # for DQ Group -> Check
 						self._DataGridView.Rows.Add(True, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
 					else: # Un-check
@@ -684,8 +686,17 @@ class NetForm(Form):
 				for name in Name:
 					temp_list = list(name)
 					val = 0
+					flag = True
 					for text in temp_list:
-						val += ord(text)
+						if 47 < ord(text) < 58:
+							val += ord(text)							
+						else:
+							if flag:
+								val += ord(text)*1000
+								flag = False
+							else:
+								val += ord(text)
+
 					Name_idx.append(val)
 				Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
 
@@ -716,6 +727,11 @@ class NetForm(Form):
 			if e.KeyChar == chr(32):
 				for row in self._DataGridView.SelectedRows:
 					row.Cells[0].Value = not row.Cells[0].Value
+					if row.Cells[0].Value:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+					else:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+
 
 		except Exception as e:		
 			Log("[Net Form Key Press] = Failed")
@@ -739,8 +755,17 @@ class NetForm(Form):
 				for name in Name:
 					temp_list = list(name)
 					val = 0
+					flag = True
 					for text in temp_list:
-						val += ord(text)
+						if 47 < ord(text) < 58:
+							val += ord(text)							
+						else:
+							if flag:
+								val += ord(text)*1000
+								flag = False
+							else:
+								val += ord(text)
+
 					Name_idx.append(val)
 				Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
 
@@ -757,6 +782,13 @@ class NetForm(Form):
 			Log(traceback.format_exc())
 			MessageBox.Show("Fail to sort Column of Net Classificaion Form","Warning")			
 			EXIT()
+
+	def DataGridViewCellMouseClick(self, sender, e):
+		if e.ColumnIndex == 0:
+			if self._DataGridView.Rows[e.RowIndex].Cells[0].Value:
+				self._DataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+			else:
+				self._DataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
 
 	def Button_UpdateClick(self, sender, e):
 		try:
@@ -853,8 +885,8 @@ class NetForm(Form):
 									temp_data.append(cell.strip())
 							Uenv[key+"[Net Identification]"] =  temp_data
 
-						elif line.find("<DQS>") != -1:
-							key="<DQS>"
+						elif line.find("<DQS_P>") != -1:
+							key="<DQS_P>"
 							temp_data = []
 							temp = line.strip().split("=")[-1].split(",")
 							for cell in temp:
@@ -862,8 +894,26 @@ class NetForm(Form):
 									temp_data.append(cell.strip())
 							Uenv[key+"[Net Identification]"] =  temp_data
 
-						elif line.find("<CLK>") != -1:
-							key="<CLK>"
+						elif line.find("<DQS_N>") != -1:
+							key="<DQS_N>"
+							temp_data = []
+							temp = line.strip().split("=")[-1].split(",")
+							for cell in temp:
+								if not cell == "":
+									temp_data.append(cell.strip())
+							Uenv[key+"[Net Identification]"] =  temp_data
+
+						elif line.find("<CLK_P>") != -1:
+							key="<CLK_P>"
+							temp_data = []
+							temp = line.strip().split("=")[-1].split(",")
+							for cell in temp:
+								if not cell == "":
+									temp_data.append(cell.strip())
+							Uenv[key+"[Net Identification]"] =  temp_data
+
+						elif line.find("<CLK_N>") != -1:
+							key="<CLK_N>"
 							temp_data = []
 							temp = line.strip().split("=")[-1].split(",")
 							for cell in temp:
@@ -917,8 +967,17 @@ class NetForm(Form):
 			for name in Name:
 				temp_list = list(name)
 				val = 0
+				flag = True
 				for text in temp_list:
-					val += ord(text)
+					if 47 < ord(text) < 58:
+						val += ord(text)							
+					else:
+						if flag:
+							val += ord(text)*1000
+							flag = False
+						else:
+							val += ord(text)
+
 				Name_idx.append(val)
 			Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
 
@@ -1765,6 +1824,7 @@ class OptionForm(Form):
 			EXIT()
 
 	def CheckBox_CompianceCheckedChanged(self, sender, e):		
+
 		self._Button_Compliance.Visible = sender.Checked
 
 	def ComboBox_VrefSelectedIndexChanged(self, sender, e):
@@ -1881,6 +1941,7 @@ class OptionForm(Form):
 
 class ComplianceForm(Form):
 	def __init__(self):
+
 		self.InitializeComponent()
 	
 	def InitializeComponent(self):		
@@ -1951,7 +2012,8 @@ class ComplianceForm(Form):
 		self._DataGridView.Size = System.Drawing.Size(999, 805)
 		self._DataGridView.TabIndex = 38
 		self._DataGridView.KeyPress += self.DataGridViewKeyPress
-		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick		
+		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick
+		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
 		# 
 		# contextMenuStrip1
 		# 
@@ -2185,6 +2247,8 @@ class ComplianceForm(Form):
 		self.Controls.Add(self._Label_DQ_Timing)
 		self.Controls.Add(self._DataGridView)
 		self.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+		self.Checked_Num = 0
+		self.Init_flag = True
 		IconFile = path + "\\Resources\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
@@ -2216,22 +2280,22 @@ class ComplianceForm(Form):
 		self._DataGridView.Rows.Add(False, "tDQSL", "DQS", "N/A", "Diff. Input Low Pulse Width")
 		self._DataGridView.Rows.Add(False, "tDQSH", "DQS", "N/A", "Diff. Input High Pulse Width")		
 		#13
-		self._DataGridView.Rows.Add(False, "tCK(avg)", "CLK", "N/A", "Average Clock Period")
-		self._DataGridView.Rows.Add(False, "tCH(avg)", "CLK", "N/A", "Average Clock High Pulse Width")
+		self._DataGridView.Rows.Add(False, "tCK(avg)", "CLK", "N/A", "Average Clock Period")		
 		self._DataGridView.Rows.Add(False, "tCL(avg)", "CLK", "N/A", "Average Clock Low Pulse Width")		
-		self._DataGridView.Rows.Add(False, "tCK(abs)", "CLK", "N/A", "Absolute Clock Period")
-		self._DataGridView.Rows.Add(False, "tCH(abs)", "CLK", "N/A", "Absolute Clock High Pulse Width")
+		self._DataGridView.Rows.Add(False, "tCH(avg)", "CLK", "N/A", "Average Clock High Pulse Width")
+		self._DataGridView.Rows.Add(False, "tCK(abs)", "CLK", "N/A", "Absolute Clock Period")		
 		self._DataGridView.Rows.Add(False, "tCL(abs)", "CLK", "N/A", "Absolute Clock Low Pulse Width")		
+		self._DataGridView.Rows.Add(False, "tCH(abs)", "CLK", "N/A", "Absolute Clock High Pulse Width")
 		self._DataGridView.Rows.Add(False, "tJIT(per)", "CLK", "N/A", "Clock Period Jitter")
 		self._DataGridView.Rows.Add(False, "tJIT(cc)", "CLK", "N/A", "Clock Cycle to Cycle Period Jitter")		
 		#21
-		self._DataGridView.Rows.Add(False, "tDVAC(DQS)", "DQS", "N/A", "Allowed Time Before Ringback for DQS")
-		self._DataGridView.Rows.Add(False, "VSEH(DQS)", "DQS", "N/A", "Single-ended High Level for Strobes")
+		self._DataGridView.Rows.Add(False, "tDVAC(DQS)", "DQS", "N/A", "Allowed Time Before Ringback for DQS")		
 		self._DataGridView.Rows.Add(False, "VSEL(DQS)", "DQS", "N/A", "Single-ended Low Level for Strobes")
+		self._DataGridView.Rows.Add(False, "VSEH(DQS)", "DQS", "N/A", "Single-ended High Level for Strobes")
 		self._DataGridView.Rows.Add(False, "VIX(DQS)", "DQS", "N/A", "Diff. Input Cross Point Voltage")
-		self._DataGridView.Rows.Add(False, "tDVAC(CLK)", "CLK", "N/A", "Allowed Time Before Ringback for CLK")
-		self._DataGridView.Rows.Add(False, "VSEH(CLK)", "CLK", "N/A", "Single-ended High Level for CLK")
+		self._DataGridView.Rows.Add(False, "tDVAC(CLK)", "CLK", "N/A", "Allowed Time Before Ringback for CLK")		
 		self._DataGridView.Rows.Add(False, "VSEL(CLK)", "CLK", "N/A", "Single-ended Low Level for CLK")
+		self._DataGridView.Rows.Add(False, "VSEH(CLK)", "CLK", "N/A", "Single-ended High Level for CLK")
 		self._DataGridView.Rows.Add(False, "VIX(CLK)", "CLK", "N/A", "Diff. Input Cross Point Voltage")		
 		#29
 		self._DataGridView.Rows.Add(False, "VRefDQ(DC)", "Vref", "N/A", "Average of VRef(t)")
@@ -2274,7 +2338,7 @@ class ComplianceForm(Form):
 		self._DataGridView.Rows[12].DividerHeight = 20
 		self._DataGridView.Rows[12].Height += 20		
 		self._DataGridView.Rows[20].DividerHeight = 20
-		self._DataGridView.Rows[20].Height += 20		
+		self._DataGridView.Rows[20].Height += 20
 		self._DataGridView.Rows[28].DividerHeight = 20
 		self._DataGridView.Rows[28].Height += 20
 		# Set Label Position
@@ -2296,98 +2360,112 @@ class ComplianceForm(Form):
 		if self.Shownetflag:
 			self.Button_ShowHideClick(self, sender)
 
-		# Get Target Net Group
-		group = []
-		for row in sub_DB.Net_Form._DataGridView.Rows:
-			if row.Cells[2].Value not in group:
-				group.append(row.Cells[2].Value)
+		if self.Init_flag:
+			# Get Target Net Group
+			group = []
+			for row in sub_DB.Net_Form._DataGridView.Rows:
+				if row.Cells[2].Value not in group:
+					group.append(row.Cells[2].Value)
 
-		DQ_Net = []
-		DQS_Net = []
-		DM_Net = []
-		ADDR_Net = []
-		CLK_Net = []
-		VREF_Net = []
+			# Get Target Net name for each Group
+			Net_Name = {}
+			Net_Name["DQ"]=[]
+			Net_Name["DQS_P"]=[]
+			Net_Name["DQS_N"]=[]
+			Net_Name["DM"]=[]
+			Net_Name["ADDR"]=[]
+			Net_Name["CLK_P"]=[]
+			Net_Name["CLK_N"]=[]
+			Net_Name["Vref"]=[]
+			for row in sub_DB.Net_Form._DataGridView.Rows:
+				Net_Name[row.Cells[2].Value].append(row.Cells[1].Value)		
+
+			######################################################################
+			###### Check Compliance Test List based on the target net group ######
+			######################################################################
+			# Initialize : uncheck all
+			for row in self._DataGridView.Rows:
+				row.Cells[0].Value = False
 
 
-		for row in self._DataGridView.Rows:
-			row.Cells[0].Value = False
+			if "DQ" in group and "DQS_P" in group and "DQS_N" in group:
+				self._DataGridView.Rows[1].Cells[0].Value = True
+				self._DataGridView.Rows[2].Cells[0].Value = True
+				self._DataGridView.Rows[3].Cells[0].Value = True
+				self._DataGridView.Rows[4].Cells[0].Value = True
 
-		if "DQ" in group and "DQS" in group:
-			self._DataGridView.Rows[1].Cells[0].Value = True
-			self._DataGridView.Rows[2].Cells[0].Value = True
-			self._DataGridView.Rows[3].Cells[0].Value = True
-			self._DataGridView.Rows[4].Cells[0].Value = True
-
-			self._DataGridView.Rows[1].Cells[5].Items.Add(["A","B"])
-			self._DataGridView.Rows[1].Cells[6].Items.Add("B")
+				self._DataGridView.Rows[1].Cells[5].Items.Add(["A","B"])
+				self._DataGridView.Rows[1].Cells[6].Items.Add("B")
 			
-			#self._DataGridView.Rows[2].Cells[6].Value = True
-			#self._DataGridView.Rows[3].Cells[6].Value = True
-			#self._DataGridView.Rows[4].Cells[6].Value = True
+				#self._DataGridView.Rows[2].Cells[6].Value = True
+				#self._DataGridView.Rows[3].Cells[6].Value = True
+				#self._DataGridView.Rows[4].Cells[6].Value = True
 
 
-		if "DQ" in group:
-			self._DataGridView.Rows[5].Cells[0].Value = True
-			self._DataGridView.Rows[6].Cells[0].Value = True
+			if "DQ" in group:
+				self._DataGridView.Rows[5].Cells[0].Value = True
+				self._DataGridView.Rows[6].Cells[0].Value = True
 
-		if "DM" in group:
-			self._DataGridView.Rows[5].Cells[0].Value = True
+			if "DM" in group:
+				self._DataGridView.Rows[5].Cells[0].Value = True
 
-		if "ADDR" in group and "CLK" in group:
-			self._DataGridView.Rows[7].Cells[0].Value= True
-			self._DataGridView.Rows[8].Cells[0].Value= True
+			if "ADDR" in group and "CLK_P" in group and "CLK_N" in group:
+				self._DataGridView.Rows[7].Cells[0].Value= True
+				self._DataGridView.Rows[8].Cells[0].Value= True
 
-		if "ADDR" in group:
-			self._DataGridView.Rows[9].Cells[0].Value = True
-			self._DataGridView.Rows[10].Cells[0].Value = True
+			if "ADDR" in group:
+				self._DataGridView.Rows[9].Cells[0].Value = True
+				self._DataGridView.Rows[10].Cells[0].Value = True
 
-		if "DQS" in group:
-			self._DataGridView.Rows[11].Cells[0].Value = True
-			self._DataGridView.Rows[12].Cells[0].Value = True
-			self._DataGridView.Rows[21].Cells[0].Value = True
-			self._DataGridView.Rows[22].Cells[0].Value = True
-			self._DataGridView.Rows[23].Cells[0].Value = True
-			self._DataGridView.Rows[24].Cells[0].Value = True
+			if "DQS_P" in group and "DQS_N" in group:
+				self._DataGridView.Rows[11].Cells[0].Value = True
+				self._DataGridView.Rows[12].Cells[0].Value = True
+				self._DataGridView.Rows[21].Cells[0].Value = True
+				self._DataGridView.Rows[22].Cells[0].Value = True
+				self._DataGridView.Rows[23].Cells[0].Value = True
+				self._DataGridView.Rows[24].Cells[0].Value = True
 
-		if "CLK" in group:
-			self._DataGridView.Rows[13].Cells[0].Value = True
-			self._DataGridView.Rows[14].Cells[0].Value = True
-			self._DataGridView.Rows[15].Cells[0].Value= True
-			self._DataGridView.Rows[16].Cells[0].Value= True
-			self._DataGridView.Rows[17].Cells[0].Value= True
-			self._DataGridView.Rows[18].Cells[0].Value= True
-			self._DataGridView.Rows[19].Cells[0].Value= True
-			self._DataGridView.Rows[20].Cells[0].Value= True
-			self._DataGridView.Rows[25].Cells[0].Value= True
-			self._DataGridView.Rows[26].Cells[0].Value= True
-			self._DataGridView.Rows[27].Cells[0].Value= True
-			self._DataGridView.Rows[28].Cells[0].Value= True		
+			if "CLK_P" in group and "CLK_N" in group:
+				self._DataGridView.Rows[13].Cells[0].Value = True
+				self._DataGridView.Rows[14].Cells[0].Value = True
+				self._DataGridView.Rows[15].Cells[0].Value= True
+				self._DataGridView.Rows[16].Cells[0].Value= True
+				self._DataGridView.Rows[17].Cells[0].Value= True
+				self._DataGridView.Rows[18].Cells[0].Value= True
+				self._DataGridView.Rows[19].Cells[0].Value= True
+				self._DataGridView.Rows[20].Cells[0].Value= True
+				self._DataGridView.Rows[25].Cells[0].Value= True
+				self._DataGridView.Rows[26].Cells[0].Value= True
+				self._DataGridView.Rows[27].Cells[0].Value= True
+				self._DataGridView.Rows[28].Cells[0].Value= True		
 
-		if "VREF" in group:
-			self._DataGridView.Rows[29].Cells[0].Value= True
+			if "VREF" in group:
+				self._DataGridView.Rows[29].Cells[0].Value= True
 
-		#######################################################################
-		############## Set Size of DataGridView and Client  ###################
-		#######################################################################
-		self._DataGridView.Size = System.Drawing.Size(509, 675)
-		self.ClientSize = System.Drawing.Size(529, 722)
+			#######################################################################
+			############## Set Size of DataGridView and Client  ###################
+			#######################################################################
+			self._DataGridView.Size = System.Drawing.Size(509, 675)
+			self.ClientSize = System.Drawing.Size(529, 722)
 
-		##################################################################################################
-		############## Set Column Display and Reference & Target Net Column Unvisible  ###################
-		##################################################################################################
-		self._DataGridView.Columns[7].DisplayIndex = 5
-		self._DataGridView.Columns[5].Visible = False
-		self._DataGridView.Columns[6].Visible = False
+			##################################################################################################
+			############## Set Column Display and Reference & Target Net Column Unvisible  ###################
+			##################################################################################################
+			self._DataGridView.Columns[7].DisplayIndex = 5
+			self._DataGridView.Columns[5].Visible = False
+			self._DataGridView.Columns[6].Visible = False
 
-		#################################################################
-		############## Set BackColor for Checked Rows ###################
-		#################################################################
-		for row in self._DataGridView.Rows:
-			if row.Cells[0].Value:
-				row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
-			else:
-				row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+			#################################################################
+			############## Set BackColor for Checked Rows ###################
+			#################################################################
+			for row in self._DataGridView.Rows:
+				if row.Cells[0].Value:
+					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+					self.Checked_Num += 1
+				else:
+					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+
+			self.Init_flag = False
 		
 	def DataGridViewKeyPress(self, sender, e):
 		try:
@@ -2395,6 +2473,10 @@ class ComplianceForm(Form):
 			if e.KeyChar == chr(32):
 				for row in self._DataGridView.SelectedRows:
 					row.Cells[0].Value = not row.Cells[0].Value
+					if row.Cells[0].Value:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+					else:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
 
 		except Exception as e:		
 			Log("[Net Form Key Press] = Failed")
@@ -2405,6 +2487,13 @@ class ComplianceForm(Form):
 	def DataGridViewColumnHeaderMouseClick(self, sender, e):
 		# TODO : Compliance Option Form DataGridView Column Header Mouse Click
 		pass
+
+	def DataGridViewCellMouseClick(self, sender, e):
+		if e.ColumnIndex == 0:
+			if self._DataGridView.Rows[e.RowIndex].Cells[0].Value:
+				self._DataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+			else:
+				self._DataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
 	
 	def Button_ShowHideClick(self, sender, e):		
 		self.Shownetflag = not self.Shownetflag
@@ -2443,6 +2532,7 @@ class ComplianceForm(Form):
 			self.ClientSize = System.Drawing.Size(529, 722)
 
 	def Button_CloseClick(self, sender, e):
+
 		self.Close()
 
 	def ShowAllToolStripMenuItemClick(self, sender, e):

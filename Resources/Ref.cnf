@@ -49,11 +49,18 @@
 	# <Ignore> : this string in net name will be ignored during net identifying process
 	# ? : arbitrary number in range [0~99]
 	<DQ>	= DQ_?, D_?
-	<DQS>	= DQS?, DQS_?, DQSN?, DQSN_?, DQS_N?, DQS_N_?
+	<DQS_N>	= DQS?_, DQSN?, DQSN_?, DQS_N?, DQS_N_?
+	<DQS_P>	= DQS?, DQS_?	
 	<ADDR> = ADDR?,ADDR_?, CA?, CA_?, MA?, MA_?, A?, A_?
-	<CLK>	= CLK?, CLK_?, CLKN?, CLKN_?, CLK_N?, CLK_N_?, CK?, CK_?, CKN?, CKN_?, CK_N?, CK_N_?
+	<CLK_N>	= CLKN?, CLKN_?, CLK_N?, CLK_N_?, CKN?, CKN_?, CK_N?, CK_N_?,CLK_?_
+	<CLK_P>	= CLK?, CLK_?, CK?, CK_?	
 	<DM>	= DM?, DM_?
 	<Ignore>
+
+
+
+
+
 
 
 

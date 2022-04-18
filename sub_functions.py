@@ -110,7 +110,7 @@ def Load_env(File):
 	return temp_DB
 
 def Net_Identify(name, Uenv):
-	Group = 5 # OTHER
+	Group = 7 # OTHER
 	Match = ""
 
 	for key in Uenv:
@@ -125,12 +125,20 @@ def Net_Identify(name, Uenv):
 			Group = 0 # "DM"
 			break
 
-	for keyword in Uenv["<CLK>[Net Identification]"]:
+	for keyword in Uenv["<CLK_P>[Net Identification]"]:
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I)
 		if m:
 			Match = m.group()
-			Group = 3 # CLK
+			Group = 4 # CLK
+			break
+
+	for keyword in Uenv["<CLK_N>[Net Identification]"]:
+		keyword = keyword.replace("?","[0-9]+")
+		m = re.search(keyword, name, re.I)
+		if m:
+			Match = m.group()
+			Group = 5 # CLK#
 			break
 
 	for keyword in Uenv["<ADDR>[Net Identification]"]:		
@@ -138,15 +146,23 @@ def Net_Identify(name, Uenv):
 		m = re.search(keyword, name, re.I)
 		if m:
 			Match = m.group()
-			Group = 4 # ADDR
+			Group = 6 # ADDR
 			break
 
-	for keyword in Uenv["<DQS>[Net Identification]"]:
+	for keyword in Uenv["<DQS_P>[Net Identification]"]:
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I)
 		if m:
 			Match = m.group()
 			Group = 2 # DQS
+			break
+
+	for keyword in Uenv["<DQS_N>[Net Identification]"]:
+		keyword = keyword.replace("?","[0-9]+")
+		m = re.search(keyword, name, re.I)
+		if m:
+			Match = m.group()
+			Group = 3 # DQS#
 			break
 
 	for keyword in Uenv["<DQ>[Net Identification]"]:
@@ -1340,3 +1356,64 @@ def Initial():
 	sub_ScriptEnv.Release()
 	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()	
 	sub_DB.Net_Form.Init_Flag = True
+
+
+def temp_get_waveform(self):
+	Waveform = {}
+	with open(sub_DB.Waveform_File) as fp:
+		# Get Netlist and Create Waveform Dictionary keys
+		temp_data = fp.readline().replace("\"","").replace(" ","").strip().split(",")
+
+		# Delete global & local variable data
+		iter = 0
+		while(1):
+			if not "Time" in temp_data[0]:
+				del temp_data[0]
+				iter += 1
+			else:
+				break
+			
+		# Get time and voltage unit
+		sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
+		sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
+			
+		# Delete Time Column
+		del temp_data[0]
+
+		data = [[0 for col in range(0)] for row in range(len(temp_data))]
+		for i in range(0, len(temp_data)):
+			data[i].append(temp_data[i])
+
+		# Get Waveform Data				
+		for line in fp:
+			for i in range(0, len(temp_data)):
+				data[i].append(float(line.split(",")[i+1+iter]))
+	fp.close()
+
+	for cell in data:
+		key = cell[0].split("[")[0]
+		del cell[0]
+		Waveform[key] = cell
+		Log("			= %s" % key)
+
+	# Check time unit - Does not check time unit in AEDT input file process (1ps uniform exported)
+	#if sub_DB.Unit["Time"].lower() == "ps":
+	#	pass
+	#elif sub_DB.Unit["Time"].lower() == "ns":
+	#	for i in range(0, len(Time)):
+	#		Time[i] = Time[i]*1000
+	#else:
+	#	MessageBox.Show("The time unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+	#sub_DB.Time = Time
+
+	# Check voltage unit
+	if sub_DB.Unit["Voltage"].lower() == "mv":
+		pass
+	elif sub_DB.Unit["Voltage"].lower() == "v":
+		for key in Waveform:
+			for i in range(0, len(Waveform[key])):
+				Waveform[key][i] = Waveform[key][i]*1000
+	else:
+		MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+		
+	return Waveform

@@ -41,3 +41,5 @@ Time = []
 CSV_flag = True # True : Uniform, False : Arbitrary
 var_string = ""
 Result_Flag = False
+
+Spec = {}
