@@ -42,6 +42,9 @@
     <Compile Include="GUI_subforms.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="sub_Compliance.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="sub_DB.py">
       <SubType>Code</SubType>
     </Compile>
