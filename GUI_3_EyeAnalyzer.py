@@ -17,8 +17,8 @@ from System.Windows.Forms import *
 
 class Eye_Form(Form):
 	def __init__(self):
+
 		self.InitializeComponent()
-		pass
 	
 	''' Eye_Form - GUI '''	
 	def InitializeComponent(self):		
@@ -33,7 +33,7 @@ class Eye_Form(Form):
 		self._GroupBox_OldEye = System.Windows.Forms.GroupBox()
 		self._GroupBox_UnitOld = System.Windows.Forms.GroupBox()
 		self._GroupBox_NewEye = System.Windows.Forms.GroupBox()
-		self._GroupBox_UnitNew = System.Windows.Forms.GroupBox()
+		self._GroupBox_UnitNew = System.Windows.Forms.GroupBox()		
 
 		self._ComboBox_DDRGen = System.Windows.Forms.ComboBox()
 		self._ComboBox_DataRate = System.Windows.Forms.ComboBox()		
@@ -63,7 +63,28 @@ class Eye_Form(Form):
 		self._Label_VoltageUnitNew = System.Windows.Forms.Label()
 		self._Label_TimeUnitNew = System.Windows.Forms.Label()
 		self._Label_Info = System.Windows.Forms.Label()
+		self._Label_VdIVW = System.Windows.Forms.Label()
+		self._Label_TdIVW = System.Windows.Forms.Label()
+		self._Label_VcentDQ = System.Windows.Forms.Label()
+		self._Label_Vac = System.Windows.Forms.Label()
+		self._Label_Vdc = System.Windows.Forms.Label()
+		self._Label_Setup = System.Windows.Forms.Label()
+		self._Label_Hold = System.Windows.Forms.Label()
+		self._Label_Vref = System.Windows.Forms.Label()
+		self._Label_dq = System.Windows.Forms.Label()
+		self._Label_addr = System.Windows.Forms.Label()
 
+		self._H_Border_1 = System.Windows.Forms.Label()
+		self._H_Border_2 = System.Windows.Forms.Label()
+		self._H_Border_3 = System.Windows.Forms.Label()
+		self._V_Border_0 = System.Windows.Forms.Label()
+		self._V_Border_1 = System.Windows.Forms.Label()
+		self._V_Border_2 = System.Windows.Forms.Label()
+		self._V_Border_3 = System.Windows.Forms.Label()
+		self._V_Border_4 = System.Windows.Forms.Label()
+		self._V_Border_5 = System.Windows.Forms.Label()
+		self._V_Border_6 = System.Windows.Forms.Label()
+		
 		self._TextBox_InputFile = System.Windows.Forms.TextBox()
 		self._TextBox_AC_DQ = System.Windows.Forms.TextBox()
 		self._TextBox_AC_ADDR = System.Windows.Forms.TextBox()
@@ -82,7 +103,8 @@ class Eye_Form(Form):
 		self._Button_ViewNet = System.Windows.Forms.Button()
 		self._Button_Analyze = System.Windows.Forms.Button()
 		self._Button_ViewResult = System.Windows.Forms.Button()
-		self._Button_ImgShow = System.Windows.Forms.Button()
+		self._Button_ImgShow_New = System.Windows.Forms.Button()
+		self._Button_ImgShow_Old = System.Windows.Forms.Button()
 		self._Button_Debug = System.Windows.Forms.Button()
 
 		self._openFileDialog1 = System.Windows.Forms.OpenFileDialog()
@@ -91,6 +113,10 @@ class Eye_Form(Form):
 		self._CheckBox_AnalyzeADDR = System.Windows.Forms.CheckBox()
 		self._CheckBox_EditEnable_NewEye = System.Windows.Forms.CheckBox()
 		self._CheckBox_EditEnable_OldEye = System.Windows.Forms.CheckBox()
+
+		self._TextBox_InputFile_ToopTip = System.Windows.Forms.ToolTip()		
+		self._ComboBox_Design_ToopTip = System.Windows.Forms.ToolTip()
+		self._ComboBox_SolutionName_ToopTip = System.Windows.Forms.ToolTip()
 
 		self._MenuStrip = System.Windows.Forms.MenuStrip()
 		self._File_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
@@ -282,12 +308,13 @@ class Eye_Form(Form):
 		self._PictureBox_Logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_Logo.ErrorImage = None
 		self._PictureBox_Logo.Image = Bitmap(File)
-		self._PictureBox_Logo.Location = System.Drawing.Point(12, 22)
-		self._PictureBox_Logo.Name = "PictureBox_Logo"
-		self._PictureBox_Logo.Size = System.Drawing.Size(685, 76)
+		self._PictureBox_Logo.Location = System.Drawing.Point(5, 27)
+		self._PictureBox_Logo.Name = "PictureBox_Logo"		
+		self._PictureBox_Logo.Size = System.Drawing.Size(350, 35)
 		self._PictureBox_Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
 		self._PictureBox_Logo.TabIndex = 25
 		self._PictureBox_Logo.TabStop = False
+		self._PictureBox_Logo.Visible = False
 		# 
 		# PictureBox_OldEye
 		# 
@@ -297,7 +324,7 @@ class Eye_Form(Form):
 		self._PictureBox_OldEye.Image = Bitmap(File)
 		self._PictureBox_OldEye.Location = System.Drawing.Point(6, 17)
 		self._PictureBox_OldEye.Name = "PictureBox_OldEye"
-		self._PictureBox_OldEye.Size = System.Drawing.Size(867, 457)
+		self._PictureBox_OldEye.Size = System.Drawing.Size(678, 397)
 		self._PictureBox_OldEye.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
 		self._PictureBox_OldEye.TabIndex = 26
 		self._PictureBox_OldEye.TabStop = False		
@@ -310,7 +337,7 @@ class Eye_Form(Form):
 		self._PictureBox_NewEye.Image = Bitmap(File)
 		self._PictureBox_NewEye.Location = System.Drawing.Point(6, 17)
 		self._PictureBox_NewEye.Name = "PictureBox_NewEye"
-		self._PictureBox_NewEye.Size = System.Drawing.Size(867, 457)
+		self._PictureBox_NewEye.Size = System.Drawing.Size(678, 397)
 		self._PictureBox_NewEye.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
 		self._PictureBox_NewEye.TabIndex = 26
 		self._PictureBox_NewEye.TabStop = False
@@ -331,17 +358,34 @@ class Eye_Form(Form):
 		self._GroupBox_Setup.Controls.Add(self._Label_Datarate)
 		self._GroupBox_Setup.Controls.Add(self._Label_DDRGen)
 		self._GroupBox_Setup.Controls.Add(self._Label_InputFile)
-		self._GroupBox_Setup.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)
-		self._GroupBox_Setup.Location = System.Drawing.Point(12, 104)
+		self._GroupBox_Setup.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)		
+		self._GroupBox_Setup.Location = System.Drawing.Point(5, 24)
 		self._GroupBox_Setup.Name = "GroupBox_Setup"
-		self._GroupBox_Setup.Size = System.Drawing.Size(685, 150)
+		self._GroupBox_Setup.Size = System.Drawing.Size(586, 138)
 		self._GroupBox_Setup.TabIndex = 8
 		self._GroupBox_Setup.TabStop = False
 		self._GroupBox_Setup.Text = "DDR Eye Analyzer Setup"		
 		# 
 		# GroupBox_OldEye
-		# 
-		self._GroupBox_OldEye.Controls.Add(self._Button_ImgShow)
+		#
+		self._GroupBox_OldEye.Controls.Add(self._Label_Vac)
+		self._GroupBox_OldEye.Controls.Add(self._Label_Vdc)
+		self._GroupBox_OldEye.Controls.Add(self._Label_Setup)
+		self._GroupBox_OldEye.Controls.Add(self._Label_Hold)
+		self._GroupBox_OldEye.Controls.Add(self._Label_Vref)
+		self._GroupBox_OldEye.Controls.Add(self._Label_addr)
+		self._GroupBox_OldEye.Controls.Add(self._Label_dq)
+		self._GroupBox_OldEye.Controls.Add(self._H_Border_1)
+		self._GroupBox_OldEye.Controls.Add(self._H_Border_2)
+		self._GroupBox_OldEye.Controls.Add(self._H_Border_3)
+		self._GroupBox_OldEye.Controls.Add(self._V_Border_0)
+		self._GroupBox_OldEye.Controls.Add(self._V_Border_1)
+		self._GroupBox_OldEye.Controls.Add(self._V_Border_2)
+		self._GroupBox_OldEye.Controls.Add(self._V_Border_3)
+		self._GroupBox_OldEye.Controls.Add(self._V_Border_4)
+		self._GroupBox_OldEye.Controls.Add(self._V_Border_5)
+		self._GroupBox_OldEye.Controls.Add(self._V_Border_6)
+		self._GroupBox_OldEye.Controls.Add(self._Button_ImgShow_Old)
 		self._GroupBox_OldEye.Controls.Add(self._ComboBox_AC_ADDR)
 		self._GroupBox_OldEye.Controls.Add(self._ComboBox_AC_ADDR)
 		self._GroupBox_OldEye.Controls.Add(self._ComboBox_AC_DQ)
@@ -366,20 +410,21 @@ class Eye_Form(Form):
 		self._GroupBox_OldEye.Controls.Add(self._TextBox_AC_ADDR)
 		self._GroupBox_OldEye.Controls.Add(self._PictureBox_OldEye)		
 		self._GroupBox_OldEye.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)
-		self._GroupBox_OldEye.Location = System.Drawing.Point(12, 260)
+		self._GroupBox_OldEye.Location = System.Drawing.Point(5, 162)
 		self._GroupBox_OldEye.Name = "GroupBox_OldEye"
-		self._GroupBox_OldEye.Size = System.Drawing.Size(879, 510)
+		self._GroupBox_OldEye.Size = System.Drawing.Size(690, 455)		
 		self._GroupBox_OldEye.TabIndex = 26
 		self._GroupBox_OldEye.TabStop = False
 		self._GroupBox_OldEye.Text = "Eye Analysis"
-		self._GroupBox_OldEye.Visible = False
+		self._GroupBox_OldEye.Visible = True
+		#self._GroupBox_OldEye.Visible = False
 		# 
 		# GroupBox_UnitOld
 		# 
 		self._GroupBox_UnitOld.Controls.Add(self._Label_TimeUnitOld)
 		self._GroupBox_UnitOld.Controls.Add(self._Label_VoltageUnitOld)
 		self._GroupBox_UnitOld.Font = System.Drawing.Font("Arial", 9)
-		self._GroupBox_UnitOld.Location = System.Drawing.Point(18, 27)		
+		self._GroupBox_UnitOld.Location = System.Drawing.Point(11, 22)		
 		self._GroupBox_UnitOld.Name = "GroupBox_UnitOld"
 		self._GroupBox_UnitOld.Size = System.Drawing.Size(106, 66)
 		self._GroupBox_UnitOld.TabIndex = 38
@@ -387,8 +432,11 @@ class Eye_Form(Form):
 		self._GroupBox_UnitOld.Text = "Unit"
 		# 
 		# GroupBox_NewEye
-		#		
-		self._GroupBox_NewEye.Controls.Add(self._Button_ImgShow)		
+		#
+		self._GroupBox_NewEye.Controls.Add(self._Label_VdIVW)
+		self._GroupBox_NewEye.Controls.Add(self._Label_TdIVW)
+		self._GroupBox_NewEye.Controls.Add(self._Label_VcentDQ)
+		self._GroupBox_NewEye.Controls.Add(self._Button_ImgShow_New)
 		self._GroupBox_NewEye.Controls.Add(self._Label_Info)
 		self._GroupBox_NewEye.Controls.Add(self._CheckBox_EditEnable_NewEye)
 		self._GroupBox_NewEye.Controls.Add(self._TextBox_TdIVW)
@@ -397,20 +445,21 @@ class Eye_Form(Form):
 		self._GroupBox_NewEye.Controls.Add(self._TextBox_VdIVW)
 		self._GroupBox_NewEye.Controls.Add(self._PictureBox_NewEye)
 		self._GroupBox_NewEye.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)
-		self._GroupBox_NewEye.Location = System.Drawing.Point(12, 260)
+		self._GroupBox_NewEye.Location = System.Drawing.Point(5, 162)
 		self._GroupBox_NewEye.Name = "GroupBox_NewEye"
-		self._GroupBox_NewEye.Size = System.Drawing.Size(879, 510)
+		self._GroupBox_NewEye.Size = System.Drawing.Size(690, 455)
 		self._GroupBox_NewEye.TabIndex = 36
 		self._GroupBox_NewEye.TabStop = False
 		self._GroupBox_NewEye.Text = "Eye Analysis"
-		self._GroupBox_NewEye.Visible = True
+		#self._GroupBox_NewEye.Visible = True
+		self._GroupBox_NewEye.Visible = False
 		# 
 		# GroupBox_UnitNew
 		# 
 		self._GroupBox_UnitNew.Controls.Add(self._Label_TimeUnitNew)
 		self._GroupBox_UnitNew.Controls.Add(self._Label_VoltageUnitNew)
 		self._GroupBox_UnitNew.Font = System.Drawing.Font("Arial", 9)
-		self._GroupBox_UnitNew.Location = System.Drawing.Point(18, 27)		
+		self._GroupBox_UnitNew.Location = System.Drawing.Point(11, 22)		
 		self._GroupBox_UnitNew.Name = "GroupBox_UnitNew"
 		self._GroupBox_UnitNew.Size = System.Drawing.Size(150, 66)
 		self._GroupBox_UnitNew.TabIndex = 38
@@ -420,7 +469,7 @@ class Eye_Form(Form):
 		# Label_Datarate
 		# 
 		self._Label_Datarate.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_Datarate.Location = System.Drawing.Point(339, 115)
+		self._Label_Datarate.Location = System.Drawing.Point(268, 104)
 		self._Label_Datarate.Name = "Label_Datarate"
 		self._Label_Datarate.Size = System.Drawing.Size(106, 28)
 		self._Label_Datarate.TabIndex = 11
@@ -429,10 +478,10 @@ class Eye_Form(Form):
 		# 
 		# Label_DDRGen
 		# 
-		self._Label_DDRGen.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_DDRGen.Location = System.Drawing.Point(6, 115)
+		self._Label_DDRGen.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)		
+		self._Label_DDRGen.Location = System.Drawing.Point(2, 104)
 		self._Label_DDRGen.Name = "Label_DDRGen"
-		self._Label_DDRGen.Size = System.Drawing.Size(125, 28)
+		self._Label_DDRGen.Size = System.Drawing.Size(115, 28)		
 		self._Label_DDRGen.TabIndex = 10
 		self._Label_DDRGen.Text = "DDR Generation :"
 		self._Label_DDRGen.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -440,7 +489,7 @@ class Eye_Form(Form):
 		# Label_Mbps
 		# 
 		self._Label_Mbps.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_Mbps.Location = System.Drawing.Point(613, 115)
+		self._Label_Mbps.Location = System.Drawing.Point(535, 104)
 		self._Label_Mbps.Name = "Label_Mbps"
 		self._Label_Mbps.Size = System.Drawing.Size(45, 28)
 		self._Label_Mbps.TabIndex = 21
@@ -449,18 +498,19 @@ class Eye_Form(Form):
 		# 
 		# Label_Version
 		# 
-		self._Label_Version.Font = System.Drawing.Font("Swis721 Blk BT", 20.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_Version.Location = System.Drawing.Point(692, 60)
+		self._Label_Version.Font = System.Drawing.Font("Swis721 Blk BT", 15, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Version.Location = System.Drawing.Point(352, 34)
 		self._Label_Version.Name = "Label_Version"
 		self._Label_Version.Size = System.Drawing.Size(104, 28)
 		self._Label_Version.TabIndex = 24
-		self._Label_Version.Text = "v0.0"
+		self._Label_Version.Text = sub_DB.Version
+		self._Label_Version.Visible = False
 		self._Label_Version.TextAlign = System.Drawing.ContentAlignment.MiddleLeft		
 		# 
 		# Label_Design
 		# 
-		self._Label_Design.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_Design.Location = System.Drawing.Point(25, 55)
+		self._Label_Design.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)		
+		self._Label_Design.Location = System.Drawing.Point(11, 47)
 		self._Label_Design.Name = "Label_Design"
 		self._Label_Design.Size = System.Drawing.Size(106, 28)
 		self._Label_Design.TabIndex = 22
@@ -470,7 +520,7 @@ class Eye_Form(Form):
 		# Label_InputFile
 		# 
 		self._Label_InputFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_InputFile.Location = System.Drawing.Point(25, 17)
+		self._Label_InputFile.Location = System.Drawing.Point(11, 19)
 		self._Label_InputFile.Name = "Label_InputFile"
 		self._Label_InputFile.Size = System.Drawing.Size(106, 28)
 		self._Label_InputFile.TabIndex = 9
@@ -480,7 +530,7 @@ class Eye_Form(Form):
 		# Label_ReportName
 		# 
 		self._Label_ReportName.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_ReportName.Location = System.Drawing.Point(339, 55)
+		self._Label_ReportName.Location = System.Drawing.Point(270, 48)
 		self._Label_ReportName.Name = "Label_ReportName"
 		self._Label_ReportName.Size = System.Drawing.Size(106, 28)
 		self._Label_ReportName.TabIndex = 26
@@ -489,8 +539,8 @@ class Eye_Form(Form):
 		# 
 		# Label_SolutionName
 		# 
-		self._Label_SolutionName.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_SolutionName.Location = System.Drawing.Point(25, 85)
+		self._Label_SolutionName.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)		
+		self._Label_SolutionName.Location = System.Drawing.Point(11, 76)
 		self._Label_SolutionName.Name = "Label_ReportName"
 		self._Label_SolutionName.Size = System.Drawing.Size(106, 28)
 		self._Label_SolutionName.TabIndex = 26
@@ -500,7 +550,7 @@ class Eye_Form(Form):
 		# Label_DQ
 		# 
 		self._Label_DQ.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_DQ.Location = System.Drawing.Point(345, 448)
+		self._Label_DQ.Location = System.Drawing.Point(258, 395)
 		self._Label_DQ.Name = "Label_DQ"
 		self._Label_DQ.Size = System.Drawing.Size(40, 28)
 		self._Label_DQ.TabIndex = 29
@@ -510,7 +560,7 @@ class Eye_Form(Form):
 		# Label_ADDR
 		# 
 		self._Label_ADDR.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_ADDR.Location = System.Drawing.Point(308, 478)
+		self._Label_ADDR.Location = System.Drawing.Point(221, 421)
 		self._Label_ADDR.Name = "Label_ADDR"
 		self._Label_ADDR.Size = System.Drawing.Size(77, 28)
 		self._Label_ADDR.TabIndex = 35
@@ -560,7 +610,7 @@ class Eye_Form(Form):
 		# Label_AC_DQ
 		# 
 		self._Label_AC_DQ.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_AC_DQ.Location = System.Drawing.Point(82, 200)
+		self._Label_AC_DQ.Location = System.Drawing.Point(45, 169)
 		self._Label_AC_DQ.Name = "Label_AC_DQ"
 		self._Label_AC_DQ.Size = System.Drawing.Size(40, 28)
 		self._Label_AC_DQ.TabIndex = 40
@@ -570,7 +620,7 @@ class Eye_Form(Form):
 		# Label_AC_ADDR
 		# 
 		self._Label_AC_ADDR.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_AC_ADDR.Location = System.Drawing.Point(48, 228)
+		self._Label_AC_ADDR.Location = System.Drawing.Point(11, 195)
 		self._Label_AC_ADDR.Name = "Label_AC_ADDR"
 		self._Label_AC_ADDR.Size = System.Drawing.Size(74, 28)
 		self._Label_AC_ADDR.TabIndex = 41
@@ -580,9 +630,9 @@ class Eye_Form(Form):
 		# Label_DC_ADDR
 		# 
 		self._Label_DC_ADDR.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_DC_ADDR.Location = System.Drawing.Point(645, 244)
+		self._Label_DC_ADDR.Location = System.Drawing.Point(487, 246)
 		self._Label_DC_ADDR.Name = "Label_DC_ADDR"
-		self._Label_DC_ADDR.Size = System.Drawing.Size(74, 28)
+		self._Label_DC_ADDR.Size = System.Drawing.Size(63, 20)
 		self._Label_DC_ADDR.TabIndex = 44
 		self._Label_DC_ADDR.Text = "Address :"
 		self._Label_DC_ADDR.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -590,7 +640,7 @@ class Eye_Form(Form):
 		# Label_DC_DQ
 		# 
 		self._Label_DC_DQ.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_DC_DQ.Location = System.Drawing.Point(680, 216)
+		self._Label_DC_DQ.Location = System.Drawing.Point(511, 216)
 		self._Label_DC_DQ.Name = "Label_DC_DQ"
 		self._Label_DC_DQ.Size = System.Drawing.Size(40, 28)
 		self._Label_DC_DQ.TabIndex = 43
@@ -600,18 +650,218 @@ class Eye_Form(Form):
 		# Label_Info
 		# 
 		self._Label_Info.Font = System.Drawing.Font("Arial", 9)
-		self._Label_Info.Location = System.Drawing.Point(10, 485)
+		self._Label_Info.Location = System.Drawing.Point(10, 423)
 		self._Label_Info.Name = "Label_Info"
-		self._Label_Info.Size = System.Drawing.Size(860, 23)
+		self._Label_Info.Size = System.Drawing.Size(460, 26)
 		self._Label_Info.TabIndex = 41
-		self._Label_Info.Text = "* Vcent_DQ will be automatically calculated after Target Net Setup. To use manual Vcent_DQ, check \"Edit enable\" and enter the value for Vcent_DQ."
+		self._Label_Info.Text = "* Vcent_DQ will be automatically calculated after Target Net Setup.\n* To use manual values, check \"Edit enable\" and enter the values."
 		self._Label_Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_VdIVW
+		# 
+		self._Label_VdIVW.Font = System.Drawing.Font("Arial", 10)
+		self._Label_VdIVW.Location = System.Drawing.Point(170, 26)
+		self._Label_VdIVW.Name = "Label_VdIVW"
+		self._Label_VdIVW.Size = System.Drawing.Size(55, 26)
+		self._Label_VdIVW.TabIndex = 41
+		self._Label_VdIVW.Text = "VdIVW :"
+		self._Label_VdIVW.Visible = False
+		self._Label_VdIVW.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_TdIVW
+		# 
+		self._Label_TdIVW.Font = System.Drawing.Font("Arial", 10)
+		self._Label_TdIVW.Location = System.Drawing.Point(310, 26)
+		self._Label_TdIVW.Name = "Label_TdIVW"
+		self._Label_TdIVW.Size = System.Drawing.Size(55, 26)
+		self._Label_TdIVW.TabIndex = 41
+		self._Label_TdIVW.Text = "TdIVW :"
+		self._Label_TdIVW.Visible = False
+		self._Label_TdIVW.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_VcentDQ
+		# 
+		self._Label_VcentDQ.Font = System.Drawing.Font("Arial", 10)
+		self._Label_VcentDQ.Location = System.Drawing.Point(450, 26)
+		self._Label_VcentDQ.Name = "Label_VcentDQ"
+		self._Label_VcentDQ.Size = System.Drawing.Size(76, 26)
+		self._Label_VcentDQ.TabIndex = 41
+		self._Label_VcentDQ.Text = "Vcent_DQ :"
+		self._Label_VcentDQ.Visible = False
+		self._Label_VcentDQ.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Vac
+		# 
+		self._Label_Vac.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold)
+		self._Label_Vac.Location = System.Drawing.Point(210, 9)
+		self._Label_Vac.Name = "Label_Vac"
+		self._Label_Vac.Size = System.Drawing.Size(35, 20)
+		self._Label_Vac.TabIndex = 41
+		self._Label_Vac.Text = "Vac"
+		self._Label_Vac.Visible = False
+		self._Label_Vac.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Vdc
+		# 
+		self._Label_Vdc.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold)
+		self._Label_Vdc.Location = System.Drawing.Point(300, 9)
+		self._Label_Vdc.Name = "Label_Vdc"
+		self._Label_Vdc.Size = System.Drawing.Size(35, 20)
+		self._Label_Vdc.TabIndex = 41
+		self._Label_Vdc.Text = "Vdc"
+		self._Label_Vdc.Visible = False
+		self._Label_Vdc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Setup
+		# 
+		self._Label_Setup.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold)
+		self._Label_Setup.Location = System.Drawing.Point(380, 9)
+		self._Label_Setup.Name = "Label_Setup"
+		self._Label_Setup.Size = System.Drawing.Size(55, 20)
+		self._Label_Setup.TabIndex = 41
+		self._Label_Setup.Text = "Setup"
+		self._Label_Setup.Visible = False
+		self._Label_Setup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Hold
+		# 
+		self._Label_Hold.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold)
+		self._Label_Hold.Location = System.Drawing.Point(470, 9)
+		self._Label_Hold.Name = "Label_Hold"
+		self._Label_Hold.Size = System.Drawing.Size(55, 20)
+		self._Label_Hold.TabIndex = 41
+		self._Label_Hold.Text = "Hold"
+		self._Label_Hold.Visible = False
+		self._Label_Hold.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Vref
+		# 
+		self._Label_Vref.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold)
+		self._Label_Vref.Location = System.Drawing.Point(560, 9)
+		self._Label_Vref.Name = "Label_Vref"
+		self._Label_Vref.Size = System.Drawing.Size(55, 20)
+		self._Label_Vref.TabIndex = 41
+		self._Label_Vref.Text = "Vref"
+		self._Label_Vref.Visible = False
+		self._Label_Vref.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_dq
+		# 
+		self._Label_dq.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold)
+		self._Label_dq.Location = System.Drawing.Point(120, 31)
+		self._Label_dq.Name = "Label_dq"
+		self._Label_dq.Size = System.Drawing.Size(55, 26)
+		self._Label_dq.TabIndex = 41
+		self._Label_dq.Text = "DQ"
+		self._Label_dq.Visible = False
+		self._Label_dq.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_addr
+		# 
+		self._Label_addr.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold)
+		self._Label_addr.Location = System.Drawing.Point(120, 61)
+		self._Label_addr.Name = "Label_dq"
+		self._Label_addr.Size = System.Drawing.Size(60, 26)
+		self._Label_addr.TabIndex = 41
+		self._Label_addr.Text = "Address"
+		self._Label_addr.Visible = False
+		self._Label_addr.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# H_Border_1
+		# 
+		self._H_Border_1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._H_Border_1.Location = System.Drawing.Point(120, 29)
+		self._H_Border_1.Name = "H_Border_1"
+		self._H_Border_1.Size = System.Drawing.Size(504, 2)
+		self._H_Border_1.Visible = False
+		self._H_Border_1.TabIndex = 18
+		# 
+		# H_Border_2
+		# 
+		self._H_Border_2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._H_Border_2.Location = System.Drawing.Point(120, 58)
+		self._H_Border_2.Name = "H_Border_2"
+		self._H_Border_2.Size = System.Drawing.Size(414, 2)
+		self._H_Border_2.Visible = False
+		self._H_Border_2.TabIndex = 18
+		# 
+		# H_Border_3
+		# 
+		self._H_Border_3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._H_Border_3.Location = System.Drawing.Point(120, 87)
+		self._H_Border_3.Name = "H_Border_3"
+		self._H_Border_3.Size = System.Drawing.Size(505, 2)
+		self._H_Border_3.Visible = False
+		self._H_Border_3.TabIndex = 18
+		# 
+		# V_Border_0
+		# 
+		self._V_Border_0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._V_Border_0.Location = System.Drawing.Point(118, 8)
+		self._V_Border_0.Name = "V_Border_0"
+		self._V_Border_0.Size = System.Drawing.Size(2, 80)
+		self._V_Border_0.Visible = False
+		self._V_Border_0.TabIndex = 165		
+		# 
+		# V_Border_1
+		# 
+		self._V_Border_1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._V_Border_1.Location = System.Drawing.Point(180, 8)
+		self._V_Border_1.Name = "V_Border_1"
+		self._V_Border_1.Size = System.Drawing.Size(2, 80)
+		self._V_Border_1.Visible = False
+		self._V_Border_1.TabIndex = 165
+		# 
+		# V_Border_2
+		# 
+		self._V_Border_2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._V_Border_2.Location = System.Drawing.Point(268, 8)
+		self._V_Border_2.Name = "V_Border_2"
+		self._V_Border_2.Size = System.Drawing.Size(2, 80)
+		self._V_Border_2.Visible = False
+		self._V_Border_2.TabIndex = 165
+		# 
+		# V_Border_3
+		# 
+		self._V_Border_3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._V_Border_3.Location = System.Drawing.Point(356, 8)
+		self._V_Border_3.Name = "V_Border_3"
+		self._V_Border_3.Size = System.Drawing.Size(2, 80)
+		self._V_Border_3.Visible = False
+		self._V_Border_3.TabIndex = 165
+		# 
+		# V_Border_4
+		# 
+		self._V_Border_4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._V_Border_4.Location = System.Drawing.Point(444, 8)
+		self._V_Border_4.Name = "V_Border_4"
+		self._V_Border_4.Size = System.Drawing.Size(2, 80)
+		self._V_Border_4.Visible = False
+		self._V_Border_4.TabIndex = 165
+		# 
+		# V_Border_5
+		# 
+		self._V_Border_5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._V_Border_5.Location = System.Drawing.Point(532, 8)
+		self._V_Border_5.Name = "V_Border_5"
+		self._V_Border_5.Size = System.Drawing.Size(2, 80)
+		self._V_Border_5.Visible = False
+		self._V_Border_5.TabIndex = 165
+		# 
+		# V_Border_6
+		# 
+		self._V_Border_6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+		self._V_Border_6.Location = System.Drawing.Point(624, 8)
+		self._V_Border_6.Name = "V_Border_6"
+		self._V_Border_6.Size = System.Drawing.Size(2, 80)
+		self._V_Border_6.Visible = False
+		self._V_Border_6.TabIndex = 165
 		# 
 		# CheckedListBox_ReportName
 		# 
 		self._CheckedListBox_ReportName.FormattingEnabled = True
 		self._CheckedListBox_ReportName.Font = System.Drawing.Font("Arial", 9)
-		self._CheckedListBox_ReportName.Location = System.Drawing.Point(451, 57)
+		self._CheckedListBox_ReportName.Location = System.Drawing.Point(377, 50)
 		self._CheckedListBox_ReportName.Name = "CheckedListBox_ReportName"
 		self._CheckedListBox_ReportName.Size = System.Drawing.Size(198, 52)
 		self._CheckedListBox_ReportName.TabIndex = 31
@@ -621,9 +871,9 @@ class Eye_Form(Form):
 		# 
 		self._ComboBox_DDRGen.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_DDRGen.FormattingEnabled = True
-		self._ComboBox_DDRGen.Location = System.Drawing.Point(137, 117)
+		self._ComboBox_DDRGen.Location = System.Drawing.Point(120, 106)
 		self._ComboBox_DDRGen.Name = "ComboBox_DDRGen"
-		self._ComboBox_DDRGen.Size = System.Drawing.Size(198, 24)
+		self._ComboBox_DDRGen.Size = System.Drawing.Size(150, 24)
 		self._ComboBox_DDRGen.TabIndex = 14
 		self._ComboBox_DDRGen.Enabled = False
 		self._ComboBox_DDRGen.SelectedIndexChanged += self.ComboBox_DDRGenSelectedIndexChanged
@@ -632,7 +882,7 @@ class Eye_Form(Form):
 		# 
 		self._ComboBox_DataRate.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_DataRate.FormattingEnabled = True
-		self._ComboBox_DataRate.Location = System.Drawing.Point(451, 117)
+		self._ComboBox_DataRate.Location = System.Drawing.Point(377, 106)
 		self._ComboBox_DataRate.Name = "ComboBox_DataRate"
 		self._ComboBox_DataRate.Size = System.Drawing.Size(156, 24)
 		self._ComboBox_DataRate.TabIndex = 20
@@ -643,49 +893,52 @@ class Eye_Form(Form):
 		# 
 		self._ComboBox_SolutionName.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_SolutionName.FormattingEnabled = True
-		self._ComboBox_SolutionName.Location = System.Drawing.Point(137, 87)
+		self._ComboBox_SolutionName.Location = System.Drawing.Point(120, 78)
 		self._ComboBox_SolutionName.Name = "ComboBox_SolutionName"
-		self._ComboBox_SolutionName.Size = System.Drawing.Size(198, 24)
-		self._ComboBox_SolutionName.TabIndex = 27		
+		self._ComboBox_SolutionName.Size = System.Drawing.Size(150, 24)
+		self._ComboBox_SolutionName.TabIndex = 27
+		self._ComboBox_SolutionName.SelectedIndexChanged += self.ComboBox_SolutionNameSelectedIndexChanged
+
+		self._ComboBox_SolutionName_ToopTip
 		# 
 		# ComboBox_Design
 		# 
 		self._ComboBox_Design.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._ComboBox_Design.FormattingEnabled = True
-		self._ComboBox_Design.Location = System.Drawing.Point(137, 57)
+		self._ComboBox_Design.FormattingEnabled = True		
+		self._ComboBox_Design.Location = System.Drawing.Point(120, 50)
 		self._ComboBox_Design.Name = "ComboBox_Design"
-		self._ComboBox_Design.Size = System.Drawing.Size(198, 24)
-		self._ComboBox_Design.TabIndex = 28
+		self._ComboBox_Design.Size = System.Drawing.Size(150, 24)
+		self._ComboBox_Design.TabIndex = 28		
 		self._ComboBox_Design.SelectedIndexChanged += self.ComboBox_DesignSelectedIndexChanged
 		# 
 		# ComboBox_AC_DQ
 		# 
 		self._ComboBox_AC_DQ.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_AC_DQ.FormattingEnabled = True
-		self._ComboBox_AC_DQ.Location = System.Drawing.Point(128, 201)
+		self._ComboBox_AC_DQ.Location = System.Drawing.Point(88, 173)		
 		self._ComboBox_AC_DQ.Name = "ComboBox_AC_DQ"
-		self._ComboBox_AC_DQ.Size = System.Drawing.Size(73, 24)
+		self._ComboBox_AC_DQ.Size = System.Drawing.Size(73, 24)		
 		self._ComboBox_AC_DQ.TabIndex = 46
-		self._ComboBox_AC_DQ.Visible = False
+		self._ComboBox_AC_DQ.Visible = True
 		self._ComboBox_AC_DQ.SelectedIndexChanged += self.ComboBox_AC_DQSelectedIndexChanged
 		# 
 		# ComboBox_AC_ADDR
 		# 
 		self._ComboBox_AC_ADDR.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_AC_ADDR.FormattingEnabled = True
-		self._ComboBox_AC_ADDR.Location = System.Drawing.Point(128, 230)
+		self._ComboBox_AC_ADDR.Location = System.Drawing.Point(88, 200)		
 		self._ComboBox_AC_ADDR.Name = "ComboBox_AC_ADDR"
-		self._ComboBox_AC_ADDR.Size = System.Drawing.Size(73, 24)
+		self._ComboBox_AC_ADDR.Size = System.Drawing.Size(73, 24)		
 		self._ComboBox_AC_ADDR.TabIndex = 48
-		self._ComboBox_AC_ADDR.Visible = False
+		self._ComboBox_AC_ADDR.Visible = True		
 		self._ComboBox_AC_ADDR.SelectedIndexChanged += self.ComboBox_AC_ADDRSelectedIndexChanged
 		# 
 		# TextBox_InputFile
 		# 
 		self._TextBox_InputFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_InputFile.Location = System.Drawing.Point(137, 22)
+		self._TextBox_InputFile.Location = System.Drawing.Point(120, 22)
 		self._TextBox_InputFile.Name = "TextBox_InputFile"
-		self._TextBox_InputFile.Size = System.Drawing.Size(470, 23)
+		self._TextBox_InputFile.Size = System.Drawing.Size(414, 23)
 		self._TextBox_InputFile.TabIndex = 13
 		# 
 		# TextBox_AC_DQ
@@ -693,9 +946,10 @@ class Eye_Form(Form):
 		self._TextBox_AC_DQ.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_AC_DQ.ReadOnly = True
 		self._TextBox_AC_DQ.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_AC_DQ.Location = System.Drawing.Point(128, 201)
+		self._TextBox_AC_DQ.Location = System.Drawing.Point(88, 173)		
 		self._TextBox_AC_DQ.Name = "TextBox_AC_DQ"
 		self._TextBox_AC_DQ.Size = System.Drawing.Size(71, 23)
+		self._TextBox_AC_DQ.Visible = False
 		self._TextBox_AC_DQ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_AC_DQ.TabIndex = 27
 		# 
@@ -704,9 +958,10 @@ class Eye_Form(Form):
 		self._TextBox_AC_ADDR.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_AC_ADDR.ReadOnly = True
 		self._TextBox_AC_ADDR.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_AC_ADDR.Location = System.Drawing.Point(128, 230)
+		self._TextBox_AC_ADDR.Location = System.Drawing.Point(88, 200)		
 		self._TextBox_AC_ADDR.Name = "TextBox_AC_ADDR"
-		self._TextBox_AC_ADDR.Size = System.Drawing.Size(71, 23)
+		self._TextBox_AC_ADDR.Size = System.Drawing.Size(71, 23)		
+		self._TextBox_AC_ADDR.Visible = False
 		self._TextBox_AC_ADDR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_AC_ADDR.TabIndex = 39
 		# 
@@ -715,9 +970,9 @@ class Eye_Form(Form):
 		self._TextBox_DC_DQ.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_DC_DQ.ReadOnly = True
 		self._TextBox_DC_DQ.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_DC_DQ.Location = System.Drawing.Point(722, 219)
+		self._TextBox_DC_DQ.Location = System.Drawing.Point(553, 219)
 		self._TextBox_DC_DQ.Name = "TextBox_DC_DQ"
-		self._TextBox_DC_DQ.Size = System.Drawing.Size(71, 23)
+		self._TextBox_DC_DQ.Size = System.Drawing.Size(71, 23)		
 		self._TextBox_DC_DQ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_DC_DQ.TabIndex = 33
 		# 
@@ -726,9 +981,9 @@ class Eye_Form(Form):
 		self._TextBox_DC_ADDR.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_DC_ADDR.ReadOnly = True
 		self._TextBox_DC_ADDR.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_DC_ADDR.Location = System.Drawing.Point(722, 248)
+		self._TextBox_DC_ADDR.Location = System.Drawing.Point(553, 246)		
 		self._TextBox_DC_ADDR.Name = "TextBox_DC_ADDR"
-		self._TextBox_DC_ADDR.Size = System.Drawing.Size(71, 23)
+		self._TextBox_DC_ADDR.Size = System.Drawing.Size(71, 23)		
 		self._TextBox_DC_ADDR.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_DC_ADDR.TabIndex = 42
 		# 
@@ -737,9 +992,9 @@ class Eye_Form(Form):
 		self._TextBox_Vref.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_Vref.ReadOnly = True
 		self._TextBox_Vref.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_Vref.Location = System.Drawing.Point(164, 267)
+		self._TextBox_Vref.Location = System.Drawing.Point(130, 232)		
 		self._TextBox_Vref.Name = "TextBox_Vref"
-		self._TextBox_Vref.Size = System.Drawing.Size(57, 23)
+		self._TextBox_Vref.Size = System.Drawing.Size(52, 23)		
 		self._TextBox_Vref.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_Vref.TabIndex = 34		
 		# 
@@ -748,9 +1003,9 @@ class Eye_Form(Form):
 		self._TextBox_DQSetup.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_DQSetup.ReadOnly = True
 		self._TextBox_DQSetup.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_DQSetup.Location = System.Drawing.Point(386, 452)
+		self._TextBox_DQSetup.Location = System.Drawing.Point(299, 398)		
 		self._TextBox_DQSetup.Name = "TextBox_DQSetup"
-		self._TextBox_DQSetup.Size = System.Drawing.Size(50, 23)
+		self._TextBox_DQSetup.Size = System.Drawing.Size(45, 23)
 		self._TextBox_DQSetup.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_DQSetup.TabIndex = 28
 		# 
@@ -759,9 +1014,9 @@ class Eye_Form(Form):
 		self._TextBox_DQHold.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_DQHold.ReadOnly = True
 		self._TextBox_DQHold.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_DQHold.Location = System.Drawing.Point(447, 452)
+		self._TextBox_DQHold.Location = System.Drawing.Point(347, 398)		
 		self._TextBox_DQHold.Name = "TextBox_DQHold"
-		self._TextBox_DQHold.Size = System.Drawing.Size(58, 23)
+		self._TextBox_DQHold.Size = System.Drawing.Size(56, 23)		
 		self._TextBox_DQHold.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_DQHold.TabIndex = 29
 		# 
@@ -770,9 +1025,9 @@ class Eye_Form(Form):
 		self._TextBox_ADDRSetup.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_ADDRSetup.ReadOnly = True
 		self._TextBox_ADDRSetup.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_ADDRSetup.Location = System.Drawing.Point(386, 481)
+		self._TextBox_ADDRSetup.Location = System.Drawing.Point(299, 425)
 		self._TextBox_ADDRSetup.Name = "TextBox_ADDRSetup"
-		self._TextBox_ADDRSetup.Size = System.Drawing.Size(50, 23)
+		self._TextBox_ADDRSetup.Size = System.Drawing.Size(45, 23)
 		self._TextBox_ADDRSetup.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_ADDRSetup.TabIndex = 30
 		# 
@@ -781,9 +1036,9 @@ class Eye_Form(Form):
 		self._TextBox_ADDRHold.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_ADDRHold.ReadOnly = True
 		self._TextBox_ADDRHold.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_ADDRHold.Location = System.Drawing.Point(447, 481)
+		self._TextBox_ADDRHold.Location = System.Drawing.Point(347, 425)		
 		self._TextBox_ADDRHold.Name = "TextBox_ADDRHold"
-		self._TextBox_ADDRHold.Size = System.Drawing.Size(58, 23)
+		self._TextBox_ADDRHold.Size = System.Drawing.Size(56, 23)		
 		self._TextBox_ADDRHold.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_ADDRHold.TabIndex = 31
 		# 
@@ -792,7 +1047,7 @@ class Eye_Form(Form):
 		self._TextBox_VdIVW.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_VdIVW.ReadOnly = True
 		self._TextBox_VdIVW.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_VdIVW.Location = System.Drawing.Point(132, 271)
+		self._TextBox_VdIVW.Location = System.Drawing.Point(97, 238)
 		self._TextBox_VdIVW.Name = "TextBox_VdIVW"
 		self._TextBox_VdIVW.Size = System.Drawing.Size(59, 23)
 		self._TextBox_VdIVW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -803,9 +1058,9 @@ class Eye_Form(Form):
 		self._TextBox_TdIVW.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_TdIVW.ReadOnly = True
 		self._TextBox_TdIVW.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_TdIVW.Location = System.Drawing.Point(425, 346)
+		self._TextBox_TdIVW.Location = System.Drawing.Point(333, 303)		
 		self._TextBox_TdIVW.Name = "TextBox_TdIVW"
-		self._TextBox_TdIVW.Size = System.Drawing.Size(59, 23)
+		self._TextBox_TdIVW.Size = System.Drawing.Size(52, 23)
 		self._TextBox_TdIVW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_TdIVW.TabIndex = 39
 		# 
@@ -814,7 +1069,7 @@ class Eye_Form(Form):
 		self._TextBox_VcentDQ.BackColor = System.Drawing.Color.WhiteSmoke
 		self._TextBox_VcentDQ.ReadOnly = True
 		self._TextBox_VcentDQ.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_VcentDQ.Location = System.Drawing.Point(698, 262)
+		self._TextBox_VcentDQ.Location = System.Drawing.Point(548, 231)		
 		self._TextBox_VcentDQ.Name = "TextBox_VcentDQ"
 		self._TextBox_VcentDQ.Size = System.Drawing.Size(59, 23)
 		self._TextBox_VcentDQ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -823,7 +1078,7 @@ class Eye_Form(Form):
 		# Button_Import
 		# 
 		self._Button_Import.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_Import.Location = System.Drawing.Point(613, 22)
+		self._Button_Import.Location = System.Drawing.Point(539, 22)
 		self._Button_Import.Name = "Button_Import"
 		self._Button_Import.Size = System.Drawing.Size(36, 23)
 		self._Button_Import.TabIndex = 19
@@ -834,11 +1089,11 @@ class Eye_Form(Form):
 		# Button_ViewNet
 		# 
 		self._Button_ViewNet.Font = System.Drawing.Font("Arial", 11)
-		self._Button_ViewNet.Location = System.Drawing.Point(703, 111)
+		self._Button_ViewNet.Location = System.Drawing.Point(595, 31)
 		self._Button_ViewNet.Name = "Button_ViewNet"
-		self._Button_ViewNet.Size = System.Drawing.Size(188, 42)
+		self._Button_ViewNet.Size = System.Drawing.Size(100, 37)
 		self._Button_ViewNet.TabIndex = 27
-		self._Button_ViewNet.Text = "Target Net Setup"
+		self._Button_ViewNet.Text = "Net Setup"
 		self._Button_ViewNet.UseVisualStyleBackColor = True
 		self._Button_ViewNet.Enabled = False
 		self._Button_ViewNet.Click += self.Button_ViewNetClick		
@@ -846,9 +1101,9 @@ class Eye_Form(Form):
 		# Button_Analyze
 		# 
 		self._Button_Analyze.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_Analyze.Location = System.Drawing.Point(703, 161)
+		self._Button_Analyze.Location = System.Drawing.Point(595, 78)
 		self._Button_Analyze.Name = "Button_Analyze"
-		self._Button_Analyze.Size = System.Drawing.Size(188, 42)
+		self._Button_Analyze.Size = System.Drawing.Size(100, 37)
 		self._Button_Analyze.TabIndex = 35
 		self._Button_Analyze.Text = "Analyze"
 		self._Button_Analyze.UseVisualStyleBackColor = True
@@ -858,26 +1113,38 @@ class Eye_Form(Form):
 		# Button_ViewResult
 		# 
 		self._Button_ViewResult.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_ViewResult.Location = System.Drawing.Point(703, 211)
+		self._Button_ViewResult.Location = System.Drawing.Point(595, 124)
 		self._Button_ViewResult.Name = "Button_ViewResult"
-		self._Button_ViewResult.Size = System.Drawing.Size(188, 42)
+		self._Button_ViewResult.Size = System.Drawing.Size(100, 37)
 		self._Button_ViewResult.TabIndex = 35
-		self._Button_ViewResult.Text = "View Result"
+		self._Button_ViewResult.Text = "Result"
 		self._Button_ViewResult.UseVisualStyleBackColor = True
 		self._Button_ViewResult.Enabled = False
 		self._Button_ViewResult.Click += self.Button_ViewResultClick
 		# 
-		# Button_ImgShow
+		# Button_ImgShow_New
 		#
-		self._Button_ImgShow.FlatStyle = System.Windows.Forms.FlatStyle.Standard
-		self._Button_ImgShow.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_ImgShow.Location = System.Drawing.Point(818, 8)
-		self._Button_ImgShow.Name = "Button_ImgShow"
-		self._Button_ImgShow.Size = System.Drawing.Size(60, 28)
-		self._Button_ImgShow.TabIndex = 43
-		self._Button_ImgShow.Text = 'Hide'
-		self._Button_ImgShow.UseVisualStyleBackColor = True
-		self._Button_ImgShow.Click += self.Button_ImgShowClick
+		self._Button_ImgShow_New.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+		self._Button_ImgShow_New.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_ImgShow_New.Location = System.Drawing.Point(629, 8)
+		self._Button_ImgShow_New.Name = "Button_ImgShow_New"
+		self._Button_ImgShow_New.Size = System.Drawing.Size(60, 28)
+		self._Button_ImgShow_New.TabIndex = 43
+		self._Button_ImgShow_New.Text = 'Hide'
+		self._Button_ImgShow_New.UseVisualStyleBackColor = True
+		self._Button_ImgShow_New.Click += self.Button_ImgShow_NewClick
+		# 
+		# Button_ImgShow_Old
+		#
+		self._Button_ImgShow_Old.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+		self._Button_ImgShow_Old.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_ImgShow_Old.Location = System.Drawing.Point(629, 8)
+		self._Button_ImgShow_Old.Name = "Button_ImgShow_Old"
+		self._Button_ImgShow_Old.Size = System.Drawing.Size(60, 28)
+		self._Button_ImgShow_Old.TabIndex = 43
+		self._Button_ImgShow_Old.Text = 'Hide'
+		self._Button_ImgShow_Old.UseVisualStyleBackColor = True
+		self._Button_ImgShow_Old.Click += self.Button_ImgShow_OldClick
 		# 
 		# Button_Debug
 		# 
@@ -894,29 +1161,31 @@ class Eye_Form(Form):
 		# CheckBox_AnalyzeDQ
 		# 
 		self._CheckBox_AnalyzeDQ.Font = System.Drawing.Font("Arial", 10)
-		self._CheckBox_AnalyzeDQ.Location = System.Drawing.Point(716, 29)
+		self._CheckBox_AnalyzeDQ.Location = System.Drawing.Point(552, 19)
 		self._CheckBox_AnalyzeDQ.Name = "CheckBox_AnalyzeDQ"
 		self._CheckBox_AnalyzeDQ.Size = System.Drawing.Size(138, 29)
 		self._CheckBox_AnalyzeDQ.TabIndex = 36
 		self._CheckBox_AnalyzeDQ.Text = "Analyze DQ"
+		self._CheckBox_AnalyzeDQ.Visible = False
 		self._CheckBox_AnalyzeDQ.UseVisualStyleBackColor = True
 		# 
 		# CheckBox_AnalyzeADDR
 		# 
 		self._CheckBox_AnalyzeADDR.Font = System.Drawing.Font("Arial", 10)
-		self._CheckBox_AnalyzeADDR.Location = System.Drawing.Point(716, 55)
+		self._CheckBox_AnalyzeADDR.Location = System.Drawing.Point(552, 45)
 		self._CheckBox_AnalyzeADDR.Name = "CheckBox_AnalyzeADDR"
 		self._CheckBox_AnalyzeADDR.Size = System.Drawing.Size(138, 29)
 		self._CheckBox_AnalyzeADDR.TabIndex = 37
 		self._CheckBox_AnalyzeADDR.Text = "Analyze Address"
+		self._CheckBox_AnalyzeADDR.Visible = False
 		self._CheckBox_AnalyzeADDR.UseVisualStyleBackColor = True
 		# 
 		# CheckBox_EditEnable_NewEye
 		# 
 		self._CheckBox_EditEnable_NewEye.Font = System.Drawing.Font("Arial", 10)
-		self._CheckBox_EditEnable_NewEye.Location = System.Drawing.Point(775, 458)
+		self._CheckBox_EditEnable_NewEye.Location = System.Drawing.Point(590, 423)
 		self._CheckBox_EditEnable_NewEye.Name = "CheckBox_EditEnable_NewEye"
-		self._CheckBox_EditEnable_NewEye.Size = System.Drawing.Size(100, 29)
+		self._CheckBox_EditEnable_NewEye.Size = System.Drawing.Size(93, 29)
 		self._CheckBox_EditEnable_NewEye.TabIndex = 40
 		self._CheckBox_EditEnable_NewEye.Text = "Edit enable"
 		self._CheckBox_EditEnable_NewEye.UseVisualStyleBackColor = True
@@ -925,9 +1194,9 @@ class Eye_Form(Form):
 		# CheckBox_EditEnable_OldEye
 		# 
 		self._CheckBox_EditEnable_OldEye.Font = System.Drawing.Font("Arial", 10)
-		self._CheckBox_EditEnable_OldEye.Location = System.Drawing.Point(775, 458)
+		self._CheckBox_EditEnable_OldEye.Location = System.Drawing.Point(590, 423)		
 		self._CheckBox_EditEnable_OldEye.Name = "CheckBox_EditEnable_OldEye"
-		self._CheckBox_EditEnable_OldEye.Size = System.Drawing.Size(100, 29)
+		self._CheckBox_EditEnable_OldEye.Size = System.Drawing.Size(95, 29)
 		self._CheckBox_EditEnable_OldEye.TabIndex = 40
 		self._CheckBox_EditEnable_OldEye.Text = "Edit enable"
 		self._CheckBox_EditEnable_OldEye.UseVisualStyleBackColor = True
@@ -939,12 +1208,13 @@ class Eye_Form(Form):
 		# 
 		# Eye_Form
 		# 
-		self.ClientSize = System.Drawing.Size(904, 780)
+		self.ClientSize = System.Drawing.Size(700, 622)
 		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
-		#self.MaximumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
-		self.Image_flag = False
+		self.Image_flag_New = False
+		self.Image_flag_Old = False
+		self.Full_Size_flag = True
 		self.Controls.Add(self._Button_Debug)
 		self.Controls.Add(self._GroupBox_NewEye)
 		self.Controls.Add(self._Button_Analyze)
@@ -960,7 +1230,7 @@ class Eye_Form(Form):
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Eye_Form"
-		self.Text = "ANSYS DDR Eye Analyzer"
+		self.Text = "ANSYS DDR Eye Analyzer " + sub_DB.Version
 		self.Load += self.Eye_FormLoad
 		self.ResizeEnd += self.Eye_FormResizeEnd
 		self.FormClosing += self.Eye_FormFormClosing
@@ -1198,6 +1468,8 @@ class Eye_Form(Form):
 		self._TextBox_DQHold.BackColor = color
 		self._TextBox_ADDRSetup.BackColor = color
 		self._TextBox_ADDRHold.BackColor = color
+		self._ComboBox_AC_DQ.BackColor = color
+		self._ComboBox_AC_ADDR.BackColor = color
 
 		self._TextBox_AC_DQ.ReadOnly = not self._CheckBox_EditEnable_OldEye.Checked
 		self._TextBox_AC_ADDR.ReadOnly = not self._CheckBox_EditEnable_OldEye.Checked
@@ -1391,6 +1663,9 @@ class Eye_Form(Form):
 			else:
 				MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
 
+			# Set ToopTip
+			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			
+
 		except Exception as e:			
 			Log("[Input File Import] = Failed")
 			Log(traceback.format_exc())
@@ -1399,6 +1674,9 @@ class Eye_Form(Form):
 
 	def ComboBox_DesignSelectedIndexChanged(self, sender, e):
 		try:
+			# Set ToopTip
+			self._ComboBox_Design_ToopTip.SetToolTip(self._ComboBox_Design, self._ComboBox_Design.Text)
+
 			# Initialization 
 			sub_DB.Net_Form.Init_Flag = True
 			self._CheckedListBox_ReportName.Items.Clear()		
@@ -1445,6 +1723,10 @@ class Eye_Form(Form):
 			MessageBox.Show("Fail to set AEDT Design","Warning")
 			EXIT()
 
+	def ComboBox_SolutionNameSelectedIndexChanged(self, sender, e):
+		# Set ToopTip		
+		self._ComboBox_SolutionName_ToopTip.SetToolTip(self._ComboBox_SolutionName, self._ComboBox_SolutionName.Text)
+
 	def CheckedListBox_ReportNameSelectedIndexChanged(self, sender, e):
 
 		sub_DB.Net_Form.Init_Flag = True		
@@ -1474,6 +1756,14 @@ class Eye_Form(Form):
 				self._GroupBox_NewEye.Visible = True
 				self._GroupBox_OldEye.Visible = False			
 				sub_DB.Eyeflag = True
+				
+				if self.Full_Size_flag:
+					if self.Image_flag_New:
+						self.Button_ImgShow_NewClick(self, sender)
+				else:
+					if not self.Image_flag_New:
+						self.Button_ImgShow_NewClick(self, sender)
+					
 			else:
 				self._GroupBox_NewEye.Visible = False
 				self._GroupBox_OldEye.Visible = True			
@@ -1488,6 +1778,13 @@ class Eye_Form(Form):
 					self._TextBox_AC_ADDR.Visible = True
 					self._ComboBox_AC_DQ.Visible = False
 					self._ComboBox_AC_ADDR.Visible = False
+
+				if self.Full_Size_flag:
+					if self.Image_flag_Old:
+						self.Button_ImgShow_OldClick(self, sender)
+				else:
+					if not self.Image_flag_Old:
+						self.Button_ImgShow_OldClick(self, sender)
 
 			# Clear Eye Spec.
 			if sub_DB.Eyeflag:
@@ -2412,13 +2709,207 @@ class Eye_Form(Form):
 			MessageBox.Show("Fail to View Eye Analyze Result","Warning")			
 			EXIT()
 
-	def Button_ImgShowClick(self, sender, e):
-		# TODO : Button Image Show Click Event
-		self.Image_flag = not self.Image_flag
-		if self.Image_flag:
-			self._Button_ImgShow.Text = "Show"
+	def Button_ImgShow_NewClick(self, sender, e):		
+		self.Image_flag_New = not self.Image_flag_New
+
+		# Compact Size
+		if self.Image_flag_New:
+			self.Full_Size_flag = False
+			self._Button_ImgShow_New.Text = "Show"
+			self._PictureBox_NewEye.Visible = False
+			
+			self._Label_VdIVW.Visible = True
+			self._TextBox_VdIVW.Location = System.Drawing.Point(225, 28)
+			self._TextBox_VdIVW.Size = System.Drawing.Size(65, 23)
+
+			self._Label_TdIVW.Visible = True
+			self._TextBox_TdIVW.Location = System.Drawing.Point(365, 28)
+			self._TextBox_TdIVW.Size = System.Drawing.Size(65, 23)
+
+			self._Label_VcentDQ.Visible = True
+			self._TextBox_VcentDQ.Location = System.Drawing.Point(527, 28)
+			self._TextBox_VcentDQ.Size = System.Drawing.Size(65, 23)
+
+			self._CheckBox_EditEnable_NewEye.Location = System.Drawing.Point(595, 31)
+
+			self._Label_Info.Location = System.Drawing.Point(170, 60)
+
+			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 95)
+
+			self.MinimumSize = System.Drawing.Size(self.Size.Width, 300)
+			self.Height = 300
+			
+		# Full Size
 		else:
-			self._Button_ImgShow.Text = "Hide"
+			self.Full_Size_flag = True
+			self._Button_ImgShow_New.Text = "Hide"
+			self._PictureBox_NewEye.Visible = True
+
+			self._Label_VdIVW.Visible = False
+			self._TextBox_VdIVW.Location = System.Drawing.Point(97, 238)
+			self._TextBox_VdIVW.Size = System.Drawing.Size(59, 23)
+
+			self._Label_TdIVW.Visible = False
+			self._TextBox_TdIVW.Location = System.Drawing.Point(333, 303)
+			self._TextBox_TdIVW.Size = System.Drawing.Size(52, 23)
+
+			self._Label_VcentDQ.Visible = False
+			self._TextBox_VcentDQ.Location = System.Drawing.Point(548, 231)
+			self._TextBox_VcentDQ.Size = System.Drawing.Size(59, 23)
+
+			self._CheckBox_EditEnable_NewEye.Location = System.Drawing.Point(590, 423)
+
+			self._Label_Info.Location = System.Drawing.Point(10, 423)
+
+			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 455)
+
+			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
+			self.Height = 660			
+			
+	def Button_ImgShow_OldClick(self, sender, e):		
+		self.Image_flag_Old = not self.Image_flag_Old
+
+		# Compact Size
+		if self.Image_flag_Old:
+			self.Full_Size_flag = False
+			self._Button_ImgShow_Old.Text = "Show"
+
+			self._PictureBox_OldEye.Visible = False
+
+			self._Label_AC_DQ.Visible = False
+			self._Label_AC_ADDR.Visible = False
+			self._Label_DC_DQ.Visible = False
+			self._Label_DC_ADDR.Visible = False
+			self._Label_DQ.Visible = False
+			self._Label_ADDR.Visible = False
+
+			self._Label_Vac.Visible = True
+			self._Label_Vdc.Visible = True
+			self._Label_Setup.Visible = True
+			self._Label_Hold.Visible = True
+			self._Label_Vref.Visible = True
+			self._Label_dq.Visible = True
+			self._Label_addr.Visible = True
+			self._H_Border_1.Visible = True
+			self._H_Border_2.Visible = True
+			self._H_Border_3.Visible = True			
+			self._V_Border_1.Visible = True
+			self._V_Border_2.Visible = True
+			self._V_Border_3.Visible = True
+			self._V_Border_4.Visible = True
+			self._V_Border_5.Visible = True
+			self._V_Border_6.Visible = True
+
+			self._ComboBox_AC_DQ.Location = System.Drawing.Point(185, 33)			
+			self._ComboBox_AC_DQ.Size = System.Drawing.Size(80, 24)
+
+			self._ComboBox_AC_ADDR.Location = System.Drawing.Point(185, 61)
+			self._ComboBox_AC_ADDR.Size = System.Drawing.Size(80, 24)
+
+			self._TextBox_AC_DQ.Location = System.Drawing.Point(185, 33)			
+			self._TextBox_AC_DQ.Size = System.Drawing.Size(80, 23)
+			
+			self._TextBox_AC_ADDR.Location = System.Drawing.Point(185, 61)			
+			self._TextBox_AC_ADDR.Size = System.Drawing.Size(80, 23)
+
+			self._TextBox_DC_DQ.Location = System.Drawing.Point(273, 33)			
+			self._TextBox_DC_DQ.Size = System.Drawing.Size(80, 23)
+			
+			self._TextBox_DC_ADDR.Location = System.Drawing.Point(273, 61)
+			self._TextBox_DC_ADDR.Size = System.Drawing.Size(80, 23)
+
+			self._TextBox_DQSetup.Location = System.Drawing.Point(361, 33)			
+			self._TextBox_DQSetup.Size = System.Drawing.Size(80, 23)
+			
+			self._TextBox_ADDRSetup.Location = System.Drawing.Point(361, 61)
+			self._TextBox_ADDRSetup.Size = System.Drawing.Size(80, 23)
+
+			self._TextBox_DQHold.Location = System.Drawing.Point(449, 33)			
+			self._TextBox_DQHold.Size = System.Drawing.Size(80, 23)
+
+			self._TextBox_ADDRHold.Location = System.Drawing.Point(449, 61)			
+			self._TextBox_ADDRHold.Size = System.Drawing.Size(80, 23)
+
+			self._TextBox_Vref.Location = System.Drawing.Point(537, 47)			
+			self._TextBox_Vref.Size = System.Drawing.Size(80, 23)
+
+			self._CheckBox_EditEnable_OldEye.Location = System.Drawing.Point(537, 63)
+
+			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 95)
+
+			self.MinimumSize = System.Drawing.Size(self.Size.Width, 300)
+			self.Height = 300
+
+		# Full Size
+		else:
+			self.Full_Size_flag = True
+			self._Button_ImgShow_Old.Text = "Hide"
+
+			self._PictureBox_OldEye.Visible = True
+
+			self._Label_AC_DQ.Visible = True
+			self._Label_AC_ADDR.Visible = True
+			self._Label_DC_DQ.Visible = True
+			self._Label_DC_ADDR.Visible = True
+			self._Label_DQ.Visible = True
+			self._Label_ADDR.Visible = True
+
+			self._Label_Vac.Visible = False
+			self._Label_Vdc.Visible = False
+			self._Label_Setup.Visible = False
+			self._Label_Hold.Visible = False
+			self._Label_Vref.Visible = False
+			self._Label_dq.Visible = False
+			self._Label_addr.Visible = False
+			self._H_Border_1.Visible = False
+			self._H_Border_2.Visible = False
+			self._H_Border_3.Visible = False			
+			self._V_Border_1.Visible = False
+			self._V_Border_2.Visible = False
+			self._V_Border_3.Visible = False
+			self._V_Border_4.Visible = False
+			self._V_Border_5.Visible = False
+			self._V_Border_6.Visible = False
+
+			self._ComboBox_AC_DQ.Location = System.Drawing.Point(88, 173)
+			self._ComboBox_AC_DQ.Size = System.Drawing.Size(73, 24)
+
+			self._ComboBox_AC_ADDR.Location = System.Drawing.Point(88, 200)
+			self._ComboBox_AC_ADDR.Size = System.Drawing.Size(73, 24)
+
+			self._TextBox_AC_DQ.Location = System.Drawing.Point(88, 173)
+			self._TextBox_AC_DQ.Size = System.Drawing.Size(71, 23)
+
+			self._TextBox_AC_ADDR.Location = System.Drawing.Point(88, 200)
+			self._TextBox_AC_ADDR.Size = System.Drawing.Size(71, 23)
+
+			self._TextBox_DC_DQ.Location = System.Drawing.Point(553, 219)
+			self._TextBox_DC_DQ.Size = System.Drawing.Size(71, 23)
+
+			self._TextBox_DC_ADDR.Size = System.Drawing.Size(71, 23)
+			self._TextBox_DC_ADDR.Location = System.Drawing.Point(553, 246)
+
+			self._TextBox_DQSetup.Location = System.Drawing.Point(299, 398)
+			self._TextBox_DQSetup.Size = System.Drawing.Size(45, 23)
+
+			self._TextBox_ADDRSetup.Location = System.Drawing.Point(299, 425)			
+			self._TextBox_ADDRSetup.Size = System.Drawing.Size(45, 23)
+
+			self._TextBox_DQHold.Location = System.Drawing.Point(347, 398)
+			self._TextBox_DQHold.Size = System.Drawing.Size(56, 23)
+			
+			self._TextBox_ADDRHold.Location = System.Drawing.Point(347, 425)
+			self._TextBox_ADDRHold.Size = System.Drawing.Size(56, 23)
+
+			self._TextBox_Vref.Location = System.Drawing.Point(130, 232)
+			self._TextBox_Vref.Size = System.Drawing.Size(52, 23)
+
+			self._CheckBox_EditEnable_OldEye.Location = System.Drawing.Point(590, 423)
+
+			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 455)
+
+			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
+			self.Height = 660
 
 	def Eye_FormFormClosing(self, sender, e):
 		sub_ScriptEnv.Release()		

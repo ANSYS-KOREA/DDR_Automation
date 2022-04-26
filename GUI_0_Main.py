@@ -59,9 +59,9 @@ class StartForm(Form):
 		LogoFile = path + "\\Resources\\Main1_off.bmp"
 		self._PictureBox_EM.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_EM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-		self._PictureBox_EM.Location = System.Drawing.Point(5, 34)
+		self._PictureBox_EM.Location = System.Drawing.Point(0, 24)
 		self._PictureBox_EM.Name = "PictureBox_EM"
-		self._PictureBox_EM.Size = System.Drawing.Size(850, 100)
+		self._PictureBox_EM.Size = System.Drawing.Size(700, 90)
 		self._PictureBox_EM.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
 		self._PictureBox_EM.TabIndex = 1
 		self._PictureBox_EM.TabStop = False
@@ -72,9 +72,9 @@ class StartForm(Form):
 		LogoFile = path + "\\Resources\\Main2_off.bmp"
 		self._PictureBox_Tran.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_Tran.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-		self._PictureBox_Tran.Location = System.Drawing.Point(5, 134)
+		self._PictureBox_Tran.Location = System.Drawing.Point(0, 104)
 		self._PictureBox_Tran.Name = "PictureBox_Tran"
-		self._PictureBox_Tran.Size = System.Drawing.Size(850, 100)
+		self._PictureBox_Tran.Size = System.Drawing.Size(700, 85)
 		self._PictureBox_Tran.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
 		self._PictureBox_Tran.TabIndex = 4
 		self._PictureBox_Tran.TabStop = False
@@ -92,15 +92,16 @@ class StartForm(Form):
 		self._PictureBox_Eye.TabIndex = 14
 		self._PictureBox_Eye.TabStop = False
 		self._PictureBox_Eye.Click += self.PictureBox_EyeClick
+		self._PictureBox_Eye.Visible = False
 		# 
 		# PictureBox_Comp
 		# 
-		LogoFile = path + "\\Resources\\Main4_off.bmp"
+		LogoFile = path + "\\Resources\\Main5_off.bmp"
 		self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_Comp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch				
-		self._PictureBox_Comp.Location = System.Drawing.Point(5, 334)
+		self._PictureBox_Comp.Location = System.Drawing.Point(0, 179)
 		self._PictureBox_Comp.Name = "PictureBox_Comp"
-		self._PictureBox_Comp.Size = System.Drawing.Size(850, 100)
+		self._PictureBox_Comp.Size = System.Drawing.Size(700, 85)
 		self._PictureBox_Comp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
 		self._PictureBox_Comp.TabIndex = 15
 		self._PictureBox_Comp.TabStop = False
@@ -109,9 +110,9 @@ class StartForm(Form):
 		# Button_Start
 		# 
 		self._Button_Start.Font = System.Drawing.Font("Century Gothic", 18, System.Drawing.FontStyle.Bold)
-		self._Button_Start.Location = System.Drawing.Point(19, 436)
+		self._Button_Start.Location = System.Drawing.Point(12, 264)
 		self._Button_Start.Name = "Button_Start"
-		self._Button_Start.Size = System.Drawing.Size(817, 50)
+		self._Button_Start.Size = System.Drawing.Size(675, 50)
 		self._Button_Start.TabIndex = 13
 		self._Button_Start.Text = "Start DDR Wizard"
 		self._Button_Start.UseVisualStyleBackColor = True
@@ -261,9 +262,11 @@ class StartForm(Form):
 		# 
 		# StartForm
 		# 
-		self.ClientSize = System.Drawing.Size(878, 539)
-		self.MaximumSize = System.Drawing.Size(878, 539)
-		self.MinimumSize = System.Drawing.Size(878, 539)
+		width = 715
+		height = 365
+		self.ClientSize = System.Drawing.Size(width, height)
+		self.MaximumSize = System.Drawing.Size(width, height)
+		self.MinimumSize = System.Drawing.Size(width, height)
 		self.Controls.Add(self._Button_Debug)
 		self.Controls.Add(self._PictureBox_Comp)
 		self.Controls.Add(self._PictureBox_Eye)
@@ -277,7 +280,7 @@ class StartForm(Form):
 		self.Icon = Icon(IconFile)
 		self.MainMenuStrip = self._MenuStrip		
 		self.Name = "StartForm"
-		self.Text = "ANSYS DDR Wizard"
+		self.Text = "ANSYS DDR Wizard " + sub_DB.Version
 		self.Load += self.StartFormLoad
 		self._MenuStrip.ResumeLayout(False)
 		self._MenuStrip.PerformLayout()
@@ -293,6 +296,7 @@ class StartForm(Form):
 		self.Tran_flag = False
 		self.Eye_flag = False
 		self.Comp_flag = False
+
 	''' StartForm - Events '''
 	def StartFormLoad(self, sender, e):
 		# Load Preserved Definition File		
@@ -339,10 +343,10 @@ class StartForm(Form):
 
 	def PictureBox_CompClick(self, sender, e):
 		if self.Comp_flag:
-			LogoFile = path + "\\Resources\\Main4_off.bmp"
+			LogoFile = path + "\\Resources\\Main5_off.bmp"
 			self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		else:
-			LogoFile = path + "\\Resources\\Main4_on.bmp"
+			LogoFile = path + "\\Resources\\Main5_on.bmp"
 			self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		self.Comp_flag = not self.Comp_flag
 
@@ -467,8 +471,11 @@ class StartForm(Form):
 		else:
 			sub_DB.Uenv["[Comp]"] = [str(self.Comp_flag)]
 
-		# Close Form
-		self.Close()
+		if self.EM_flag and self.Comp_flag:
+			if MessageBox.Show("DDR EM Extracotr and DDR Analyzer cannot be performed continuously. Do you want to perform each independently?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK:
+				self.Close()
+		else:
+			self.Close()
 
 	def Button_DebugClick(self, sender, e):
 		self.StartFormLoad(self, sender)
