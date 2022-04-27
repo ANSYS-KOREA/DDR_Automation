@@ -438,11 +438,12 @@ class NetForm(Form):
 		self._DataGridView.Name = "DataGridView"
 		self._DataGridView.RowHeadersVisible = False
 		self._DataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-		self._DataGridView.Size = System.Drawing.Size(456, 777)
+		self._DataGridView.Size = System.Drawing.Size(459, 777)
 		self._DataGridView.TabIndex = 36
 		self._DataGridView.Columns[1].ReadOnly = True
 		self._DataGridView.Columns[3].ReadOnly = True
 		self._DataGridView.KeyPress += self.DataGridViewKeyPress
+		self._DataGridView.MaximumSize = System.Drawing.Size(459, 777)
 		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick
 		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
 		# 
@@ -516,7 +517,7 @@ class NetForm(Form):
 		self._ComboBox_AnalyzeGroup.Name = "ComboBox_AnalyzeGroup"
 		self._ComboBox_AnalyzeGroup.Items.AddRange(System.Array[System.Object](["None","Byte0","Byte1","Byte2","Byte3"]))
 		self._ComboBox_AnalyzeGroup.Size = System.Drawing.Size(125, 21)
-		self._ComboBox_AnalyzeGroup.TabIndex = 40
+		self._ComboBox_AnalyzeGroup.TabIndex = 40		
 		# 
 		# Button_Update
 		# 
@@ -527,7 +528,7 @@ class NetForm(Form):
 		self._Button_Update.TabIndex = 32
 		self._Button_Update.Text = "Update"
 		self._Button_Update.UseVisualStyleBackColor = True		
-		self._Button_Update.Click += self.Button_UpdateClick
+		self._Button_Update.Click += self.Button_UpdateClick		
 		# 
 		# Button_Auto
 		# 
@@ -576,7 +577,7 @@ class NetForm(Form):
 		# Net_Form
 		#
 		self.ClientSize = System.Drawing.Size(483, 882)
-		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height/4)
+		self.MaximumSize = System.Drawing.Size(499, 921)		
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
 		self.Controls.Add(self._ComboBox_AnalyzeGroup)
@@ -596,6 +597,7 @@ class NetForm(Form):
 		self.Text = "Target Net Setup"		
 		self.Load += self.NetFormLoad
 		self.ResizeEnd += self.NetFormResizeEnd
+		self.MouseDoubleClick += self.NetFormMouseDoubleClick
 		self.ResumeLayout(False)
 		self.PerformLayout()
 
@@ -612,7 +614,7 @@ class NetForm(Form):
 			self.FormSize_W = self.Size.Width
 			self.FormSize_H = self.Size.Height
 
-			# Resize		
+			# Resize			
 			self._DataGridView.Size = System.Drawing.Size(self._DataGridView.Width + Gap_W, self._DataGridView.Height + Gap_H)
 			self._ComboBox_AnalyzeGroup.Size = System.Drawing.Size(self._ComboBox_AnalyzeGroup.Width + Gap_W, self._ComboBox_AnalyzeGroup.Height)
 			self._Label_H_Border1.Size = System.Drawing.Size(self._Label_H_Border1.Width + Gap_W, self._Label_H_Border1.Height)
@@ -715,11 +717,32 @@ class NetForm(Form):
 				else:
 					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
 
+			self._DataGridView.Height = self._DataGridView.Rows.Count*self._DataGridView.Rows[0].Height + 33
+			ref = self._DataGridView.Height
+			self._Label_GroupName.Location = System.Drawing.Point(10, ref+15)			
+			self._Label_H_Border1.Location = System.Drawing.Point(12, ref+47)
+			self._ComboBox_AnalyzeGroup.Location = System.Drawing.Point(121, ref+19)
+			self._Button_Update.Location = System.Drawing.Point(257, ref+16)
+			self._Button_Auto.Location = System.Drawing.Point(327, ref+16)
+			self._Button_EditRule.Location = System.Drawing.Point(12, ref+55)
+			self._Button_Identify.Location = System.Drawing.Point(257, ref+55)
+			self._Button_Close.Location = System.Drawing.Point(368, ref+55)
+			self.Height = ref+135
+			self.FormSize_H = self.Height
+			min_height = 200
+			if self.Size.Height/2 >= min_height:
+				min_height = self.Size.Height/2
+			self.MinimumSize = System.Drawing.Size(self.Size.Width, min_height)
+
 		except Exception as e:		
 			Log("[Net Form Load] = Failed")
 			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load Net Classification Form","Warning")			
 			EXIT()
+
+	def NetFormMouseDoubleClick(self, sender, e):
+
+		self.NetFormLoad(self, sender)
 
 	def DataGridViewKeyPress(self, sender, e):
 		try:

@@ -415,9 +415,8 @@ class Eye_Form(Form):
 		self._GroupBox_OldEye.Size = System.Drawing.Size(690, 455)		
 		self._GroupBox_OldEye.TabIndex = 26
 		self._GroupBox_OldEye.TabStop = False
-		self._GroupBox_OldEye.Text = "Eye Analysis"
-		self._GroupBox_OldEye.Visible = True
-		#self._GroupBox_OldEye.Visible = False
+		self._GroupBox_OldEye.Text = "Eye Analysis"		
+		self._GroupBox_OldEye.Visible = False
 		# 
 		# GroupBox_UnitOld
 		# 
@@ -451,8 +450,7 @@ class Eye_Form(Form):
 		self._GroupBox_NewEye.TabIndex = 36
 		self._GroupBox_NewEye.TabStop = False
 		self._GroupBox_NewEye.Text = "Eye Analysis"
-		#self._GroupBox_NewEye.Visible = True
-		self._GroupBox_NewEye.Visible = False
+		self._GroupBox_NewEye.Visible = True		
 		# 
 		# GroupBox_UnitNew
 		# 
@@ -864,7 +862,7 @@ class Eye_Form(Form):
 		self._CheckedListBox_ReportName.Location = System.Drawing.Point(377, 50)
 		self._CheckedListBox_ReportName.Name = "CheckedListBox_ReportName"
 		self._CheckedListBox_ReportName.Size = System.Drawing.Size(198, 52)
-		self._CheckedListBox_ReportName.TabIndex = 31
+		self._CheckedListBox_ReportName.TabIndex = 31		
 		self._CheckedListBox_ReportName.SelectedIndexChanged += self.CheckedListBox_ReportNameSelectedIndexChanged
 		# 
 		# ComboBox_DDRGen
