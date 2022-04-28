@@ -1533,10 +1533,11 @@ class OptionForm(Form):
 		# 
 		self._ComboBox_Analyze.FormattingEnabled = True
 		self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
-			["Default"]))
+			["Default",
+			"+ Setup / Hold"]))
 		self._ComboBox_Analyze.Location = System.Drawing.Point(418, 76)
 		self._ComboBox_Analyze.Name = "ComboBox_Analyze"
-		self._ComboBox_Analyze.Size = System.Drawing.Size(74, 23)
+		self._ComboBox_Analyze.Size = System.Drawing.Size(104, 23)
 		self._ComboBox_Analyze.TabIndex = 63
 		self._ComboBox_Analyze.Text = "Default"
 		# 
@@ -1547,7 +1548,7 @@ class OptionForm(Form):
 			["Default"]))
 		self._ComboBox_ReportFormat.Location = System.Drawing.Point(418, 156)
 		self._ComboBox_ReportFormat.Name = "ComboBox_ReportFormat"
-		self._ComboBox_ReportFormat.Size = System.Drawing.Size(74, 23)
+		self._ComboBox_ReportFormat.Size = System.Drawing.Size(104, 23)
 		self._ComboBox_ReportFormat.TabIndex = 67
 		self._ComboBox_ReportFormat.Text = "Default"
 		# 
