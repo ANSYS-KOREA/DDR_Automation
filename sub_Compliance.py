@@ -185,7 +185,23 @@ def Load_Spec(self):
 	##########
     if self._ComboBox_DDRGen.Text == "DDR4":
         # TODO : Load Spec for DDR4
-        pass
+        Log("            = Target DDR Type : DDR4")
+        
+        # Set the specification file according to the DDR type in Resources folder
+        File = path + r'\Resources\Compliance_Spec_DDR4.xlsx'
+        Log("	        = Spec. File : %s" % File)
+
+        # Data setup and hold time - 1 & 2
+        if sub_DB.Compliance_Form._DataGridView.Rows[1].Cells[0].Value:
+            try:
+                Log("            = Load Data setup & hold spec. : Start")
+                Load_Spec_DDR3_DQ_SetupHold(File, "tDS & tDH")
+                Log("            = Load Data setup & hold spec. : Done")
+            except Exception as e:
+                Log("            = Load Data setup & hold spec. : Failed")
+                Log(traceback.format_exc())
+                MessageBox.Show("Compliance test - Loading data setup & hold spec. failed","Warning")
+                EXIT()
 
     ##########
 	#  DDR5  #
@@ -918,6 +934,8 @@ def Comp_Test_DDR3_DQ_SetupHold(Waveform, self):
                 # Find zero crossing point
                 while(1):
                     if Zero_crossing[zero_idx] > time_idx:
+                        if zero_idx == 0:
+                            zero_idx = 1
                         t0_s = Zero_crossing[zero_idx]
                         t0_s_slew = DQS_slew[zero_idx]
                         t0_h = Zero_crossing[zero_idx-1]
@@ -1062,6 +1080,8 @@ def Comp_Test_DDR3_DQ_SetupHold(Waveform, self):
                 # Find zero crossing point
                 while(1):
                     if Zero_crossing[zero_idx] > time_idx:
+                        if zero_idx == 0:
+                            zero_idx = 1
                         t0_s = Zero_crossing[zero_idx]
                         t0_s_slew = DQS_slew[zero_idx]
                         t0_h = Zero_crossing[zero_idx-1]

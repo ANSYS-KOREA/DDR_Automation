@@ -8,6 +8,7 @@ import sub_ScriptEnv
 import sub_AEDT
 import sub_DB
 import sub_Compliance
+import sub_EyeAnalyze
 import traceback
 
 from GUI_subforms import *
@@ -1944,370 +1945,23 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Button_AnalyzeClick(self, sender, e):
-		try:			
+		try:
 			Log("[Eye Analyze Start] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 			# Initiallization
 			sub_DB.Excel_Img_File = []
 
-			''' '''''''''''''''''''''''''''''''''''''
-			# Calculate Maximum Process Value
-			''''''''''''''''''''''''''''''''''''' '''
-			try:				
-				iter = 0
-				iter1 = 0
-				Group = []
-				for row in sub_DB.Net_Form._DataGridView.Rows:
-					if row.Cells[0].Value:
-						iter1 += 1
-						if row.Cells[4].Value.lower() == "none":
-							iter += 1
-						else:
-							if not row.Cells[4].Value in Group:
-								Group.append(row.Cells[4].Value)
-								iter += 1
-
-				# *.aedt Input
-				if sub_DB.InputFile_Flag == 1:
-					max_val = 5 + 4 + iter1
-					if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
-						max_val = max_val + iter				
-
-				# *.csv Input
-				elif sub_DB.InputFile_Flag == 2:
-					max_val = 5 + 3 + iter1
-					if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
-						max_val = max_val + iter
-
-				# for compliance test
-				if sub_DB.Option_Form._CheckBox_Compiance.Checked:						
-					max_val += sub_DB.Compliance_Form.Checked_Num + 3 # 3 = Export waveform, Get waveform, Load spec.
-
-				Log("	<Calculate Max. Progress number> = Done, Max. Pogress Num. = %s" % max_val)
-
-			except Exception as e:						
-				Log("	<Calculate Max. Progress number> = Failed")
-				Log(traceback.format_exc())
-				MessageBox.Show("Fail to calculate maximum progress number","Warning")						
-				EXIT()				
-
-			''' '''''''''''''''''''''''''''''''''''''
-			# Show Option Form for Eye Analyzer		
-			''''''''''''''''''''''''''''''''''''' '''
-			result = sub_DB.Option_Form.ShowDialog()		
-			self._Options_ToolStripMenuItem.Enabled = True
-
+			result = sub_DB.Option_Form.ShowDialog()
 			# Press OK Button in Option Form
 			if result == DialogResult.OK:
-				# for New Eye		
-				if sub_DB.Eyeflag:					
-					#	Get Location for Progress Form
-					x_axis = self.Location.X + self.Size.Width/2
-					y_axis = self.Location.Y + self.Size.Height/2
-					Location = [x_axis, y_axis]
+				# for New Eye
+				if sub_DB.Eyeflag:
+					# Default
+					if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:
+						sub_EyeAnalyze.New_Default(self)
 
-					#	Show Progress Form and change mouse cursor from defualt to wait
-					try:
-						Log("	<Progress Form Launch> = Done, Max. Pogress Num. = %s" % max_val)
-						import GUI_subforms
-						sub_DB.Cal_Form = GUI_subforms.CalForm(Location)
-						sub_DB.Cal_Form._ProgressBar_Vref.Maximum = max_val				
-						sub_DB.Cal_Form.Show()				
-						self.Cursor = Cursors.WaitCursor
-						sub_DB.Cal_Form.Cursor = Cursors.WaitCursor
-
-					except Exception as e:						
-						Log("	<Progress Form Launch> = Failed")
-						Log(traceback.format_exc())
-						MessageBox.Show("Fail to launch Progress Form","Warning")						
-						EXIT()
-
-					#########################
-					#   Vref Calculation    #
-					#########################
-					try:
-						sub_DB.Cal_Form.Text = "Calculating Vcent_DQ"
-						sub_DB.Cal_Form._Label_Vref.Text = "Calculating Vcent_DQ..."
-						sub_DB.Cal_Form._ProgressBar_Vref.Value += 1	
-
-						if sub_DB.InputFile_Flag == 1: # *.aedt input
-							Vref = Cal_Vref_AEDT(self, Location)
-						
-						elif sub_DB.InputFile_Flag == 2: # *.csv input					
-							Vref = Cal_Vref_WaveForm()
-
-						# Manual Vref : Calculation Vref
-						if sub_DB.Option_Form._ComboBox_Vref.Text.lower() == "manual":
-							self._TextBox_VcentDQ.Text = sub_DB.Option_Form._TextBox_Vref.Text
-							sub_DB.Vref = float(sub_DB.Option_Form._TextBox_Vref.Text)
-
-						# Auto Vref : Calculation Vref
-						else:
-							self._TextBox_VcentDQ.Text = str(Vref)
-
-						Log("	<Vref Calculation> = Done")
-
-					except Exception as e:						
-						Log("	<Launch Vref Calculation> = Failed")
-						Log(traceback.format_exc())
-						MessageBox.Show("Fail to launch Vref Calcultation","Warning")						
-						EXIT()
-
-					#########################
-					#   Eye Analyze         #
-					#########################
-					try:
-						sub_DB.Cal_Form.Text = "Analyzing Eye Diagram"
-						sub_DB.Cal_Form._Label_Vref.Text = "Analyzing Eye Diagram..."
-						sub_DB.Cal_Form._ProgressBar_Vref.Value += 1	
-
-						Eye_Measure_Results = Measure_Eye(self, Location)
-
-						#	Close Progress Form and change mouse cursor from defualt to wait
-						sub_DB.Cal_Form._Label_Vref.Text = "Wrapping up eye measurement results"
-						sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
-			
-						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control			
-						self._Button_Analyze.Enabled = True
-						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
-
-						# View Analyze Result
-						if sub_DB.Eye_Analyze_Flag:
-							sub_DB.Net_Form._DataGridView.Columns.Add(sub_DB.Net_Form._Col_Width)
-							sub_DB.Net_Form._DataGridView.Columns.Add(sub_DB.Net_Form._Col_Margin)
-							sub_DB.Eye_Analyze_Flag = False
-						else:
-							for row in sub_DB.Net_Form._DataGridView.Rows:
-								row.Cells[5].Value = ""
-								row.Cells[6].Value = ""
-				
-						sub_DB.Net_Form._DataGridView.Columns[5].DisplayIndex = 2
-						sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 3
-						sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
-
-						for row in sub_DB.Net_Form._DataGridView.Rows:
-							if row.Cells[0].Value:								
-								row.Cells[5].Value = str(Eye_Measure_Results[row.Cells[1].Value][0])
-								row.Cells[6].Value = str(Eye_Measure_Results[row.Cells[1].Value][2])
-						sub_DB.Net_Form.Init_Flag = False
-
-						sub_DB.Net_Form.Text = "Eye Analyze Results"
-						Log("	<Eye Analyze> = Done")
-
-					except Exception as e:						
-						Log("	<Launch Eye Analyze> = Failed")
-						Log(traceback.format_exc())
-						MessageBox.Show("Fail to launch Eye Analyze","Warning")						
-						EXIT()
-
-					#########################
-					#   Eye Plot            #
-					#########################
-					try:						
-						sub_DB.Cal_Form.Text = "Plotting Eye..."	
-						sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT"
-						sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
-
-						if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
-							Log("	<Eye Plot> = Start")
-							# *.aedt input
-							if sub_DB.InputFile_Flag == 1:
-								sub_DB.Excel_Img_File = []
-
-								# Find min./max. voltage value for Y-axis setup
-								vol_max = []
-								vol_min = []
-								for key in sub_DB.Waveform:
-									vol_max.append(max(sub_DB.Waveform[key]))
-									vol_min.append(min(sub_DB.Waveform[key]))
-								vmax = (max(vol_max)//100 + 1)*100
-								if min(vol_min) < 0:
-									vmin = (min(vol_min)//100)*100
-								else:
-									vmin = (min(vol_min)//100-1)*100
-								Log("		(Y-axis Max.) = %s[mV]" % vmax)
-								Log("		(Y-axis Min.) = %s[mV]" % vmin)
-
-								# Get Group List
-								Group = []
-								for row in sub_DB.Net_Form._DataGridView.Rows:
-									if row.Cells[0].Value:
-										if not row.Cells[4].Value in Group:
-											Group.append(row.Cells[4].Value)
-
-								# Get Plot List
-								Plot_list = {}
-								for key in Group:
-									Plot_list[key] = []
-									for row in sub_DB.Net_Form._DataGridView.Rows:
-										if row.Cells[0].Value:
-											if key == row.Cells[4].Value:
-												Plot_list[key].append(row.Cells[1].Value)
-
-								# Plot
-								key_list = Plot_list.keys()
-								key_list.sort()
-								Log("		(Report Name)")
-								for key in key_list:						
-									if key == "None":
-										for net in Plot_list[key]:								
-											for row in sub_DB.Net_Form._DataGridView.Rows:
-												if net == row.Cells[1].Value:
-													Report_Name = row.Cells[3].Value
-													break
-											sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT - %s" % Report_Name
-											sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
-											Log("			= %s" % Report_Name)
-											Plot_Eye(Report_Name, [net], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
-								
-									else:
-										sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT - %s" % key
-										sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
-										Log("			= %s" % key)
-										Plot_Eye(key, Plot_list[key], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
-
-								#sub_ScriptEnv.Release()
-								#sub_ScriptEnv.Shutdown()
-								#sub_DB.AEDT = {}
-					
-							# *.csv input
-							elif sub_DB.InputFile_Flag == 2: # *.csv input
-								sub_DB.Excel_Img_File = []
-
-								AEDT_File = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".aedt"
-								MessageBox.Show("The eye diagram will plot in Ansys Electronics Desktop.\n\n"+
-								AEDT_File ,"Information",MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-								# Find min./max. voltage value for Y-axis setup
-								vol_max = []
-								vol_min = []
-								for key in sub_DB.Waveform:
-									vol_max.append(max(sub_DB.Waveform[key]))
-									vol_min.append(min(sub_DB.Waveform[key]))
-								vmax = (max(vol_max)//100 + 1)*100
-								if min(vol_min) < 0:
-									vmin = (min(vol_min)//100)*100
-								else:
-									vmin = (min(vol_min)//100-1)*100
-								Log("		(Y-axis Max.) = %s[mV]" % vmax)
-								Log("		(Y-axis Min.) = %s[mV]" % vmin)
-
-								self.TopMost = True
-								sub_DB.Cal_Form.TopMost = True
-								sub_AEDT.Set_AEDT_PlotTemplate()
-								Log("		(Plot Template) = Done")
-								self.TopMost = False
-								sub_DB.Cal_Form.TopMost = False
-
-								# Get Group List
-								Group = []
-								for row in sub_DB.Net_Form._DataGridView.Rows:
-									if row.Cells[0].Value:
-										if not row.Cells[4].Value in Group:
-											Group.append(row.Cells[4].Value)
-
-								# Get Plot List
-								Plot_list = {}
-								for key in Group:
-									Plot_list[key] = []
-									for row in sub_DB.Net_Form._DataGridView.Rows:
-										if row.Cells[0].Value:
-											if key == row.Cells[4].Value:
-												Plot_list[key].append(row.Cells[1].Value)
-
-								# Plot
-								key_list = Plot_list.keys()
-								key_list.sort()
-								Log("		(Report Name)")
-								for key in key_list:
-									if key == "None":
-										AEDT_File = AEDT_File.split(".")[0] + "_NonGroup." + AEDT_File.split(".")[-1]										
-										for net in Plot_list[key]:								
-											for row in sub_DB.Net_Form._DataGridView.Rows:
-												if net == row.Cells[1].Value:
-													Report_Name = row.Cells[3].Value
-													break
-											sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT - %s" % Report_Name
-											sub_DB.Cal_Form._ProgressBar_Vref.Value += 1											
-											Import_file = Gen_waveform_file(self._TextBox_InputFile.Text, net, False)
-											Log("			= %s" % Report_Name)
-											Plot_Eye_Import(Report_Name, Import_file, [net], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
-											os.remove(Import_file)
-								
-									else:
-										AEDT_File = AEDT_File.split(".")[0] + "_Group." + AEDT_File.split(".")[-1]										
-										sub_DB.Cal_Form._Label_Vref.Text = "Plotting Eye in AEDT - %s" % key
-										sub_DB.Cal_Form._ProgressBar_Vref.Value += 1										
-										Import_file = Gen_waveform_file(self._TextBox_InputFile.Text, Plot_list[key], True)
-										Log("			= %s" % key)
-										Plot_Eye_Import(key, Import_file, Plot_list[key], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
-										os.remove(Import_file)
-
-								if os.path.isfile(AEDT_File):									
-									prj_name = AEDT_File.split("\\")[-1].split(".")[0]
-									if prj_name in sub_DB.AEDT["Desktop"].GetProjectList():
-										sub_DB.AEDT["Desktop"].CloseProject(prj_name)
-									os.remove(AEDT_File)
-									if os.path.isfile(AEDT_File + ".lock"):
-										os.remove(AEDT_File + ".lock")
-									sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
-									sub_ScriptEnv.Release()									
-									sub_DB.AEDT = {}
-								else:
-									sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
-									sub_ScriptEnv.Release()
-									sub_DB.AEDT = {}
-
-								#sub_ScriptEnv.Release()
-								#sub_ScriptEnv.Shutdown()								
-							Log("	<Eye Plot> = Done")
-
-						else:
-							Log("	<Eye Plot> = False")
-
-					except Exception as e:						
-						Log("	<Launch Eye Plot> = Failed")
-						Log(traceback.format_exc())
-						MessageBox.Show("Fail to launch Eye Plot","Warning")						
-						EXIT()
-
-					#########################
-					#  Create Excel Report  #
-					#########################
-					try:						
-						sub_DB.Cal_Form.Text = "Creating Report..."	
-						sub_DB.Cal_Form._Label_Vref.Text = "Creating Excel Report - %s" % sub_DB.Option_Form._TextBox_OutputExcelFile.Text.split("\\")[-1]
-						sub_DB.Cal_Form._ProgressBar_Vref.Value += 1				
-
-						if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
-							Log("	<Create Excel Report> = Start")
-							if sub_DB.InputFile_Flag == 1:
-								Create_Excel_Report()
-							elif sub_DB.InputFile_Flag == 2:
-								Create_Excel_Report_Imported()
-							Log("	<Create Excel Report> = Done")
-
-						else:
-							Log("	<Create Excel Report> = False")
-
-					except Exception as e:						
-						Log("	<Launch Create Excel Report> = Failed")
-						Log(traceback.format_exc())
-						MessageBox.Show("Fail to launch create excel report","Warning")
-						EXIT()
-					
-					#########################
-					#  Save Log File        #
-					#########################
-					try:
-						Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
-						Log("[Save Log] = Done")
-						LogSave()
-
-					except Exception as e:						
-						Log("[Save Log] = Failed")
-						Log(traceback.format_exc())
-						MessageBox.Show("Fail to save log file","Warning")
-						EXIT()
+					# +Setup/Hold
+					elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 1:
+						sub_EyeAnalyze.New_SetupHold(self)
 
 				# for Old Eye
 				else:
@@ -2675,12 +2329,12 @@ class Eye_Form(Form):
 				sub_DB.Cal_Form.Cursor = Cursors.Default
 
 				os.startfile(sub_DB.result_dir)
-				sub_DB.Result_Flag = True
+				sub_DB.Result_Flag = True			
 				sub_DB.Net_Form.ShowDialog()
 				sub_DB.Result_Flag = False
 				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
 				self._Button_ViewResult.Enabled = True
-
+		
 			# Press Cancel Button in Option Form
 			else:
 				pass

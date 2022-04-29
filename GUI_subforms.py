@@ -410,6 +410,8 @@ class NetForm(Form):
 		self._Col_AnalyzeGroup = System.Windows.Forms.DataGridViewComboBoxColumn()
 		self._Col_Width = System.Windows.Forms.DataGridViewTextBoxColumn()
 		self._Col_Margin = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Setup = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Hold = System.Windows.Forms.DataGridViewTextBoxColumn()
 		self._Label_GroupName = System.Windows.Forms.Label()
 		self._Label_H_Border1 = System.Windows.Forms.Label()
 		self._ComboBox_AnalyzeGroup = System.Windows.Forms.ComboBox()
@@ -443,7 +445,7 @@ class NetForm(Form):
 		self._DataGridView.Columns[1].ReadOnly = True
 		self._DataGridView.Columns[3].ReadOnly = True
 		self._DataGridView.KeyPress += self.DataGridViewKeyPress
-		self._DataGridView.MaximumSize = System.Drawing.Size(459, 777)
+		#self._DataGridView.MaximumSize = System.Drawing.Size(459, 777)
 		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick
 		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
 		# 
@@ -482,15 +484,27 @@ class NetForm(Form):
 		# 
 		# Col_Width
 		# 
-		self._Col_Width.HeaderText = "Eye Width [ps]"
+		self._Col_Width.HeaderText = "Width [ps]"
 		self._Col_Width.Name = "Eye_Width"
-		self._Col_Width.Width = 101
+		self._Col_Width.Width = 80
 		# 
 		# Col_Margin
 		# 
-		self._Col_Margin.HeaderText = "Timing Margin [ps]"
+		self._Col_Margin.HeaderText = "Margin [ps]"
 		self._Col_Margin.Name = "Eye_Margin"
-		self._Col_Margin.Width = 118
+		self._Col_Margin.Width = 85
+		# 
+		# Col_Setup
+		# 
+		self._Col_Setup.HeaderText = "Setup [ps]"
+		self._Col_Setup.Name = "Eye_Setup"
+		self._Col_Setup.Width = 80
+		# 
+		# Col_Hold
+		# 
+		self._Col_Hold.HeaderText = "Hold [ps]"
+		self._Col_Hold.Name = "Eye_Hold"
+		self._Col_Hold.Width = 80
 		# 
 		# Label_GroupName
 		# 
@@ -507,7 +521,7 @@ class NetForm(Form):
 		self._Label_H_Border1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
 		self._Label_H_Border1.Location = System.Drawing.Point(12, 829)
 		self._Label_H_Border1.Name = "Label_H_Border1"
-		self._Label_H_Border1.Size = System.Drawing.Size(456, 2)
+		self._Label_H_Border1.Size = System.Drawing.Size(458, 2)
 		self._Label_H_Border1.TabIndex = 39
 		# 
 		# ComboBox_AnalyzeGroup
@@ -533,7 +547,7 @@ class NetForm(Form):
 		# Button_Auto
 		# 
 		self._Button_Auto.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_Auto.Location = System.Drawing.Point(327, 799)
+		self._Button_Auto.Location = System.Drawing.Point(327, 801)
 		self._Button_Auto.Name = "Button_Auto"
 		self._Button_Auto.Size = System.Drawing.Size(141, 25)
 		self._Button_Auto.TabIndex = 38
@@ -566,7 +580,7 @@ class NetForm(Form):
 		# Button_Close
 		# 
 		self._Button_Close.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_Close.Location = System.Drawing.Point(368, 837)
+		self._Button_Close.Location = System.Drawing.Point(368, 839)
 		self._Button_Close.Name = "Button_Close"
 		self._Button_Close.Size = System.Drawing.Size(100, 35)
 		self._Button_Close.TabIndex = 37
@@ -577,9 +591,9 @@ class NetForm(Form):
 		# Net_Form
 		#
 		self.ClientSize = System.Drawing.Size(483, 882)
-		self.MaximumSize = System.Drawing.Size(499, 921)		
+		#self.MaximumSize = System.Drawing.Size(499, 921)		
 		self.FormSize_W = self.Size.Width
-		self.FormSize_H = self.Size.Height
+		self.FormSize_H = self.Size.Height		
 		self.Controls.Add(self._ComboBox_AnalyzeGroup)
 		self.Controls.Add(self._Label_H_Border1)
 		self.Controls.Add(self._Button_Auto)
@@ -706,33 +720,53 @@ class NetForm(Form):
 				self._DataGridView.Rows.Clear()
 				for i in range(0, len(Name_idx)):
 					self._DataGridView.Rows.Add(Backup_row[Name_idx[i]])
-			
-
-			else:
-				pass
 
 			for row in self._DataGridView.Rows:
 				if row.Cells[0].Value:
 					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
 				else:
 					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
-
-			self._DataGridView.Height = self._DataGridView.Rows.Count*self._DataGridView.Rows[0].Height + 33
+			###################
+			# Resize Net Form #
+			###################
+			# Data Grid View			
+			self._DataGridView.Height = self._DataGridView.Rows.Count*self._DataGridView.Rows[0].Height + 50			
+			self._DataGridView.Width = 459
 			ref = self._DataGridView.Height
-			self._Label_GroupName.Location = System.Drawing.Point(10, ref+15)			
+
+			# Label
+			self._Label_GroupName.Location = System.Drawing.Point(10, ref+15)
+			self._Label_GroupName.Size = System.Drawing.Size(109, 28)
+
+			# Border
 			self._Label_H_Border1.Location = System.Drawing.Point(12, ref+47)
+			self._Label_H_Border1.Size = System.Drawing.Size(459, 2)
+
+			# ComboBox
 			self._ComboBox_AnalyzeGroup.Location = System.Drawing.Point(121, ref+19)
+			self._ComboBox_AnalyzeGroup.Size = System.Drawing.Size(125, 21)
+
+			# Buttons
 			self._Button_Update.Location = System.Drawing.Point(257, ref+16)
-			self._Button_Auto.Location = System.Drawing.Point(327, ref+16)
+			self._Button_Update.Size = System.Drawing.Size(64, 25)
+			self._Button_Auto.Location = System.Drawing.Point(330, ref+16)
+			self._Button_Auto.Size = System.Drawing.Size(141, 25)
 			self._Button_EditRule.Location = System.Drawing.Point(12, ref+55)
+			self._Button_EditRule.Size = System.Drawing.Size(234, 35)
 			self._Button_Identify.Location = System.Drawing.Point(257, ref+55)
-			self._Button_Close.Location = System.Drawing.Point(368, ref+55)
-			self.Height = ref+135
-			self.FormSize_H = self.Height
+			self._Button_Identify.Size = System.Drawing.Size(100, 35)
+			self._Button_Close.Location = System.Drawing.Point(371, ref+55)
+			self._Button_Close.Size = System.Drawing.Size(100, 35)
+
+			# Main Form
+			self.Height = ref+135	
+			self.Width = 499			
 			min_height = 200
 			if self.Size.Height/2 >= min_height:
 				min_height = self.Size.Height/2
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, min_height)
+			self.FormSize_H = self.Height
+			self.FormSize_W = self.Width
 
 		except Exception as e:		
 			Log("[Net Form Load] = Failed")
@@ -1433,7 +1467,7 @@ class OptionForm(Form):
 		# Label_mV
 		# 
 		self._Label_mV.Font = System.Drawing.Font("Arial", 9)
-		self._Label_mV.Location = System.Drawing.Point(274, 72)
+		self._Label_mV.Location = System.Drawing.Point(304, 72)
 		self._Label_mV.Name = "Label_mV"
 		self._Label_mV.Size = System.Drawing.Size(36, 28)
 		self._Label_mV.TabIndex = 65
@@ -1444,11 +1478,11 @@ class OptionForm(Form):
 		# Label_Analyze
 		# 
 		self._Label_Analyze.Font = System.Drawing.Font("Arial", 9)
-		self._Label_Analyze.Location = System.Drawing.Point(316, 72)
+		self._Label_Analyze.Location = System.Drawing.Point(341, 72)
 		self._Label_Analyze.Name = "Label_Analyze"
-		self._Label_Analyze.Size = System.Drawing.Size(101, 28)
+		self._Label_Analyze.Size = System.Drawing.Size(71, 28)
 		self._Label_Analyze.TabIndex = 62
-		self._Label_Analyze.Text = "Analyze Method :"
+		self._Label_Analyze.Text = "Analyze :"
 		self._Label_Analyze.TextAlign = System.Drawing.ContentAlignment.MiddleRight		
 		# 
 		# Label_ImageWidth
@@ -1459,16 +1493,18 @@ class OptionForm(Form):
 		self._Label_ImageWidth.Size = System.Drawing.Size(103, 28)
 		self._Label_ImageWidth.TabIndex = 47
 		self._Label_ImageWidth.Text = "Image Width :"
+		self._Label_ImageWidth.Visible = False
 		self._Label_ImageWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		# 
 		# Label_ImageWidth_Unit
 		# 
 		self._Label_ImageWidth_Unit.Font = System.Drawing.Font("Arial", 9)
-		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(269, 152)
+		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(249, 152)
 		self._Label_ImageWidth_Unit.Name = "Label_ImageWidth_Unit"
 		self._Label_ImageWidth_Unit.Size = System.Drawing.Size(51, 28)
 		self._Label_ImageWidth_Unit.TabIndex = 49
 		self._Label_ImageWidth_Unit.Text = "[pixel]"
+		self._Label_ImageWidth_Unit.Visible = False
 		self._Label_ImageWidth_Unit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		# 
 		# Label_ReportFormat
@@ -1476,9 +1512,10 @@ class OptionForm(Form):
 		self._Label_ReportFormat.Font = System.Drawing.Font("Arial", 9)
 		self._Label_ReportFormat.Location = System.Drawing.Point(326, 152)
 		self._Label_ReportFormat.Name = "Label_ReportFormat"
-		self._Label_ReportFormat.Size = System.Drawing.Size(95, 28)
+		self._Label_ReportFormat.Size = System.Drawing.Size(92, 28)
 		self._Label_ReportFormat.TabIndex = 66
 		self._Label_ReportFormat.Text = "Report Format :"
+		self._Label_ReportFormat.Visible = False
 		self._Label_ReportFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft		
 		# 
 		# Label_OutputExcelFile
@@ -1520,21 +1557,20 @@ class OptionForm(Form):
 		# 
 		self._ComboBox_Vref.FormattingEnabled = True
 		self._ComboBox_Vref.Items.AddRange(System.Array[System.Object](
-			["Auto",
+			["Auto-default",
 			"Manual"]))
 		self._ComboBox_Vref.Location = System.Drawing.Point(127, 76)
 		self._ComboBox_Vref.Name = "ComboBox_Vref"
-		self._ComboBox_Vref.Size = System.Drawing.Size(70, 23)
+		self._ComboBox_Vref.Size = System.Drawing.Size(100, 23)
 		self._ComboBox_Vref.TabIndex = 61
-		self._ComboBox_Vref.Text = "Auto"
+		self._ComboBox_Vref.SelectedIndex = 0
 		self._ComboBox_Vref.SelectedIndexChanged += self.ComboBox_VrefSelectedIndexChanged
 		# 
 		# ComboBox_Analyze
 		# 
 		self._ComboBox_Analyze.FormattingEnabled = True
 		self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
-			["Default",
-			"+ Setup / Hold"]))
+			["Default"]))
 		self._ComboBox_Analyze.Location = System.Drawing.Point(418, 76)
 		self._ComboBox_Analyze.Name = "ComboBox_Analyze"
 		self._ComboBox_Analyze.Size = System.Drawing.Size(104, 23)
@@ -1551,6 +1587,7 @@ class OptionForm(Form):
 		self._ComboBox_ReportFormat.Size = System.Drawing.Size(104, 23)
 		self._ComboBox_ReportFormat.TabIndex = 67
 		self._ComboBox_ReportFormat.Text = "Default"
+		self._ComboBox_ReportFormat.Visible = False
 		# 
 		# TextBox_Resource
 		# 
@@ -1593,7 +1630,7 @@ class OptionForm(Form):
 		# 
 		self._TextBox_Vref.BackColor = System.Drawing.SystemColors.Window
 		self._TextBox_Vref.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_Vref.Location = System.Drawing.Point(203, 76)
+		self._TextBox_Vref.Location = System.Drawing.Point(233, 76)
 		self._TextBox_Vref.Name = "TextBox_Vref"
 		self._TextBox_Vref.Size = System.Drawing.Size(70, 23)
 		self._TextBox_Vref.Visible = False
@@ -1603,10 +1640,11 @@ class OptionForm(Form):
 		# 
 		self._TextBox_ImageWidth.BackColor = System.Drawing.SystemColors.Window
 		self._TextBox_ImageWidth.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_ImageWidth.Location = System.Drawing.Point(180, 155)
+		self._TextBox_ImageWidth.Location = System.Drawing.Point(160, 155)
 		self._TextBox_ImageWidth.Name = "TextBox_ImageWidth"
 		self._TextBox_ImageWidth.Size = System.Drawing.Size(83, 23)
 		self._TextBox_ImageWidth.Text = "200"
+		self._TextBox_ImageWidth.Visible = False
 		self._TextBox_ImageWidth.TabIndex = 48
 		# 
 		# TextBox_OutputExcelFile
@@ -1629,7 +1667,7 @@ class OptionForm(Form):
 		self._CheckBox_PlotEye.TabIndex = 45
 		self._CheckBox_PlotEye.Text = "Plot EYE with Mask"
 		self._CheckBox_PlotEye.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-		self._CheckBox_PlotEye.Checked = True
+		self._CheckBox_PlotEye.Checked = False
 		self._CheckBox_PlotEye.UseVisualStyleBackColor = True
 		self._CheckBox_PlotEye.CheckedChanged += self.CheckBox_PlotEyeCheckedChanged
 		# 
@@ -1642,7 +1680,7 @@ class OptionForm(Form):
 		self._CheckBox_ExportExcelReport.TabIndex = 46
 		self._CheckBox_ExportExcelReport.Text = "Export Excel Report"
 		self._CheckBox_ExportExcelReport.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-		self._CheckBox_ExportExcelReport.Checked = True
+		self._CheckBox_ExportExcelReport.Checked = False
 		self._CheckBox_ExportExcelReport.UseVisualStyleBackColor = True
 		self._CheckBox_ExportExcelReport.CheckedChanged += self.CheckBox_ExportExcelReportCheckedChanged
 		# 
@@ -1717,8 +1755,31 @@ class OptionForm(Form):
 			#	self._GroupBox_Eye.Visible = False
 			#	self._GroupBox_Comp.Visible = True
 
-			if self._TextBox_OutputExcelFile.Text == "":
-				self._TextBox_OutputExcelFile.Text = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".xlsx"
+			temp = []
+			for row in sub_DB.Net_Form._DataGridView.Rows:
+				temp.append(row.Cells[2].Value)
+
+			if "DQS_P" in temp and "DQS_N" in temp:
+				flag = True
+				for item in self._ComboBox_Analyze.Items:
+					if item == "+ Setup/Hold":
+						flag = False
+						break
+				if flag:
+					self._ComboBox_Analyze.Items.Add("+ Setup/Hold")
+					self._ComboBox_Analyze.SelectedIndex = 1
+
+				flag = True
+				for item in self._ComboBox_ReportFormat.Items:
+					if item == "+ Setup/Hold":
+						flag = False
+						break
+				if flag:
+					self._ComboBox_ReportFormat.Items.Add("+ Setup/Hold")
+					self._ComboBox_ReportFormat.SelectedIndex = 1
+			
+			#if self._TextBox_OutputExcelFile.Text == "":
+			#	self._TextBox_OutputExcelFile.Text = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".xlsx"
 
 		except Exception as e:			
 			Log("[Option Form Load] = Failed")
@@ -1868,12 +1929,9 @@ class OptionForm(Form):
 
 	def CheckBox_ExportExcelReportCheckedChanged(self, sender, e):
 		try:
-			self._TextBox_ImageWidth.Visible = sender.Checked
-			self._TextBox_OutputExcelFile.Visible = sender.Checked
-			self._Button_OutputExcelFile.Visible = sender.Checked
+			self._TextBox_ImageWidth.Visible = sender.Checked			
 			self._Label_ImageWidth.Visible = sender.Checked
-			self._Label_ImageWidth_Unit.Visible = sender.Checked
-			self._Label_OutputExcelFile.Visible = sender.Checked
+			self._Label_ImageWidth_Unit.Visible = sender.Checked			
 			self._Label_ReportFormat.Visible = sender.Checked
 			self._ComboBox_ReportFormat.Visible = sender.Checked
 
@@ -1915,8 +1973,8 @@ class OptionForm(Form):
 			elif self._CheckBox_ExportExcelReport.Checked:
 				if self._TextBox_ImageWidth.Text == "":
 					flag = False
-				elif self._TextBox_OutputExcelFile.Text == "":
-					flag = False
+				#elif self._TextBox_OutputExcelFile.Text == "":
+				#	flag = False
 
 			if not self._CheckBox_PlotEye.Checked:
 				if self._CheckBox_ExportExcelReport.Checked:
