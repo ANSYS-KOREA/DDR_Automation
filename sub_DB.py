@@ -28,12 +28,15 @@ Eyeflag = True
 
 Netlist = []
 Waveform = {}
+Strobe_Waveform = {}
 Jitter_RMS = {}
 total_waveform_length = ""
 Waveform_File = ""
 Excel_Img_File = []
 NetSort_Flag = False
 Eye_Measure_Results = {}
+Setup = {}
+Hold = {}
 Vref = ""
 InputFile_Flag = 1 # 1:*.aedt, 2:*.csv
 Unit = {}
@@ -43,5 +46,5 @@ Time = []
 CSV_flag = True # True : Uniform, False : Arbitrary
 var_string = ""
 Result_Flag = False
-
+exit_iter = 0
 Spec = {}
