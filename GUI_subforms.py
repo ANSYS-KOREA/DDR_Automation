@@ -445,7 +445,7 @@ class NetForm(Form):
 		self._DataGridView.Columns[1].ReadOnly = True
 		self._DataGridView.Columns[3].ReadOnly = True
 		self._DataGridView.KeyPress += self.DataGridViewKeyPress
-		#self._DataGridView.MaximumSize = System.Drawing.Size(459, 777)
+		self._DataGridView.MaximumSize = System.Drawing.Size(459, 500)
 		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick
 		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
 		# 
