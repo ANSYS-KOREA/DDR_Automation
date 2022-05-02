@@ -1,14 +1,78 @@
 import os
 import clr
 import time
+import sub_EyeAnalyze
 
 clr.AddReference('Microsoft.Office.Interop.Excel')
 
 from sub_DB import *
 from sub_functions import *
+from sub_Vref import *
 from Microsoft.Office.Interop import Excel
 
 path = os.path.dirname(os.path.abspath(__file__))
+
+
+#########################
+#  Compliance Test      #
+#########################
+def Compliacne_Test(self):
+    ''' '''''''''''''''''''''''''''''''''''''
+	# Show Option Form for Eye Analyzer		
+	''''''''''''''''''''''''''''''''''''' '''
+    self._Options_ToolStripMenuItem.Enabled = True
+    
+    #	Get Location for Progress Form
+    x_axis = self.Location.X + self.Size.Width/2
+    y_axis = self.Location.Y + self.Size.Height/2
+    Location = [x_axis, y_axis]
+
+    # *.aedt input
+    if sub_DB.InputFile_Flag == 1:
+        # Export Waveform
+        try:								
+		    #TODO : Export Waveform - need pos/neg differentiator and classification
+            sub_DB.Cal_Form.Text = "Compliance Testing"
+            sub_DB.Cal_Form._Label_Vref.Text = "Export Waveform"
+            sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
+            Vref = Cal_Vref_AEDT(self, Location)
+            Log("		(Waveform Export) = Done")
+
+        except Exception as e:
+            Log("		(Waveform Export) = Failed")
+            Log(traceback.format_exc())
+            MessageBox.Show("Compliance test - Exporting waveform has been failed","Warning")
+            EXIT()
+
+        # Get Waveform
+        try:
+            #TODO : Get Waveform
+            sub_DB.Cal_Form.Text = "Compliance Testing"
+            sub_DB.Cal_Form._Label_Vref.Text = "Get Waveform"
+            sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
+            Waveform = temp_get_waveform(self)
+            Log("		(Get Waveform) = Done")
+            
+        except Exception as e:
+            Log("		(Get Waveform) = Failed")
+            Log(traceback.format_exc())
+            MessageBox.Show("Compliance test - Getting waveform has been failed","Warning")
+            EXIT()
+
+        # Run Compliance Test
+        try:
+            result = run_CompTest(Waveform, self)
+            Log("	<Compliance Test> = Done")
+            
+        except Exception as e:
+            Log("	<Compliance Test> = Failed")
+            Log(traceback.format_exc())
+            MessageBox.Show("Compliance test has been failed","Warning")
+            EXIT()
+
+    # *.csv input
+    elif sub_DB.InputFile_Flag == 2:
+        pass
 
 def run_CompTest(Waveform, self):
     #####################################
@@ -55,8 +119,6 @@ def run_CompTest(Waveform, self):
         Log(traceback.format_exc())
         MessageBox.Show("Compliance test - Reporting failed","Warning")
         EXIT()
-
-
 
 def sort_list(List):
     # "abc" -> [a, b, c] -> ord(a) + ord(b) + ord(c) = val
@@ -1380,163 +1442,159 @@ def Excel_Report(Result):
         Log(traceback.format_exc())
         MessageBox.Show("Fail to create excel report","Warning")
         EXIT()
-        
-    
-    
-    
 
-def Create_Excel_Report():
-	try:
-		xlApp = Excel.ApplicationClass()
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
-		xlApp.Visible = True
-		xlApp.DisplayAlerts = False	
+#def Create_Excel_Report():
+#	try:
+#		xlApp = Excel.ApplicationClass()
+#		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
+#		xlApp.Visible = True
+#		xlApp.DisplayAlerts = False	
 
-		xlbook = xlApp.Workbooks.Add()
+#		xlbook = xlApp.Workbooks.Add()
 	
-		# Create Eye Diagram Image Report Worksheet
-		xlsheet = xlbook.Worksheets['Sheet1']
-		xlsheet.Name = "EYE Diagrams"
-		Log("		(Launch Excel) = Done")
+#		# Create Eye Diagram Image Report Worksheet
+#		xlsheet = xlbook.Worksheets['Sheet1']
+#		xlsheet.Name = "EYE Diagrams"
+#		Log("		(Launch Excel) = Done")
 
-		#Save_File = sub_DB.Option_Form._TextBox_OutputExcelFile.Text
+#		#Save_File = sub_DB.Option_Form._TextBox_OutputExcelFile.Text
 
-		imgw = int(sub_DB.Option_Form._TextBox_ImageWidth.Text)
-		imgh = imgw / 5 * 4
-		for i in range(0, len(sub_DB.Excel_Img_File)):
-			j = (i-4*(int(i/4)))*imgw
-			k = int(i/4)*imgh
-			last_k = k
+#		imgw = int(sub_DB.Option_Form._TextBox_ImageWidth.Text)
+#		imgh = imgw / 5 * 4
+#		for i in range(0, len(sub_DB.Excel_Img_File)):
+#			j = (i-4*(int(i/4)))*imgw
+#			k = int(i/4)*imgh
+#			last_k = k
 
-			insert_img = sub_DB.Excel_Img_File[i]
-			xlApp.ActiveSheet.Shapes.AddPicture(insert_img, False, True, j, k, imgw, imgh)
-			#os.remove(insert_img)
-		Log("		(Add Image) = Done")
+#			insert_img = sub_DB.Excel_Img_File[i]
+#			xlApp.ActiveSheet.Shapes.AddPicture(insert_img, False, True, j, k, imgw, imgh)
+#			#os.remove(insert_img)
+#		Log("		(Add Image) = Done")
 
-		#	Eye_Measure_Results[Trace_Name][0] = Width
-		#	Jitter_RMS[Trance_Name] = Exported Value from eye measurement
-		#	Eye_Measure_Results[Trace_Name][1] = Jitter
-		#	Eye_Measure_Results[Trace_Name][2] = Margin
+#		#	Eye_Measure_Results[Trace_Name][0] = Width
+#		#	Jitter_RMS[Trance_Name] = Exported Value from eye measurement
+#		#	Eye_Measure_Results[Trace_Name][1] = Jitter
+#		#	Eye_Measure_Results[Trace_Name][2] = Margin
 
-		# Create Eye Measurement Table Worksheet
-		xlsheet_table = xlbook.Worksheets.Add()
-		xlsheet_table.Name = "EYE Measure Results"
+#		# Create Eye Measurement Table Worksheet
+#		xlsheet_table = xlbook.Worksheets.Add()
+#		xlsheet_table.Name = "EYE Measure Results"
 
-		# Create Column
-		xlsheet_table.Cells[1,1] = ""
-		xlsheet_table.Cells[1,2] = "Analyze Group"
-		xlsheet_table.Cells[1,3] = "Width [ps]"
-		xlsheet_table.Cells[1,4] = "Jitter_RMS [ps]"
-		xlsheet_table.Cells[1,5] = "Jitter [ps]"
-		xlsheet_table.Cells[1,6] = "Timin Margin [ps]"
-		xlsheet_table.Cells[1,7] = "Vcent_DQ [mV]"
-		Log("		(Create Column) = Done")
+#		# Create Column
+#		xlsheet_table.Cells[1,1] = ""
+#		xlsheet_table.Cells[1,2] = "Analyze Group"
+#		xlsheet_table.Cells[1,3] = "Width [ps]"
+#		xlsheet_table.Cells[1,4] = "Jitter_RMS [ps]"
+#		xlsheet_table.Cells[1,5] = "Jitter [ps]"
+#		xlsheet_table.Cells[1,6] = "Timin Margin [ps]"
+#		xlsheet_table.Cells[1,7] = "Vcent_DQ [mV]"
+#		Log("		(Create Column) = Done")
 
-		# Create Column Range
-		Col_Header = xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[1, 7]]
+#		# Create Column Range
+#		Col_Header = xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[1, 7]]
 
-		# Set Column Font
-		Col_Header.Font.Name = "Arial"
-		Col_Header.Font.Size = 11
-		Col_Header.Font.Bold = True
-		#Col_Header.Font.Italic = False
-		#Col_Header.Font.Underline = False
-		#Col_Header.Font.Strikethrough = False
-		#Col_Header.Font.Color = Color.FromArgb(0,0,0)
-		Log("		(Set Column Font) = Done")
+#		# Set Column Font
+#		Col_Header.Font.Name = "Arial"
+#		Col_Header.Font.Size = 11
+#		Col_Header.Font.Bold = True
+#		#Col_Header.Font.Italic = False
+#		#Col_Header.Font.Underline = False
+#		#Col_Header.Font.Strikethrough = False
+#		#Col_Header.Font.Color = Color.FromArgb(0,0,0)
+#		Log("		(Set Column Font) = Done")
 
-		# Set Column Border
-		Col_Header.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
-		Col_Header.Borders.Weight = Excel.XlBorderWeight.xlThin
-		Log("		(Set Column Border) = Done")
+#		# Set Column Border
+#		Col_Header.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
+#		Col_Header.Borders.Weight = Excel.XlBorderWeight.xlThin
+#		Log("		(Set Column Border) = Done")
 	
-		# Set Column Back Color
-		Col_Header.Interior.Color = Color.FromArgb(218,240,254)
-		Log("		(Set Column Color) = Done")
+#		# Set Column Back Color
+#		Col_Header.Interior.Color = Color.FromArgb(218,240,254)
+#		Log("		(Set Column Color) = Done")
 
-		# Add Rows - Eye Measurement Results
-		row_idx = 2
-		for row in sub_DB.Net_Form._DataGridView.Rows:
-			if row.Cells[0].Value:
-				net_name = row.Cells[1].Value
-				xlsheet_table.Cells[row_idx,1] = net_name
-				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
-				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width
-				xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
-				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
-				xlsheet_table.Cells[row_idx,6] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
-				xlsheet_table.Cells[row_idx,7] = round(sub_DB.Vref, 1) # Vref
-				row_idx += 1
-		row_idx -= 1
-		Log("		(Add Data) = Done")
+#		# Add Rows - Eye Measurement Results
+#		row_idx = 2
+#		for row in sub_DB.Net_Form._DataGridView.Rows:
+#			if row.Cells[0].Value:
+#				net_name = row.Cells[1].Value
+#				xlsheet_table.Cells[row_idx,1] = net_name
+#				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
+#				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width
+#				xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+#				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
+#				xlsheet_table.Cells[row_idx,6] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
+#				xlsheet_table.Cells[row_idx,7] = round(sub_DB.Vref, 1) # Vref
+#				row_idx += 1
+#		row_idx -= 1
+#		Log("		(Add Data) = Done")
 
-		# Create Row Range
-		Row_Header = xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[row_idx, 1]]
+#		# Create Row Range
+#		Row_Header = xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[row_idx, 1]]
 
-		# Set Row Font
-		Row_Header.Font.Name = "Arial"
-		Row_Header.Font.Size = 11
-		Row_Header.Font.Bold = True
-		Log("		(Set Row Font) = Done")
+#		# Set Row Font
+#		Row_Header.Font.Name = "Arial"
+#		Row_Header.Font.Size = 11
+#		Row_Header.Font.Bold = True
+#		Log("		(Set Row Font) = Done")
 
-		# Set Row Border
-		Row_Header.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
-		Row_Header.Borders.Weight = Excel.XlBorderWeight.xlThin
-		Log("		(Set Row Border) = Done")
+#		# Set Row Border
+#		Row_Header.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
+#		Row_Header.Borders.Weight = Excel.XlBorderWeight.xlThin
+#		Log("		(Set Row Border) = Done")
 
-		# Set Row Back Color
-		Row_Header.Interior.Color = Color.FromArgb(218,240,254)
-		Log("		(Set Row Color) = Done")
+#		# Set Row Back Color
+#		Row_Header.Interior.Color = Color.FromArgb(218,240,254)
+#		Log("		(Set Row Color) = Done")
 
-		# Create Merge Cell Range
-		Merge_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 7], xlsheet_table.Cells[row_idx, 7]]
-		Merge_Cell.Merge(False)
-		Merge_Cell.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
-		Merge_Cell.Cells.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter
-		Log("		(Cell Merge) = Done")
+#		# Create Merge Cell Range
+#		Merge_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 7], xlsheet_table.Cells[row_idx, 7]]
+#		Merge_Cell.Merge(False)
+#		Merge_Cell.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
+#		Merge_Cell.Cells.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter
+#		Log("		(Cell Merge) = Done")
 
-		# Merge Group
-		start_idx = 2
-		for i in range(2, row_idx):
-			if xlsheet_table.Cells[i, 2].Value2 != "None":
-				if xlsheet_table.Cells[i, 2].Value2 != xlsheet_table.Cells[i+1, 2].Value2:				
-					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[i, 2]].Merge(False)
-					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[i, 2]].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
-					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[i, 2]].VerticalAlignment = Excel.XlHAlign.xlHAlignCenter
-					start_idx = i+1
+#		# Merge Group
+#		start_idx = 2
+#		for i in range(2, row_idx):
+#			if xlsheet_table.Cells[i, 2].Value2 != "None":
+#				if xlsheet_table.Cells[i, 2].Value2 != xlsheet_table.Cells[i+1, 2].Value2:				
+#					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[i, 2]].Merge(False)
+#					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[i, 2]].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
+#					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[i, 2]].VerticalAlignment = Excel.XlHAlign.xlHAlignCenter
+#					start_idx = i+1
 
-				if i+1 == row_idx:
-					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[row_idx, 2]].Merge(False)
-					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[row_idx, 2]].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
-					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[row_idx, 2]].VerticalAlignment = Excel.XlHAlign.xlHAlignCenter
-		Log("		(Cell Merge by Group) = Done")
+#				if i+1 == row_idx:
+#					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[row_idx, 2]].Merge(False)
+#					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[row_idx, 2]].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
+#					xlsheet_table.Range[xlsheet_table.Cells[start_idx, 2], xlsheet_table.Cells[row_idx, 2]].VerticalAlignment = Excel.XlHAlign.xlHAlignCenter
+#		Log("		(Cell Merge by Group) = Done")
 
-		# Create Data Range
-		Data_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 2], xlsheet_table.Cells[row_idx, 7]]
-		Data_Cell.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
-		Data_Cell.Borders.Weight = Excel.XlBorderWeight.xlThin
+#		# Create Data Range
+#		Data_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 2], xlsheet_table.Cells[row_idx, 7]]
+#		Data_Cell.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
+#		Data_Cell.Borders.Weight = Excel.XlBorderWeight.xlThin
 
-		# Auto Fit
-		xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[2, 7]].Columns.AutoFit()
-		Log("		(Column Width AutoFit) = Done")
+#		# Auto Fit
+#		xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[2, 7]].Columns.AutoFit()
+#		Log("		(Column Width AutoFit) = Done")
 	
-		# Save and Release
-		#xlbook.SaveAs(Save_File)
-		#xlbook.Close()
-		#xlApp.Quit()
-		xlApp.DisplayAlerts = True
-		ReleaseObject(Col_Header)
-		ReleaseObject(Row_Header)
-		ReleaseObject(Data_Cell)
-		ReleaseObject(Merge_Cell)
-		ReleaseObject(xlsheet)
-		ReleaseObject(xlbook)
-		ReleaseObject(xlApp)
+#		# Save and Release
+#		#xlbook.SaveAs(Save_File)
+#		#xlbook.Close()
+#		#xlApp.Quit()
+#		xlApp.DisplayAlerts = True
+#		ReleaseObject(Col_Header)
+#		ReleaseObject(Row_Header)
+#		ReleaseObject(Data_Cell)
+#		ReleaseObject(Merge_Cell)
+#		ReleaseObject(xlsheet)
+#		ReleaseObject(xlbook)
+#		ReleaseObject(xlApp)
 
-		#Log("		(File Save) = Done, %s" % Save_File)
+#		#Log("		(File Save) = Done, %s" % Save_File)
 
-	except Exception as e:		
-		Log("	<Create Excel Report> = Failed")
-		Log(traceback.format_exc())
-		MessageBox.Show("Fail to create excel report","Warning")						
-		EXIT()
+#	except Exception as e:		
+#		Log("	<Create Excel Report> = Failed")
+#		Log(traceback.format_exc())
+#		MessageBox.Show("Fail to create excel report","Warning")						
+#		EXIT()
