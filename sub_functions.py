@@ -7,6 +7,7 @@ import traceback
 import sub_ScriptEnv
 import sub_AEDT
 import sub_DB
+import GUI_subforms
 
 clr.AddReference('Microsoft.Office.Interop.Excel')
 
@@ -565,12 +566,11 @@ def LogSave():
 	f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
 	f.write(sub_DB.Log)	
 	f.close()
-	
 
-def EXIT():
-	sub_DB.exit_iter += 1	
-	if sub_DB.exit_iter == 1:		
-		LogSave()		
+def EXIT():	
+	sub_DB.exit_iter += 1
+	if sub_DB.exit_iter == 1:
+		LogSave()
 	#if "App" in sub_DB.AEDT.keys():
 	#	sub_ScriptEnv.Release()
 	sub_ScriptEnv.Release()
@@ -581,9 +581,15 @@ def ReleaseObject(obj):
 	System.GC.Collect()
 
 def Initial():
-	sub_ScriptEnv.Release()
-	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()	
-	sub_DB.Net_Form.Init_Flag = True
+	Log("\n\n")
+	sub_ScriptEnv.Release()	
+	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()
+	sub_DB.Net_Form = ""
+	sub_DB.Net_Form = GUI_subforms.NetForm()
+	sub_DB.Option_Form = ""
+	sub_DB.Option_Form = GUI_subforms.OptionForm(2)
+	sub_DB.Result_Flag = False
+	sub_DB.Eye_Analyze_Flag = True
 
 def temp_get_waveform(self):
 	Waveform = {}
