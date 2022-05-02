@@ -386,7 +386,7 @@ def New_Default(self):
 	try:
 		Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 		Log("[Save Log] = Done")
-		LogSave()
+		#LogSave()
 
 	except Exception as e:						
 		Log("[Save Log] = Failed")
@@ -581,7 +581,7 @@ def New_SetupHold(self):
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
 
 		Log("	<Show analyze result> = Start")
-
+		
 		# Find the worst setup/hold value for each net
 		Setup = {}
 		for key in Result["Data Setup Time"]:
@@ -598,8 +598,9 @@ def New_SetupHold(self):
 				temp.append(val[3])
 			Hold[key] = min(temp)
 		sub_DB.Hold = Hold
-
+		
 		# show the measured values in netform
+		print sub_DB.Eye_Analyze_Flag
 		if sub_DB.Eye_Analyze_Flag:
 			sub_DB.Net_Form._DataGridView.Columns.Add(sub_DB.Net_Form._Col_Width)
 			sub_DB.Net_Form._DataGridView.Columns.Add(sub_DB.Net_Form._Col_Margin)
@@ -612,7 +613,7 @@ def New_SetupHold(self):
 				row.Cells[6].Value = ""
 				row.Cells[7].Value = ""
 				row.Cells[8].Value = ""
-				
+		
 		sub_DB.Net_Form._DataGridView.Columns[5].DisplayIndex = 2
 		sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 3
 		sub_DB.Net_Form._DataGridView.Columns[7].DisplayIndex = 4

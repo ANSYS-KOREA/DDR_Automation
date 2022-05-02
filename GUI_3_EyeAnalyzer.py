@@ -1558,6 +1558,7 @@ class Eye_Form(Form):
 						with open(sub_DB.Eye_Form._TextBox_InputFile.Text) as fp:
 							# Read the fist line
 							temp_data = fp.readline().replace("\"","").replace(" ","").replace("-","_").strip().split(",")
+							temp_data = list(filter(None,temp_data))							
 
 							# Delete global & local variable data
 							for i in range(0, len(temp_data)):
@@ -1569,12 +1570,11 @@ class Eye_Form(Form):
 							# Get time and voltage unit
 							sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
 							sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
-
+							
 							# Delete Time Column
 							del temp_data[0]
-
-							data = [[0 for col in range(0)] for row in range(len(temp_data))]
-							for i in range(0, len(temp_data)):
+							data = [[0 for col in range(0)] for row in range(len(temp_data))]							
+							for i in range(0, len(temp_data)):								
 								data[i].append(temp_data[i])
 
 							# Get Waveform Data
@@ -1653,6 +1653,7 @@ class Eye_Form(Form):
 						Log(traceback.format_exc())
 						MessageBox.Show("Input csv file parsing has been failed.\n\nPlease check the input file,\n\t%s." % File.split("\\")[-1],"Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
 						self._TextBox_InputFile.Text = ""
+						EXIT()
 
 				# for *.tr0 File
 				elif extension == "tr0":
@@ -1972,6 +1973,7 @@ class Eye_Form(Form):
 
 					#	Show Progress Form and change mouse cursor from defualt to wait
 					try:
+						#TODO Reconstruct here						
 						Log("	<Progress Form Launch> = Done, Max. Pogress Num. = %s" % max_val)
 						import GUI_subforms
 						sub_DB.Cal_Form = GUI_subforms.CalForm(Location)
