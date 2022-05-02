@@ -400,12 +400,12 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 			"EyeMeasurementPoint:="	, (1/(float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000))/2
 		])
 		oModule.ImportIntoReport(Report_Name, Import_file)
-		
+
 		oModule.DeleteTraces(["%s:=" % Report_Name, ["V(net_1)"]])
 		Log("		(Plot Eye) = Done")
-
 		Log("		(Change Property)")
-		for eyename in PlotList:
+
+		for eyename in PlotList:		
 			oModule.ChangeProperty(["NAME:AllTabs",
 					  ["NAME:Eye", ["NAME:PropServers", Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps"
 						, ["NAME:Rectangular Plot", "Value:=", False]]],

@@ -443,7 +443,7 @@ class NetForm(Form):
 		self._DataGridView.Size = System.Drawing.Size(459, 777)
 		self._DataGridView.TabIndex = 36
 		self._DataGridView.Columns[1].ReadOnly = True
-		self._DataGridView.Columns[3].ReadOnly = True
+		self._DataGridView.Columns[3].ReadOnly = False
 		self._DataGridView.KeyPress += self.DataGridViewKeyPress
 		self._DataGridView.MaximumSize = System.Drawing.Size(459, 500)
 		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick
@@ -683,6 +683,7 @@ class NetForm(Form):
 				iter = 0
 				for net in Netlist:			
 					Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv) # Match = "Group prefix / Net Number prefix"
+
 					#if Group_idx == 1 or Group_idx == 2: # for DQ & DQS Group -> Check
 					if Group_idx == 1: # for DQ Group -> Check
 						self._DataGridView.Rows.Add(True, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
