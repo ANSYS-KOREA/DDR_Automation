@@ -110,15 +110,15 @@ def Load_env(File):
 
 	return temp_DB
 
-def Net_Identify(name, Uenv):
+def Net_Identify(name, Cenv):
 	Group = 7 # OTHER
 	Match = ""
 
-	for key in Uenv:
+	for key in Cenv:
 		if "<Ignore>" in key:
-			name = name.replace(Uenv[key][0], "")
+			name = name.replace(Cenv[key][0], "")
 
-	for keyword in Uenv["<DM>[Net Identification]"]:
+	for keyword in Cenv["<DM>[Net Identification]"]:
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I) # re.I (or re.IGNORECASE) = No distinction between upper and lower case letters.
 		if m:
@@ -126,7 +126,7 @@ def Net_Identify(name, Uenv):
 			Group = 0 # "DM"
 			break
 
-	for keyword in Uenv["<CLK_P>[Net Identification]"]:
+	for keyword in Cenv["<CLK_P>[Net Identification]"]:
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I)
 		if m:
@@ -134,7 +134,7 @@ def Net_Identify(name, Uenv):
 			Group = 4 # CLK
 			break
 
-	for keyword in Uenv["<CLK_N>[Net Identification]"]:
+	for keyword in Cenv["<CLK_N>[Net Identification]"]:
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I)
 		if m:
@@ -142,7 +142,7 @@ def Net_Identify(name, Uenv):
 			Group = 5 # CLK#
 			break
 
-	for keyword in Uenv["<ADDR>[Net Identification]"]:		
+	for keyword in Cenv["<ADDR>[Net Identification]"]:		
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I)
 		if m:
@@ -150,7 +150,7 @@ def Net_Identify(name, Uenv):
 			Group = 6 # ADDR
 			break
 
-	for keyword in Uenv["<DQS_P>[Net Identification]"]:
+	for keyword in Cenv["<DQS_P>[Net Identification]"]:
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I)
 		if m:
@@ -158,7 +158,7 @@ def Net_Identify(name, Uenv):
 			Group = 2 # DQS
 			break
 
-	for keyword in Uenv["<DQS_N>[Net Identification]"]:
+	for keyword in Cenv["<DQS_N>[Net Identification]"]:
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I)
 		if m:
@@ -166,7 +166,7 @@ def Net_Identify(name, Uenv):
 			Group = 3 # DQS#
 			break
 
-	for keyword in Uenv["<DQ>[Net Identification]"]:
+	for keyword in Cenv["<DQ>[Net Identification]"]:
 		keyword = keyword.replace("?","[0-9]+")
 		m = re.search(keyword, name, re.I)
 		if m:
@@ -345,7 +345,7 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 			imgw = int(sub_DB.Option_Form._TextBox_ImageWidth.Text)
 			imgh = imgw / 5 * 4
 			img_path = sub_DB.result_dir
-			img_path = img_path.replace("\\"+img_path.split("\\")[-1],"")
+			#img_path = img_path.replace("\\"+img_path.split("\\")[-1],"")
 			oModule.ExportImageToFile(Report_Name, img_path + "\\" + Report_Name + ".gif", imgw * 2, imgh * 2)
 			sub_DB.Excel_Img_File.append(img_path + "\\" + Report_Name + ".gif")
 			Log("			= Save Image File, %s" % img_path + "\\" + Report_Name + ".gif")
@@ -482,7 +482,7 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 			imgw = int(sub_DB.Option_Form._TextBox_ImageWidth.Text)
 			imgh = imgw / 5 * 4
 			img_path = sub_DB.result_dir
-			img_path = img_path.replace("\\"+img_path.split("\\")[-1],"")
+			#img_path = img_path.replace("\\"+img_path.split("\\")[-1],"")
 			oModule.ExportImageToFile(Report_Name, img_path + "\\" + Report_Name + ".gif", imgw * 2, imgh * 2)
 			sub_DB.Excel_Img_File.append(img_path + "\\" + Report_Name + ".gif")
 			Log("			= Save Image File, %s" % img_path + "\\" + Report_Name + ".gif")
@@ -567,6 +567,160 @@ def LogSave():
 	f.write(sub_DB.Log)	
 	f.close()
 
+def CnfSave():	
+	#################
+	# Create Header #
+	#################
+	try:
+		Log("	<Create the Latest Cnf - Header>")
+		cnf_log = ""
+		cnf_log += "############################################################"
+		cnf_log += "\n" + "#	Ansys DDR Wizard %s Configuration File" % sub_DB.Version
+		cnf_log += "\n" + "#		Input File : " +  sub_DB.Input_File
+		cnf_log += "\n" + "#		Start : " +  sub_DB.start_time
+		cnf_log += "\n" + "#		End   : " +  time.strftime('%Y.%m.%d, %H:%M:%S')
+		cnf_log += "\n" + "############################################################"
+
+	except Exception as e:		
+		Log("	<Create the Latest Cnf - Header> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to create Cnf header","Warning")						
+		EXIT()
+
+	####################
+	# For EM Extractor #
+	####################
+	try:
+		Log("	<Create the Latest Cnf - EM Extractor>")
+		cnf_log += "\n\n" + "[EM]"
+
+	except Exception as e:		
+		Log("	<Create the Latest Cnf - EM Extractor> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to create Cnf - EM Extractor","Warning")						
+		EXIT()
+
+	#########################
+	# For Circuit Simulator #
+	#########################
+	try:
+		Log("	<Create the Latest Cnf - Circuit Simulator>")
+		cnf_log += "\n\n" + "[Tran]"
+
+	except Exception as e:		
+		Log("	<Create the Latest Cnf - Circuit Simulator> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to create Cnf - Circuit Simulator","Warning")						
+		EXIT()
+
+	####################
+	# For Eye Analyzer #
+	####################
+	try:
+		Log("	<Create the Latest Cnf - Eye Analyzer>")
+		cnf_log += "\n\n" + "[Eye]"
+		# --------- Setup----------------
+		cnf_log += "\n\t" + "<Setup>"
+		#	 Input File
+		cnf_log += "\n\t\t" + "(Input File)"
+		if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_InputFile.Text
+
+		#	 Design
+		cnf_log += "\n\t\t" + "(Design)"
+		if not sub_DB.Eye_Form._ComboBox_Design.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_Design.Text
+
+		#	 Report Name
+		cnf_log += "\n\t\t" + "(Report Name)"
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:		
+			cnf_log += "\n\t\t\t" + "= %s" % item
+
+		#	 Setup Name	
+		cnf_log += "\n\t\t" + "(Setup Name)"
+		if not sub_DB.Eye_Form._ComboBox_SolutionName.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_SolutionName.Text
+
+		#	 DDR Gen
+		cnf_log += "\n\t\t" + "(DDR Gen)"
+		if not sub_DB.Eye_Form._ComboBox_DDRGen.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_DDRGen.Text
+
+		#	 Data-rate
+		cnf_log += "\n\t\t" + "(Data-rate)"
+		if not sub_DB.Eye_Form._ComboBox_DataRate.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_DataRate.Text
+
+		# --------- Net Classification ----------------
+		cnf_log += "\n\n\t" + "<Net Classification>"	
+		for row in sub_DB.Net_Form._DataGridView.Rows:
+			cnf_log += "\n\t\t" + "(%s) = %s, %s, %s, %s" % (row.Cells[1].Value, str(row.Cells[0].Value), row.Cells[2].Value, row.Cells[3].Value, row.Cells[4].Value)		
+
+		# --------- Analyze Option ----------------
+		cnf_log += "\n\n\t" + "<Analyze Option>"
+		#	 Resources Folder
+		cnf_log += "\n\t\t" + "(Resources Folder) = %s" % sub_DB.resource_dir
+
+		#	 Definition File
+		cnf_log += "\n\t\t" + "(Definition File) = %s" % sub_DB.Cenv["File"]
+
+		#	 Configuration File
+		cnf_log += "\n\t\t" + "(Definition File) = %s" % sub_DB.Uenv["File"]
+
+		#	 Eye Offset
+		cnf_log += "\n\t\t" + "(Eye Offset)"
+		if not sub_DB.Option_Form._TextBox_EyeOffset.Text == "":
+			cnf_log += " = %s ns" % sub_DB.Option_Form._TextBox_EyeOffset.Text
+
+		#	 Vref Method
+		cnf_log += "\n\t\t" + "(Vref Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Vref.SelectedIndex, sub_DB.Option_Form._ComboBox_Vref.Text)
+
+		#	 Analyze Method
+		cnf_log += "\n\t\t" + "(Analyze Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex, sub_DB.Option_Form._ComboBox_Analyze.Text)
+	
+		#	 Export Excel Report
+		cnf_log += "\n\t\t" + "(Export Excel Report) = %s" % sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked
+	
+		#	 Image Width
+		cnf_log += "\n\t\t" + "(Image Width)"
+		if sub_DB.Option_Form._TextBox_ImageWidth.Visible:
+			cnf_log += " = %s pixel" % sub_DB.Option_Form._TextBox_ImageWidth.Text
+
+		#	 Report Format
+		cnf_log += "\n\t\t" + "(Report Format) = %d, %s" % (sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex, sub_DB.Option_Form._ComboBox_ReportFormat.Text)
+
+		#	 Plot Eye with Mask
+		cnf_log += "\n\t\t" + "(Plot Eye with Mask) = %s" % sub_DB.Option_Form._CheckBox_PlotEye.Checked
+
+		#	 Check DDR Compliance
+		cnf_log += "\n\t\t" + "(Check DDR Compliance) = %s" % sub_DB.Option_Form._CheckBox_Compiance.Checked
+
+		# --------- DDR Compliance ----------------
+		if sub_DB.Option_Form._CheckBox_Compiance.Visible:
+			#TODO : Save Cnf for DDR Compliance
+			cnf_log += "\n\n\t" + "<DDR Compliance>"
+
+	except Exception as e:
+		Log("	<Create the Latest Cnf - Eye Analyzer> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to create Cnf - Eye Analyzer","Warning")						
+		EXIT()
+
+	#################
+	# Save Cnf File #
+	#################
+	try:
+		Log("	<Save Cnf File>")
+		f = open(sub_DB.resource_dir + r'\latest.cnf', 'w')
+		f.write(cnf_log)	
+		f.close()
+
+	except Exception as e:		
+		Log("	<Save Cnf File> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to save Cnf file","Warning")						
+		EXIT()
+
 def EXIT():	
 	sub_DB.exit_iter += 1
 	if sub_DB.exit_iter == 1:
@@ -584,12 +738,21 @@ def Initial():
 	Log("\n\n")
 	sub_ScriptEnv.Release()	
 	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()
+
 	sub_DB.Net_Form = ""
 	sub_DB.Net_Form = GUI_subforms.NetForm()
+
 	sub_DB.Option_Form = ""
 	sub_DB.Option_Form = GUI_subforms.OptionForm(2)
+
 	sub_DB.Result_Flag = False
 	sub_DB.Eye_Analyze_Flag = True
+	
+	sub_DB.Eye_Form._Button_Analyze.Enabled = False
+	sub_DB.Eye_Form._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
+
+	sub_DB.Eye_Form._Button_ViewResult.Enabled = False
+	sub_DB.Eye_Form._Button_ViewResult.BackColor = System.Drawing.SystemColors.Control
 
 def temp_get_waveform(self):
 	Waveform = {}

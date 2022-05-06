@@ -21,7 +21,7 @@ class Eye_Form(Form):
 
 		self.InitializeComponent()
 	
-	''' Eye_Form - GUI '''	
+	''' Eye_Form - GUI '''
 	def InitializeComponent(self):		
 		global path
 		path = os.path.dirname(os.path.abspath(__file__))
@@ -106,6 +106,7 @@ class Eye_Form(Form):
 		self._Button_ViewResult = System.Windows.Forms.Button()
 		self._Button_ImgShow_New = System.Windows.Forms.Button()
 		self._Button_ImgShow_Old = System.Windows.Forms.Button()
+		self._Button_LoadCnf = System.Windows.Forms.Button()
 		self._Button_Debug = System.Windows.Forms.Button()
 
 		self._openFileDialog1 = System.Windows.Forms.OpenFileDialog()
@@ -451,7 +452,7 @@ class Eye_Form(Form):
 		self._GroupBox_NewEye.TabIndex = 36
 		self._GroupBox_NewEye.TabStop = False
 		self._GroupBox_NewEye.Text = "Eye Analysis"
-		self._GroupBox_NewEye.Visible = True		
+		self._GroupBox_NewEye.Visible = True
 		# 
 		# GroupBox_UnitNew
 		# 
@@ -1145,6 +1146,18 @@ class Eye_Form(Form):
 		self._Button_ImgShow_Old.UseVisualStyleBackColor = True
 		self._Button_ImgShow_Old.Click += self.Button_ImgShow_OldClick
 		# 
+		# Button_LoadCnf
+		#
+		self._Button_LoadCnf.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+		self._Button_LoadCnf.Font = System.Drawing.Font("Arial", 8, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_LoadCnf.Location = System.Drawing.Point(595, 5)
+		self._Button_LoadCnf.Name = "Button_LoadCnf"
+		self._Button_LoadCnf.Size = System.Drawing.Size(100, 20)
+		self._Button_LoadCnf.TabIndex = 43
+		self._Button_LoadCnf.Text = 'Load Latest Cnf'
+		self._Button_LoadCnf.UseVisualStyleBackColor = True
+		self._Button_LoadCnf.Click += self.Button_LoadCnfClick
+		# 
 		# Button_Debug
 		# 
 		self._Button_Debug.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
@@ -1214,6 +1227,7 @@ class Eye_Form(Form):
 		self.Image_flag_New = False
 		self.Image_flag_Old = False
 		self.Full_Size_flag = True
+		self.Controls.Add(self._Button_LoadCnf)
 		self.Controls.Add(self._Button_Debug)
 		self.Controls.Add(self._GroupBox_NewEye)
 		self.Controls.Add(self._Button_Analyze)
@@ -1248,7 +1262,7 @@ class Eye_Form(Form):
 		self._PictureBox_NewEye.EndInit()
 		self.ResumeLayout(False)
 
-	''' Eye_Form - Events '''	
+	''' Eye_Form - Events '''
 	def Eye_FormLoad(self, sender, e):
 		try:
 			# initialization
@@ -1408,8 +1422,11 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Exit_ToolStripMenuItemClick(self, sender, e):
+		CnfSave()
+		Log("[Save Log] = Done")
+		LogSave()
 		sub_ScriptEnv.Release()		
-		os._exit(0)		
+		os._exit(0)
 
 	def Options_ToolStripMenuItemClick(self, sender, e):
 		try:
@@ -1500,7 +1517,7 @@ class Eye_Form(Form):
 			self._ComboBox_DataRate.Text = ""
 
 			dialog = OpenFileDialog()
-			dialog.InitialDirectory = sub_DB.Uenv["(Initial Input File Directory)<Setup>[Eye]"][0]
+			#dialog.InitialDirectory = sub_DB.Uenv["(Initial Input File Directory)<Setup>[Eye]"][0]
 			dialog.Filter = "AEDT Project file|*.aedt|Comma delimited data file|*.csv"
 
 			if dialog.ShowDialog(self) == DialogResult.OK:
@@ -1660,6 +1677,22 @@ class Eye_Form(Form):
 
 					pass
 
+				# set default ddr type & speed
+				for key in sub_DB.Cenv:				
+					if "[DDR Default]" in key:					
+						type = key.split("<")[-1].split(">")[0]
+						datarate = sub_DB.Cenv[key][0]
+						self._ComboBox_DDRGen.Text = type
+						self._ComboBox_DDRGen.Enabled = True
+						self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Window
+
+						self._ComboBox_DataRate.Text = datarate						
+						self._ComboBox_DataRate.Enabled = True
+						self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window
+
+						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+						break
+
 			else:
 				MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
 
@@ -1728,8 +1761,8 @@ class Eye_Form(Form):
 		self._ComboBox_SolutionName_ToopTip.SetToolTip(self._ComboBox_SolutionName, self._ComboBox_SolutionName.Text)
 
 	def CheckedListBox_ReportNameSelectedIndexChanged(self, sender, e):
-
-		sub_DB.Net_Form.Init_Flag = True		
+		sub_DB.Net_Form = ""
+		sub_DB.Net_Form = GUI_subforms.NetForm()
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
 		try:
@@ -1773,6 +1806,7 @@ class Eye_Form(Form):
 					self._TextBox_AC_ADDR.Visible = False
 					self._ComboBox_AC_DQ.Visible = True
 					self._ComboBox_AC_ADDR.Visible = True
+					sub_DB.Option_Form._CheckBox_Compiance.Visible = True
 				else:
 					self._TextBox_AC_DQ.Visible = True
 					self._TextBox_AC_ADDR.Visible = True
@@ -1924,20 +1958,34 @@ class Eye_Form(Form):
 
 	def Button_ViewNetClick(self, sender, e):
 		try:
-			# Target Net Setup			
-			Check_spec()
-			sub_DB.Net_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-			sub_DB.Net_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
-			sub_DB.Net_Form.Text = "Target Net Setup - " + sub_DB.Uenv["File"].split("\\")[-1]
-			if sub_DB.Net_Form._DataGridView.Columns.Count > 5:			
-				sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 6
-				sub_DB.Net_Form._DataGridView.Columns[5].DisplayIndex = 5
-				sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
-			sub_DB.Net_Form.ShowDialog()
+			flag = True
 
-			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
-			self._Button_Analyze.Enabled = True
-			self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+			# Check if any of report name has been checked
+			if len(self._CheckedListBox_ReportName.CheckedItems) == 0:
+				flag = False
+
+			# CSV Input
+			if sub_DB.InputFile_Flag == 2:
+				flag = True
+
+			if flag:				
+				# Target Net Setup
+				Check_spec()
+				sub_DB.Net_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+				sub_DB.Net_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
+				sub_DB.Net_Form.Text = "Target Net Setup - " + sub_DB.Uenv["File"].split("\\")[-1]
+				if sub_DB.Net_Form._DataGridView.Columns.Count > 5:			
+					sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 6
+					sub_DB.Net_Form._DataGridView.Columns[5].DisplayIndex = 5
+					sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
+				sub_DB.Net_Form.ShowDialog()
+
+				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
+				self._Button_Analyze.Enabled = True
+				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+
+			else:
+				MessageBox.Show("At least one report must be checked.","Warning")
 
 		except Exception as e:			
 			Log("[Net Form Launch] = Failed")
@@ -2226,7 +2274,13 @@ class Eye_Form(Form):
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
 			self.Height = 660
 
+	def Button_LoadCnfClick(self, sender, e):
+		pass
+
 	def Eye_FormFormClosing(self, sender, e):
+		CnfSave()
+		Log("[Save Log] = Done")
+		LogSave()
 		sub_ScriptEnv.Release()		
 		os._exit(0)
 

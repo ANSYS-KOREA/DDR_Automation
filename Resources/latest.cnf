@@ -1,0 +1,55 @@
+############################################################
+#	Ansys DDR Wizard v0.0 Configuration File
+#		Input File : Galileo_R21_DDR_SSN_siwave.aedt
+#		Start : 2022.05.07, 00:47:04
+#		End   : 2022.05.07, 00:48:33
+############################################################
+
+[EM]
+
+[Tran]
+
+[Eye]
+	<Setup>
+		(Input File) = D:\1_Work\20220106_DDR_Compliance\0_DB\0_Input_Examples\AEDT_Schematic\Galileo_R21_DDR_SSN_siwave.aedt
+		(Design) = Circuit1
+		(Report Name)
+			= Transient Voltage Plot 1
+		(Setup Name) = Transient
+		(DDR Gen) = DDR4
+		(Data-rate) = 2133
+
+	<Net Classification>
+		(Test_A1) = False, ADDR, A1, None
+		(Test_A11) = False, ADDR, A11, None
+		(V(U1B5_M_DQ_0__B2)) = True, DQ, DQ_0, None
+		(V(U1B5_M_DQ_1__C2)) = True, DQ, DQ_1, None
+		(V(U1B5_M_DQ_2__C2)) = True, DQ, DQ_2, None
+		(V(U1B5_M_DQ_3__C2)) = True, DQ, DQ_3, None
+		(V(U1B5_M_DQ_4__E2)) = True, DQ, DQ_4, None
+		(V(U1B5_M_DQ_5__E2)) = True, DQ, DQ_5, None
+		(V(U1B5_M_DQ_6__D2)) = True, DQ, DQ_6, None
+		(V(U1B5_M_DQ_7__E2)) = True, DQ, DQ_7, None
+		(V(U1A1_M_DQ_8__B2)) = True, DQ, DQ_8, None
+		(V(U1A1_M_DQ_9__C2)) = True, DQ, DQ_9, None
+		(V(U1A1_M_DQ_10__C2)) = True, DQ, DQ_10, None
+		(V(U1A1_M_DQ_11__C2)) = True, DQ, DQ_11, None
+		(V(U1A1_M_DQ_12__E2)) = True, DQ, DQ_12, None
+		(V(U1A1_M_DQ_13__E2)) = True, DQ, DQ_13, None
+		(V(U1A1_M_DQ_14__D2)) = True, DQ, DQ_14, None
+		(V(U1A1_M_DQ_15__E2)) = True, DQ, DQ_15, None
+		(V(U1A1_M_DQS_1__C2)) = False, DQS_P, DQS_1, None
+		(V(U1A1_M_DQS_N_1__D2)) = False, DQS_N, DQS_N_1, None
+
+	<Analyze Option>
+		(Resources Folder) = D:\1_Work\20220106_DDR_Compliance\1_Work\Code\ANSYS_DDR_Wizard_v0\Resources
+		(Definition File) = D:\1_Work\20220106_DDR_Compliance\1_Work\Code\ANSYS_DDR_Wizard_v0\Resources\Ref.def
+		(Definition File) = D:\1_Work\20220106_DDR_Compliance\1_Work\Code\ANSYS_DDR_Wizard_v0\Resources\Ref.cnf
+		(Eye Offset) = 5 ns
+		(Vref Method) = 0, Auto-default
+		(Analyze Method) = 0, Default
+		(Export Excel Report) = True
+		(Image Width)
+		(Report Format) = 0, Default
+		(Plot Eye with Mask) = True
+		(Check DDR Compliance) = False

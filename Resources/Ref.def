@@ -36,6 +36,10 @@
 	<LPDDR5>
 		(Data-rate) = 6400, 8533
 		
+[DDR Default]
+	<DDR4>
+		(Data-rate) = 2133
+		
 [Eye Spec]
 	#####################################################################################################
 	#	DDR2 - 400, 533, 667, 800 [Mbps]
@@ -213,11 +217,18 @@
 		(Rx Mask Voltage)		= 105!
 		(Rx Timing Window Total)		= 0.24!
 		
-[Comp Spec]
-
-
-
-
+[Net Identification]
+	# The priority of the net group classification specified between "<" and ">" symbols is the same as the order written below.
+	# <Ignore> : this string in net name will be ignored during net identifying process
+	# ? : arbitrary number in range [0~99]
+	<DQ>	= DQ_?, D_?
+	<DQS_N>	= DQS?_N, DQS?_, DQSN?, DQSN_?, DQS_N?, DQS_N_?
+	<DQS_P>	= DQS?_P, DQS?, DQS_?	
+	<ADDR> = ADDR?,ADDR_?, CA?, CA_?, MA?, MA_?, A?, A_?
+	<CLK_N>	= CLKN?, CLKN_?, CLK_N?, CLK_N_?, CKN?, CKN_?, CK_N?, CK_N_?,CLK_?_
+	<CLK_P>	= CLK?, CLK_?, CK?, CK_?	
+	<DM>	= DM?, DM_?
+	<Ignore>
 
 
 

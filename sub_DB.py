@@ -1,4 +1,5 @@
 Version = "v0.0"
+start_time = ""
 
 Start_Form = ""
 Eye_Form = ""
@@ -11,6 +12,7 @@ File = ""
 Input_File = ""
 temp_dir = ""
 result_dir = ""
+resource_dir = ""
 Log = ""
 
 Eye_Analyze_Flag = True
