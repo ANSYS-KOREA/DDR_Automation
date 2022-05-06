@@ -27,9 +27,11 @@ sub_DB.Log += "############################################################"
 sub_DB.Log += "\n" + "#	Header"
 sub_DB.Log += "\n" + "############################################################"
 sub_DB.Log += "\n" + "# Launched Eye Analyzer Independently on %s" % time.strftime('%Y.%m.%d, %H:%M:%S') + '\n'
+sub_DB.start_time = time.strftime('%Y.%m.%d, %H:%M:%S')
 
 # Load Preserved Definition File
-File = path + r'\Resources\Ref.def'
+sub_DB.resource_dir = path + r'\Resources'
+File = sub_DB.resource_dir + r'\Ref.def'
 Cenv = Load_env(File)
 Cenv["File"] = File
 sub_DB.Cenv = Cenv
@@ -38,9 +40,9 @@ Log("[Definition File] = %s" % File)
 # Load Preserved Configuration File
 if sub_DB.Debug_Mode:
     #File = path + r'\Resources\Test_0215.cnf'
-    File = path + r'\Resources\Ref.cnf'
+    File = sub_DB.resource_dir + r'\Ref.cnf'
 else:
-    File = path + r'\Resources\Ref.cnf'
+    File = sub_DB.resource_dir + r'\Ref.cnf'
 
 Uenv = Load_env(File)
 Uenv["File"] = File

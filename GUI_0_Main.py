@@ -96,7 +96,7 @@ class StartForm(Form):
 		# 
 		# PictureBox_Comp
 		# 
-		LogoFile = path + "\\Resources\\Main5_off.bmp"
+		LogoFile = path + "\\Resources\\Main4_off.bmp"
 		self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_Comp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch				
 		self._PictureBox_Comp.Location = System.Drawing.Point(0, 179)
@@ -343,10 +343,10 @@ class StartForm(Form):
 
 	def PictureBox_CompClick(self, sender, e):
 		if self.Comp_flag:
-			LogoFile = path + "\\Resources\\Main5_off.bmp"
+			LogoFile = path + "\\Resources\\Main4_off.bmp"
 			self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		else:
-			LogoFile = path + "\\Resources\\Main5_on.bmp"
+			LogoFile = path + "\\Resources\\Main4_on.bmp"
 			self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		self.Comp_flag = not self.Comp_flag
 

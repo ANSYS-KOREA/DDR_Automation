@@ -128,7 +128,7 @@ class EnvEditor(Form):
 		# Env_Editor
 		# 
 		self.ClientSize = System.Drawing.Size(1191, 773)
-		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
+		self.MinimumSize = System.Drawing.Size(self.Size.Width/2, self.Size.Height/2)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
 		self.Controls.Add(self._CheckBox)
@@ -673,16 +673,16 @@ class NetForm(Form):
 					Netlist = sub_DB.Netlist
 		
 				# Net Identify			
-				file = sub_DB.Uenv["File"]
-				Uenv = Load_env(sub_DB.Uenv["File"])
-				Uenv["File"] = file
-				sub_DB.Uenv = Uenv
+				file = sub_DB.Cenv["File"]
+				Cenv = Load_env(sub_DB.Cenv["File"])
+				Cenv["File"] = file
+				sub_DB.Cenv = Cenv
 
 				self._DataGridView.Rows.Clear()
 				LVitem_List = []
 				iter = 0
 				for net in Netlist:			
-					Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv) # Match = "Group prefix / Net Number prefix"
+					Group_idx, Match = Net_Identify(net.strip(), sub_DB.Cenv) # Match = "Group prefix / Net Number prefix"
 
 					#if Group_idx == 1 or Group_idx == 2: # for DQ & DQS Group -> Check
 					if Group_idx == 1: # for DQ Group -> Check
@@ -914,13 +914,13 @@ class NetForm(Form):
 			EXIT()
 					
 	def Button_EditRuleClick(self, sender, e):
-		sub_DB.Env_Form = EnvEditor(sub_DB.Uenv["File"])
+		sub_DB.Env_Form = EnvEditor(sub_DB.Cenv["File"])
 		sub_DB.Env_Form.ShowDialog()		
 
 	def Button_IdentifyClick(self, sender, e):
 		try:
-			Uenv = {}
-			File = sub_DB.Uenv["File"]
+			Cenv = {}
+			File = sub_DB.Cenv["File"]
 			with open(File) as fp:
 				# Load Input File
 				for line in fp:				
@@ -932,7 +932,7 @@ class NetForm(Form):
 							for cell in temp:
 								if not cell == "":
 									temp_data.append(cell.strip())
-							Uenv[key+"[Net Identification]"] =  temp_data
+							Cenv[key+"[Net Identification]"] =  temp_data
 
 						elif line.find("<DQ>") != -1:
 							key="<DQ>"
@@ -941,7 +941,7 @@ class NetForm(Form):
 							for cell in temp:
 								if not cell == "":
 									temp_data.append(cell.strip())
-							Uenv[key+"[Net Identification]"] =  temp_data
+							Cenv[key+"[Net Identification]"] =  temp_data
 
 						elif line.find("<DQS_P>") != -1:
 							key="<DQS_P>"
@@ -950,7 +950,7 @@ class NetForm(Form):
 							for cell in temp:
 								if not cell == "":
 									temp_data.append(cell.strip())
-							Uenv[key+"[Net Identification]"] =  temp_data
+							Cenv[key+"[Net Identification]"] =  temp_data
 
 						elif line.find("<DQS_N>") != -1:
 							key="<DQS_N>"
@@ -959,7 +959,7 @@ class NetForm(Form):
 							for cell in temp:
 								if not cell == "":
 									temp_data.append(cell.strip())
-							Uenv[key+"[Net Identification]"] =  temp_data
+							Cenv[key+"[Net Identification]"] =  temp_data
 
 						elif line.find("<CLK_P>") != -1:
 							key="<CLK_P>"
@@ -968,7 +968,7 @@ class NetForm(Form):
 							for cell in temp:
 								if not cell == "":
 									temp_data.append(cell.strip())
-							Uenv[key+"[Net Identification]"] =  temp_data
+							Cenv[key+"[Net Identification]"] =  temp_data
 
 						elif line.find("<CLK_N>") != -1:
 							key="<CLK_N>"
@@ -977,7 +977,7 @@ class NetForm(Form):
 							for cell in temp:
 								if not cell == "":
 									temp_data.append(cell.strip())
-							Uenv[key+"[Net Identification]"] =  temp_data
+							Cenv[key+"[Net Identification]"] =  temp_data
 
 						elif line.find("<ADDR>") != -1:
 							key="<ADDR>"
@@ -986,7 +986,7 @@ class NetForm(Form):
 							for cell in temp:
 								if not cell == "":
 									temp_data.append(cell.strip())
-							Uenv[key+"[Net Identification]"] =  temp_data
+							Cenv[key+"[Net Identification]"] =  temp_data
 
 						elif line.find("<Ignore>") != -1:
 							key="<Ignore>"
@@ -995,18 +995,18 @@ class NetForm(Form):
 							for cell in temp:
 								if not cell == "":
 									temp_data.append(cell.strip())
-							Uenv[key+"[Net Identification]"] =  temp_data
+							Cenv[key+"[Net Identification]"] =  temp_data
 
 			fp.close()
 			self._DataGridView.Rows.Clear()
-			sub_DB.Uenv = Uenv
-			sub_DB.Uenv["File"] = File
-			self.Text = "Target Net Setup - " + sub_DB.Uenv["File"].split("\\")[-1]
+			sub_DB.Cenv = Cenv
+			sub_DB.Cenv["File"] = File
+			self.Text = "Target Net Setup - " + sub_DB.Cenv["File"].split("\\")[-1]
 
 			LVitem_List = []
 			iter = 0
 			for net in sub_DB.Netlist:			
-				Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv)
+				Group_idx, Match = Net_Identify(net.strip(), sub_DB.Cenv)
 				if Group_idx == 1: # for DQ Group -> Check
 					self._DataGridView.Rows.Add(True, net, self._Col_Group.Items[Group_idx], Match, self._Col_AnalyzeGroup.Items[0])
 				else: # Un-check
@@ -1695,6 +1695,7 @@ class OptionForm(Form):
 		self._CheckBox_Compiance.Text = "Check DDR Compliance"
 		self._CheckBox_Compiance.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		self._CheckBox_Compiance.UseVisualStyleBackColor = True
+		self._CheckBox_Compiance.Visible = False
 		self._CheckBox_Compiance.CheckedChanged += self.CheckBox_CompianceCheckedChanged
 		# 
 		# openFileDialog1
@@ -1909,8 +1910,8 @@ class OptionForm(Form):
 			MessageBox.Show("Fail to check eye plot","Warning")			
 			EXIT()
 
-	def CheckBox_CompianceCheckedChanged(self, sender, e):		
-
+	def CheckBox_CompianceCheckedChanged(self, sender, e):
+		
 		self._Button_Compliance.Visible = sender.Checked
 
 	def ComboBox_VrefSelectedIndexChanged(self, sender, e):
@@ -1974,15 +1975,13 @@ class OptionForm(Form):
 			elif self._CheckBox_ExportExcelReport.Checked:
 				if self._TextBox_ImageWidth.Text == "":
 					flag = False
-				#elif self._TextBox_OutputExcelFile.Text == "":
-				#	flag = False
 
-			if not self._CheckBox_PlotEye.Checked:
-				if self._CheckBox_ExportExcelReport.Checked:
-					if self._ComboBox_ReportFormat.Text.lower() == "default":					
-						MessageBox.Show("To generate an Excel report in format \"Default\", Eye-diagram has to be plotted.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-						self._CheckBox_PlotEye.Checked = True
-						flag = False
+			#if not self._CheckBox_PlotEye.Checked:
+			#	if self._CheckBox_ExportExcelReport.Checked:
+			#		if self._ComboBox_ReportFormat.Text.lower() == "default":					
+			#			MessageBox.Show("To generate an Excel report in format \"Default\", Eye-diagram has to be plotted.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+			#			self._CheckBox_PlotEye.Checked = True
+			#			flag = False
 
 			if flag:
 				Log("[Eye Analyzer Option]")

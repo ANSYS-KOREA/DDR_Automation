@@ -300,19 +300,42 @@ def New_Default(self):
 			Log("		(Report Format) = %s" % sub_DB.Option_Form._ComboBox_ReportFormat.Text)
 			# AEDT Input
 			if sub_DB.InputFile_Flag == 1:
-				# Default
-				if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
-					Create_Excel_Report()
-				elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
-					Create_Setup_Hold_Excel_Report()
+				# Eye plot checked
+				if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+					# Default
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report()
+					# +Setup/Hold
+					elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+						Create_Setup_Hold_Excel_Report()
+
+				# Eye plot unchecked
+				else:
+					# Default w/o figure
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report_wo_fig()
+					# +Setup/Hold w/o figure
+					elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+						Create_Setup_Hold_Excel_Report_wo_fig()
+
 
 			# CSV Input
 			elif sub_DB.InputFile_Flag == 2:
-				# Default
-				if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
-					Create_Excel_Report_Imported()
-				#elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
-				#	Create_Setup_Hold_Excel_Report_Imported()
+				# Eye plot checked
+				if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+					# Default
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report_Imported()
+					#elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+					#	Create_Setup_Hold_Excel_Report_Imported()
+
+				# Eye plot unchecked
+				else:
+					# Default w/o figure
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report_Imported_wo_fig()
+					#elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+					#	Create_Setup_Hold_Excel_Report_Imported()
 
 			Log("	<Create Excel Report> = Done")
 
@@ -330,8 +353,8 @@ def New_Default(self):
 	#########################
 	try:
 		Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
-		Log("[Save Log] = Done")
-		LogSave()
+		#Log("[Save Log] = Done")
+		#LogSave()
 
 	except Exception as e:						
 		Log("[Save Log] = Failed")
@@ -482,8 +505,7 @@ def New_SetupHold(self):
 			Hold[key] = min(temp)
 		sub_DB.Hold = Hold
 		
-		# show the measured values in netform
-		print sub_DB.Eye_Analyze_Flag
+		# show the measured values in netform		
 		if sub_DB.Eye_Analyze_Flag:
 			sub_DB.Net_Form._DataGridView.Columns.Add(sub_DB.Net_Form._Col_Width)
 			sub_DB.Net_Form._DataGridView.Columns.Add(sub_DB.Net_Form._Col_Margin)
@@ -703,19 +725,41 @@ def New_SetupHold(self):
 			Log("		(Report Format) = %s" % sub_DB.Option_Form._ComboBox_ReportFormat.Text)
 			# AEDT Input
 			if sub_DB.InputFile_Flag == 1:
-				# Default
-				if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
-					Create_Excel_Report()
-				elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
-					Create_Setup_Hold_Excel_Report()
+				# Eye plot checked
+				if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+					# Default
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report()
+					# +Setup/Hold
+					elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+						Create_Setup_Hold_Excel_Report()
+
+				# Eye plot unchecked
+				else:
+					# Default w/o figure
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report_wo_fig()
+					# +Setup/Hold w/o figure
+					elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+						Create_Setup_Hold_Excel_Report_wo_fig()
 
 			# CSV Input
 			elif sub_DB.InputFile_Flag == 2:
-				# Default
-				if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
-					Create_Excel_Report_Imported()
-				#elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
-				#	Create_Setup_Hold_Excel_Report_Imported()
+				# Eye plot checked
+				if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+					# Default
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report_Imported()
+					#elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+					#	Create_Setup_Hold_Excel_Report_Imported()
+
+				# Eye plot unchecked
+				else:
+					# Default w/o figure
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report_Imported_wo_fig()
+					#elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+					#	Create_Setup_Hold_Excel_Report_Imported()
 
 			Log("	<Create Excel Report> = Done")
 
@@ -733,8 +777,8 @@ def New_SetupHold(self):
 	#########################
 	try:
 		Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
-		Log("[Save Log] = Done")
-		LogSave()
+		#Log("[Save Log] = Done")
+		#LogSave()
 
 	except Exception as e:						
 		Log("[Save Log] = Failed")
@@ -1026,14 +1070,20 @@ def Old_Default(self):
 	#########################
 	try:
 		Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
-		Log("[Save Log] = Done")
-		LogSave()
+		#Log("[Save Log] = Done")
+		#LogSave()
 
 	except Exception as e:						
 		Log("[Save Log] = Failed")
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to save log file","Warning")
 		EXIT()
+
+
+
+
+
+
 
 
 
