@@ -208,12 +208,12 @@ def New_Default(self):
 					Log("		(Y-axis Max.) = %s[mV]" % vmax)
 					Log("		(Y-axis Min.) = %s[mV]" % vmin)
 
-				self.TopMost = True
-				sub_DB.Cal_Form.TopMost = True
+				#self.TopMost = True
+				#sub_DB.Cal_Form.TopMost = True
 				sub_AEDT.Set_AEDT_PlotTemplate()
 				Log("		(Plot Template) = Done")
-				self.TopMost = False
-				sub_DB.Cal_Form.TopMost = False
+				#self.TopMost = False
+				#sub_DB.Cal_Form.TopMost = False
 
 				# Get Group List
 				Group = []
@@ -633,12 +633,12 @@ def New_SetupHold(self):
 				Log("		(Y-axis Max.) = %s[mV]" % vmax)
 				Log("		(Y-axis Min.) = %s[mV]" % vmin)
 
-				self.TopMost = True
-				sub_DB.Cal_Form.TopMost = True
+				#self.TopMost = True
+				#sub_DB.Cal_Form.TopMost = True
 				sub_AEDT.Set_AEDT_PlotTemplate()
 				Log("		(Plot Template) = Done")
-				self.TopMost = False
-				sub_DB.Cal_Form.TopMost = False
+				#self.TopMost = False
+				#sub_DB.Cal_Form.TopMost = False
 
 				# Get Group List
 				Group = []

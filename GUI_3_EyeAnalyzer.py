@@ -1539,11 +1539,11 @@ class Eye_Form(Form):
 				if extension == "aedt":
 					Log("[Input File Type] = AEDT")
 					Log("	<Input File> = %s" % File)
-					self.TopMost = True
+					#self.TopMost = True
 					self.Cursor = Cursors.WaitCursor					
 					sub_AEDT.Get_AEDT_Info(self, File)
 					self.Cursor = Cursors.Default
-					self.TopMost = False
+					#self.TopMost = False
 
 					self._ComboBox_Design.Enabled = True
 					self._CheckedListBox_ReportName.Enabled = True
@@ -2276,7 +2276,34 @@ class Eye_Form(Form):
 
 	def Button_LoadCnfClick(self, sender, e):
 		CnfLoad(self)
-		self.Button_ViewNetClick(self, sender)
+
+		flag = True
+		if self._TextBox_InputFile.Text == "":
+			flag = False
+
+		if self._ComboBox_Design.Text == "":
+			flag = False
+		
+		if len(self._CheckedListBox_ReportName.CheckedItems) == 0:
+			flag = False
+
+		if self._ComboBox_SolutionName.Text == "":
+			flag = False
+
+		if self._ComboBox_DDRGen.Text == "":
+			flag = False
+
+		if self._ComboBox_DataRate.Text == "":
+			flag = False
+
+		if flag:
+			#self.TopMost = True
+			self.Cursor = Cursors.WaitCursor
+			sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+			self.Cursor = Cursors.Default
+			#self.TopMost = False
+
+			self.Button_ViewNetClick(self, sender)
 
 	def Eye_FormFormClosing(self, sender, e):
 		CnfSave()

@@ -881,12 +881,6 @@ def CnfLoad(self):
 				MessageBox.Show("Fail to Load Cnf for Eye Analyzer","Warning")						
 				EXIT()
 
-	self.TopMost = True
-	self.Cursor = Cursors.WaitCursor
-	sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
-	self.Cursor = Cursors.Default
-	self.TopMost = False
-
 def EXIT():	
 	sub_DB.exit_iter += 1
 	if sub_DB.exit_iter == 1:
