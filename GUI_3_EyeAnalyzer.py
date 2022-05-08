@@ -1540,7 +1540,7 @@ class Eye_Form(Form):
 					Log("[Input File Type] = AEDT")
 					Log("	<Input File> = %s" % File)
 					self.TopMost = True
-					self.Cursor = Cursors.WaitCursor				
+					self.Cursor = Cursors.WaitCursor					
 					sub_AEDT.Get_AEDT_Info(self, File)
 					self.Cursor = Cursors.Default
 					self.TopMost = False
@@ -1738,7 +1738,7 @@ class Eye_Form(Form):
 
 			report_name.sort()
 			for report in report_name:
-				self._CheckedListBox_ReportName.Items.Add(report)		
+				self._CheckedListBox_ReportName.Items.Add(report)
 			self._CheckedListBox_ReportName.SetItemChecked(0, True)
 
 			# Set Next Step
@@ -2275,7 +2275,8 @@ class Eye_Form(Form):
 			self.Height = 660
 
 	def Button_LoadCnfClick(self, sender, e):
-		pass
+		CnfLoad(self)
+		self.Button_ViewNetClick(self, sender)
 
 	def Eye_FormFormClosing(self, sender, e):
 		CnfSave()

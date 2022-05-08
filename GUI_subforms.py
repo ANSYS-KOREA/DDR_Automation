@@ -444,8 +444,7 @@ class NetForm(Form):
 		self._DataGridView.TabIndex = 36
 		self._DataGridView.Columns[1].ReadOnly = True
 		self._DataGridView.Columns[3].ReadOnly = False
-		self._DataGridView.KeyPress += self.DataGridViewKeyPress
-		self._DataGridView.MaximumSize = System.Drawing.Size(459, 500)
+		self._DataGridView.KeyPress += self.DataGridViewKeyPress		
 		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick
 		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
 		# 
@@ -767,7 +766,7 @@ class NetForm(Form):
 				min_height = self.Size.Height/2
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, min_height)
 			self.FormSize_H = self.Height
-			self.FormSize_W = self.Width
+			self.FormSize_W = self.Width			
 
 		except Exception as e:		
 			Log("[Net Form Load] = Failed")
@@ -1491,7 +1490,7 @@ class OptionForm(Form):
 		self._Label_ImageWidth.Font = System.Drawing.Font("Arial", 9)
 		self._Label_ImageWidth.Location = System.Drawing.Point(73, 152)
 		self._Label_ImageWidth.Name = "Label_ImageWidth"
-		self._Label_ImageWidth.Size = System.Drawing.Size(103, 28)
+		self._Label_ImageWidth.Size = System.Drawing.Size(85, 28)
 		self._Label_ImageWidth.TabIndex = 47
 		self._Label_ImageWidth.Text = "Image Width :"
 		self._Label_ImageWidth.Visible = False
@@ -1779,7 +1778,22 @@ class OptionForm(Form):
 				if flag:
 					self._ComboBox_ReportFormat.Items.Add("+ Setup/Hold")
 					self._ComboBox_ReportFormat.SelectedIndex = 1
-			
+
+			for key in sub_DB.Uenv:
+				if "[Eye]" in key:
+					if "<Analyze Option>" in key:
+						# Vref Method
+						if "(Vref Method)" in key:							
+							sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(sub_DB.Uenv[key][0])
+
+						# Analyze Method
+						elif "(Analyze Method)" in key:
+							sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex = int(sub_DB.Uenv[key][0])				
+							
+						# Report Format
+						elif "(Report Format)" in key:
+							sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex = int(sub_DB.Uenv[key][0])
+							
 			#if self._TextBox_OutputExcelFile.Text == "":
 			#	self._TextBox_OutputExcelFile.Text = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".xlsx"
 
@@ -1898,11 +1912,10 @@ class OptionForm(Form):
 
 	def CheckBox_PlotEyeCheckedChanged(self, sender, e):
 		try:
-			if not sender.Checked:
-				if self._CheckBox_ExportExcelReport.Checked:
-					if self._ComboBox_ReportFormat.Text.lower() == "default":
-						MessageBox.Show("To generate an Excel report in format \"Default\", Eye-diagram has to be plotted.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-						sender.Checked = True
+			if self._CheckBox_ExportExcelReport.Checked:
+				self._Label_ImageWidth.Visible = sender.Checked
+				self._Label_ImageWidth_Unit.Visible = sender.Checked
+				self._TextBox_ImageWidth.Visible = sender.Checked
 
 		except Exception as e:			
 			Log("[Check Eye Plot] = Failed")
@@ -1931,9 +1944,10 @@ class OptionForm(Form):
 
 	def CheckBox_ExportExcelReportCheckedChanged(self, sender, e):
 		try:
-			self._TextBox_ImageWidth.Visible = sender.Checked			
-			self._Label_ImageWidth.Visible = sender.Checked
-			self._Label_ImageWidth_Unit.Visible = sender.Checked			
+			if self._CheckBox_PlotEye.Checked:
+				self._TextBox_ImageWidth.Visible = sender.Checked			
+				self._Label_ImageWidth.Visible = sender.Checked
+				self._Label_ImageWidth_Unit.Visible = sender.Checked			
 			self._Label_ReportFormat.Visible = sender.Checked
 			self._ComboBox_ReportFormat.Visible = sender.Checked
 

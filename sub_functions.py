@@ -90,18 +90,19 @@ def Load_env(File):
 					temp_list = []
 					if line.find("=") != -1:
 						# back up the data
-						line = line.strip().replace(" ","")
+						line = line.strip().replace(" ","")						
 						key = str_grandchild + str_child + str_parent
-						for cell in list(filter(None, line.strip().split("=")[-1].split(","))):
+						for cell in list(filter(None, line.strip().split("=")[-1].split(","))):						
 							temp_list.append(cell)
 
 				# find grandchild node symbol : ()				
 				elif line.find("=") != -1:
 					# back up the data
-					line = line.strip().replace(" ","")
+					#line = line.strip().replace(" ","")
+					line = line.strip()
 					key = str_grandchild + str_child + str_parent
-					for cell in list(filter(None, line.strip().split("=")[-1].split(","))):
-							temp_list.append(cell)
+					for cell in list(filter(None, line.strip().split("=")[-1].strip().split(","))):
+							temp_list.append(cell.strip())
 
 				if key:
 					temp_DB[key] = temp_list
@@ -562,7 +563,7 @@ def Log(msg):
 
 	sub_DB.Log += "\n" + time.strftime('%H:%M:%S') + "\t" + msg
 
-def LogSave():		
+def LogSave():	
 	f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
 	f.write(sub_DB.Log)	
 	f.close()
@@ -652,9 +653,11 @@ def CnfSave():
 			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_DataRate.Text
 
 		# --------- Net Classification ----------------
-		cnf_log += "\n\n\t" + "<Net Classification>"	
+		cnf_log += "\n\n\t" + "<Net Classification>"
+		iter = 0
 		for row in sub_DB.Net_Form._DataGridView.Rows:
-			cnf_log += "\n\t\t" + "(%s) = %s, %s, %s, %s" % (row.Cells[1].Value, str(row.Cells[0].Value), row.Cells[2].Value, row.Cells[3].Value, row.Cells[4].Value)		
+			cnf_log += "\n\t\t" + " (%d) = %s, %s, %s, %s, %s" % (iter, str(row.Cells[0].Value), row.Cells[1].Value, row.Cells[2].Value, row.Cells[3].Value, row.Cells[4].Value)
+			iter += 1
 
 		# --------- Analyze Option ----------------
 		cnf_log += "\n\n\t" + "<Analyze Option>"
@@ -665,7 +668,7 @@ def CnfSave():
 		cnf_log += "\n\t\t" + "(Definition File) = %s" % sub_DB.Cenv["File"]
 
 		#	 Configuration File
-		cnf_log += "\n\t\t" + "(Definition File) = %s" % sub_DB.Uenv["File"]
+		cnf_log += "\n\t\t" + "(Configuration File) = %s" % sub_DB.Uenv["File"]
 
 		#	 Eye Offset
 		cnf_log += "\n\t\t" + "(Eye Offset)"
@@ -682,12 +685,14 @@ def CnfSave():
 		cnf_log += "\n\t\t" + "(Export Excel Report) = %s" % sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked
 	
 		#	 Image Width
-		cnf_log += "\n\t\t" + "(Image Width)"
-		if sub_DB.Option_Form._TextBox_ImageWidth.Visible:
-			cnf_log += " = %s pixel" % sub_DB.Option_Form._TextBox_ImageWidth.Text
+		if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+			if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+				cnf_log += "\n\t\t" + "(Image Width)"
+				cnf_log += " = %s pixel" % sub_DB.Option_Form._TextBox_ImageWidth.Text
 
 		#	 Report Format
-		cnf_log += "\n\t\t" + "(Report Format) = %d, %s" % (sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex, sub_DB.Option_Form._ComboBox_ReportFormat.Text)
+		if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+			cnf_log += "\n\t\t" + "(Report Format) = %d, %s" % (sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex, sub_DB.Option_Form._ComboBox_ReportFormat.Text)
 
 		#	 Plot Eye with Mask
 		cnf_log += "\n\t\t" + "(Plot Eye with Mask) = %s" % sub_DB.Option_Form._CheckBox_PlotEye.Checked
@@ -720,6 +725,167 @@ def CnfSave():
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to save Cnf file","Warning")						
 		EXIT()
+
+def CnfLoad(self):
+	File = sub_DB.resource_dir + r'\latest.cnf'		
+	Uenv = Load_env(File)
+	Uenv["File"] = File		
+	sub_DB.Uenv = Uenv
+	Log("	<Load the Latest Cnf - %s>" % File)
+
+	for key in Uenv:
+		#############################
+		# Load Cnf for EM Extractor #
+		#############################
+		if "[EM]" in key:
+			try:
+				Log("		(Load EM)")
+				pass
+
+			except Exception as e:		
+				Log("		(Load EM) : Failed")
+				Log(traceback.format_exc())
+				MessageBox.Show("Fail to Load Cnf for EM Extractor","Warning")						
+				EXIT()
+				
+		##################################
+		# Load Cnf for Circuit Simulator #
+		##################################
+		elif "[Tran]" in key:
+			try:
+				Log("		(Load Tran)")
+				pass
+
+			except Exception as e:		
+				Log("		(Load Tran) : Failed")
+				Log(traceback.format_exc())
+				MessageBox.Show("Fail to Load Cnf for Circuit Simulator","Warning")						
+				EXIT()
+			
+		#############################
+		# Load Cnf for Eye Analyzer #
+		#############################
+		elif "[Eye]" in key:
+			try:
+				if "<Setup>" in key:
+					# Input File
+					if "(Input File)" in key:
+						self._TextBox_InputFile.Text = Uenv[key][0]
+						self._TextBox_InputFile.BackColor = System.Drawing.Color.White
+						result_dir = Uenv[key][0].split(".")[0] + "_DDR_Results"				
+						sub_DB.result_dir = result_dir
+						Log("		(Load Eye - Input File) = %s" % Uenv[key][0])
+
+					# Design
+					elif "(Design)" in key:
+						self._ComboBox_Design.Text = Uenv[key][0]
+						Log("		(Load Eye - Design) = %s" % Uenv[key][0])
+
+					# Report Name
+					elif "(Report Name)" in key:
+						for item in Uenv[key]:
+							self._CheckedListBox_ReportName.Items.Add(item)
+						self._CheckedListBox_ReportName.SetItemChecked(0, True)
+						Log("		(Load Eye - Report Name) = %s" % Uenv[key][0])
+
+					# Setup Name
+					elif "(Setup Name)" in key:				
+						self._ComboBox_SolutionName.Text = Uenv[key][0]
+						Log("		(Load Eye - Setup Name) = %s" % Uenv[key][0])
+
+					# DDR Gen
+					elif "(DDR Gen)" in key:
+						self._ComboBox_DDRGen.Enabled = True
+						self._ComboBox_DDRGen.Text = Uenv[key][0]
+						Log("		(Load Eye - DDR Gen) = %s" % Uenv[key][0])
+
+					# Data-rate
+					elif "(Data-rate)" in key:
+						self._ComboBox_DataRate.Enabled = True
+						self._ComboBox_DataRate.BackColor = System.Drawing.Color.White
+						self._ComboBox_DataRate.Text = Uenv[key][0]
+						Log("		(Load Eye - Data-rate) = %s" % Uenv[key][0])
+
+				elif "<Net Classification>" in key:						
+					sub_DB.Net_Form._DataGridView.Rows.Add(Uenv[key][0], Uenv[key][1], Uenv[key][2], Uenv[key][3], Uenv[key][4])
+					pass
+
+				elif "<Analyze Option>" in key:
+					# Resources Folder
+					if "(Resources Folder)" in key:
+						sub_DB.Option_Form._TextBox_Resource.Text = Uenv[key][0]
+						Log("		(Load Eye - Resources Folder) = %s" % Uenv[key][0])
+
+					# Definition File
+					elif "(Definition File)" in key:
+						sub_DB.Option_Form._TextBox_Def.Text = Uenv[key][0]
+						Log("		(Load Eye - Definition File) = %s" % Uenv[key][0])
+
+					# Configuration File
+					elif "(Configuration File)" in key:
+						sub_DB.Option_Form._TextBox_Conf.Text = Uenv[key][0]
+						Log("		(Load Eye - Configuration File) = %s" % Uenv[key][0])
+
+					# Eye Offset
+					elif "(Eye Offset)" in key:
+						sub_DB.Option_Form._TextBox_EyeOffset.Text = Uenv[key][0].replace("ns","").strip()
+						Log("		(Load Eye - Eye Offset) = %s" % Uenv[key][0])
+
+					# Vref Method
+					elif "(Vref Method)" in key:							
+						sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv[key][0])
+						Log("		(Load Eye - Vref Method) = %s" % Uenv[key][1])
+
+					# Analyze Method
+					elif "(Analyze Method)" in key:
+						sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex = int(Uenv[key][0])
+						Log("		(Load Eye - Analyze Method) = %s" % Uenv[key][1])
+
+					# Export Excel Report
+					elif "(Export Excel Report)" in key:
+						if Uenv[key][0] == "True":
+							sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = True
+						else:
+							sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = False
+						Log("		(Load Eye - Export Excel Report) = %s" % Uenv[key][0])
+
+					# Image Width
+					elif "(Image Width)" in key:
+						sub_DB.Option_Form._TextBox_ImageWidth.Text = Uenv[key][0].replace("pixel","").strip()
+						Log("		(Load Eye - Image Width) = %s" % Uenv[key][0])
+
+					# Report Format
+					elif "(Report Format)" in key:
+						sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex = int(Uenv[key][0])
+						Log("		(Load Eye - Report Format) = %s" % Uenv[key][1])
+
+					# Plot Eye with Mask
+					elif "(Plot Eye with Mask)" in key:
+						if Uenv[key][0] == "True":
+							sub_DB.Option_Form._CheckBox_PlotEye.Checked = True
+						else:
+							sub_DB.Option_Form._CheckBox_PlotEye.Checked = False
+						Log("		(Load Eye - Plot Eye with Mask) = %s" % Uenv[key][0])
+
+					# Check DDR Compliance
+					elif "(Check DDR Compliance)" in key:
+						if Uenv[key][0] == "True":
+							sub_DB.Option_Form._CheckBox_Compiance.Checked = True
+						else:
+							sub_DB.Option_Form._CheckBox_Compiance.Checked = False
+						Log("		(Load Eye - Check DDR Compliance) = %s" % Uenv[key][0])
+
+			except Exception as e:		
+				Log("		(Load Eye) : Failed")
+				Log(traceback.format_exc())
+				MessageBox.Show("Fail to Load Cnf for Eye Analyzer","Warning")						
+				EXIT()
+
+	self.TopMost = True
+	self.Cursor = Cursors.WaitCursor
+	sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+	self.Cursor = Cursors.Default
+	self.TopMost = False
 
 def EXIT():	
 	sub_DB.exit_iter += 1
