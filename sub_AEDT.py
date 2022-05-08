@@ -99,6 +99,34 @@ def Get_AEDT_Info(self, File):
 		MessageBox.Show("Fail to run AEDT","Warning")		
 		EXIT()
 
+def Set_AEDT_Info(self, File):
+	try:
+		Delete_LockFile(File)
+		Version = Get_AEDT_Version()
+		Log("[AEDT Version] : %s" % Version)
+		oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Version)
+		oDesktop.RestoreWindow()
+
+		Project_list = oDesktop.GetProjectList()
+		Input_Project_Name = File.split("\\")[-1].split(".")[0]
+		if not Input_Project_Name in Project_list:		
+			oDesktop.OpenProject(File)
+
+		oProject = oDesktop.SetActiveProject(Input_Project_Name)
+		oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Text)
+		oModule = oDesign.GetModule("ReportSetup")
+
+		sub_DB.AEDT["App"] = oApp
+		sub_DB.AEDT["Desktop"] = oDesktop
+		sub_DB.AEDT["Project"] = oProject
+		sub_DB.AEDT["Design"] = oDesign
+
+	except Exception as e:		
+		Log("[AEDT Launch] : Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to run AEDT","Warning")		
+		EXIT()
+
 def Set_AEDT_PlotTemplate():	
 	oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Get_AEDT_Version())
 	oDesktop.RestoreWindow()
