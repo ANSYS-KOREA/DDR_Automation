@@ -1,8 +1,8 @@
 ############################################################
 #	Ansys DDR Wizard v0.0 Configuration File
 #		Input File : 
-#		Start : 2022.05.09, 05:38:10
-#		End   : 2022.05.09, 05:38:19
+#		Start : 2022.05.09, 06:11:01
+#		End   : 2022.05.09, 06:11:05
 ############################################################
 
 [EM]
@@ -12,39 +12,18 @@
 [Eye]
 	<Setup>
 		(Input File) = D:\1_Work\20220106_DDR_Compliance\0_DB\0_Input_Examples\AEDT_Schematic\Galileo_R21_DDR_SSN_siwave.aedt
-		(Design) = Circuit1
+		(Design)
 		(Report Name)
-			= Transient Voltage Plot 1
-		(Setup Name) = Transient
-		(DDR Gen) = DDR4
-		(Data-rate) = 2133
+		(Setup Name)
+		(DDR Gen)
+		(Data-rate)
 
 	<Net Classification>
-		 (0) = False, Test_A1, ADDR, A1, None
-		 (1) = False, Test_A11, ADDR, A11, None
-		 (2) = True, V(U1B5_M_DQ_0__B2), DQ, DQ_0, None
-		 (3) = True, V(U1B5_M_DQ_1__C2), DQ, DQ_1, None
-		 (4) = True, V(U1B5_M_DQ_2__C2), DQ, DQ_2, None
-		 (5) = True, V(U1B5_M_DQ_3__C2), DQ, DQ_3, None
-		 (6) = True, V(U1B5_M_DQ_4__E2), DQ, DQ_4, None
-		 (7) = True, V(U1B5_M_DQ_5__E2), DQ, DQ_5, None
-		 (8) = True, V(U1B5_M_DQ_6__D2), DQ, DQ_6, None
-		 (9) = True, V(U1B5_M_DQ_7__E2), DQ, DQ_7, None
-		 (10) = True, V(U1A1_M_DQ_8__B2), DQ, DQ_8, None
-		 (11) = True, V(U1A1_M_DQ_9__C2), DQ, DQ_9, None
-		 (12) = True, V(U1A1_M_DQ_10__C2), DQ, DQ_10, None
-		 (13) = True, V(U1A1_M_DQ_11__C2), DQ, DQ_11, None
-		 (14) = True, V(U1A1_M_DQ_12__E2), DQ, DQ_12, None
-		 (15) = True, V(U1A1_M_DQ_13__E2), DQ, DQ_13, None
-		 (16) = True, V(U1A1_M_DQ_14__D2), DQ, DQ_14, None
-		 (17) = True, V(U1A1_M_DQ_15__E2), DQ, DQ_15, None
-		 (18) = False, V(U1A1_M_DQS_1__C2), DQS_P, DQS_1, None
-		 (19) = False, V(U1A1_M_DQS_N_1__D2), DQS_N, DQS_N_1, None
 
 	<Analyze Option>
 		(Resources Folder) = D:\1_Work\20220106_DDR_Compliance\1_Work\Code\ANSYS_DDR_Wizard_v0\Resources
 		(Definition File) = D:\1_Work\20220106_DDR_Compliance\1_Work\Code\ANSYS_DDR_Wizard_v0\Resources\Ref.def
-		(Configuration File) = D:\1_Work\20220106_DDR_Compliance\1_Work\Code\ANSYS_DDR_Wizard_v0\Resources\latest.cnf
+		(Configuration File) = D:\1_Work\20220106_DDR_Compliance\1_Work\Code\ANSYS_DDR_Wizard_v0\Resources\Ref.cnf
 		(Eye Offset) = 5 ns
 		(Vref Method) = 0, Auto-default
 		(Analyze Method) = 0, Default
