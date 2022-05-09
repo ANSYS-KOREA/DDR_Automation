@@ -13,6 +13,7 @@ Input_File = ""
 temp_dir = ""
 result_dir = ""
 resource_dir = ""
+user_dir = ""
 Log = ""
 
 Eye_Analyze_Flag = True

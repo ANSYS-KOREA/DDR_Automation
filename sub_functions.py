@@ -568,12 +568,13 @@ def LogSave():
 	f.write(sub_DB.Log)	
 	f.close()
 
-def CnfSave():	
+def CnfSave(File):	
 	#################
 	# Create Header #
 	#################
 	try:
-		Log("	<Create the Latest Cnf - Header>")
+		Log("	<Save Cnf>" )
+		Log("		= %s" % File)
 		cnf_log = ""
 		cnf_log += "############################################################"
 		cnf_log += "\n" + "#	Ansys DDR Wizard %s Configuration File" % sub_DB.Version
@@ -583,42 +584,47 @@ def CnfSave():
 		cnf_log += "\n" + "############################################################"
 
 	except Exception as e:		
-		Log("	<Create the Latest Cnf - Header> = Failed")
+		Log("	<Save Cnf - Header> = Failed")
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to create Cnf header","Warning")						
 		EXIT()
+
+	###########
+	# Version #
+	###########	
+	cnf_log += "\n\n" + "[Version] = %s" % sub_DB.Version
 
 	####################
 	# For EM Extractor #
 	####################
 	try:
-		Log("	<Create the Latest Cnf - EM Extractor>")
+		Log("	<Save Cnf - EM Extractor>")
 		cnf_log += "\n\n" + "[EM]"
 
 	except Exception as e:		
-		Log("	<Create the Latest Cnf - EM Extractor> = Failed")
+		Log("	<Save Cnf - EM Extractor> = Failed")
 		Log(traceback.format_exc())
-		MessageBox.Show("Fail to create Cnf - EM Extractor","Warning")						
+		MessageBox.Show("Fail to save Cnf - EM Extractor","Warning")						
 		EXIT()
 
 	#########################
 	# For Circuit Simulator #
 	#########################
 	try:
-		Log("	<Create the Latest Cnf - Circuit Simulator>")
+		Log("	<Save Cnf - Circuit Simulator>")
 		cnf_log += "\n\n" + "[Tran]"
 
 	except Exception as e:		
-		Log("	<Create the Latest Cnf - Circuit Simulator> = Failed")
+		Log("	<Save Cnf - Circuit Simulator> = Failed")
 		Log(traceback.format_exc())
-		MessageBox.Show("Fail to create Cnf - Circuit Simulator","Warning")						
+		MessageBox.Show("Fail to save Cnf - Circuit Simulator","Warning")						
 		EXIT()
 
 	####################
 	# For Eye Analyzer #
 	####################
 	try:
-		Log("	<Create the Latest Cnf - Eye Analyzer>")
+		Log("	<Save Cnf - Eye Analyzer>")
 		cnf_log += "\n\n" + "[Eye]"
 		# --------- Setup----------------
 		cnf_log += "\n\t" + "<Setup>"
@@ -706,9 +712,9 @@ def CnfSave():
 			cnf_log += "\n\n\t" + "<DDR Compliance>"
 
 	except Exception as e:
-		Log("	<Create the Latest Cnf - Eye Analyzer> = Failed")
+		Log("	<Save Cnf - Eye Analyzer> = Failed")
 		Log(traceback.format_exc())
-		MessageBox.Show("Fail to create Cnf - Eye Analyzer","Warning")						
+		MessageBox.Show("Fail to save Cnf - Eye Analyzer","Warning")						
 		EXIT()
 
 	#################
@@ -716,7 +722,7 @@ def CnfSave():
 	#################
 	try:
 		Log("	<Save Cnf File>")
-		f = open(sub_DB.resource_dir + r'\latest.cnf', 'w')
+		f = open(File, 'w')
 		f.write(cnf_log)	
 		f.close()
 
@@ -726,160 +732,509 @@ def CnfSave():
 		MessageBox.Show("Fail to save Cnf file","Warning")						
 		EXIT()
 
-def CnfLoad(self):
-	File = sub_DB.resource_dir + r'\latest.cnf'		
+def CnfLoad(self, File):
+	Initial()
+	self._TextBox_InputFile.Text = ""
+	self._ComboBox_Design.Items.Clear()
+	self._CheckedListBox_ReportName.Items.Clear()
+	self._ComboBox_SolutionName.Items.Clear()
+
 	Uenv = Load_env(File)
 	Uenv["File"] = File		
 	sub_DB.Uenv = Uenv
 	Log("	<Load the Latest Cnf - %s>" % File)
 
+	version_check_flag = False	
 	for key in Uenv:
-		#############################
-		# Load Cnf for EM Extractor #
-		#############################
-		if "[EM]" in key:
-			try:
-				Log("		(Load EM)")
-				pass
+		#################
+		# Check Version #
+		#################
+		if "[Version]" in key:			
+			cnf_version = Uenv[key][0]
+			if Uenv[key][0] == sub_DB.Version:
+				version_check_flag = True				
+				break
 
-			except Exception as e:		
-				Log("		(Load EM) : Failed")
-				Log(traceback.format_exc())
-				MessageBox.Show("Fail to Load Cnf for EM Extractor","Warning")						
-				EXIT()
-				
-		##################################
-		# Load Cnf for Circuit Simulator #
-		##################################
-		elif "[Tran]" in key:
-			try:
-				Log("		(Load Tran)")
-				pass
-
-			except Exception as e:		
-				Log("		(Load Tran) : Failed")
-				Log(traceback.format_exc())
-				MessageBox.Show("Fail to Load Cnf for Circuit Simulator","Warning")						
-				EXIT()
-			
-		#############################
-		# Load Cnf for Eye Analyzer #
-		#############################
-		elif "[Eye]" in key:
-			try:
-				if "<Setup>" in key:
-					# Input File
-					if "(Input File)" in key:
-						self._TextBox_InputFile.Text = Uenv[key][0]
-						self._TextBox_InputFile.BackColor = System.Drawing.Color.White
-						result_dir = Uenv[key][0].split(".")[0] + "_DDR_Results"				
-						sub_DB.result_dir = result_dir
-						Log("		(Load Eye - Input File) = %s" % Uenv[key][0])
-
-					# Design
-					elif "(Design)" in key:
-						self._ComboBox_Design.Text = Uenv[key][0]
-						Log("		(Load Eye - Design) = %s" % Uenv[key][0])
-
-					# Report Name
-					elif "(Report Name)" in key:
-						for item in Uenv[key]:
-							self._CheckedListBox_ReportName.Items.Add(item)
-						self._CheckedListBox_ReportName.SetItemChecked(0, True)
-						Log("		(Load Eye - Report Name) = %s" % Uenv[key][0])
-
-					# Setup Name
-					elif "(Setup Name)" in key:				
-						self._ComboBox_SolutionName.Text = Uenv[key][0]
-						Log("		(Load Eye - Setup Name) = %s" % Uenv[key][0])
-
-					# DDR Gen
-					elif "(DDR Gen)" in key:
-						self._ComboBox_DDRGen.Enabled = True
-						self._ComboBox_DDRGen.Text = Uenv[key][0]
-						Log("		(Load Eye - DDR Gen) = %s" % Uenv[key][0])
-
-					# Data-rate
-					elif "(Data-rate)" in key:
-						self._ComboBox_DataRate.Enabled = True
-						self._ComboBox_DataRate.BackColor = System.Drawing.Color.White
-						self._ComboBox_DataRate.Text = Uenv[key][0]
-						Log("		(Load Eye - Data-rate) = %s" % Uenv[key][0])
-
-				elif "<Net Classification>" in key:						
-					sub_DB.Net_Form._DataGridView.Rows.Add(Uenv[key][0], Uenv[key][1], Uenv[key][2], Uenv[key][3], Uenv[key][4])
+	if version_check_flag:
+		for key in Uenv:
+			#############################
+			# Load Cnf for EM Extractor #
+			#############################
+			if "[EM]" in key:
+				try:
+					Log("		(Load EM)")
 					pass
 
-				elif "<Analyze Option>" in key:
-					# Resources Folder
-					if "(Resources Folder)" in key:
-						sub_DB.Option_Form._TextBox_Resource.Text = Uenv[key][0]
-						Log("		(Load Eye - Resources Folder) = %s" % Uenv[key][0])
+				except Exception as e:		
+					Log("		(Load EM) : Failed")
+					Log(traceback.format_exc())
+					MessageBox.Show("Fail to Load Cnf for EM Extractor","Warning")						
+					EXIT()
+				
+			##################################
+			# Load Cnf for Circuit Simulator #
+			##################################
+			elif "[Tran]" in key:
+				try:
+					Log("		(Load Tran)")
+					pass
 
-					# Definition File
-					elif "(Definition File)" in key:
-						sub_DB.Option_Form._TextBox_Def.Text = Uenv[key][0]
-						Log("		(Load Eye - Definition File) = %s" % Uenv[key][0])
+				except Exception as e:		
+					Log("		(Load Tran) : Failed")
+					Log(traceback.format_exc())
+					MessageBox.Show("Fail to Load Cnf for Circuit Simulator","Warning")						
+					EXIT()
+			
+			#############################
+			# Load Cnf for Eye Analyzer #
+			#############################
+			elif "[Eye]" in key:
+				try:
+					if "<Setup>" in key:
+						# Input File
+						if "(Input File)" in key:
+							self._TextBox_InputFile.Text = Uenv[key][0]
+							self._TextBox_InputFile.BackColor = System.Drawing.Color.White
+							result_dir = Uenv[key][0].split(".")[0] + "_DDR_Results"				
+							sub_DB.result_dir = result_dir
+							Log("		(Load Eye - Input File) = %s" % Uenv[key][0])
 
-					# Configuration File
-					elif "(Configuration File)" in key:
-						sub_DB.Option_Form._TextBox_Conf.Text = Uenv[key][0]
-						Log("		(Load Eye - Configuration File) = %s" % Uenv[key][0])
+						# Design
+						elif "(Design)" in key:
+							self._ComboBox_Design.Text = Uenv[key][0]
+							Log("		(Load Eye - Design) = %s" % Uenv[key][0])
 
-					# Eye Offset
-					elif "(Eye Offset)" in key:
-						sub_DB.Option_Form._TextBox_EyeOffset.Text = Uenv[key][0].replace("ns","").strip()
-						Log("		(Load Eye - Eye Offset) = %s" % Uenv[key][0])
+						# Report Name
+						elif "(Report Name)" in key:
+							for item in Uenv[key]:
+								self._CheckedListBox_ReportName.Items.Add(item)
+							self._CheckedListBox_ReportName.SetItemChecked(0, True)
+							Log("		(Load Eye - Report Name) = %s" % Uenv[key][0])
 
-					# Vref Method
-					elif "(Vref Method)" in key:							
-						sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv[key][0])
-						Log("		(Load Eye - Vref Method) = %s" % Uenv[key][1])
+						# Setup Name
+						elif "(Setup Name)" in key:				
+							self._ComboBox_SolutionName.Text = Uenv[key][0]
+							Log("		(Load Eye - Setup Name) = %s" % Uenv[key][0])
 
-					# Analyze Method
-					elif "(Analyze Method)" in key:
-						sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex = int(Uenv[key][0])
-						Log("		(Load Eye - Analyze Method) = %s" % Uenv[key][1])
+						# DDR Gen
+						elif "(DDR Gen)" in key:
+							self._ComboBox_DDRGen.Enabled = True
+							self._ComboBox_DDRGen.Text = Uenv[key][0]
+							Log("		(Load Eye - DDR Gen) = %s" % Uenv[key][0])
 
-					# Export Excel Report
-					elif "(Export Excel Report)" in key:
-						if Uenv[key][0] == "True":
-							sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = True
-						else:
-							sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = False
-						Log("		(Load Eye - Export Excel Report) = %s" % Uenv[key][0])
+						# Data-rate
+						elif "(Data-rate)" in key:
+							self._ComboBox_DataRate.Enabled = True
+							self._ComboBox_DataRate.BackColor = System.Drawing.Color.White
+							self._ComboBox_DataRate.Text = Uenv[key][0]
+							Log("		(Load Eye - Data-rate) = %s" % Uenv[key][0])
 
-					# Image Width
-					elif "(Image Width)" in key:
-						sub_DB.Option_Form._TextBox_ImageWidth.Text = Uenv[key][0].replace("pixel","").strip()
-						Log("		(Load Eye - Image Width) = %s" % Uenv[key][0])
+					elif "<Net Classification>" in key:						
+						sub_DB.Net_Form._DataGridView.Rows.Add(Uenv[key][0], Uenv[key][1], Uenv[key][2], Uenv[key][3], Uenv[key][4])
+						pass
 
-					# Report Format
-					elif "(Report Format)" in key:
-						sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex = int(Uenv[key][0])
-						Log("		(Load Eye - Report Format) = %s" % Uenv[key][1])
+					elif "<Analyze Option>" in key:
+						# Resources Folder
+						if "(Resources Folder)" in key:
+							sub_DB.Option_Form._TextBox_Resource.Text = Uenv[key][0]
+							Log("		(Load Eye - Resources Folder) = %s" % Uenv[key][0])
 
-					# Plot Eye with Mask
-					elif "(Plot Eye with Mask)" in key:
-						if Uenv[key][0] == "True":
-							sub_DB.Option_Form._CheckBox_PlotEye.Checked = True
-						else:
-							sub_DB.Option_Form._CheckBox_PlotEye.Checked = False
-						Log("		(Load Eye - Plot Eye with Mask) = %s" % Uenv[key][0])
+						# Definition File
+						elif "(Definition File)" in key:
+							sub_DB.Option_Form._TextBox_Def.Text = Uenv[key][0]
+							Log("		(Load Eye - Definition File) = %s" % Uenv[key][0])
 
-					# Check DDR Compliance
-					elif "(Check DDR Compliance)" in key:
-						if Uenv[key][0] == "True":
-							sub_DB.Option_Form._CheckBox_Compiance.Checked = True
-						else:
-							sub_DB.Option_Form._CheckBox_Compiance.Checked = False
-						Log("		(Load Eye - Check DDR Compliance) = %s" % Uenv[key][0])
+						# Configuration File
+						elif "(Configuration File)" in key:
+							sub_DB.Option_Form._TextBox_Conf.Text = Uenv[key][0]
+							Log("		(Load Eye - Configuration File) = %s" % Uenv[key][0])
 
-			except Exception as e:		
-				Log("		(Load Eye) : Failed")
-				Log(traceback.format_exc())
-				MessageBox.Show("Fail to Load Cnf for Eye Analyzer","Warning")						
-				EXIT()
+						# Eye Offset
+						elif "(Eye Offset)" in key:
+							sub_DB.Option_Form._TextBox_EyeOffset.Text = Uenv[key][0].replace("ns","").strip()
+							Log("		(Load Eye - Eye Offset) = %s" % Uenv[key][0])
+
+						# Vref Method
+						elif "(Vref Method)" in key:							
+							sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv[key][0])
+							Log("		(Load Eye - Vref Method) = %s" % Uenv[key][1])
+
+						# Analyze Method
+						elif "(Analyze Method)" in key:
+							sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex = int(Uenv[key][0])
+							Log("		(Load Eye - Analyze Method) = %s" % Uenv[key][1])
+
+						# Export Excel Report
+						elif "(Export Excel Report)" in key:
+							if Uenv[key][0] == "True":
+								sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = True
+							else:
+								sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = False
+							Log("		(Load Eye - Export Excel Report) = %s" % Uenv[key][0])
+
+						# Image Width
+						elif "(Image Width)" in key:
+							sub_DB.Option_Form._TextBox_ImageWidth.Text = Uenv[key][0].replace("pixel","").strip()
+							Log("		(Load Eye - Image Width) = %s" % Uenv[key][0])
+
+						# Report Format
+						elif "(Report Format)" in key:
+							sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex = int(Uenv[key][0])
+							Log("		(Load Eye - Report Format) = %s" % Uenv[key][1])
+
+						# Plot Eye with Mask
+						elif "(Plot Eye with Mask)" in key:
+							if Uenv[key][0] == "True":
+								sub_DB.Option_Form._CheckBox_PlotEye.Checked = True
+							else:
+								sub_DB.Option_Form._CheckBox_PlotEye.Checked = False
+							Log("		(Load Eye - Plot Eye with Mask) = %s" % Uenv[key][0])
+
+						# Check DDR Compliance
+						elif "(Check DDR Compliance)" in key:
+							if Uenv[key][0] == "True":
+								sub_DB.Option_Form._CheckBox_Compiance.Checked = True
+							else:
+								sub_DB.Option_Form._CheckBox_Compiance.Checked = False
+							Log("		(Load Eye - Check DDR Compliance) = %s" % Uenv[key][0])
+
+				except Exception as e:		
+					Log("		(Load Eye) : Failed")
+					Log(traceback.format_exc())
+					MessageBox.Show("Fail to Load Cnf for Eye Analyzer","Warning")						
+					EXIT()
+
+	else:
+		MessageBox.Show("Version of Eye Analyzer(%s) and Cnf(%s) File do not match.\nFail to load auto saved cnf file." % (sub_DB.Version, cnf_version), "Warning")
+
+def Check_Setup(self):
+	flag = True
+	if self._TextBox_InputFile.Text == "":
+		flag = False
+
+	if self._ComboBox_Design.Text == "":
+		flag = False
+		
+	if len(self._CheckedListBox_ReportName.CheckedItems) == 0:
+		flag = False
+
+	if self._ComboBox_SolutionName.Text == "":
+		flag = False
+
+	if self._ComboBox_DDRGen.Text == "":
+		flag = False
+
+	if self._ComboBox_DataRate.Text == "":
+		flag = False
+
+	return flag
+
+def CnfAutoSave():
+	#################
+	# Create Header #
+	#################
+	try:
+		Log("	<Auto Saved Cnf - Header>")
+		cnf_log = ""
+		cnf_log += "############################################################"
+		cnf_log += "\n" + "#	Ansys DDR Wizard %s Auto Saved Configuration File" % sub_DB.Version
+		cnf_log += "\n" + "#		Input File : " +  sub_DB.Input_File
+		cnf_log += "\n" + "#		Start : " +  sub_DB.start_time
+		cnf_log += "\n" + "#		End   : " +  time.strftime('%Y.%m.%d, %H:%M:%S')
+		cnf_log += "\n" + "############################################################"
+
+	except Exception as e:		
+		Log("	<Auto Saved Cnf - Header> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to create auto saved Cnf header","Warning")						
+		EXIT()
+
+	###########
+	# Version #
+	###########	
+	cnf_log += "\n\n" + "[Version] = %s" % sub_DB.Version
+
+	####################
+	# For EM Extractor #
+	####################
+	try:
+		Log("	<Auto Saved Cnf - EM Extractor>")
+		cnf_log += "\n\n" + "[EM]"
+
+	except Exception as e:		
+		Log("	<Auto Saved Cnf - EM Extractor> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to create auto saved Cnf - EM Extractor","Warning")						
+		EXIT()
+
+	#########################
+	# For Circuit Simulator #
+	#########################
+	try:
+		Log("	<Auto Saved Cnf - Circuit Simulator>")
+		cnf_log += "\n\n" + "[Tran]"
+
+	except Exception as e:		
+		Log("	<Auto Saved Cnf - Circuit Simulator> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to create auto saved Cnf - Circuit Simulator","Warning")						
+		EXIT()
+
+	####################
+	# For Eye Analyzer #
+	####################
+	try:
+		Log("	<Auto Saved Cnf - Eye Analyzer>")
+		cnf_log += "\n\n" + "[Eye]"
+		# --------- Setup----------------
+		cnf_log += "\n\t" + "<Setup>"
+		#	 Input File
+		cnf_log += "\n\t\t" + "(Input File)"
+		if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_InputFile.Text
+
+		#	 Design
+		cnf_log += "\n\t\t" + "(Design)"
+		if not sub_DB.Eye_Form._ComboBox_Design.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_Design.Text
+
+		#	 Report Name
+		cnf_log += "\n\t\t" + "(Report Name)"
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:		
+			cnf_log += "\n\t\t\t" + "= %s" % item
+
+		#	 Setup Name	
+		cnf_log += "\n\t\t" + "(Setup Name)"
+		if not sub_DB.Eye_Form._ComboBox_SolutionName.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_SolutionName.Text
+
+		#	 DDR Gen
+		cnf_log += "\n\t\t" + "(DDR Gen)"
+		if not sub_DB.Eye_Form._ComboBox_DDRGen.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_DDRGen.Text
+
+		#	 Data-rate
+		cnf_log += "\n\t\t" + "(Data-rate)"
+		if not sub_DB.Eye_Form._ComboBox_DataRate.Text == "":
+			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_DataRate.Text
+
+		# --------- Net Classification ----------------
+		cnf_log += "\n\n\t" + "<Net Classification>"
+		iter = 0
+		for row in sub_DB.Net_Form._DataGridView.Rows:
+			cnf_log += "\n\t\t" + " (%d) = %s, %s, %s, %s, %s" % (iter, str(row.Cells[0].Value), row.Cells[1].Value, row.Cells[2].Value, row.Cells[3].Value, row.Cells[4].Value)
+			iter += 1
+
+		# --------- Analyze Option ----------------
+		cnf_log += "\n\n\t" + "<Analyze Option>"
+		#	 Resources Folder
+		cnf_log += "\n\t\t" + "(Resources Folder) = %s" % sub_DB.resource_dir
+
+		#	 Definition File
+		cnf_log += "\n\t\t" + "(Definition File) = %s" % sub_DB.Cenv["File"]
+
+		#	 Configuration File
+		cnf_log += "\n\t\t" + "(Configuration File) = %s" % sub_DB.Uenv["File"]
+
+		#	 Eye Offset
+		cnf_log += "\n\t\t" + "(Eye Offset)"
+		if not sub_DB.Option_Form._TextBox_EyeOffset.Text == "":
+			cnf_log += " = %s ns" % sub_DB.Option_Form._TextBox_EyeOffset.Text
+
+		#	 Vref Method
+		cnf_log += "\n\t\t" + "(Vref Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Vref.SelectedIndex, sub_DB.Option_Form._ComboBox_Vref.Text)
+
+		#	 Analyze Method
+		cnf_log += "\n\t\t" + "(Analyze Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex, sub_DB.Option_Form._ComboBox_Analyze.Text)
+	
+		#	 Export Excel Report
+		cnf_log += "\n\t\t" + "(Export Excel Report) = %s" % sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked
+	
+		#	 Image Width
+		if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+			if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+				cnf_log += "\n\t\t" + "(Image Width)"
+				cnf_log += " = %s pixel" % sub_DB.Option_Form._TextBox_ImageWidth.Text
+
+		#	 Report Format
+		if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+			cnf_log += "\n\t\t" + "(Report Format) = %d, %s" % (sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex, sub_DB.Option_Form._ComboBox_ReportFormat.Text)
+
+		#	 Plot Eye with Mask
+		cnf_log += "\n\t\t" + "(Plot Eye with Mask) = %s" % sub_DB.Option_Form._CheckBox_PlotEye.Checked
+
+		#	 Check DDR Compliance
+		cnf_log += "\n\t\t" + "(Check DDR Compliance) = %s" % sub_DB.Option_Form._CheckBox_Compiance.Checked
+
+		# --------- DDR Compliance ----------------
+		if sub_DB.Option_Form._CheckBox_Compiance.Visible:
+			#TODO : Save Cnf for DDR Compliance
+			cnf_log += "\n\n\t" + "<DDR Compliance>"
+
+	except Exception as e:
+		Log("	<Auto Saved Cnf - Eye Analyzer> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to create auto saved Cnf - Eye Analyzer","Warning")						
+		EXIT()
+
+	#################
+	# Save Cnf File #
+	#################
+	try:
+		Log("	<Auto Save Cnf File>")
+		f = open(sub_DB.user_dir + r'\latest.cnf', 'w')
+		f.write(cnf_log)
+		f.close()		
+
+	except Exception as e:		
+		Log("	<Auto Save Cnf File> = Failed")
+		Log(traceback.format_exc())
+		MessageBox.Show("Fail to auto save Cnf file","Warning")						
+		EXIT()
+
+def CnfAutoLoad(self):
+	File = sub_DB.user_dir + r'\latest.cnf'		
+	Uenv = Load_env(File)
+	Uenv["File"] = File		
+	sub_DB.Uenv = Uenv
+	Log("	<Load the Auto Saved Cnf - %s>" % File)
+
+	version_check_flag = False	
+	for key in Uenv:
+		#################
+		# Check Version #
+		#################
+		if "[Version]" in key:			
+			cnf_version = Uenv[key][0]
+			if Uenv[key][0] == sub_DB.Version:
+				version_check_flag = True				
+				break
+
+	if version_check_flag:
+		for key in Uenv:
+			##################################
+			# Load Auto Cnf for EM Extractor #
+			##################################
+			if "[EM]" in key:
+				try:
+					Log("		(Auto Load EM)")
+					pass
+
+				except Exception as e:		
+					Log("		(Auto Load EM) : Failed")
+					Log(traceback.format_exc())
+					MessageBox.Show("Fail to Load Auto Saved Cnf for EM Extractor","Warning")
+					EXIT()
+				
+			#######################################
+			# Load Auto Cnf for Circuit Simulator #
+			#######################################
+			elif "[Tran]" in key:
+				try:
+					Log("		(Auto Load Tran)")
+					pass
+
+				except Exception as e:		
+					Log("		(Auto Load Tran) : Failed")
+					Log(traceback.format_exc())
+					MessageBox.Show("Fail to Load Auto Saved Cnf for Circuit Simulator","Warning")						
+					EXIT()
+			
+			##################################################################
+			# Load Auto Cnf for Eye Analyzer                                 #
+			#    - Read only settings that are independent of the input file #
+			#		`DDR type & data-rate                                    #
+			#		`Analyze options                                         #
+			##################################################################
+			elif "[Eye]" in key:
+				try:
+					if "<Setup>" in key:
+						# DDR Gen
+						if "(DDR Gen)" in key:
+							self._ComboBox_DDRGen.Enabled = True
+							self._ComboBox_DDRGen.Text = Uenv[key][0]
+							Log("		(Auto Load Eye - DDR Gen) = %s" % Uenv[key][0])
+
+						# Data-rate
+						elif "(Data-rate)" in key:
+							self._ComboBox_DataRate.Enabled = True
+							self._ComboBox_DataRate.BackColor = System.Drawing.Color.White
+							self._ComboBox_DataRate.Text = Uenv[key][0]
+							Log("		(Auto Load Eye - Data-rate) = %s" % Uenv[key][0])
+
+					elif "<Analyze Option>" in key:
+						# Resources Folder
+						if "(Resources Folder)" in key:
+							sub_DB.Option_Form._TextBox_Resource.Text = Uenv[key][0]
+							Log("		(Auto Load Eye - Resources Folder) = %s" % Uenv[key][0])
+
+						# Definition File
+						elif "(Definition File)" in key:
+							sub_DB.Option_Form._TextBox_Def.Text = Uenv[key][0]
+							Log("		(Auto Load Eye - Definition File) = %s" % Uenv[key][0])
+
+						# Configuration File
+						elif "(Configuration File)" in key:
+							sub_DB.Option_Form._TextBox_Conf.Text = Uenv[key][0]
+							Log("		(Auto Load Eye - Configuration File) = %s" % Uenv[key][0])
+
+						# Eye Offset
+						elif "(Eye Offset)" in key:							
+							sub_DB.Option_Form._TextBox_EyeOffset.Text = Uenv[key][0].replace("ns","").strip()
+							Log("		(Auto Load Eye - Eye Offset) = %s" % Uenv[key][0])
+
+						# Vref Method
+						elif "(Vref Method)" in key:							
+							sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv[key][0])
+							Log("		(Auto Load Eye - Vref Method) = %s" % Uenv[key][1])
+
+						# Analyze Method
+						elif "(Analyze Method)" in key:
+							sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex = int(Uenv[key][0])
+							Log("		(Auto Load Eye - Analyze Method) = %s" % Uenv[key][1])
+
+						# Export Excel Report
+						elif "(Export Excel Report)" in key:
+							if Uenv[key][0] == "True":
+								sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = True
+							else:
+								sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = False
+							Log("		(Auto Load Eye - Export Excel Report) = %s" % Uenv[key][0])
+
+						# Image Width
+						elif "(Image Width)" in key:
+							sub_DB.Option_Form._TextBox_ImageWidth.Text = Uenv[key][0].replace("pixel","").strip()
+							Log("		(Auto Load Eye - Image Width) = %s" % Uenv[key][0])
+
+						# Report Format
+						elif "(Report Format)" in key:
+							sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex = int(Uenv[key][0])
+							Log("		(Auto Load Eye - Report Format) = %s" % Uenv[key][1])
+
+						# Plot Eye with Mask
+						elif "(Plot Eye with Mask)" in key:
+							if Uenv[key][0] == "True":
+								sub_DB.Option_Form._CheckBox_PlotEye.Checked = True
+							else:
+								sub_DB.Option_Form._CheckBox_PlotEye.Checked = False
+							Log("		(Auto Load Eye - Plot Eye with Mask) = %s" % Uenv[key][0])
+
+						# Check DDR Compliance
+						elif "(Check DDR Compliance)" in key:
+							if Uenv[key][0] == "True":
+								sub_DB.Option_Form._CheckBox_Compiance.Checked = True
+							else:
+								sub_DB.Option_Form._CheckBox_Compiance.Checked = False
+							Log("		(Auto Load Eye - Check DDR Compliance) = %s" % Uenv[key][0])
+
+				except Exception as e:		
+					Log("		(Auto Load Eye) : Failed")
+					Log(traceback.format_exc())
+					MessageBox.Show("Fail to Load Auto Saved Cnf for Eye Analyzer","Warning")						
+					EXIT()
+
+	else:
+		MessageBox.Show("Version of Eye Analyzer(%s) and Cnf(%s) File do not match.\nFail to load auto saved cnf file." % (sub_DB.Version, cnf_version), "Warning")
 
 def EXIT():	
 	sub_DB.exit_iter += 1
@@ -902,8 +1257,8 @@ def Initial():
 	sub_DB.Net_Form = ""
 	sub_DB.Net_Form = GUI_subforms.NetForm()
 
-	sub_DB.Option_Form = ""
-	sub_DB.Option_Form = GUI_subforms.OptionForm(2)
+	#sub_DB.Option_Form = ""
+	#sub_DB.Option_Form = GUI_subforms.OptionForm(2)
 
 	sub_DB.Result_Flag = False
 	sub_DB.Eye_Analyze_Flag = True
