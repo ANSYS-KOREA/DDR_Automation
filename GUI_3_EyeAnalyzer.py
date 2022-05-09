@@ -26,7 +26,6 @@ class Eye_Form(Form):
 		global path
 		path = os.path.dirname(os.path.abspath(__file__))
 
-		self._PictureBox_Logo = System.Windows.Forms.PictureBox()
 		self._PictureBox_OldEye = System.Windows.Forms.PictureBox()
 		self._PictureBox_NewEye = System.Windows.Forms.PictureBox()
 
@@ -110,6 +109,7 @@ class Eye_Form(Form):
 		self._Button_Debug = System.Windows.Forms.Button()
 
 		self._openFileDialog1 = System.Windows.Forms.OpenFileDialog()
+		self._saveFileDialog1 = System.Windows.Forms.SaveFileDialog()
 
 		self._CheckBox_AnalyzeDQ = System.Windows.Forms.CheckBox()
 		self._CheckBox_AnalyzeADDR = System.Windows.Forms.CheckBox()
@@ -141,7 +141,6 @@ class Eye_Form(Form):
 		self._toolStripSeparator1 = System.Windows.Forms.ToolStripSeparator()
 		self._toolStripSeparator2 = System.Windows.Forms.ToolStripSeparator()
 
-		self._PictureBox_Logo.BeginInit()
 		self._PictureBox_OldEye.BeginInit()
 		self._PictureBox_NewEye.BeginInit()
 		self._MenuStrip.SuspendLayout()
@@ -214,21 +213,21 @@ class Eye_Form(Form):
 		# 
 		self._UserConf_Load_ToolStripMenuItem.Name = "UserConf_Load_ToolStripMenuItem"
 		self._UserConf_Load_ToolStripMenuItem.Size = System.Drawing.Size(100, 22)
-		self._UserConf_Load_ToolStripMenuItem.Text = "Load"
+		self._UserConf_Load_ToolStripMenuItem.Text = "Load                 Ctrl+L"
 		self._UserConf_Load_ToolStripMenuItem.Click += self.UserConf_Load_ToolStripMenuItemClick
 		# 
 		# UserConf_Save_ToolStripMenuItem
 		# 
 		self._UserConf_Save_ToolStripMenuItem.Name = "UserConf_Save_ToolStripMenuItem"
 		self._UserConf_Save_ToolStripMenuItem.Size = System.Drawing.Size(100, 22)
-		self._UserConf_Save_ToolStripMenuItem.Text = "Save"
+		self._UserConf_Save_ToolStripMenuItem.Text = "Save                 Ctrl+S"
 		self._UserConf_Save_ToolStripMenuItem.Click += self.UserConf_Save_ToolStripMenuItemClick
 		# 
 		# UserConf_Edit_ToolStripMenuItem
 		# 
 		self._UserConf_Edit_ToolStripMenuItem.Name = "UserConf_Edit_ToolStripMenuItem"
 		self._UserConf_Edit_ToolStripMenuItem.Size = System.Drawing.Size(100, 22)
-		self._UserConf_Edit_ToolStripMenuItem.Text = "Edit"
+		self._UserConf_Edit_ToolStripMenuItem.Text = "Edit                   Ctrl+E"
 		self._UserConf_Edit_ToolStripMenuItem.Click += self.UserConf_Edit_ToolStripMenuItemClick
 		# 
 		# Exit_ToolStripMenuItem
@@ -302,25 +301,11 @@ class Eye_Form(Form):
 		# toolStripSeparator2
 		#
 		self._toolStripSeparator2.Name = "toolStripSeparator2"
-		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)
-		# 
-		# PictureBox_Logo
-		# 
-		File = path + "\\Resources\\Eye_Analyzer_Logo.bmp"
-		self._PictureBox_Logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-		self._PictureBox_Logo.ErrorImage = None
-		self._PictureBox_Logo.Image = Bitmap(File)
-		self._PictureBox_Logo.Location = System.Drawing.Point(5, 27)
-		self._PictureBox_Logo.Name = "PictureBox_Logo"		
-		self._PictureBox_Logo.Size = System.Drawing.Size(350, 35)
-		self._PictureBox_Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-		self._PictureBox_Logo.TabIndex = 25
-		self._PictureBox_Logo.TabStop = False
-		self._PictureBox_Logo.Visible = False
+		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)		
 		# 
 		# PictureBox_OldEye
 		# 
-		File = path + "\\Resources\\EYE_Measuer_Old.bmp"
+		File = path + "\\Resources\\EYE_Measuer_Old.jpg"
 		self._PictureBox_OldEye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_OldEye.ErrorImage = None
 		self._PictureBox_OldEye.Image = Bitmap(File)
@@ -333,7 +318,7 @@ class Eye_Form(Form):
 		# 
 		# PictureBox_NewEye
 		#
-		File = path + "\\Resources\\EYE_Measuer_New.bmp"
+		File = path + "\\Resources\\EYE_Measuer_New.jpg"
 		self._PictureBox_NewEye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_NewEye.ErrorImage = None
 		self._PictureBox_NewEye.Image = Bitmap(File)
@@ -1156,6 +1141,7 @@ class Eye_Form(Form):
 		self._Button_LoadCnf.TabIndex = 43
 		self._Button_LoadCnf.Text = 'Load Latest Cnf'
 		self._Button_LoadCnf.UseVisualStyleBackColor = True
+		self._Button_LoadCnf.Visible = False
 		self._Button_LoadCnf.Click += self.Button_LoadCnfClick
 		# 
 		# Button_Debug
@@ -1233,8 +1219,7 @@ class Eye_Form(Form):
 		self.Controls.Add(self._Button_Analyze)
 		self.Controls.Add(self._Button_ViewNet)
 		self.Controls.Add(self._Button_ViewResult)
-		self.Controls.Add(self._GroupBox_OldEye)
-		self.Controls.Add(self._PictureBox_Logo)
+		self.Controls.Add(self._GroupBox_OldEye)		
 		self.Controls.Add(self._Label_Version)
 		self.Controls.Add(self._GroupBox_Setup)
 		self.Controls.Add(self._MenuStrip)
@@ -1245,13 +1230,14 @@ class Eye_Form(Form):
 		self.Name = "Eye_Form"
 		self.Text = "ANSYS DDR Eye Analyzer " + sub_DB.Version
 		self.Load += self.Eye_FormLoad
-		self.ResizeEnd += self.Eye_FormResizeEnd
+		self.ResizeEnd += self.Eye_FormResizeEnd		
 		self.FormClosing += self.Eye_FormFormClosing
+		self.KeyPreview = True
+		self.KeyPress += self.Eye_FormKeyPress
 		self._MenuStrip.ResumeLayout(False)
 		self._MenuStrip.PerformLayout()
 		self._GroupBox_Setup.ResumeLayout(False)
-		self._GroupBox_Setup.PerformLayout()
-		self._PictureBox_Logo.EndInit()
+		self._GroupBox_Setup.PerformLayout()		
 		self._GroupBox_OldEye.ResumeLayout(False)
 		self._GroupBox_OldEye.PerformLayout()
 		self._PictureBox_OldEye.EndInit()
@@ -1279,6 +1265,9 @@ class Eye_Form(Form):
 			for ddr in DDR_Gen:
 				self._ComboBox_DDRGen.Items.Add(ddr)
 
+			if os.path.isfile(sub_DB.user_dir + r'\latest.cnf'):				
+				CnfAutoLoad(self)
+
 			# Setup the User Env. Info.
 			if "(Input File)<Setup>[EYE]" in sub_DB.Uenv:
 				self._TextBox_InputFile.Text = sub_DB.Uenv["(Input File)<Setup>[EYE]"][0]
@@ -1290,6 +1279,8 @@ class Eye_Form(Form):
 				# for *.csv Input File
 				elif sub_DB.Uenv["(Input File)<Setup>[EYE]"][0].strip().split("\\")[-1].split(".")[-1] == "csv":
 					pass
+
+				# for *.tr0 Input File
 				#elif sub_DB.Uenv["(Input File)<Setup>[EYE]"][0].strip().split("\\")[-1].split(".")[-1] == "tr0":
 			else:	
 				pass
@@ -1299,6 +1290,19 @@ class Eye_Form(Form):
 			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load Eye Analyzer main GUI","Warning")			
 			EXIT()
+
+	def Eye_FormKeyPress(self, sender, e):
+		# Save Cnf
+		if e.KeyChar == chr(19):
+			self.UserConf_Save_ToolStripMenuItemClick(self, sender)
+
+		# Load Cnf
+		elif e.KeyChar == chr(12):		
+			self.UserConf_Load_ToolStripMenuItemClick(self, sender)
+
+		# Edit Cnf
+		elif e.KeyChar == chr(5):
+			self.UserConf_Edit_ToolStripMenuItemClick(self, sender)
 
 	def Eye_FormResizeEnd(self, sender, e):
 		try:
@@ -1380,33 +1384,43 @@ class Eye_Form(Form):
 		try:
 			# Select DDR Configuration File		
 			dialog = OpenFileDialog()
-			dialog.InitialDirectory = path + "\\Resources"
-			dialog.Filter = "DDR wizard configuration file|*.cnf"
-			dialog.Title = "Select ANSYS DDR Wizard Configuration File"
+			dialog.Title = "Load Configuration File"
+			dialog.Filter = "Configuration File|*.cnf"			
 			if dialog.ShowDialog(self) == DialogResult.OK:
 				File = dialog.FileName
-				# Parse DDR Configuration File
-				# Get Defined Data
-				Uenv = Load_env(File)
-				Uenv["File"] = File
-				sub_DB.Uenv = Uenv
-				Log("[Load Configuration File] = %s" % File)
-				sub_DB.Net_Form.Init_Flag = True
-				sub_DB.Net_Form._DataGridView.Rows.Clear()
-				MessageBox.Show("DDR wizard configuration file \"%s\" is loaded" % File.split("\\")[-1], "Load")
+				CnfLoad(self, File)
+				if Check_Setup(self):
+					self.Cursor = Cursors.WaitCursor					
+					sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+					self.Cursor = Cursors.Default
+					self.Button_ViewNetClick(self, sender)
 
 			else:
-				MessageBox.Show("Please Select the DDR wizard configuration file(*.cnf)","Warning")
+				MessageBox.Show("Loading configuration file has been canceled.","Warning")
 
 		except Exception as e:			
 			Log("[Load Configuration File] = Failed")
 			Log(traceback.format_exc())
-			MessageBox.Show("Fail to load DDR Wizard configuration file","Warning")
+			MessageBox.Show("Fail to load configuration file","Warning")
 			EXIT()
 
 	def UserConf_Save_ToolStripMenuItemClick(self, sender, e):
-		# TBD
-		pass
+		try:
+			dialog = SaveFileDialog()
+			dialog.Title = "Saving Configuration File"
+			dialog.Filter = "Configuration file|*.cnf"
+			if dialog.ShowDialog(self) == DialogResult.OK:
+				File = dialog.FileName
+				CnfSave(File)
+
+			else:
+				MessageBox.Show("Saving configuration file has been canceled.","Warning")
+
+		except Exception as e:			
+			Log("[Save Configuration File] = Failed")
+			Log(traceback.format_exc())
+			MessageBox.Show("Fail to save configuration file","Warning")
+			EXIT()
 
 	def UserConf_Edit_ToolStripMenuItemClick(self, sender, e):
 		try:
@@ -1422,7 +1436,7 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Exit_ToolStripMenuItemClick(self, sender, e):
-		CnfSave()
+		CnfAutoSave()
 		Log("[Save Log] = Done")
 		LogSave()
 		sub_ScriptEnv.Release()		
@@ -1513,11 +1527,7 @@ class Eye_Form(Form):
 
 	def Button_ImportClick(self, sender, e):
 		try:
-			self._ComboBox_DDRGen.Text = ""
-			self._ComboBox_DataRate.Text = ""
-
-			dialog = OpenFileDialog()
-			#dialog.InitialDirectory = sub_DB.Uenv["(Initial Input File Directory)<Setup>[Eye]"][0]
+			dialog = OpenFileDialog()			
 			dialog.Filter = "AEDT Project file|*.aedt|Comma delimited data file|*.csv"
 
 			if dialog.ShowDialog(self) == DialogResult.OK:
@@ -1552,6 +1562,7 @@ class Eye_Form(Form):
 
 					self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
 					self._ComboBox_Design.BackColor = System.Drawing.SystemColors.Info				
+					self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
 					self._ComboBox_Design.SelectedIndex = 0
 					sub_DB.InputFile_Flag = 1
 
@@ -1677,22 +1688,6 @@ class Eye_Form(Form):
 
 					pass
 
-				# set default ddr type & speed
-				for key in sub_DB.Cenv:				
-					if "[DDR Default]" in key:					
-						type = key.split("<")[-1].split(">")[0]
-						datarate = sub_DB.Cenv[key][0]
-						self._ComboBox_DDRGen.Text = type
-						self._ComboBox_DDRGen.Enabled = True
-						self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Window
-
-						self._ComboBox_DataRate.Text = datarate						
-						self._ComboBox_DataRate.Enabled = True
-						self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window
-
-						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
-						break
-
 			else:
 				MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
 
@@ -1782,6 +1777,8 @@ class Eye_Form(Form):
 					if "<" + self._ComboBox_DDRGen.Text + ">" in key:
 						for speed in sub_DB.Cenv[key]:
 							self._ComboBox_DataRate.Items.Add(speed)
+			self._Button_ViewNet.Enabled = False
+			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 
 			# Set Eye Vaildation Type according to DDR Gen.
 			DDR_Gen = self._ComboBox_DDRGen.Text
@@ -1848,8 +1845,9 @@ class Eye_Form(Form):
 			self._ComboBox_AC_DQ.Items.Clear()
 			self._ComboBox_AC_ADDR.Items.Clear()		
 			self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window
-			self._Button_ViewNet.Enabled = True
-			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+			if not self._ComboBox_DataRate.Text == "":
+				self._Button_ViewNet.Enabled = True
+				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
 			# Get Keywork
 			#	ex) <DDR3-800>
@@ -1881,12 +1879,15 @@ class Eye_Form(Form):
 								Log("	<TdIVW> : %s" % self._TextBox_TdIVW.Text)
 
 				elif self._ComboBox_DDRGen.Text == "DDR5":
+					#TODO : Setup DDR5 Eye Spec.
 					pass
 
 				elif self._ComboBox_DDRGen.Text == "LPDDR4":
+					#TODO : Setup LPDDR4 Eye Spec.
 					pass
 
 				elif self._ComboBox_DDRGen.Text == "LPDDR5":
+					#TODO : Setup LPDDR5 Eye Spec.
 					pass
 
 			#	for Old Eye
@@ -1946,8 +1947,11 @@ class Eye_Form(Form):
 								self._TextBox_Vref.Text = sub_DB.Cenv[key][0]
 
 				elif self._ComboBox_DDRGen.Text == "LPDDR2":
+					#TODO : Setup LPDDR2 Eye Spec.
 					pass
+
 				elif self._ComboBox_DDRGen.Text == "LPDDR3":
+					#TODO : Setup LPDDR3 Eye Spec.
 					pass
 
 		except Exception as e:			
@@ -2306,7 +2310,7 @@ class Eye_Form(Form):
 			self.Button_ViewNetClick(self, sender)
 
 	def Eye_FormFormClosing(self, sender, e):
-		CnfSave()
+		CnfAutoSave()
 		Log("[Save Log] = Done")
 		LogSave()
 		sub_ScriptEnv.Release()		
@@ -2331,3 +2335,5 @@ class Eye_Form(Form):
 		self._ComboBox_DataRate.SelectedIndex = 2
 		self.Button_ViewNetClick(self, sender)		
 		self.Button_AnalyzeClick(self, sender)
+
+

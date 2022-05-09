@@ -20,8 +20,7 @@ class StartForm(Form):
 		global path
 		path = os.path.dirname(os.path.abspath(__file__))
 		self._PictureBox_EM = System.Windows.Forms.PictureBox()
-		self._PictureBox_Tran = System.Windows.Forms.PictureBox()
-		self._PictureBox_Eye = System.Windows.Forms.PictureBox()
+		self._PictureBox_Tran = System.Windows.Forms.PictureBox()		
 		self._PictureBox_Comp = System.Windows.Forms.PictureBox()
 
 		self._Button_Start = System.Windows.Forms.Button()
@@ -49,14 +48,13 @@ class StartForm(Form):
 
 		self._MenuStrip.SuspendLayout()
 		self._PictureBox_EM.BeginInit()
-		self._PictureBox_Tran.BeginInit()
-		self._PictureBox_Eye.BeginInit()
+		self._PictureBox_Tran.BeginInit()		
 		self._PictureBox_Comp.BeginInit()
 		self.SuspendLayout()
 		# 
 		# PictureBox_EM
 		#
-		LogoFile = path + "\\Resources\\Main1_off.bmp"
+		LogoFile = path + "\\Resources\\Main1_off.jpg"
 		self._PictureBox_EM.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_EM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_EM.Location = System.Drawing.Point(0, 24)
@@ -69,7 +67,7 @@ class StartForm(Form):
 		# 
 		# PictureBox_Tran
 		# 
-		LogoFile = path + "\\Resources\\Main2_off.bmp"
+		LogoFile = path + "\\Resources\\Main2_off.jpg"
 		self._PictureBox_Tran.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_Tran.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_Tran.Location = System.Drawing.Point(0, 104)
@@ -78,25 +76,11 @@ class StartForm(Form):
 		self._PictureBox_Tran.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
 		self._PictureBox_Tran.TabIndex = 4
 		self._PictureBox_Tran.TabStop = False
-		self._PictureBox_Tran.Click += self.PictureBox_TranClick
-		# 
-		# PictureBox_Eye
-		# 
-		LogoFile = path + "\\Resources\\Main3_off.bmp"
-		self._PictureBox_Eye.BackgroundImage = Bitmap(LogoFile)
-		self._PictureBox_Eye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch		
-		self._PictureBox_Eye.Location = System.Drawing.Point(5, 234)
-		self._PictureBox_Eye.Name = "PictureBox_Eye"
-		self._PictureBox_Eye.Size = System.Drawing.Size(850, 100)
-		self._PictureBox_Eye.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-		self._PictureBox_Eye.TabIndex = 14
-		self._PictureBox_Eye.TabStop = False
-		self._PictureBox_Eye.Click += self.PictureBox_EyeClick
-		self._PictureBox_Eye.Visible = False
+		self._PictureBox_Tran.Click += self.PictureBox_TranClick		
 		# 
 		# PictureBox_Comp
 		# 
-		LogoFile = path + "\\Resources\\Main4_off.bmp"
+		LogoFile = path + "\\Resources\\Main3_off.jpg"
 		self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_Comp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch				
 		self._PictureBox_Comp.Location = System.Drawing.Point(0, 179)
@@ -268,8 +252,7 @@ class StartForm(Form):
 		self.MaximumSize = System.Drawing.Size(width, height)
 		self.MinimumSize = System.Drawing.Size(width, height)
 		self.Controls.Add(self._Button_Debug)
-		self.Controls.Add(self._PictureBox_Comp)
-		self.Controls.Add(self._PictureBox_Eye)
+		self.Controls.Add(self._PictureBox_Comp)		
 		self.Controls.Add(self._Button_Start)
 		self.Controls.Add(self._PictureBox_EM)
 		self.Controls.Add(self._PictureBox_Tran)
@@ -285,16 +268,14 @@ class StartForm(Form):
 		self._MenuStrip.ResumeLayout(False)
 		self._MenuStrip.PerformLayout()
 		self._PictureBox_EM.EndInit()
-		self._PictureBox_Tran.EndInit()
-		self._PictureBox_Eye.EndInit()
+		self._PictureBox_Tran.EndInit()		
 		self._PictureBox_Comp.EndInit()
 		self.ResumeLayout(False)
 		self.PerformLayout()
 
 		# Variables				
 		self.EM_flag = False
-		self.Tran_flag = False
-		self.Eye_flag = False
+		self.Tran_flag = False		
 		self.Comp_flag = False
 
 	''' StartForm - Events '''
@@ -316,37 +297,28 @@ class StartForm(Form):
 
 	def PictureBox_EMClick(self, sender, e):
 		if self.EM_flag:
-			LogoFile = path + "\\Resources\\Main1_off.bmp"
+			LogoFile = path + "\\Resources\\Main1_off.jpg"
 			self._PictureBox_EM.BackgroundImage = Bitmap(LogoFile)
 		else:
-			LogoFile = path + "\\Resources\\Main1_on.bmp"
+			LogoFile = path + "\\Resources\\Main1_on.jpg"
 			self._PictureBox_EM.BackgroundImage = Bitmap(LogoFile)
 		self.EM_flag = not self.EM_flag		
 
 	def PictureBox_TranClick(self, sender, e):
 		if self.Tran_flag:
-			LogoFile = path + "\\Resources\\Main2_off.bmp"
+			LogoFile = path + "\\Resources\\Main2_off.jpg"
 			self._PictureBox_Tran.BackgroundImage = Bitmap(LogoFile)
 		else:
-			LogoFile = path + "\\Resources\\Main2_on.bmp"
+			LogoFile = path + "\\Resources\\Main2_on.jpg"
 			self._PictureBox_Tran.BackgroundImage = Bitmap(LogoFile)
 		self.Tran_flag = not self.Tran_flag
 
-	def PictureBox_EyeClick(self, sender, e):
-		if self.Eye_flag:
-			LogoFile = path + "\\Resources\\Main3_off.bmp"
-			self._PictureBox_Eye.BackgroundImage = Bitmap(LogoFile)
-		else:
-			LogoFile = path + "\\Resources\\Main3_on.bmp"
-			self._PictureBox_Eye.BackgroundImage = Bitmap(LogoFile)
-		self.Eye_flag = not self.Eye_flag
-
 	def PictureBox_CompClick(self, sender, e):
 		if self.Comp_flag:
-			LogoFile = path + "\\Resources\\Main4_off.bmp"
+			LogoFile = path + "\\Resources\\Main3_off.jpg"
 			self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		else:
-			LogoFile = path + "\\Resources\\Main4_on.bmp"
+			LogoFile = path + "\\Resources\\Main3_on.jpg"
 			self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		self.Comp_flag = not self.Comp_flag
 
@@ -458,12 +430,6 @@ class StartForm(Form):
 			sub_DB.Uenv["[Tran]"][0] = str(self.Tran_flag)
 		else:
 			sub_DB.Uenv["[Tran]"] = [str(self.Tran_flag)]
-
-		#	for Eye
-		if "[Eye]" in sub_DB.Uenv:
-			sub_DB.Uenv["[Eye]"][0] = str(self.Eye_flag)
-		else:
-			sub_DB.Uenv["[Eye]"] = [str(self.Eye_flag)]
 
 		#	for Comp
 		if "[Comp]" in sub_DB.Uenv:
