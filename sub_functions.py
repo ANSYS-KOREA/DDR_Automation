@@ -631,7 +631,7 @@ def CnfSave(File):
 		#	 Input File
 		cnf_log += "\n\t\t" + "(Input File)"
 		if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
-			cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_InputFile.Text
+			cnf_log += " = %s, %d" % (sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.InputFile_Flag)
 
 		#	 Design
 		cnf_log += "\n\t\t" + "(Design)"
@@ -794,6 +794,7 @@ def CnfLoad(self, File):
 						# Input File
 						if "(Input File)" in key:
 							self._TextBox_InputFile.Text = Uenv[key][0]
+							sub_DB.InputFile_Flag = int(Uenv[key][1])							
 							self._TextBox_InputFile.BackColor = System.Drawing.Color.White
 							result_dir = Uenv[key][0].split(".")[0] + "_DDR_Results"				
 							sub_DB.result_dir = result_dir
@@ -991,7 +992,7 @@ def CnfAutoSave():
 		#	 Input File
 		cnf_log += "\n\t\t" + "(Input File)"
 		if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
-			cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_InputFile.Text
+			cnf_log += " = %s, %d" % (sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.InputFile_Flag)
 
 		#	 Design
 		cnf_log += "\n\t\t" + "(Design)"

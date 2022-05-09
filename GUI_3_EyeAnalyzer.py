@@ -1389,11 +1389,127 @@ class Eye_Form(Form):
 			if dialog.ShowDialog(self) == DialogResult.OK:
 				File = dialog.FileName
 				CnfLoad(self, File)
-				if Check_Setup(self):
-					self.Cursor = Cursors.WaitCursor					
-					sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
-					self.Cursor = Cursors.Default
-					self.Button_ViewNetClick(self, sender)
+
+				# for AEDT Input
+				if sub_DB.InputFile_Flag == 1:
+					if Check_Setup(self):				
+						self.Cursor = Cursors.WaitCursor					
+						sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+						self.Cursor = Cursors.Default
+						self.Button_ViewNetClick(self, sender)
+
+				# for CSV Input
+				elif sub_DB.InputFile_Flag == 2:
+					self._ComboBox_Design.Text = "N/A"
+					self._ComboBox_Design.Enabled = False
+					self._CheckedListBox_ReportName.Items.Clear()
+					self._CheckedListBox_ReportName.Enabled = False
+					self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Control
+					self._ComboBox_SolutionName.Text = "N/A"
+					self._ComboBox_SolutionName.Enabled = False
+
+					# Read Input csv file, Backup Netlist and Waveforms
+					try:
+						Waveform = {}
+						with open(sub_DB.Eye_Form._TextBox_InputFile.Text) as fp:
+							# Read the fist line
+							temp_data = fp.readline().replace("\"","").replace(" ","").replace("-","_").strip().split(",")
+							temp_data = list(filter(None,temp_data))							
+
+							# Delete global & local variable data
+							for i in range(0, len(temp_data)):
+								if not "Time" in temp_data[i]:
+									del temp_data[i]
+								else:
+									break
+
+							# Get time and voltage unit
+							sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
+							sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
+							
+							# Delete Time Column
+							del temp_data[0]
+							data = [[0 for col in range(0)] for row in range(len(temp_data))]							
+							for i in range(0, len(temp_data)):								
+								data[i].append(temp_data[i])
+
+							# Get Waveform Data
+							Time = []
+							for line in fp:
+								Time.append(float(line.split(",")[0]))
+								for i in range(0, len(temp_data)):					
+									data[i].append(float(line.split(",")[i+1]))
+								
+						fp.close()
+
+						Log("	<Read WaveFrom>")
+						for cell in data:
+							key = cell[0].split("[")[0].replace("-","_")
+							del cell[0]
+							Waveform[key] = cell
+							Log("		= %s" % key)
+
+						# Check time unit
+						if sub_DB.Unit["Time"].lower() == "ps":
+							pass
+						elif sub_DB.Unit["Time"].lower() == "ns":
+							for i in range(0, len(Time)):
+								Time[i] = Time[i]*1000
+						else:
+							MessageBox.Show("The time unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+						sub_DB.Time = Time
+
+						# Check voltage unit
+						if sub_DB.Unit["Voltage"].lower() == "mv":
+							pass
+						elif sub_DB.Unit["Voltage"].lower() == "v":
+							for key in Waveform:
+								for i in range(0, len(Waveform[key])):
+									Waveform[key][i] = Waveform[key][i]*1000
+						else:
+							MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+						sub_DB.Waveform = Waveform
+						
+						# Create Netlist
+						Netlist = []
+						for i in range(0, len(temp_data)):
+							Netlist.append(temp_data[i].split("[")[0].replace("-","_"))
+						sub_DB.Netlist = Netlist
+
+						# Check input csv file time resolution
+						# Non uniform time resolution
+						if not sub_DB.Time[1] - sub_DB.Time[0] == 1:
+							sub_DB.CSV_flag = False
+							Log("	<Time Resolution> = Un-uniform")
+							# OK Click, keep going
+							if MessageBox.Show(							
+								"The most appropriate format of Eye Analyzer's input csv file is voltage waveform extracted uniformly in 1ps.\n\n"+
+								"\"%s\" does not meet this condition, which may result in inaccurate results.\n\n" % File.split("\\")[-1]+
+								"Will you continue?","Warning",MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK:
+
+								# Enable Next Step
+								self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
+								self._ComboBox_DDRGen.Enabled = True
+								sub_DB.InputFile_Flag = 2
+
+							# Cancel Click, re-select input file
+							else:
+								self._TextBox_InputFile.Text = ""
+
+						# Uniform time resolution
+						else:
+							Log("	<Time Resolution> = Uniform")
+							sub_DB.CSV_flag = True
+							self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
+							self._ComboBox_DDRGen.Enabled = True
+							sub_DB.InputFile_Flag = 2
+
+					except Exception as e:
+						Log("[Input CSV File Parsing] = Failed")
+						Log(traceback.format_exc())
+						MessageBox.Show("Input csv file parsing has been failed.\n\nPlease check the input file,\n\t%s." % File.split("\\")[-1],"Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+						self._TextBox_InputFile.Text = ""
+						EXIT()
 
 			else:
 				MessageBox.Show("Loading configuration file has been canceled.","Warning")
@@ -1969,6 +2085,7 @@ class Eye_Form(Form):
 				flag = False
 
 			# CSV Input
+			print sub_DB.InputFile_Flag
 			if sub_DB.InputFile_Flag == 2:
 				flag = True
 
