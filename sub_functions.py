@@ -668,9 +668,12 @@ def CnfSave(File):
 			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_Design.Text
 
 		#	 Report Name
-		cnf_log += "\n\t\t" + "(Report Name)"
-		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:		
-			cnf_log += "\n\t\t\t" + "= %s" % item
+		cnf_log += "\n\t\t" + "(Report Name)"		
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.Items:
+			if item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:
+				cnf_log += "\n\t\t\t" + "= %s!" % item
+			else:
+				cnf_log += "\n\t\t\t" + "= %s" % item
 
 		#	 Setup Name	
 		cnf_log += "\n\t\t" + "(Setup Name)"
@@ -836,10 +839,21 @@ def CnfLoad(self, File):
 
 						# Report Name
 						elif "(Report Name)" in key:
-							for item in Uenv[key]:
-								self._CheckedListBox_ReportName.Items.Add(item)
-							self._CheckedListBox_ReportName.SetItemChecked(0, True)
-							Log("		(Load Eye - Report Name) = %s" % Uenv[key][0])
+							for i in range(0, len(Uenv[key])):
+								if "!" in Uenv[key][i]:
+									self._CheckedListBox_ReportName.Items.Add(Uenv[key][i].replace("!",""))
+									self._CheckedListBox_ReportName.SetItemChecked(i, True)
+									Log("		(Load Eye - Report Name) = True, %s" % Uenv[key][0])
+								else:
+									self._CheckedListBox_ReportName.Items.Add(Uenv[key][i])
+									self._CheckedListBox_ReportName.SetItemChecked(i, False)
+									Log("		(Load Eye - Report Name) = False, %s" % Uenv[key][0])
+
+						#elif "(Report Name)" in key:
+						#	for item in Uenv[key]:
+						#		self._CheckedListBox_ReportName.Items.Add(item)
+						#	self._CheckedListBox_ReportName.SetItemChecked(0, True)
+						#	Log("		(Load Eye - Report Name) = %s" % Uenv[key][0])
 
 						# Setup Name
 						elif "(Setup Name)" in key:				
@@ -1029,9 +1043,12 @@ def CnfAutoSave():
 			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_Design.Text
 
 		#	 Report Name
-		cnf_log += "\n\t\t" + "(Report Name)"
-		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:		
-			cnf_log += "\n\t\t\t" + "= %s" % item
+		cnf_log += "\n\t\t" + "(Report Name)"		
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.Items:
+			if item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:
+				cnf_log += "\n\t\t\t" + "= %s!" % item
+			else:
+				cnf_log += "\n\t\t\t" + "= %s" % item
 
 		#	 Setup Name	
 		cnf_log += "\n\t\t" + "(Setup Name)"
