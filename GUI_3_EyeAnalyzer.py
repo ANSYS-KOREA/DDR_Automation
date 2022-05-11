@@ -1080,7 +1080,7 @@ class Eye_Form(Form):
 		self._Button_ViewNet.TabIndex = 27
 		self._Button_ViewNet.Text = "Net Setup"
 		self._Button_ViewNet.UseVisualStyleBackColor = True
-		self._Button_ViewNet.Enabled = False
+		self._Button_ViewNet.Enabled = True
 		self._Button_ViewNet.Click += self.Button_ViewNetClick		
 		# 
 		# Button_Analyze
@@ -1679,6 +1679,7 @@ class Eye_Form(Form):
 					self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
 					self._ComboBox_Design.BackColor = System.Drawing.SystemColors.Info				
 					self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+					self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 					self._ComboBox_Design.SelectedIndex = 0
 					sub_DB.InputFile_Flag = 1
 
@@ -1872,8 +1873,9 @@ class Eye_Form(Form):
 		self._ComboBox_SolutionName_ToopTip.SetToolTip(self._ComboBox_SolutionName, self._ComboBox_SolutionName.Text)
 
 	def CheckedListBox_ReportNameSelectedIndexChanged(self, sender, e):
-		sub_DB.Net_Form = ""
-		sub_DB.Net_Form = GUI_subforms.NetForm()
+		Initial()
+		sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+		self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
 		try:
@@ -1893,8 +1895,8 @@ class Eye_Form(Form):
 					if "<" + self._ComboBox_DDRGen.Text + ">" in key:
 						for speed in sub_DB.Cenv[key]:
 							self._ComboBox_DataRate.Items.Add(speed)
-			self._Button_ViewNet.Enabled = False
-			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
+			#self._Button_ViewNet.Enabled = False
+			#self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 
 			# Set Eye Vaildation Type according to DDR Gen.
 			DDR_Gen = self._ComboBox_DDRGen.Text
@@ -1960,10 +1962,7 @@ class Eye_Form(Form):
 			# Initialization
 			self._ComboBox_AC_DQ.Items.Clear()
 			self._ComboBox_AC_ADDR.Items.Clear()		
-			self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window
-			if not self._ComboBox_DataRate.Text == "":
-				self._Button_ViewNet.Enabled = True
-				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+			self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window			
 
 			# Get Keywork
 			#	ex) <DDR3-800>
@@ -2078,14 +2077,11 @@ class Eye_Form(Form):
 
 	def Button_ViewNetClick(self, sender, e):
 		try:
-			flag = True
-
 			# Check if any of report name has been checked
-			if len(self._CheckedListBox_ReportName.CheckedItems) == 0:
-				flag = False
+			flag, msg = Check_Input(self)
+			
 
-			# CSV Input
-			print sub_DB.InputFile_Flag
+			# CSV Input			
 			if sub_DB.InputFile_Flag == 2:
 				flag = True
 
@@ -2106,7 +2102,7 @@ class Eye_Form(Form):
 				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
 
 			else:
-				MessageBox.Show("At least one report must be checked.","Warning")
+				MessageBox.Show("The following entries are missing :\n\n" + msg + "\nPlease enter so that nothing is missing","Warning")
 
 		except Exception as e:			
 			Log("[Net Form Launch] = Failed")
@@ -2249,7 +2245,7 @@ class Eye_Form(Form):
 
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
 			self.Height = 660			
-			
+			 
 	def Button_ImgShow_OldClick(self, sender, e):		
 		self.Image_flag_Old = not self.Image_flag_Old
 

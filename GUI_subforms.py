@@ -1079,7 +1079,9 @@ class NetForm(Form):
 					if row.Cells[0].Value:
 						Log("		= %s, %s, %s, %s" % (row.Cells[1].Value, row.Cells[2].Value, row.Cells[3].Value, row.Cells[4].Value))
 
-				sub_DB.Net_Form = self
+				sub_DB.Net_Form = self				
+				sub_DB.Eye_Form._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Window
+				sub_DB.Eye_Form._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window
 				self.Close()
 
 			except Exception as e:

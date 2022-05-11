@@ -545,6 +545,35 @@ def Gen_waveform_file(Input_File, Plot_list, Group_flag):
 		MessageBox.Show("Fail to plot eye","Warning")						
 		EXIT()
 
+def Check_Input(self):
+	flag = True
+	msg = ""
+	if self._TextBox_InputFile.Text == "":
+		msg += "   *Input File\n"
+		flag = False
+
+	if self._ComboBox_Design.Text == "":
+		msg += "   *Deseign\n"
+		flag = False
+		
+	if len(self._CheckedListBox_ReportName.CheckedItems) == 0:
+		msg += "   *Report Name - No reports checked\n"
+		flag = False
+
+	if self._ComboBox_SolutionName.Text == "":
+		msg += "   *Setup Name\n"
+		flag = False
+
+	if self._ComboBox_DDRGen.Text == "":
+		msg += "   *DDR Generation\n"
+		flag = False
+
+	if self._ComboBox_DataRate.Text == "":
+		msg += "   *Data Rate\n"
+		flag = False	
+
+	return flag, msg
+
 def Check_spec():	
 	try:
 		Log("	<Check DDR Specification>")
@@ -1163,70 +1192,70 @@ def CnfAutoLoad(self):
 							self._ComboBox_DataRate.Text = Uenv[key][0]
 							Log("		(Auto Load Eye - Data-rate) = %s" % Uenv[key][0])
 
-					elif "<Analyze Option>" in key:
-						# Resources Folder
-						if "(Resources Folder)" in key:
-							sub_DB.Option_Form._TextBox_Resource.Text = Uenv[key][0]
-							Log("		(Auto Load Eye - Resources Folder) = %s" % Uenv[key][0])
+					#elif "<Analyze Option>" in key:
+					#	# Resources Folder
+					#	if "(Resources Folder)" in key:
+					#		sub_DB.Option_Form._TextBox_Resource.Text = Uenv[key][0]
+					#		Log("		(Auto Load Eye - Resources Folder) = %s" % Uenv[key][0])
 
-						# Definition File
-						elif "(Definition File)" in key:
-							sub_DB.Option_Form._TextBox_Def.Text = Uenv[key][0]
-							Log("		(Auto Load Eye - Definition File) = %s" % Uenv[key][0])
+					#	# Definition File
+					#	elif "(Definition File)" in key:
+					#		sub_DB.Option_Form._TextBox_Def.Text = Uenv[key][0]
+					#		Log("		(Auto Load Eye - Definition File) = %s" % Uenv[key][0])
 
-						# Configuration File
-						elif "(Configuration File)" in key:
-							sub_DB.Option_Form._TextBox_Conf.Text = Uenv[key][0]
-							Log("		(Auto Load Eye - Configuration File) = %s" % Uenv[key][0])
+					#	# Configuration File
+					#	elif "(Configuration File)" in key:
+					#		sub_DB.Option_Form._TextBox_Conf.Text = Uenv[key][0]
+					#		Log("		(Auto Load Eye - Configuration File) = %s" % Uenv[key][0])
 
-						# Eye Offset
-						elif "(Eye Offset)" in key:							
-							sub_DB.Option_Form._TextBox_EyeOffset.Text = Uenv[key][0].replace("ns","").strip()
-							Log("		(Auto Load Eye - Eye Offset) = %s" % Uenv[key][0])
+					#	# Eye Offset
+					#	elif "(Eye Offset)" in key:							
+					#		sub_DB.Option_Form._TextBox_EyeOffset.Text = Uenv[key][0].replace("ns","").strip()
+					#		Log("		(Auto Load Eye - Eye Offset) = %s" % Uenv[key][0])
 
-						# Vref Method
-						elif "(Vref Method)" in key:							
-							sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv[key][0])
-							Log("		(Auto Load Eye - Vref Method) = %s" % Uenv[key][1])
+					#	# Vref Method
+					#	elif "(Vref Method)" in key:							
+					#		sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv[key][0])
+					#		Log("		(Auto Load Eye - Vref Method) = %s" % Uenv[key][1])
 
-						# Analyze Method
-						elif "(Analyze Method)" in key:
-							sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex = int(Uenv[key][0])
-							Log("		(Auto Load Eye - Analyze Method) = %s" % Uenv[key][1])
+					#	# Analyze Method
+					#	elif "(Analyze Method)" in key:
+					#		sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex = int(Uenv[key][0])
+					#		Log("		(Auto Load Eye - Analyze Method) = %s" % Uenv[key][1])
 
-						# Export Excel Report
-						elif "(Export Excel Report)" in key:
-							if Uenv[key][0] == "True":
-								sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = True
-							else:
-								sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = False
-							Log("		(Auto Load Eye - Export Excel Report) = %s" % Uenv[key][0])
+					#	# Export Excel Report
+					#	elif "(Export Excel Report)" in key:
+					#		if Uenv[key][0] == "True":
+					#			sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = True
+					#		else:
+					#			sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = False
+					#		Log("		(Auto Load Eye - Export Excel Report) = %s" % Uenv[key][0])
 
-						# Image Width
-						elif "(Image Width)" in key:
-							sub_DB.Option_Form._TextBox_ImageWidth.Text = Uenv[key][0].replace("pixel","").strip()
-							Log("		(Auto Load Eye - Image Width) = %s" % Uenv[key][0])
+					#	# Image Width
+					#	elif "(Image Width)" in key:
+					#		sub_DB.Option_Form._TextBox_ImageWidth.Text = Uenv[key][0].replace("pixel","").strip()
+					#		Log("		(Auto Load Eye - Image Width) = %s" % Uenv[key][0])
 
-						# Report Format
-						elif "(Report Format)" in key:
-							sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex = int(Uenv[key][0])
-							Log("		(Auto Load Eye - Report Format) = %s" % Uenv[key][1])
+					#	# Report Format
+					#	elif "(Report Format)" in key:
+					#		sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex = int(Uenv[key][0])
+					#		Log("		(Auto Load Eye - Report Format) = %s" % Uenv[key][1])
 
-						# Plot Eye with Mask
-						elif "(Plot Eye with Mask)" in key:
-							if Uenv[key][0] == "True":
-								sub_DB.Option_Form._CheckBox_PlotEye.Checked = True
-							else:
-								sub_DB.Option_Form._CheckBox_PlotEye.Checked = False
-							Log("		(Auto Load Eye - Plot Eye with Mask) = %s" % Uenv[key][0])
+					#	# Plot Eye with Mask
+					#	elif "(Plot Eye with Mask)" in key:
+					#		if Uenv[key][0] == "True":
+					#			sub_DB.Option_Form._CheckBox_PlotEye.Checked = True
+					#		else:
+					#			sub_DB.Option_Form._CheckBox_PlotEye.Checked = False
+					#		Log("		(Auto Load Eye - Plot Eye with Mask) = %s" % Uenv[key][0])
 
-						# Check DDR Compliance
-						elif "(Check DDR Compliance)" in key:
-							if Uenv[key][0] == "True":
-								sub_DB.Option_Form._CheckBox_Compiance.Checked = True
-							else:
-								sub_DB.Option_Form._CheckBox_Compiance.Checked = False
-							Log("		(Auto Load Eye - Check DDR Compliance) = %s" % Uenv[key][0])
+					#	# Check DDR Compliance
+					#	elif "(Check DDR Compliance)" in key:
+					#		if Uenv[key][0] == "True":
+					#			sub_DB.Option_Form._CheckBox_Compiance.Checked = True
+					#		else:
+					#			sub_DB.Option_Form._CheckBox_Compiance.Checked = False
+					#		Log("		(Auto Load Eye - Check DDR Compliance) = %s" % Uenv[key][0])
 
 				except Exception as e:		
 					Log("		(Auto Load Eye) : Failed")
