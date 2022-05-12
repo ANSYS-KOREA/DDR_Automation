@@ -1267,6 +1267,7 @@ class Eye_Form(Form):
 
 			if os.path.isfile(sub_DB.user_dir + r'\latest.cnf'):				
 				CnfAutoLoad(self)
+				sub_DB.AutoLoad_flag = True
 
 			# Setup the User Env. Info.
 			if "(Input File)<Setup>[EYE]" in sub_DB.Uenv:
@@ -1632,7 +1633,15 @@ class Eye_Form(Form):
 		for key in sub_DB.Cenv:
 			if keyword in key:
 				if "DQ Setup" in key and self._ComboBox_AC_DQ.Text in key:
-					self._TextBox_DQSetup.Text = sub_DB.Cenv[key][0]
+					if "!" in sub_DB.Cenv[key][0]:
+						if sub_DB.TBD_flag:
+							MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+							sub_DB.TBD_flag = False
+						self._TextBox_DQSetup.BackColor = System.Drawing.Color.PeachPuff
+						self._TextBox_DQSetup.Text = sub_DB.Cenv[key][0].replace("!","")						
+					else:
+						self._TextBox_DQSetup.Text = sub_DB.Cenv[key][0]						
+					Log("	<DQ Setup Time - AC%s> : %s[ps]" % (self._ComboBox_AC_DQ.Text, self._TextBox_DQSetup.Text))
 
 	def ComboBox_AC_ADDRSelectedIndexChanged(self, sender, e):		
 		keyword = "<" + self._ComboBox_DDRGen.Text + "-" + self._ComboBox_DataRate.Text + ">" + "[Eye Spec]"
@@ -1643,6 +1652,7 @@ class Eye_Form(Form):
 
 	def Button_ImportClick(self, sender, e):
 		try:
+			sub_DB.TBD_flag = True
 			dialog = OpenFileDialog()			
 			dialog.Filter = "AEDT Project file|*.aedt|Comma delimited data file|*.csv"
 
@@ -1779,6 +1789,9 @@ class Eye_Form(Form):
 								# Enable Next Step
 								self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
 								self._ComboBox_DDRGen.Enabled = True
+								self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+								self._ComboBox_DataRate.Enabled = True
+								self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 								sub_DB.InputFile_Flag = 2
 
 							# Cancel Click, re-select input file
@@ -1791,6 +1804,9 @@ class Eye_Form(Form):
 							sub_DB.CSV_flag = True
 							self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
 							self._ComboBox_DDRGen.Enabled = True
+							self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+							self._ComboBox_DataRate.Enabled = True
+							self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 							sub_DB.InputFile_Flag = 2
 
 					except Exception as e:
@@ -1802,7 +1818,7 @@ class Eye_Form(Form):
 
 				# for *.tr0 File
 				elif extension == "tr0":
-
+					# TODO : Input button for *.tr0
 					pass
 
 			else:
@@ -1878,14 +1894,18 @@ class Eye_Form(Form):
 		self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
-		try:
+		try:			
 			# Initialization
+			if sub_DB.AutoLoad_flag:
+				sub_DB.TBD_flag = True
 			sub_DB.Net_Form.Init_Flag = True
 			self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Window
 			self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
 			self._ComboBox_DataRate.Enabled = True
+			self._Button_Analyze.Enabled = False
+			self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
 			Log("[DDR type] = %s" % self._ComboBox_DDRGen.Text)
-
+			
 			# Add DDR Data-rate into ComboBox
 			self._ComboBox_DataRate.Items.Clear()
 			self._ComboBox_DataRate.Text = ""		
@@ -1921,7 +1941,7 @@ class Eye_Form(Form):
 					self._TextBox_AC_ADDR.Visible = False
 					self._ComboBox_AC_DQ.Visible = True
 					self._ComboBox_AC_ADDR.Visible = True
-					sub_DB.Option_Form._CheckBox_Compiance.Visible = True
+					
 				else:
 					self._TextBox_AC_DQ.Visible = True
 					self._TextBox_AC_ADDR.Visible = True
@@ -1960,13 +1980,18 @@ class Eye_Form(Form):
 	def ComboBox_DataRateSelectedIndexChanged(self, sender, e):
 		try:
 			# Initialization
+			if sub_DB.AutoLoad_flag:
+				sub_DB.TBD_flag = True
 			self._ComboBox_AC_DQ.Items.Clear()
 			self._ComboBox_AC_ADDR.Items.Clear()		
-			self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window			
+			self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window
+			self._Button_Analyze.Enabled = False
+			self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
+			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
 			# Get Keywork
 			#	ex) <DDR3-800>
-			keyword = "<" + self._ComboBox_DDRGen.Text + "-" + self._ComboBox_DataRate.Text + ">" + "[Eye Spec]"
+			keyword = "<" + self._ComboBox_DDRGen.Text + "-" + self._ComboBox_DataRate.Text + ">" + "[Eye Spec]"						
 			Log("[DDR datarate] = %s" % self._ComboBox_DataRate.Text)
 
 			# Set Eye Specifications
@@ -1976,22 +2001,28 @@ class Eye_Form(Form):
 					for key in sub_DB.Cenv:
 						if keyword in key:
 							if "Rx Mask Voltage" in key:
-								if "!" in sub_DB.Cenv[key][0]:									
-									MessageBox.Show("The JEDEC specification, ""VdIVW"" for the %s-%s you chose has not been decided yet, so the DDR Wizard has set the value arbitrarily based on the specification of the commercial DDR product." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
 									self._TextBox_VdIVW.BackColor = System.Drawing.Color.PeachPuff
 									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
-								else:									
+								else:
+									self._TextBox_VdIVW.BackColor = System.Drawing.SystemColors.Window
 									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0]
-								Log("	<VdIVW> : %s" % self._TextBox_VdIVW.Text)
+								Log("	<VdIVW> : %s[mV]" % self._TextBox_VdIVW.Text)
 
 							elif "Rx Timing Window Total" in key:
 								if "!" in sub_DB.Cenv[key][0]:
-									MessageBox.Show("The JEDEC specification, ""TdIVW"" for the ""%s-%s"" you chose has not been decided yet, so the DDR Wizard has set the value arbitrarily based on the specification of the commercial DDR product." % (self._ComboBox_DDRGen.Text,	self._ComboBox_DataRate.Text),"Warning")
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
 									self._TextBox_TdIVW.BackColor = System.Drawing.Color.PeachPuff
 									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
 								else:
+									self._TextBox_TdIVW.BackColor = System.Drawing.SystemColors.Window
 									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0]
-								Log("	<TdIVW> : %s" % self._TextBox_TdIVW.Text)
+								Log("	<TdIVW> : %s[UI]" % self._TextBox_TdIVW.Text)
 
 				elif self._ComboBox_DDRGen.Text == "DDR5":
 					#TODO : Setup DDR5 Eye Spec.
@@ -2029,37 +2060,79 @@ class Eye_Form(Form):
 
 				elif self._ComboBox_DDRGen.Text == "DDR3":				
 					for key in sub_DB.Cenv:
-						if keyword in key:
+						if keyword in key:							
 							if "AC Th" in key and "DQ" in key:
 								for val in sub_DB.Cenv[key]:
 									self._ComboBox_AC_DQ.Items.Add(val)
 								self._ComboBox_AC_DQ.SelectedIndex = 0
+								Log("	<AC Threshold Voltage - DQ> : %s[mV]" % self._ComboBox_AC_DQ.Text)
 							
 							elif "DC Th" in key and "DQ" in key:
 								self._TextBox_DC_DQ.Text = sub_DB.Cenv[key][0]
+								Log("	<DC Threshold Voltage - DQ> : %s[mV]" % self._TextBox_DC_DQ.Text)
 
 							elif "AC Th" in key and "CA" in key:
 								for val in sub_DB.Cenv[key]:
 									self._ComboBox_AC_ADDR.Items.Add(val)
 								self._ComboBox_AC_ADDR.SelectedIndex = 0
+								Log("	<AC Threshold Voltage - CA> : %s[mV]" % self._ComboBox_AC_ADDR.Text)
 							
 							elif "DC Th" in key and "CA" in key:
 								self._TextBox_DC_ADDR.Text = sub_DB.Cenv[key][0]
+								Log("	<DC Threshold Voltage - CA> : %s[mV]" % self._TextBox_DC_ADDR.Text)
 
-							elif "DQ Setup" in key and self._ComboBox_AC_DQ.Text in key:
-								self._TextBox_DQSetup.Text = sub_DB.Cenv[key][0]
+					for key in sub_DB.Cenv:
+						if keyword in key:
+							if "DQ Setup" in key and self._ComboBox_AC_DQ.Text in key:
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_DQSetup.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_DQSetup.Text = sub_DB.Cenv[key][0].replace("!","")									
+								else:
+									self._TextBox_DQSetup.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_DQSetup.Text = sub_DB.Cenv[key][0]									
+								Log("	<DQ Setup Time - AC%s> : %s[ps]" % (self._ComboBox_AC_DQ.Text, self._TextBox_DQSetup.Text))
 							
 							elif "DQ Hold" in key and self._TextBox_DC_DQ.Text in key:
-								self._TextBox_DQHold.Text = sub_DB.Cenv[key][0]
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_DQHold.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_DQHold.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_DQHold.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_DQHold.Text = sub_DB.Cenv[key][0]
+								Log("	<DQ Hold Time - DC%s> : %s[ps]" % (self._TextBox_DC_DQ.Text, self._TextBox_DQHold.Text))
 
-							elif "ADDR Setup" in key and self._ComboBox_AC_ADDR.Text in key:
-								self._TextBox_ADDRSetup.Text = sub_DB.Cenv[key][0]
-							
+							elif "ADDR Setup" in key and self._ComboBox_AC_ADDR.Text in key:								
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_ADDRSetup.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_ADDRSetup.Text = sub_DB.Cenv[key][0].replace("!","")									
+								else:
+									self._TextBox_ADDRSetup.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_ADDRSetup.Text = sub_DB.Cenv[key][0]									
+								Log("	<ADDR Setup Time - AC%s> : %s[ps]" % (self._ComboBox_AC_ADDR.Text, self._TextBox_ADDRSetup.Text))
+
 							elif "ADDR Hold" in key and self._TextBox_DC_ADDR.Text in key:
-								self._TextBox_ADDRHold.Text = sub_DB.Cenv[key][0]
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_ADDRHold.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_ADDRHold.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_ADDRHold.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_ADDRHold.Text = sub_DB.Cenv[key][0]
+								Log("	<ADDR Hold Time - DC%s> : %s[ps]" % (self._TextBox_DC_ADDR.Text, self._TextBox_ADDRHold.Text))
 							
 							elif "VREF" in key:
-								self._TextBox_Vref.Text = sub_DB.Cenv[key][0]
+								self._TextBox_Vref.Text = sub_DB.Cenv[key][0]					
 
 				elif self._ComboBox_DDRGen.Text == "LPDDR2":
 					#TODO : Setup LPDDR2 Eye Spec.
@@ -2078,8 +2151,7 @@ class Eye_Form(Form):
 	def Button_ViewNetClick(self, sender, e):
 		try:
 			# Check if any of report name has been checked
-			flag, msg = Check_Input(self)
-			
+			flag, msg = Check_Input(self)			
 
 			# CSV Input			
 			if sub_DB.InputFile_Flag == 2:
@@ -2095,6 +2167,21 @@ class Eye_Form(Form):
 					sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 6
 					sub_DB.Net_Form._DataGridView.Columns[5].DisplayIndex = 5
 					sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
+
+				sub_DB.Net_Form._Label_GroupName.Visible = True
+				sub_DB.Net_Form._ComboBox_AnalyzeGroup.Visible = True
+				sub_DB.Net_Form._Button_Update.Visible = True
+				sub_DB.Net_Form._Button_Auto.Visible = True
+				sub_DB.Net_Form._Button_EditRule.Visible = True
+				sub_DB.Net_Form._Button_Identify.Visible = True
+
+				sub_DB.Net_Form._Label_ImageWidth.Visible = False
+				sub_DB.Net_Form._Label_ImageWidth_Unit.Visible = False
+				sub_DB.Net_Form._CheckBox_PlotEye.Visible = False
+				sub_DB.Net_Form._TextBox_ImageWidth.Visible = False
+				sub_DB.Net_Form._Label_ReportFormat.Visible = False
+				sub_DB.Net_Form._ComboBox_Report.Visible = False
+				sub_DB.Net_Form._Button_Export.Visible = False
 				sub_DB.Net_Form.ShowDialog()
 
 				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
@@ -2115,6 +2202,15 @@ class Eye_Form(Form):
 			Log("[Eye Analyze Start] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 			# Initiallization
 			sub_DB.Excel_Img_File = []
+
+			# Compliacne Check Box Visibility Control in option form
+			if self._ComboBox_DDRGen.Text in ["DDR2", "DDR3"]:				
+				sub_DB.Option_Form._CheckBox_Compiance.Visible = True
+				sub_DB.Option_Form._Button_Compliance.Visible = True
+
+			else:				
+				sub_DB.Option_Form._CheckBox_Compiance.Visible = False
+				sub_DB.Option_Form._Button_Compliance.Visible = False
 
 			result = sub_DB.Option_Form.ShowDialog()
 
@@ -2157,11 +2253,24 @@ class Eye_Form(Form):
 				sub_DB.Cal_Form.Cursor = Cursors.Default
 
 				os.startfile(sub_DB.result_dir)
-				sub_DB.Result_Flag = True			
+				sub_DB.Result_Flag = True
+				sub_DB.Net_Form._Label_GroupName.Visible = False
+				sub_DB.Net_Form._ComboBox_AnalyzeGroup.Visible = False
+				sub_DB.Net_Form._Button_Update.Visible = False
+				sub_DB.Net_Form._Button_Auto.Visible = False
+				sub_DB.Net_Form._Button_EditRule.Visible = False
+				sub_DB.Net_Form._Button_Identify.Visible = False
+
+				sub_DB.Net_Form._CheckBox_PlotEye.Visible = True
+				sub_DB.Net_Form._Label_ReportFormat.Visible = True
+				sub_DB.Net_Form._ComboBox_Report.Visible = True
+				sub_DB.Net_Form._Button_Export.Visible = True				
 				sub_DB.Net_Form.ShowDialog()
 				sub_DB.Result_Flag = False
 				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
 				self._Button_ViewResult.Enabled = True
+
+				#CnfAutoSave()
 		
 			# Press Cancel Button in Option Form
 			else:
@@ -2180,6 +2289,17 @@ class Eye_Form(Form):
 			sub_DB.Net_Form._DataGridView.Columns[5].DisplayIndex = 2
 			sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 3
 			sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
+			sub_DB.Net_Form._Label_GroupName.Visible = False
+			sub_DB.Net_Form._ComboBox_AnalyzeGroup.Visible = False
+			sub_DB.Net_Form._Button_Update.Visible = False
+			sub_DB.Net_Form._Button_Auto.Visible = False
+			sub_DB.Net_Form._Button_EditRule.Visible = False
+			sub_DB.Net_Form._Button_Identify.Visible = False
+
+			sub_DB.Net_Form._CheckBox_PlotEye.Visible = True			
+			sub_DB.Net_Form._Label_ReportFormat.Visible = True
+			sub_DB.Net_Form._ComboBox_Report.Visible = True
+			sub_DB.Net_Form._Button_Export.Visible = True			
 			sub_DB.Net_Form.ShowDialog()
 			sub_DB.Result_Flag = False
 
@@ -2450,3 +2570,4 @@ class Eye_Form(Form):
 		self.Button_AnalyzeClick(self, sender)
 
 
+	

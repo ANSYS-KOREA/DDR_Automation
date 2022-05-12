@@ -8,7 +8,7 @@
 
 set PATH="C:\AnsysEM\AnsysEM21.2\Win64\common\IronPython"
 
-ipy64 "D:\1_Work\20220106_DDR_Compliance\1_Work\Code\ANSYS_DDR_Wizard_v0\ANSYS_EYE_Analyzer_v0.py"
+ipy64 ".\ANSYS_EYE_Analyzer_v0.py"
 
 
 

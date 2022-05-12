@@ -345,7 +345,7 @@ def New_Default(self):
 	except Exception as e:						
 		Log("	<Launch Create Excel Report> = Failed")
 		Log(traceback.format_exc())
-		MessageBox.Show("Fail to launch create excel report","Warning")
+		MessageBox.Show("Fail to create excel report","Warning")
 		EXIT()
 					
 	#########################
