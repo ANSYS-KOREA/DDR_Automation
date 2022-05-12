@@ -11,6 +11,7 @@ import sub_DB
 from sub_functions import *
 from System.Drawing import *
 from System.Windows.Forms import *
+from sub_Report_Excel import *
 
 class EnvEditor(Form):
 	def __init__(self, File):
@@ -413,12 +414,19 @@ class NetForm(Form):
 		self._Col_Setup = System.Windows.Forms.DataGridViewTextBoxColumn()
 		self._Col_Hold = System.Windows.Forms.DataGridViewTextBoxColumn()
 		self._Label_GroupName = System.Windows.Forms.Label()
+		self._Label_ReportFormat = System.Windows.Forms.Label()
 		self._Label_H_Border1 = System.Windows.Forms.Label()
+		self._Label_ImageWidth = System.Windows.Forms.Label()
+		self._Label_ImageWidth_Unit = System.Windows.Forms.Label()
 		self._ComboBox_AnalyzeGroup = System.Windows.Forms.ComboBox()
+		self._ComboBox_Report = System.Windows.Forms.ComboBox()
+		self._CheckBox_PlotEye = System.Windows.Forms.CheckBox()
+		self._TextBox_ImageWidth = System.Windows.Forms.TextBox()		
 		self._Button_Update = System.Windows.Forms.Button()
 		self._Button_Auto = System.Windows.Forms.Button()
 		self._Button_EditRule = System.Windows.Forms.Button()		
 		self._Button_Identify = System.Windows.Forms.Button()
+		self._Button_Export = System.Windows.Forms.Button()
 		self._Button_Close = System.Windows.Forms.Button()
 		self.SuspendLayout()
 		# 
@@ -523,6 +531,38 @@ class NetForm(Form):
 		self._Label_H_Border1.Size = System.Drawing.Size(458, 2)
 		self._Label_H_Border1.TabIndex = 39
 		# 
+		# Label_ReportFormat
+		# 
+		self._Label_ReportFormat.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_ReportFormat.Location = System.Drawing.Point(12, 837)
+		self._Label_ReportFormat.Name = "Label_ReportFormat"
+		self._Label_ReportFormat.Size = System.Drawing.Size(109, 28)
+		self._Label_ReportFormat.TabIndex = 30
+		self._Label_ReportFormat.Text = "Report Format :"
+		self._Label_ReportFormat.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		# 
+		# Label_ImageWidth
+		# 
+		self._Label_ImageWidth.Font = System.Drawing.Font("Arial", 9)
+		self._Label_ImageWidth.Location = System.Drawing.Point(73, 152)
+		self._Label_ImageWidth.Name = "Label_ImageWidth"
+		self._Label_ImageWidth.Size = System.Drawing.Size(85, 28)
+		self._Label_ImageWidth.TabIndex = 47
+		self._Label_ImageWidth.Text = "Image Width :"
+		self._Label_ImageWidth.Visible = False
+		self._Label_ImageWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_ImageWidth_Unit
+		# 
+		self._Label_ImageWidth_Unit.Font = System.Drawing.Font("Arial", 9)
+		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(249, 152)
+		self._Label_ImageWidth_Unit.Name = "Label_ImageWidth_Unit"
+		self._Label_ImageWidth_Unit.Size = System.Drawing.Size(51, 28)
+		self._Label_ImageWidth_Unit.TabIndex = 49
+		self._Label_ImageWidth_Unit.Text = "[pixel]"
+		self._Label_ImageWidth_Unit.Visible = False
+		self._Label_ImageWidth_Unit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
 		# ComboBox_AnalyzeGroup
 		# 
 		self._ComboBox_AnalyzeGroup.FormattingEnabled = True
@@ -531,6 +571,39 @@ class NetForm(Form):
 		self._ComboBox_AnalyzeGroup.Items.AddRange(System.Array[System.Object](["None","Byte0","Byte1","Byte2","Byte3"]))
 		self._ComboBox_AnalyzeGroup.Size = System.Drawing.Size(125, 21)
 		self._ComboBox_AnalyzeGroup.TabIndex = 40		
+		# 
+		# ComboBox_Report
+		# 
+		self._ComboBox_Report.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_Report.FormattingEnabled = True
+		self._ComboBox_Report.Location = System.Drawing.Point(121, 837)
+		self._ComboBox_Report.Name = "ComboBox_Report"		
+		self._ComboBox_Report.Size = System.Drawing.Size(125, 25)
+		self._ComboBox_Report.TabIndex = 40
+		# 
+		# CheckBox_PlotEye
+		# 
+		self._CheckBox_PlotEye.Font = System.Drawing.Font("Arial", 9)
+		self._CheckBox_PlotEye.Location = System.Drawing.Point(12, 797)
+		self._CheckBox_PlotEye.Name = "CheckBox_PlotEye"
+		self._CheckBox_PlotEye.Size = System.Drawing.Size(136, 29)
+		self._CheckBox_PlotEye.TabIndex = 45
+		self._CheckBox_PlotEye.Text = "Plot EYE with Mask"
+		self._CheckBox_PlotEye.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		self._CheckBox_PlotEye.Checked = False
+		self._CheckBox_PlotEye.UseVisualStyleBackColor = True
+		self._CheckBox_PlotEye.CheckedChanged += self.CheckBox_PlotEyeCheckedChanged
+		# 
+		# TextBox_ImageWidth
+		# 
+		self._TextBox_ImageWidth.BackColor = System.Drawing.SystemColors.Window
+		self._TextBox_ImageWidth.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._TextBox_ImageWidth.Location = System.Drawing.Point(160, 155)
+		self._TextBox_ImageWidth.Name = "TextBox_ImageWidth"
+		self._TextBox_ImageWidth.Size = System.Drawing.Size(83, 23)
+		self._TextBox_ImageWidth.Text = "200"
+		self._TextBox_ImageWidth.Visible = False
+		self._TextBox_ImageWidth.TabIndex = 48
 		# 
 		# Button_Update
 		# 
@@ -573,8 +646,19 @@ class NetForm(Form):
 		self._Button_Identify.Size = System.Drawing.Size(100, 35)
 		self._Button_Identify.TabIndex = 35
 		self._Button_Identify.Text = "Identify"
-		self._Button_Identify.UseVisualStyleBackColor = True
+		self._Button_Identify.UseVisualStyleBackColor = True		
 		self._Button_Identify.Click += self.Button_IdentifyClick
+		# 
+		# Button_Export
+		# 
+		self._Button_Export.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Export.Location = System.Drawing.Point(257, 837)
+		self._Button_Export.Name = "Button_Export"
+		self._Button_Export.Size = System.Drawing.Size(100, 35)
+		self._Button_Export.TabIndex = 35
+		self._Button_Export.Text = "Export"
+		self._Button_Export.UseVisualStyleBackColor = True		
+		self._Button_Export.Click += self.Button_ExportClick
 		# 
 		# Button_Close
 		# 
@@ -592,13 +676,20 @@ class NetForm(Form):
 		self.ClientSize = System.Drawing.Size(483, 882)
 		#self.MaximumSize = System.Drawing.Size(499, 921)		
 		self.FormSize_W = self.Size.Width
-		self.FormSize_H = self.Size.Height		
+		self.FormSize_H = self.Size.Height
+		self.Controls.Add(self._Label_ImageWidth)
+		self.Controls.Add(self._Label_ImageWidth_Unit)
+		self.Controls.Add(self._CheckBox_PlotEye)
+		self.Controls.Add(self._TextBox_ImageWidth)
+		self.Controls.Add(self._Label_ReportFormat)
+		self.Controls.Add(self._ComboBox_Report)
+		self.Controls.Add(self._Button_Export)
 		self.Controls.Add(self._ComboBox_AnalyzeGroup)
 		self.Controls.Add(self._Label_H_Border1)
 		self.Controls.Add(self._Button_Auto)
 		self.Controls.Add(self._Button_Update)
 		self.Controls.Add(self._Button_EditRule)
-		self.Controls.Add(self._Button_Identify)
+		self.Controls.Add(self._Button_Identify)		
 		self.Controls.Add(self._Button_Close)				
 		self.Controls.Add(self._Label_GroupName)
 		self.Controls.Add(self._DataGridView)
@@ -635,12 +726,15 @@ class NetForm(Form):
 
 			# Relocate
 			self._Label_GroupName.Location = System.Drawing.Point(self._Label_GroupName.Location.X, self._Label_GroupName.Location.Y + Gap_H)
+			self._Label_ReportFormat.Location = System.Drawing.Point(self._Label_ReportFormat.Location.X, self._Label_ReportFormat.Location.Y + Gap_H)
 			self._Label_H_Border1.Location = System.Drawing.Point(self._Label_H_Border1.Location.X, self._Label_H_Border1.Location.Y + Gap_H)
 			self._ComboBox_AnalyzeGroup.Location = System.Drawing.Point(self._ComboBox_AnalyzeGroup.Location.X, self._ComboBox_AnalyzeGroup.Location.Y + Gap_H)
+			self._ComboBox_Report.Location = System.Drawing.Point(self._ComboBox_Report.Location.X, self._ComboBox_Report.Location.Y + Gap_H)
 			self._Button_Update.Location = System.Drawing.Point(self._Button_Update.Location.X + Gap_W, self._Button_Update.Location.Y + Gap_H)
 			self._Button_Auto.Location = System.Drawing.Point(self._Button_Auto.Location.X + Gap_W, self._Button_Auto.Location.Y + Gap_H)
 			self._Button_EditRule.Location = System.Drawing.Point(self._Button_EditRule.Location.X + Gap_W, self._Button_EditRule.Location.Y + Gap_H)
 			self._Button_Identify.Location = System.Drawing.Point(self._Button_Identify.Location.X + Gap_W, self._Button_Identify.Location.Y + Gap_H)
+			self._Button_Export.Location = System.Drawing.Point(self._Button_Export.Location.X + Gap_W, self._Button_Export.Location.Y + Gap_H)
 			self._Button_Close.Location = System.Drawing.Point(self._Button_Close.Location.X + Gap_W, self._Button_Close.Location.Y + Gap_H)
 
 		except Exception as e:		
@@ -721,6 +815,11 @@ class NetForm(Form):
 				for i in range(0, len(Name_idx)):
 					self._DataGridView.Rows.Add(Backup_row[Name_idx[i]])
 
+				# Add Report Format into Combo Box
+				for item in sub_DB.Option_Form._ComboBox_ReportFormat.Items:
+					self._ComboBox_Report.Items.Add(item)
+				self._ComboBox_Report.SelectedIndex = 0
+
 			for row in self._DataGridView.Rows:
 				if row.Cells[0].Value:
 					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
@@ -737,6 +836,10 @@ class NetForm(Form):
 			# Label
 			self._Label_GroupName.Location = System.Drawing.Point(10, ref+15)
 			self._Label_GroupName.Size = System.Drawing.Size(109, 28)
+			self._Label_ReportFormat.Location = System.Drawing.Point(10, ref+53)
+			self._Label_ReportFormat.Size = System.Drawing.Size(109, 28)
+			self._Label_ImageWidth.Location = System.Drawing.Point(200, ref+15)
+			self._Label_ImageWidth_Unit.Location = System.Drawing.Point(370, ref+15)
 
 			# Border
 			self._Label_H_Border1.Location = System.Drawing.Point(12, ref+47)
@@ -745,6 +848,14 @@ class NetForm(Form):
 			# ComboBox
 			self._ComboBox_AnalyzeGroup.Location = System.Drawing.Point(121, ref+19)
 			self._ComboBox_AnalyzeGroup.Size = System.Drawing.Size(125, 21)
+			self._ComboBox_Report.Location = System.Drawing.Point(121, ref+57)
+			self._ComboBox_Report.Size = System.Drawing.Size(125, 21)
+
+			# CheckBox
+			self._CheckBox_PlotEye.Location = System.Drawing.Point(22, ref+15)
+
+			# TextBox
+			self._TextBox_ImageWidth.Location = System.Drawing.Point(284, ref+19)
 
 			# Buttons
 			self._Button_Update.Location = System.Drawing.Point(257, ref+16)
@@ -755,6 +866,8 @@ class NetForm(Form):
 			self._Button_EditRule.Size = System.Drawing.Size(234, 35)
 			self._Button_Identify.Location = System.Drawing.Point(257, ref+55)
 			self._Button_Identify.Size = System.Drawing.Size(100, 35)
+			self._Button_Export.Location = System.Drawing.Point(257, ref+55)
+			self._Button_Export.Size = System.Drawing.Size(100, 35)
 			self._Button_Close.Location = System.Drawing.Point(371, ref+55)
 			self._Button_Close.Size = System.Drawing.Size(100, 35)
 
@@ -767,6 +880,15 @@ class NetForm(Form):
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, min_height)
 			self.FormSize_H = self.Height
 			self.FormSize_W = self.Width			
+
+			if sub_DB.Result_Flag:
+				self._Label_ImageWidth.Visible = self._CheckBox_PlotEye.Checked
+				self._Label_ImageWidth_Unit.Visible = self._CheckBox_PlotEye.Checked
+				self._TextBox_ImageWidth.Visible = self._CheckBox_PlotEye.Checked
+			else:
+				self._Label_ImageWidth.Visible = False
+				self._Label_ImageWidth_Unit.Visible = False
+				self._TextBox_ImageWidth.Visible = False
 
 		except Exception as e:		
 			Log("[Net Form Load] = Failed")
@@ -846,6 +968,11 @@ class NetForm(Form):
 				self._DataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
 			else:
 				self._DataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+
+	def CheckBox_PlotEyeCheckedChanged(self, sender, e):		
+		self._Label_ImageWidth.Visible = sender.Checked
+		self._Label_ImageWidth_Unit.Visible = sender.Checked
+		self._TextBox_ImageWidth.Visible = sender.Checked
 
 	def Button_UpdateClick(self, sender, e):
 		try:
@@ -1051,6 +1178,212 @@ class NetForm(Form):
 			Log("[Net Identify] = Failed")
 			Log(traceback.format_exc())
 			MessageBox.Show("Fail to identify target nets","Warning")			
+			EXIT()
+
+	def Button_ExportClick(self, sender, e):
+		try:
+			Log("	<Export Excel Report> = Start")
+			Log("		(Report Format) = %s" % sub_DB.Option_Form._ComboBox_ReportFormat.Text)
+			# AEDT Input
+			if sub_DB.InputFile_Flag == 1:
+				# Eye plot checked
+				if self._CheckBox_PlotEye.Checked:
+					# Eye diagrams were generated
+					if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+						# Default
+						if self._ComboBox_Report.SelectedIndex == 0:
+							Create_Excel_Report()
+						# +Setup/Hold
+						elif self._ComboBox_Report.SelectedIndex == 1:
+							Create_Setup_Hold_Excel_Report()
+
+					# Eye diagrams were not generated
+					else:
+						sub_DB.Excel_Img_File = []
+
+						# Find min./max. voltage value for Y-axis setup
+						vol_max = []
+						vol_min = []
+						for key in sub_DB.Waveform:
+							vol_max.append(max(sub_DB.Waveform[key]))
+							vol_min.append(min(sub_DB.Waveform[key]))
+						vmax = (max(vol_max)//100 + 1)*100
+						if min(vol_min) < 0:
+							vmin = (min(vol_min)//100)*100
+						else:
+							vmin = (min(vol_min)//100-1)*100
+						Log("		(Y-axis Max.) = %s[mV]" % vmax)
+						Log("		(Y-axis Min.) = %s[mV]" % vmin)
+
+						# Get Group List
+						Group = []
+						for row in sub_DB.Net_Form._DataGridView.Rows:
+							if row.Cells[0].Value:
+								if not row.Cells[4].Value in Group:
+									Group.append(row.Cells[4].Value)
+
+						# Get Plot List
+						Plot_list = {}
+						for key in Group:
+							Plot_list[key] = []
+							for row in sub_DB.Net_Form._DataGridView.Rows:
+								if row.Cells[0].Value:
+									if key == row.Cells[4].Value:
+										Plot_list[key].append(row.Cells[1].Value)
+
+						# Plot
+						key_list = Plot_list.keys()
+						key_list.sort()
+						Log("		(Report Name)")
+						for key in key_list:						
+							if key == "None":
+								for net in Plot_list[key]:								
+									for row in sub_DB.Net_Form._DataGridView.Rows:
+										if net == row.Cells[1].Value:
+											Report_Name = row.Cells[3].Value
+											break									
+									Log("			= %s" % Report_Name)
+									Plot_Eye(Report_Name, [net], vmin, vmax, sub_DB.Eye_Measure_Results, True)
+								
+							else:								
+								Log("			= %s" % key)
+								Plot_Eye(key, Plot_list[key], vmin, vmax, sub_DB.Eye_Measure_Results, True)
+
+						# Default
+						if self._ComboBox_Report.SelectedIndex == 0:
+							Create_Excel_Report()
+						# +Setup/Hold
+						elif self._ComboBox_Report.SelectedIndex == 1:
+							Create_Setup_Hold_Excel_Report()
+
+				# Eye plot unchecked
+				else:
+					# Default w/o figure
+					if self._ComboBox_Report.SelectedIndex == 0:
+						Create_Excel_Report_wo_fig()
+					# +Setup/Hold w/o figure
+					elif self._ComboBox_Report.SelectedIndex == 1:
+						Create_Setup_Hold_Excel_Report_wo_fig()
+
+			# CSV Input
+			elif sub_DB.InputFile_Flag == 2:
+				# Eye plot checked
+				if self._CheckBox_PlotEye.Checked:
+					# Eye diagrams were generated
+					if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+						# Default
+						if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+							Create_Excel_Report_Imported()
+						#elif sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 1:
+						#	Create_Setup_Hold_Excel_Report_Imported()
+
+					# Eye diagrams were not generated
+					else:
+						sub_DB.Excel_Img_File = []
+
+						AEDT_File = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".aedt"
+						MessageBox.Show("The eye diagram will plot in Ansys Electronics Desktop.\n\n"+
+						AEDT_File ,"Information",MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+						# Find min./max. voltage value for Y-axis setup
+						vol_max = []
+						vol_min = []
+						for key in sub_DB.Waveform:
+							vol_max.append(max(sub_DB.Waveform[key]))
+							vol_min.append(min(sub_DB.Waveform[key]))
+						vmax = (max(vol_max)//100 + 1)*100
+						if min(vol_min) < 0:
+							vmin = (min(vol_min)//100)*100
+						else:
+							vmin = (min(vol_min)//100-1)*100				
+
+						if sub_DB.Unit["Voltage"]=="V":
+							vmin = vmin/1000
+							vmax = vmax/1000
+							Log("		(Y-axis Max.) = %s[V]" % vmax)
+							Log("		(Y-axis Min.) = %s[V]" % vmin)
+						elif sub_DB.Unit["Voltage"]=="mV":
+							Log("		(Y-axis Max.) = %s[mV]" % vmax)
+							Log("		(Y-axis Min.) = %s[mV]" % vmin)
+
+						#self.TopMost = True
+						#sub_DB.Cal_Form.TopMost = True
+						sub_AEDT.Set_AEDT_PlotTemplate()
+						Log("		(Plot Template) = Done")
+						#self.TopMost = False
+						#sub_DB.Cal_Form.TopMost = False
+
+						# Get Group List
+						Group = []
+						for row in sub_DB.Net_Form._DataGridView.Rows:
+							if row.Cells[0].Value:
+								if not row.Cells[4].Value in Group:
+									Group.append(row.Cells[4].Value)
+
+						# Get Plot List
+						Plot_list = {}
+						for key in Group:
+							Plot_list[key] = []
+							for row in sub_DB.Net_Form._DataGridView.Rows:
+								if row.Cells[0].Value:
+									if key == row.Cells[4].Value:
+										Plot_list[key].append(row.Cells[1].Value)
+
+						# Plot
+						key_list = Plot_list.keys()
+						key_list.sort()
+						Log("		(Report Name)")
+						for key in key_list:
+							if key == "None":
+								AEDT_File = AEDT_File.split(".")[0] + "_NonGroup." + AEDT_File.split(".")[-1]										
+								for net in Plot_list[key]:								
+									for row in sub_DB.Net_Form._DataGridView.Rows:
+										if net == row.Cells[1].Value:
+											Report_Name = row.Cells[3].Value
+											break									
+									Import_file = Gen_waveform_file(sub_DB.Eye_Form._TextBox_InputFile.Text, net, False)
+									Log("			= %s" % Report_Name)
+									Plot_Eye_Import(Report_Name, Import_file, [net], vmin, vmax, sub_DB.Eye_Measure_Results, True)
+									os.remove(Import_file)
+								
+							else:
+								AEDT_File = AEDT_File.split(".")[0] + "_Group." + AEDT_File.split(".")[-1]																		
+								Import_file = Gen_waveform_file(sub_DB.Eye_Form._TextBox_InputFile.Text, Plot_list[key], True)
+								Log("			= %s" % key)
+								Plot_Eye_Import(key, Import_file, Plot_list[key], vmin, vmax, sub_DB.Eye_Measure_Results, True)
+								os.remove(Import_file)
+
+						if os.path.isfile(AEDT_File):									
+							prj_name = AEDT_File.split("\\")[-1].split(".")[0]
+							if prj_name in sub_DB.AEDT["Desktop"].GetProjectList():
+								sub_DB.AEDT["Desktop"].CloseProject(prj_name)
+							os.remove(AEDT_File)
+							if os.path.isfile(AEDT_File + ".lock"):
+								os.remove(AEDT_File + ".lock")
+							sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
+							sub_ScriptEnv.Release()									
+							sub_DB.AEDT = {}
+						else:
+							sub_DB.AEDT["Project"].SaveAs(AEDT_File, True)
+							sub_ScriptEnv.Release()
+							sub_DB.AEDT = {}
+						# Default
+						if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+							Create_Excel_Report_Imported()
+
+				# Eye plot unchecked
+				else:
+					# Default w/o figure
+					if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
+						Create_Excel_Report_Imported_wo_fig()					
+
+			Log("	<Export Excel Report> = Done")
+
+		except Exception as e:						
+			Log("	<Export Excel Report> = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to export excel report","Warning")
 			EXIT()
 
 	def Button_CloseClick(self, sender, e):

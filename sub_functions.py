@@ -102,7 +102,7 @@ def Load_env(File):
 					line = line.strip()
 					key = str_grandchild + str_child + str_parent
 					for cell in list(filter(None, line.strip().split("=")[-1].strip().split(","))):
-							temp_list.append(cell.strip())
+						temp_list.append(cell.strip())
 
 				if key:
 					temp_DB[key] = temp_list
@@ -1140,6 +1140,7 @@ def CnfAutoSave():
 		EXIT()
 
 def CnfAutoLoad(self):
+	sub_DB.TBD_flag = False	
 	File = sub_DB.user_dir + r'\latest.cnf'		
 	Uenv = Load_env(File)
 	Uenv["File"] = File		
@@ -1290,7 +1291,8 @@ def EXIT():
 	#if "App" in sub_DB.AEDT.keys():
 	#	sub_ScriptEnv.Release()
 	sub_ScriptEnv.Release()
-	os._exit(0)
+	#os._exit(0)
+	pass
 
 def ReleaseObject(obj):	
 	System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
@@ -1298,14 +1300,18 @@ def ReleaseObject(obj):
 
 def Initial():
 	Log("\n\n")
+	sub_DB.TBD_flag = True
 	sub_ScriptEnv.Release()	
 	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()
+	sub_DB.Eye_Form._ComboBox_Design.BackColor = System.Drawing.SystemColors.Window
+	sub_DB.Eye_Form._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+	sub_DB.Eye_Form._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 
 	sub_DB.Net_Form = ""
 	sub_DB.Net_Form = GUI_subforms.NetForm()
 
-	#sub_DB.Option_Form = ""
-	#sub_DB.Option_Form = GUI_subforms.OptionForm(2)
+	sub_DB.Option_Form = ""
+	sub_DB.Option_Form = GUI_subforms.OptionForm(2)
 
 	sub_DB.Result_Flag = False
 	sub_DB.Eye_Analyze_Flag = True

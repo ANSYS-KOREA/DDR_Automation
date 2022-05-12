@@ -51,3 +51,5 @@ var_string = ""
 Result_Flag = False
 exit_iter = 0
 Spec = {}
+TBD_flag = True
+AutoLoad_flag = False
