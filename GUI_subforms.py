@@ -1381,8 +1381,7 @@ class NetForm(Form):
 
 		except Exception as e:						
 			Log("	<Export Excel Report> = Failed")
-			Log(traceback.format_exc())
-			print traceback.format_exc()
+			Log(traceback.format_exc())			
 			MessageBox.Show("Fail to export excel report","Warning")
 			EXIT()
 

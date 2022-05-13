@@ -6,12 +6,6 @@
 : Launch Option 2 - Latest version of ANSYS EM Suite
 :	You don't have to do anything because SerDes 3D Model Wizard will automatically find the ANSYS EM Suite of the latest version on your PC.
 
-set PATH="C:\AnsysEM\AnsysEM21.2\Win64\common\IronPython"
+set PATH=%SIWAVE_INSTALL_DIR%\common\IronPython"
 
-ipy64 ".\ANSYS_EYE_Analyzer_v0.py"
-
-
-
-
-
-
+ipyw64 ".\ANSYS_EYE_Analyzer_v0.py"
