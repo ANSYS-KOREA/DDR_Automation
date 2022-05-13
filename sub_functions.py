@@ -329,7 +329,7 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 
 		noteh = (vmax - Vref) / (vmax - vmin) * 9500
 		oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
-						"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 5500, "DefaultYPos:=",
+						"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
 						noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0]) + " / " + str(round(sub_DB.Jitter_RMS[PlotList[0]],1))]])
 		Log("			= Add Note, Width:%s[ps] Jitter(RMS):%s[ps]" % (str(Eye_Measure_Results[PlotList[0]][0]), str(round(sub_DB.Jitter_RMS[PlotList[0]],1))))
 
@@ -466,7 +466,7 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 
 		noteh = (vmax - Vref) / (vmax - vmin) * 9500
 		oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
-						"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 5500, "DefaultYPos:=",
+						"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
 						noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0]) + " / " + str(Eye_Measure_Results[PlotList[0]][1])]])
 		Log("			= Add Note, Width:%s[ps] Jitter(RMS):%s[ps]" % (str(Eye_Measure_Results[PlotList[0]][0]), str(Eye_Measure_Results[PlotList[0]][1])))
 
@@ -592,10 +592,11 @@ def Log(msg):
 
 	sub_DB.Log += "\n" + time.strftime('%H:%M:%S') + "\t" + msg
 
-def LogSave():	
-	f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
-	f.write(sub_DB.Log)	
-	f.close()
+def LogSave():
+	if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":		
+		f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
+		f.write(sub_DB.Log)	
+		f.close()
 
 def CnfSave(File):	
 	#################

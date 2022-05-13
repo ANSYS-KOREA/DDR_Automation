@@ -69,6 +69,6 @@ sub_DB.Compliance_Form = ComplianceForm()
 # Launch Eye Analyzer GUI #
 ###########################
 sub_DB.Eye_Form.ShowDialog()
-#sub_DB.Net_Form.ShowDialog()
+
 # End Ansys DDR Wizard
 # exit()
