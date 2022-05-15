@@ -594,7 +594,7 @@ def Log(msg):
 
 def LogSave(iter):
 	if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
-		if iter == 1:
+		if iter <= 1:
 			f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
 			f.write(sub_DB.Log)	
 			f.close()

@@ -1555,7 +1555,7 @@ class Eye_Form(Form):
 	def Exit_ToolStripMenuItemClick(self, sender, e):
 		CnfAutoSave()
 		Log("[Save Log] = Done")
-		LogSave()
+		LogSave(sub_DB.exit_iter)
 		sub_ScriptEnv.Release()		
 		os._exit(0)
 
@@ -1991,7 +1991,7 @@ class Eye_Form(Form):
 
 			# Get Keywork
 			#	ex) <DDR3-800>
-			keyword = "<" + self._ComboBox_DDRGen.Text + "-" + self._ComboBox_DataRate.Text + ">" + "[Eye Spec]"						
+			keyword = "<" + self._ComboBox_DDRGen.Text + "-" + self._ComboBox_DataRate.Text + ">" + "[Eye Spec]"			
 			Log("[DDR datarate] = %s" % self._ComboBox_DataRate.Text)
 
 			# Set Eye Specifications
@@ -2029,8 +2029,31 @@ class Eye_Form(Form):
 					pass
 
 				elif self._ComboBox_DDRGen.Text == "LPDDR4":
-					#TODO : Setup LPDDR4 Eye Spec.
-					pass
+					for key in sub_DB.Cenv:
+						if keyword in key:
+							if "Rx Mask Voltage" in key:
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_VdIVW.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_VdIVW.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0]
+								Log("	<VdIVW> : %s[mV]" % self._TextBox_VdIVW.Text)
+
+							elif "Rx Timing Window Total" in key:
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_TdIVW.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_TdIVW.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0]
+								Log("	<TdIVW> : %s[UI]" % self._TextBox_TdIVW.Text)
 
 				elif self._ComboBox_DDRGen.Text == "LPDDR5":
 					#TODO : Setup LPDDR5 Eye Spec.
@@ -2545,7 +2568,7 @@ class Eye_Form(Form):
 	def Eye_FormFormClosing(self, sender, e):
 		CnfAutoSave()
 		Log("[Save Log] = Done")
-		LogSave()
+		LogSave(sub_DB.exit_iter)
 		sub_ScriptEnv.Release()		
 		os._exit(0)
 

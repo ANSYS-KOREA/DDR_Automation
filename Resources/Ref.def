@@ -32,7 +32,7 @@
 	<LPDDR3>
 		(Data-rate) = 1600, 2133
 	<LPDDR4>
-		(Data-rate) = 3200, 4267
+		(Data-rate) = 1600, 1866, 2133, 2400, 3200, 3733, 4267
 	<LPDDR5>
 		(Data-rate) = 6400, 8533
 		
@@ -212,6 +212,40 @@
 	<DDR4-3733>
 		(Rx Mask Voltage)		= 105!
 		(Rx Timing Window Total)		= 0.24!
+		
+	#####################################################################################################	
+	#	LPDDR4 - 1600, 1866, 2133, 2400, 3200, 3733, 4267 [Mbps]				
+	#   	Units
+	# 	  -. voltage : [mV]
+	# 	  -. time : UI(Unit Interval)
+	#####################################################################################################	
+	<LPDDR4-1600>
+		(Rx Mask Voltage)		= 140!
+		(Rx Timing Window Total)		= 0.22!
+		
+	<LPDDR4-1866>
+		(Rx Mask Voltage)		= 140!
+		(Rx Timing Window Total)		= 0.22!
+		
+	<LPDDR4-2133>
+		(Rx Mask Voltage)		= 140!
+		(Rx Timing Window Total)		= 0.22!
+		
+	<LPDDR4-2400>
+		(Rx Mask Voltage)		= 140!
+		(Rx Timing Window Total)		= 0.22!
+		
+	<LPDDR4-3200>
+		(Rx Mask Voltage)		= 140!
+		(Rx Timing Window Total)		= 0.25!
+
+	<LPDDR4-3733>
+		(Rx Mask Voltage)		= 130!
+		(Rx Timing Window Total)		= 0.25!
+		
+	<LPDDR4-4267>
+		(Rx Mask Voltage)		= 120!
+		(Rx Timing Window Total)		= 0.25!
 		
 [Net Identification]
 	# The priority of the net group classification specified between "<" and ">" symbols is the same as the order written below.
