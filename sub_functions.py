@@ -592,11 +592,17 @@ def Log(msg):
 
 	sub_DB.Log += "\n" + time.strftime('%H:%M:%S') + "\t" + msg
 
-def LogSave():
-	if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":		
-		f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
-		f.write(sub_DB.Log)	
-		f.close()
+def LogSave(iter):
+	if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
+		if iter == 1:
+			f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
+			f.write(sub_DB.Log)	
+			f.close()
+			sub_DB.Log_File = sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log'
+		else:
+			f = open(sub_DB.Log_File, 'w')
+			f.write(sub_DB.Log)	
+			f.close()
 
 def CnfSave(File):	
 	#################
@@ -988,8 +994,7 @@ def CnfLoad(self, File):
 							# AC_DQ
 							if "(AC_DQ)" in key:
 								if self._ComboBox_AC_DQ.Visible:									
-									#self._ComboBox_AC_DQ.SelectedIndex = int(Uenv[key][0])
-									self._ComboBox_AC_DQ.SelectedIndex = Uenv[key][0]
+									self._ComboBox_AC_DQ.SelectedIndex = int(Uenv[key][0])
 									Log("		(Load Eye - AC_DQ) = %s" % Uenv[key][1])										
 								else:
 									self._TextBox_AC_DQ.Text == Uenv[key][0]
@@ -998,8 +1003,7 @@ def CnfLoad(self, File):
 							# AC_ADDR
 							elif "(AC_ADDR)" in key:
 								if self._ComboBox_AC_ADDR.Visible:									
-									#self._ComboBox_AC_ADDR.SelectedIndex = int(Uenv[key][0])
-									self._ComboBox_AC_ADDR.SelectedIndex = Uenv[key][0]
+									self._ComboBox_AC_ADDR.SelectedIndex = int(Uenv[key][0])									
 									Log("		(Load Eye - AC_ADDR) = %s" % Uenv[key][1])										
 								else:
 									self._TextBox_AC_ADDR.Text == Uenv[key][0]
@@ -1475,15 +1479,9 @@ def CnfAutoLoad(self):
 		MessageBox.Show("Version of Eye Analyzer(%s) and Cnf(%s) File do not match.\nFail to load auto saved cnf file." % (sub_DB.Version, cnf_version), "Warning")
 
 def EXIT():	
-	#sub_DB.exit_iter += 1
-	#if sub_DB.exit_iter == 1:
-	#	LogSave()
-	LogSave()
-	#if "App" in sub_DB.AEDT.keys():
-	#	sub_ScriptEnv.Release()
-	sub_ScriptEnv.Release()
-	#os._exit(0)
-	pass
+	sub_DB.exit_iter += 1	
+	LogSave(sub_DB.exit_iter)	
+	sub_ScriptEnv.Release()	
 
 def ReleaseObject(obj):	
 	System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)

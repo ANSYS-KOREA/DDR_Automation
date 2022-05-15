@@ -15,6 +15,7 @@ result_dir = ""
 resource_dir = ""
 user_dir = ""
 Log = ""
+Log_File = ""
 
 Eye_Analyze_Flag = True
 
