@@ -1492,6 +1492,7 @@ def Initial():
 	sub_DB.TBD_flag = True
 	sub_ScriptEnv.Release()	
 	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()
+	
 	sub_DB.Eye_Form._ComboBox_Design.BackColor = System.Drawing.SystemColors.Window
 	sub_DB.Eye_Form._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
 	sub_DB.Eye_Form._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
@@ -1570,3 +1571,25 @@ def temp_get_waveform(self):
 		MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
 		
 	return Waveform
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
