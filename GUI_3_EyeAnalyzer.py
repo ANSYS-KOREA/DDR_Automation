@@ -276,7 +276,7 @@ class Eye_Form(Form):
 		# 
 		self._Help_DDRGuid_ToolStripMenuItem.Name = "Help_DDRGuid_ToolStripMenuItem"
 		self._Help_DDRGuid_ToolStripMenuItem.Size = System.Drawing.Size(300, 22)
-		self._Help_DDRGuid_ToolStripMenuItem.Text = "Ansys DDR Wizard Getting Started Guides"
+		self._Help_DDRGuid_ToolStripMenuItem.Text = "Ansys DDR Wizard Quick Guide"
 		self._Help_DDRGuid_ToolStripMenuItem.Click += self.Help_DDRGuid_ToolStripMenuItemClick
 		# 
 		# Help_DDRNew_ToolStripMenuItem
@@ -1356,8 +1356,29 @@ class Eye_Form(Form):
 				Cenv = Load_env(File)
 				Cenv["File"] = File
 				sub_DB.Cenv = Cenv
+				Initial()
+				self._ComboBox_DDRGen.Items.Clear()
+				self._ComboBox_DataRate.Items.Clear()
+				
+				# Setup the Common Env. Info.		
+				#	Add DDR Type into ComboBox
+				DDR_Gen = []
+				for key in sub_DB.Cenv:
+					if "[DDR Info]" in key:
+						DDR_Gen.append(key.split("<")[-1].split(">")[0])
+
+				DDR_Gen.sort()
+				for ddr in DDR_Gen:
+					self._ComboBox_DDRGen.Items.Add(ddr)
+
+				self._ComboBox_DDRGen.Text = ""
+				self._ComboBox_DataRate.Text = ""
+				self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
+				self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+				
 				Log("[Load Definition File] = %s" % File)
 				MessageBox.Show("DDR wizard definition file \"%s\" is loaded" % File.split("\\")[-1], "Load")
+				
 
 			else:
 				MessageBox.Show("Please Select the DDR wizard definition file(*.def)","Warning")
@@ -1654,7 +1675,7 @@ class Eye_Form(Form):
 		try:
 			sub_DB.TBD_flag = True
 			dialog = OpenFileDialog()			
-			dialog.Filter = "AEDT Project file|*.aedt|Comma delimited data file|*.csv"
+			dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
 
 			if dialog.ShowDialog(self) == DialogResult.OK:
 				File = dialog.FileName
