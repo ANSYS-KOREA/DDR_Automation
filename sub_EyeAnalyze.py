@@ -1,6 +1,7 @@
 import os
 import clr
 import sub_DB
+import time
 
 clr.AddReference('Microsoft.Office.Interop.Excel')
 
@@ -65,6 +66,7 @@ def New_Default(self):
 	#########################
 	#   Eye Analyze         #
 	#########################
+	print time.strftime('%H:%M:%S')
 	try:
 		sub_DB.Cal_Form.Text = "Analyzing Eye Diagram"
 		sub_DB.Cal_Form._Label_Vref.Text = "Analyzing Eye Diagram..."
@@ -103,6 +105,7 @@ def New_Default(self):
 		sub_DB.Net_Form.Text = "Eye Analyze Results"
 		Log("	<Eye Analyze> = Done")
 
+		print time.strftime('%H:%M:%S')
 	except Exception as e:						
 		Log("	<Launch Eye Analyze> = Failed")
 		Log(traceback.format_exc())
@@ -1544,7 +1547,7 @@ def Setup_Hold(self):
 
 # Eye Measure for Default Eye Analyze - New Eye
 def Measure_Eye(self, Location):
-	try:
+	try:		
 		sub_DB.Cal_Form.Text = "Analyzing Eye..."	
 
 		# Get Vref
@@ -1644,8 +1647,7 @@ def Measure_Eye(self, Location):
 		T_Vlow=[]
 		T_Vref=[]
 		if not sub_DB.CSV_flag:
-			for key in Waveform:		
-				sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
+			for key in Waveform:				
 				T_Vhigh=[]
 				T_Vlow=[]
 				T_Vref=[]

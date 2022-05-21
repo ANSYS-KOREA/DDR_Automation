@@ -64,6 +64,8 @@ class Eye_Form(Form):
 		self._Label_TimeUnitNew = System.Windows.Forms.Label()
 		self._Label_Info = System.Windows.Forms.Label()
 		self._Label_VdIVW = System.Windows.Forms.Label()
+		self._Label_TimingSpec = System.Windows.Forms.Label()
+		self._Label_VoltageSpec = System.Windows.Forms.Label()
 		self._Label_TdIVW = System.Windows.Forms.Label()
 		self._Label_VcentDQ = System.Windows.Forms.Label()
 		self._Label_Vac = System.Windows.Forms.Label()
@@ -419,6 +421,8 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_NewEye
 		#
+		self._GroupBox_NewEye.Controls.Add(self._Label_VoltageSpec)
+		self._GroupBox_NewEye.Controls.Add(self._Label_TimingSpec)
 		self._GroupBox_NewEye.Controls.Add(self._Label_VdIVW)
 		self._GroupBox_NewEye.Controls.Add(self._Label_TdIVW)
 		self._GroupBox_NewEye.Controls.Add(self._Label_VcentDQ)
@@ -663,6 +667,28 @@ class Eye_Form(Form):
 		self._Label_TdIVW.Text = "TdIVW :"
 		self._Label_TdIVW.Visible = False
 		self._Label_TdIVW.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_TimingSpec
+		# 
+		self._Label_TimingSpec.Font = System.Drawing.Font("Arial", 8)
+		self._Label_TimingSpec.Location = System.Drawing.Point(310, 285)
+		self._Label_TimingSpec.Name = "Label_Timing_Spec"
+		self._Label_TimingSpec.Size = System.Drawing.Size(68, 16)
+		self._Label_TimingSpec.TabIndex = 41
+		self._Label_TimingSpec.Text = "Timing Spec."
+		self._Label_TimingSpec.Visible = True
+		self._Label_TimingSpec.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_VoltageSpec
+		# 
+		self._Label_VoltageSpec.Font = System.Drawing.Font("Arial", 8)
+		self._Label_VoltageSpec.Location = System.Drawing.Point(70, 261)
+		self._Label_VoltageSpec.Name = "Label_Voltage_Spec"
+		self._Label_VoltageSpec.Size = System.Drawing.Size(72, 16)
+		self._Label_VoltageSpec.TabIndex = 41
+		self._Label_VoltageSpec.Text = "Voltage Spec."
+		self._Label_VoltageSpec.Visible = True
+		self._Label_VoltageSpec.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		# 
 		# Label_VcentDQ
 		# 
@@ -1057,6 +1083,7 @@ class Eye_Form(Form):
 		self._TextBox_VcentDQ.Location = System.Drawing.Point(548, 231)		
 		self._TextBox_VcentDQ.Name = "TextBox_VcentDQ"
 		self._TextBox_VcentDQ.Size = System.Drawing.Size(59, 23)
+		self._TextBox_VcentDQ.Text = "Auto"			
 		self._TextBox_VcentDQ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_VcentDQ.TabIndex = 34
 		# 
@@ -1980,7 +2007,7 @@ class Eye_Form(Form):
 			if sub_DB.Eyeflag:
 				self._TextBox_VdIVW.Text = ""
 				self._TextBox_TdIVW.Text = ""
-				self._TextBox_VcentDQ.Text = ""			
+				self._TextBox_VcentDQ.Text = "Auto"			
 			else:
 				self._TextBox_AC_DQ.Text = ""
 				self._TextBox_AC_ADDR.Text = ""
@@ -2076,9 +2103,32 @@ class Eye_Form(Form):
 									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0]
 								Log("	<TdIVW> : %s[UI]" % self._TextBox_TdIVW.Text)
 
-				elif self._ComboBox_DDRGen.Text == "LPDDR5":
-					#TODO : Setup LPDDR5 Eye Spec.
-					pass
+				elif self._ComboBox_DDRGen.Text == "LPDDR5":					
+					for key in sub_DB.Cenv:
+						if keyword in key:
+							if "Rx Mask Voltage" in key:
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_VdIVW.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_VdIVW.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0]
+								Log("	<VdIVW> : %s[mV]" % self._TextBox_VdIVW.Text)
+
+							elif "Rx Timing Window Total" in key:
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_TdIVW.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_TdIVW.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0]
+								Log("	<TdIVW> : %s[UI]" % self._TextBox_TdIVW.Text)
 
 			#	for Old Eye
 			else: 
@@ -2380,6 +2430,10 @@ class Eye_Form(Form):
 
 			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 95)
 
+			self._Label_VoltageSpec.Location = System.Drawing.Point(223, 9)
+			self._Label_TimingSpec.Location = System.Drawing.Point(363, 9)
+			
+
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 300)
 			self.Height = 300
 			
@@ -2406,6 +2460,9 @@ class Eye_Form(Form):
 			self._Label_Info.Location = System.Drawing.Point(10, 423)
 
 			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 455)
+
+			self._Label_TimingSpec.Location = System.Drawing.Point(310, 285)
+			self._Label_VoltageSpec.Location = System.Drawing.Point(70, 261)
 
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
 			self.Height = 660			
