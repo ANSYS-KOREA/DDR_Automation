@@ -354,6 +354,7 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 	except Exception as e:		
 		Log("	<Eye Plot> = Failed")
 		Log(traceback.format_exc())
+		print traceback.format_exc()
 		MessageBox.Show("Fail to plot eye","Warning")						
 		EXIT()
 
