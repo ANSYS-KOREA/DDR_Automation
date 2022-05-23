@@ -1192,7 +1192,7 @@ class Eye_Form(Form):
 		self._CheckBox_Debug.Size = System.Drawing.Size(138, 29)
 		self._CheckBox_Debug.TabIndex = 36
 		self._CheckBox_Debug.Text = "Debug"
-		self._CheckBox_Debug.Visible = True
+		self._CheckBox_Debug.Visible = sub_DB.Debug_Mode
 		self._CheckBox_Debug.UseVisualStyleBackColor = True
 		self._CheckBox_Debug.CheckedChanged += self.CheckBox_DebugCheckedChanged
 		# 
