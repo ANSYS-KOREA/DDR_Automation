@@ -117,6 +117,7 @@ class Eye_Form(Form):
 		self._CheckBox_AnalyzeADDR = System.Windows.Forms.CheckBox()
 		self._CheckBox_EditEnable_NewEye = System.Windows.Forms.CheckBox()
 		self._CheckBox_EditEnable_OldEye = System.Windows.Forms.CheckBox()
+		self._CheckBox_Debug = System.Windows.Forms.CheckBox()
 
 		self._TextBox_InputFile_ToopTip = System.Windows.Forms.ToolTip()		
 		self._ComboBox_Design_ToopTip = System.Windows.Forms.ToolTip()
@@ -1174,14 +1175,26 @@ class Eye_Form(Form):
 		# Button_Debug
 		# 
 		self._Button_Debug.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_Debug.Location = System.Drawing.Point(811, 12)
+		self._Button_Debug.Location = System.Drawing.Point(530, 1)
 		self._Button_Debug.Name = "Button_Debug"
-		self._Button_Debug.Size = System.Drawing.Size(80, 38)
+		self._Button_Debug.Size = System.Drawing.Size(80, 25)
 		self._Button_Debug.TabIndex = 29
 		self._Button_Debug.Text = "Debug"
 		self._Button_Debug.UseVisualStyleBackColor = True
-		self._Button_Debug.Visible = sub_DB.Debug_Mode
-		self._Button_Debug.Click += self.Button_DebugClick
+		self._Button_Debug.Visible = False
+		self._Button_Debug.Click += self.Button_DebugClick		
+		# 
+		# CheckBox_Debug
+		# 
+		self._CheckBox_Debug.Font = System.Drawing.Font("Arial", 10)
+		self._CheckBox_Debug.Location = System.Drawing.Point(620, 1)
+		self._CheckBox_Debug.Name = "CheckBox_AnalyzeDQ"
+		self._CheckBox_Debug.Size = System.Drawing.Size(138, 29)
+		self._CheckBox_Debug.TabIndex = 36
+		self._CheckBox_Debug.Text = "Debug"
+		self._CheckBox_Debug.Visible = True
+		self._CheckBox_Debug.UseVisualStyleBackColor = True
+		self._CheckBox_Debug.CheckedChanged += self.CheckBox_DebugCheckedChanged
 		# 
 		# CheckBox_AnalyzeDQ
 		# 
@@ -1240,6 +1253,7 @@ class Eye_Form(Form):
 		self.Image_flag_New = False
 		self.Image_flag_Old = False
 		self.Full_Size_flag = True
+		self.Controls.Add(self._CheckBox_Debug)
 		self.Controls.Add(self._Button_LoadCnf)
 		self.Controls.Add(self._Button_Debug)
 		self.Controls.Add(self._GroupBox_NewEye)
@@ -2243,7 +2257,7 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Button_ViewNetClick(self, sender, e):
-		try:
+		try:			
 			# Check if any of report name has been checked
 			flag, msg = Check_Input(self)			
 
@@ -2275,7 +2289,7 @@ class Eye_Form(Form):
 				sub_DB.Net_Form._TextBox_ImageWidth.Visible = False
 				sub_DB.Net_Form._Label_ReportFormat.Visible = False
 				sub_DB.Net_Form._ComboBox_Report.Visible = False
-				sub_DB.Net_Form._Button_Export.Visible = False
+				sub_DB.Net_Form._Button_Export.Visible = False				
 				sub_DB.Net_Form.ShowDialog()
 
 				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
@@ -2288,11 +2302,12 @@ class Eye_Form(Form):
 		except Exception as e:			
 			Log("[Net Form Launch] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to launch Net Classification Form","Warning")			
 			EXIT()
 
 	def Button_AnalyzeClick(self, sender, e):
-		try:
+		try:			
 			Log("[Eye Analyze Start] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 			# Initiallization
 			sub_DB.Excel_Img_File = []
@@ -2326,8 +2341,8 @@ class Eye_Form(Form):
 
 				# for Old Eye
 				else:
-
 					sub_EyeAnalyze.Old_Default(self)					
+					pass
 					
 				#############################
 				#      Compliance Test      #
@@ -2346,7 +2361,7 @@ class Eye_Form(Form):
 				self.Cursor = Cursors.Default
 				sub_DB.Cal_Form.Cursor = Cursors.Default
 
-				os.startfile(sub_DB.result_dir)
+				#os.startfile(sub_DB.result_dir)
 				sub_DB.Result_Flag = True
 				sub_DB.Net_Form._Label_GroupName.Visible = False
 				sub_DB.Net_Form._ComboBox_AnalyzeGroup.Visible = False
@@ -2364,8 +2379,6 @@ class Eye_Form(Form):
 				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
 				self._Button_ViewResult.Enabled = True
 
-				#CnfAutoSave()
-		
 			# Press Cancel Button in Option Form
 			else:
 				pass
@@ -2373,6 +2386,7 @@ class Eye_Form(Form):
 		except Exception as e:			
 			Log("[Eye Analyze Start] = Fail")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to start Eye Analyze","Warning")			
 			EXIT()
 		
@@ -2400,6 +2414,7 @@ class Eye_Form(Form):
 		except Exception as e:			
 			Log("[View Eye Analyze Result] = Fail")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to View Eye Analyze Result","Warning")			
 			EXIT()
 
@@ -2651,24 +2666,154 @@ class Eye_Form(Form):
 		os._exit(0)
 
 	''' For Debuggin '''
+	def CheckBox_DebugCheckedChanged(self, sender, e):
+		sub_DB.Debug_Mode = self._CheckBox_Debug.Checked
+		self._Button_Debug.Visible = self._CheckBox_Debug.Checked
+
 	def Button_DebugClick(self, sender, e):
-		File = "D:\\1_Work\\20220106_DDR_Compliance\\0_DB\\LPDDR4_20220203\\Examples\\Galileo_R21_DDR_SSN_siwave.aedt"		
-		self._TextBox_InputFile.Text = File
-		extension = File.split("\\")[-1].split(".")[-1] # Get File Extension
-		# for *.aedt File
-		if extension == "aedt":				
-			self.Cursor = Cursors.WaitCursor				
-			sub_AEDT.Get_AEDT_Info(self, File)
-			self.Cursor = Cursors.Default
+		File = []
+		File.append(r'D:\1_Work\20220106_DDR_Compliance\1_Work\CNF\1.cnf')
+		File.append(r'D:\1_Work\20220106_DDR_Compliance\1_Work\CNF\2.cnf')
+		File.append(r'D:\1_Work\20220106_DDR_Compliance\1_Work\CNF\3.cnf')
+		File.append(r'D:\1_Work\20220106_DDR_Compliance\1_Work\CNF\4.cnf')
 
-			self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
-			self._ComboBox_Design.BackColor = System.Drawing.SystemColors.Info
-		self._ComboBox_Design.SelectedIndex = 0
-		self._CheckedListBox_ReportName.SetItemChecked(0, True)
-		self._ComboBox_DDRGen.SelectedIndex = 2
-		self._ComboBox_DataRate.SelectedIndex = 2
-		self.Button_ViewNetClick(self, sender)		
-		self.Button_AnalyzeClick(self, sender)
+		for CNF_file in File:
+			Initial()
+			Debug_Load_CNF(self, sender, CNF_file)
+			self.Button_ViewNetClick(self, sender)
+			self.Button_AnalyzeClick(self, sender)						
+			
+		LogSave(iter, r'D:\1_Work\20220106_DDR_Compliance\1_Work\CNF\Test.log')
 
+def Debug_Load_CNF(self, sender, File):
+	try:		
+		CnfLoad(self, File)
 
+		# for AEDT Input
+		if sub_DB.InputFile_Flag == 1:
+			if Check_Setup(self):				
+				self.Cursor = Cursors.WaitCursor					
+				sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+				self.Cursor = Cursors.Default
+				#self.Button_ViewNetClick(self, sender)
+				
+		# for CSV Input
+		elif sub_DB.InputFile_Flag == 2:
+			self._ComboBox_Design.Text = "N/A"
+			self._ComboBox_Design.Enabled = False
+			self._CheckedListBox_ReportName.Items.Clear()
+			self._CheckedListBox_ReportName.Enabled = False
+			self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Control
+			self._ComboBox_SolutionName.Text = "N/A"
+			self._ComboBox_SolutionName.Enabled = False
+
+			# Read Input csv file, Backup Netlist and Waveforms
+			try:
+				Waveform = {}
+				with open(sub_DB.Eye_Form._TextBox_InputFile.Text) as fp:
+					# Read the fist line
+					temp_data = fp.readline().replace("\"","").replace(" ","").replace("-","_").strip().split(",")
+					temp_data = list(filter(None,temp_data))							
+
+					# Delete global & local variable data
+					for i in range(0, len(temp_data)):
+						if not "Time" in temp_data[i]:
+							del temp_data[i]
+						else:
+							break
+
+					# Get time and voltage unit
+					sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
+					sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
+							
+					# Delete Time Column
+					del temp_data[0]
+					data = [[0 for col in range(0)] for row in range(len(temp_data))]							
+					for i in range(0, len(temp_data)):								
+						data[i].append(temp_data[i])
+
+					# Get Waveform Data
+					Time = []
+					for line in fp:
+						Time.append(float(line.split(",")[0]))
+						for i in range(0, len(temp_data)):					
+							data[i].append(float(line.split(",")[i+1]))
+								
+				fp.close()
+
+				Log("	<Read WaveFrom>")
+				for cell in data:
+					key = cell[0].split("[")[0].replace("-","_")
+					del cell[0]
+					Waveform[key] = cell
+					Log("		= %s" % key)
+
+				# Check time unit
+				if sub_DB.Unit["Time"].lower() == "ps":
+					pass
+				elif sub_DB.Unit["Time"].lower() == "ns":
+					for i in range(0, len(Time)):
+						Time[i] = Time[i]*1000
+				else:
+					MessageBox.Show("The time unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+				sub_DB.Time = Time
+
+				# Check voltage unit
+				if sub_DB.Unit["Voltage"].lower() == "mv":
+					pass
+				elif sub_DB.Unit["Voltage"].lower() == "v":
+					for key in Waveform:
+						for i in range(0, len(Waveform[key])):
+							Waveform[key][i] = Waveform[key][i]*1000
+				else:
+					MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+				sub_DB.Waveform = Waveform
+						
+				# Create Netlist
+				Netlist = []
+				for i in range(0, len(temp_data)):
+					Netlist.append(temp_data[i].split("[")[0].replace("-","_"))
+				sub_DB.Netlist = Netlist
+
+				# Check input csv file time resolution
+				# Non uniform time resolution
+				if not sub_DB.Time[1] - sub_DB.Time[0] == 1:
+					sub_DB.CSV_flag = False
+					Log("	<Time Resolution> = Un-uniform")
+					# OK Click, keep going
+					if MessageBox.Show(							
+						"The most appropriate format of Eye Analyzer's input csv file is voltage waveform extracted uniformly in 1ps.\n\n"+
+						"\"%s\" does not meet this condition, which may result in inaccurate results.\n\n" % File.split("\\")[-1]+
+						"Will you continue?","Warning",MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK:
+
+						# Enable Next Step
+						self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
+						self._ComboBox_DDRGen.Enabled = True
+						sub_DB.InputFile_Flag = 2
+
+					# Cancel Click, re-select input file
+					else:
+						self._TextBox_InputFile.Text = ""
+
+				# Uniform time resolution
+				else:
+					Log("	<Time Resolution> = Uniform")
+					sub_DB.CSV_flag = True
+					self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
+					self._ComboBox_DDRGen.Enabled = True
+					sub_DB.InputFile_Flag = 2
+
+			except Exception as e:
+				Log("[Input CSV File Parsing] = Failed")
+				Log(traceback.format_exc())
+				MessageBox.Show("Input csv file parsing has been failed.\n\nPlease check the input file,\n\t%s." % File.split("\\")[-1],"Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+				self._TextBox_InputFile.Text = ""
+				EXIT()
+
+	except Exception as e:			
+		Log("[Load Configuration File] = Failed")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Fail to load configuration file","Warning")
+		EXIT()
 	

@@ -592,18 +592,26 @@ def Log(msg):
 
 	sub_DB.Log += "\n" + time.strftime('%H:%M:%S') + "\t" + msg
 
-def LogSave(iter):
-	if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
-		if iter <= 1:
-			f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
-			f.write(sub_DB.Log)	
-			f.close()
-			sub_DB.Log_File = sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log'
-		else:
-			f = open(sub_DB.Log_File, 'w')
-			f.write(sub_DB.Log)	
-			f.close()
-
+def LogSave(iter, File=None):
+	try:
+		if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
+			if File == None:
+				if iter <= 1:
+					f = open(sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log', 'w')
+					f.write(sub_DB.Log)	
+					f.close()
+					sub_DB.Log_File = sub_DB.result_dir + '\\ddr_' + time.strftime('%Y%m%d_%H%M%S') + '.log'
+				else:
+					f = open(sub_DB.Log_File, 'w')
+					f.write(sub_DB.Log)	
+					f.close()
+			else:
+				f = open(File, 'w')
+				f.write(sub_DB.Log)	
+				f.close()
+	except Exception as e:				
+		print traceback.format_exc()
+		
 def CnfSave(File):	
 	#################
 	# Create Header #
@@ -803,6 +811,9 @@ def CnfSave(File):
 
 		#	 Vref Method
 		cnf_log += "\n\t\t" + "(Vref Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Vref.SelectedIndex, sub_DB.Option_Form._ComboBox_Vref.Text)
+		if sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 1:
+			cnf_log += "\n\t\t" + "(Manual Vref) = %s" % sub_DB.Option_Form._TextBox_Vref.Text
+
 
 		#	 Analyze Method
 		cnf_log += "\n\t\t" + "(Analyze Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex, sub_DB.Option_Form._ComboBox_Analyze.Text)
@@ -901,7 +912,7 @@ def CnfLoad(self, File):
 
 				except Exception as e:		
 					Log("		(Load EM) : Failed")
-					Log(traceback.format_exc())
+					Log(traceback.format_exc())					
 					MessageBox.Show("Fail to Load Cnf for EM Extractor","Warning")						
 					EXIT()
 				
@@ -922,7 +933,7 @@ def CnfLoad(self, File):
 			#############################
 			# Load Cnf for Eye Analyzer #
 			#############################
-			elif "[Eye]" in key:
+			elif "[Eye]" in key:				
 				try:
 					# --------- Setup----------------
 					if "<Setup>" in key:
@@ -946,11 +957,11 @@ def CnfLoad(self, File):
 								if "!" in Uenv[key][i]:
 									self._CheckedListBox_ReportName.Items.Add(Uenv[key][i].replace("!",""))
 									self._CheckedListBox_ReportName.SetItemChecked(i, True)
-									Log("		(Load Eye - Report Name) = True, %s" % Uenv[key][0])
+									Log("		(Load Eye - Report Name) = True, %s" % Uenv[key][i])
 								else:
 									self._CheckedListBox_ReportName.Items.Add(Uenv[key][i])
 									self._CheckedListBox_ReportName.SetItemChecked(i, False)
-									Log("		(Load Eye - Report Name) = False, %s" % Uenv[key][0])
+									Log("		(Load Eye - Report Name) = False, %s" % Uenv[key][i])
 
 						# Setup Name
 						elif "(Setup Name)" in key:				
@@ -985,7 +996,7 @@ def CnfLoad(self, File):
 								Log("		(Load Eye - TdIVW) = %s" % Uenv[key][0])
 
 							# Vcent_DQ
-							elif "(TdIVW)" in key:				
+							elif "(Vcent_DQ)" in key:				
 								self._TextBox_VcentDQ.Text = Uenv[key][0]
 								Log("		(Load Eye - Vcent_DQ) = %s" % Uenv[key][0])
 
@@ -1121,7 +1132,8 @@ def CnfLoad(self, File):
 
 				except Exception as e:		
 					Log("		(Load Eye) : Failed")
-					Log(traceback.format_exc())					
+					Log(traceback.format_exc())
+					print traceback.format_exc() 
 					MessageBox.Show("Fail to Load Cnf for Eye Analyzer","Warning")						
 					EXIT()
 
@@ -1211,28 +1223,28 @@ def CnfAutoSave():
 		cnf_log += "\n\n" + "[Eye]"
 		# --------- Setup----------------
 		cnf_log += "\n\t" + "<Setup>"
-		#	 Input File
-		cnf_log += "\n\t\t" + "(Input File)"
-		if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
-			cnf_log += " = %s, %d" % (sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.InputFile_Flag)
+		##	 Input File
+		#cnf_log += "\n\t\t" + "(Input File)"
+		#if not sub_DB.Eye_Form._TextBox_InputFile.Text == "":
+		#	cnf_log += " = %s, %d" % (sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.InputFile_Flag)
 
-		#	 Design
-		cnf_log += "\n\t\t" + "(Design)"
-		if not sub_DB.Eye_Form._ComboBox_Design.Text == "":
-			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_Design.Text
+		##	 Design
+		#cnf_log += "\n\t\t" + "(Design)"
+		#if not sub_DB.Eye_Form._ComboBox_Design.Text == "":
+		#	cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_Design.Text
 
-		#	 Report Name
-		cnf_log += "\n\t\t" + "(Report Name)"		
-		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.Items:
-			if item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:
-				cnf_log += "\n\t\t\t" + "= %s!" % item
-			else:
-				cnf_log += "\n\t\t\t" + "= %s" % item
+		##	 Report Name
+		#cnf_log += "\n\t\t" + "(Report Name)"		
+		#for item in sub_DB.Eye_Form._CheckedListBox_ReportName.Items:
+		#	if item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:
+		#		cnf_log += "\n\t\t\t" + "= %s!" % item
+		#	else:
+		#		cnf_log += "\n\t\t\t" + "= %s" % item
 
-		#	 Setup Name	
-		cnf_log += "\n\t\t" + "(Setup Name)"
-		if not sub_DB.Eye_Form._ComboBox_SolutionName.Text == "":
-			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_SolutionName.Text
+		##	 Setup Name	
+		#cnf_log += "\n\t\t" + "(Setup Name)"
+		#if not sub_DB.Eye_Form._ComboBox_SolutionName.Text == "":
+		#	cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_SolutionName.Text
 
 		#	 DDR Gen
 		cnf_log += "\n\t\t" + "(DDR Gen)"
@@ -1244,139 +1256,139 @@ def CnfAutoSave():
 		if not sub_DB.Eye_Form._ComboBox_DataRate.Text == "":
 			cnf_log += " = %s" % sub_DB.Eye_Form._ComboBox_DataRate.Text
 
-		# --------- Eye Specifications ----------------
-		cnf_log += "\n\n\t" + "<Eye Specifications>"
-		#	 New Eye
-		if sub_DB.Eyeflag:
-			#	 Eyeflag for New Eye
-			cnf_log += "\n\t\t" + "(Eye_Type) = Ture"
+		## --------- Eye Specifications ----------------
+		#cnf_log += "\n\n\t" + "<Eye Specifications>"
+		##	 New Eye
+		#if sub_DB.Eyeflag:
+		#	#	 Eyeflag for New Eye
+		#	cnf_log += "\n\t\t" + "(Eye_Type) = Ture"
 
-			#	 VdIVW
-			cnf_log += "\n\t\t" + "(VdIVW)"
-			if not sub_DB.Eye_Form._TextBox_VdIVW.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_VdIVW.Text
+		#	#	 VdIVW
+		#	cnf_log += "\n\t\t" + "(VdIVW)"
+		#	if not sub_DB.Eye_Form._TextBox_VdIVW.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_VdIVW.Text
 
-			#	 TdIVW
-			cnf_log += "\n\t\t" + "(TdIVW)"
-			if not sub_DB.Eye_Form._TextBox_TdIVW.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_TdIVW.Text
+		#	#	 TdIVW
+		#	cnf_log += "\n\t\t" + "(TdIVW)"
+		#	if not sub_DB.Eye_Form._TextBox_TdIVW.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_TdIVW.Text
 
-			#	 Vcent_DQ
-			if sub_DB.Eye_Form._CheckBox_EditEnable_NewEye.Checked:
-				cnf_log += "\n\t\t" + "(Vcent_DQ)"
-				if not sub_DB.Eye_Form._TextBox_VcentDQ.Text == "":
-					cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_VcentDQ.Text
+		#	#	 Vcent_DQ
+		#	if sub_DB.Eye_Form._CheckBox_EditEnable_NewEye.Checked:
+		#		cnf_log += "\n\t\t" + "(Vcent_DQ)"
+		#		if not sub_DB.Eye_Form._TextBox_VcentDQ.Text == "":
+		#			cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_VcentDQ.Text
 
-		#	 Old Eye
-		else:
-			#	 Eyeflag for Old Eye
-			cnf_log += "\n\t\t" + "(Eye_Type) = False"
+		##	 Old Eye
+		#else:
+		#	#	 Eyeflag for Old Eye
+		#	cnf_log += "\n\t\t" + "(Eye_Type) = False"
 			
-			#	 AC_DQ
-			cnf_log += "\n\t\t" + "(AC_DQ)"
-			if sub_DB.Eye_Form._ComboBox_AC_DQ.Visible:				
-				if not sub_DB.Eye_Form._ComboBox_AC_DQ.Text == "":
-					cnf_log += " = %d, %s" % (sub_DB.Eye_Form._ComboBox_AC_DQ.SelectedIndex, sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
-			else:
-				if not sub_DB.Eye_Form._TextBox_AC_DQ.Text == "":
-					cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_AC_DQ.Text
+		#	#	 AC_DQ
+		#	cnf_log += "\n\t\t" + "(AC_DQ)"
+		#	if sub_DB.Eye_Form._ComboBox_AC_DQ.Visible:				
+		#		if not sub_DB.Eye_Form._ComboBox_AC_DQ.Text == "":
+		#			cnf_log += " = %d, %s" % (sub_DB.Eye_Form._ComboBox_AC_DQ.SelectedIndex, sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
+		#	else:
+		#		if not sub_DB.Eye_Form._TextBox_AC_DQ.Text == "":
+		#			cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_AC_DQ.Text
 
-			#	 AC_ADDR
-			cnf_log += "\n\t\t" + "(AC_ADDR)"
-			if sub_DB.Eye_Form._ComboBox_AC_ADDR.Visible:				
-				if not sub_DB.Eye_Form._ComboBox_AC_ADDR.Text == "":
-					cnf_log += " = %d, %s" % (sub_DB.Eye_Form._ComboBox_AC_ADDR.SelectedIndex, sub_DB.Eye_Form._ComboBox_AC_ADDR.Text)
-			else:
-				if not sub_DB.Eye_Form._TextBox_AC_ADDR.Text == "":
-					cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_AC_ADDR.Text
+		#	#	 AC_ADDR
+		#	cnf_log += "\n\t\t" + "(AC_ADDR)"
+		#	if sub_DB.Eye_Form._ComboBox_AC_ADDR.Visible:				
+		#		if not sub_DB.Eye_Form._ComboBox_AC_ADDR.Text == "":
+		#			cnf_log += " = %d, %s" % (sub_DB.Eye_Form._ComboBox_AC_ADDR.SelectedIndex, sub_DB.Eye_Form._ComboBox_AC_ADDR.Text)
+		#	else:
+		#		if not sub_DB.Eye_Form._TextBox_AC_ADDR.Text == "":
+		#			cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_AC_ADDR.Text
 
-			#	 DC_DQ
-			cnf_log += "\n\t\t" + "(DQ_DC)"
-			if not sub_DB.Eye_Form._TextBox_DC_DQ.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_DC_DQ.Text
+		#	#	 DC_DQ
+		#	cnf_log += "\n\t\t" + "(DQ_DC)"
+		#	if not sub_DB.Eye_Form._TextBox_DC_DQ.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_DC_DQ.Text
 
-			#	 DC_ADDR
-			cnf_log += "\n\t\t" + "(DQ_ADDR)"
-			if not sub_DB.Eye_Form._TextBox_DC_ADDR.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_DC_ADDR.Text
+		#	#	 DC_ADDR
+		#	cnf_log += "\n\t\t" + "(DQ_ADDR)"
+		#	if not sub_DB.Eye_Form._TextBox_DC_ADDR.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_DC_ADDR.Text
 
-			#	 Vref
-			cnf_log += "\n\t\t" + "(Vref)"
-			if not sub_DB.Eye_Form._TextBox_Vref.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_Vref.Text
+		#	#	 Vref
+		#	cnf_log += "\n\t\t" + "(Vref)"
+		#	if not sub_DB.Eye_Form._TextBox_Vref.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_Vref.Text
 
-			#	 DQ_Setup
-			cnf_log += "\n\t\t" + "(DQ_Setup)"
-			if not sub_DB.Eye_Form._TextBox_DQSetup.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_DQSetup.Text
+		#	#	 DQ_Setup
+		#	cnf_log += "\n\t\t" + "(DQ_Setup)"
+		#	if not sub_DB.Eye_Form._TextBox_DQSetup.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_DQSetup.Text
 
-			#	 DQ_Hold
-			cnf_log += "\n\t\t" + "(DQ_Hold)"
-			if not sub_DB.Eye_Form._TextBox_DQHold.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_DQHold.Text
+		#	#	 DQ_Hold
+		#	cnf_log += "\n\t\t" + "(DQ_Hold)"
+		#	if not sub_DB.Eye_Form._TextBox_DQHold.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_DQHold.Text
 
-			#	 ADDR_Setup
-			cnf_log += "\n\t\t" + "(ADDR_Setup)"
-			if not sub_DB.Eye_Form._TextBox_ADDRSetup.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_ADDRSetup.Text
+		#	#	 ADDR_Setup
+		#	cnf_log += "\n\t\t" + "(ADDR_Setup)"
+		#	if not sub_DB.Eye_Form._TextBox_ADDRSetup.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_ADDRSetup.Text
 
-			#	 ADDR_Hold
-			cnf_log += "\n\t\t" + "(ADDR_Hold)"
-			if not sub_DB.Eye_Form._TextBox_ADDRHold.Text == "":
-				cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_ADDRHold.Text
+		#	#	 ADDR_Hold
+		#	cnf_log += "\n\t\t" + "(ADDR_Hold)"
+		#	if not sub_DB.Eye_Form._TextBox_ADDRHold.Text == "":
+		#		cnf_log += " = %s" % sub_DB.Eye_Form._TextBox_ADDRHold.Text
 		
-		# --------- Net Classification ----------------
-		cnf_log += "\n\n\t" + "<Net Classification>"
-		iter = 0
-		for row in sub_DB.Net_Form._DataGridView.Rows:
-			cnf_log += "\n\t\t" + " (%d) = %s, %s, %s, %s, %s" % (iter, str(row.Cells[0].Value), row.Cells[1].Value, row.Cells[2].Value, row.Cells[3].Value, row.Cells[4].Value)
-			iter += 1
+		## --------- Net Classification ----------------
+		#cnf_log += "\n\n\t" + "<Net Classification>"
+		#iter = 0
+		#for row in sub_DB.Net_Form._DataGridView.Rows:
+		#	cnf_log += "\n\t\t" + " (%d) = %s, %s, %s, %s, %s" % (iter, str(row.Cells[0].Value), row.Cells[1].Value, row.Cells[2].Value, row.Cells[3].Value, row.Cells[4].Value)
+		#	iter += 1
 
-		# --------- Analyze Option ----------------
-		cnf_log += "\n\n\t" + "<Analyze Option>"
-		#	 Resources Folder
-		cnf_log += "\n\t\t" + "(Resources Folder) = %s" % sub_DB.resource_dir
+		## --------- Analyze Option ----------------
+		#cnf_log += "\n\n\t" + "<Analyze Option>"
+		##	 Resources Folder
+		#cnf_log += "\n\t\t" + "(Resources Folder) = %s" % sub_DB.resource_dir
 
-		#	 Definition File
-		cnf_log += "\n\t\t" + "(Definition File) = %s" % sub_DB.Cenv["File"]
+		##	 Definition File
+		#cnf_log += "\n\t\t" + "(Definition File) = %s" % sub_DB.Cenv["File"]
 
-		#	 Configuration File
-		cnf_log += "\n\t\t" + "(Configuration File) = %s" % sub_DB.Uenv["File"]
+		##	 Configuration File
+		#cnf_log += "\n\t\t" + "(Configuration File) = %s" % sub_DB.Uenv["File"]
 
-		#	 Eye Offset
-		cnf_log += "\n\t\t" + "(Eye Offset)"
-		if not sub_DB.Option_Form._TextBox_EyeOffset.Text == "":
-			cnf_log += " = %s ns" % sub_DB.Option_Form._TextBox_EyeOffset.Text
+		##	 Eye Offset
+		#cnf_log += "\n\t\t" + "(Eye Offset)"
+		#if not sub_DB.Option_Form._TextBox_EyeOffset.Text == "":
+		#	cnf_log += " = %s ns" % sub_DB.Option_Form._TextBox_EyeOffset.Text
 
-		#	 Vref Method
-		cnf_log += "\n\t\t" + "(Vref Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Vref.SelectedIndex, sub_DB.Option_Form._ComboBox_Vref.Text)
+		##	 Vref Method
+		#cnf_log += "\n\t\t" + "(Vref Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Vref.SelectedIndex, sub_DB.Option_Form._ComboBox_Vref.Text)
 
-		#	 Analyze Method
-		cnf_log += "\n\t\t" + "(Analyze Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex, sub_DB.Option_Form._ComboBox_Analyze.Text)
+		##	 Analyze Method
+		#cnf_log += "\n\t\t" + "(Analyze Method) = %d, %s" % (sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex, sub_DB.Option_Form._ComboBox_Analyze.Text)
 	
-		#	 Export Excel Report
-		cnf_log += "\n\t\t" + "(Export Excel Report) = %s" % sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked
+		##	 Export Excel Report
+		#cnf_log += "\n\t\t" + "(Export Excel Report) = %s" % sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked
 	
-		#	 Image Width
-		if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
-			if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
-				cnf_log += "\n\t\t" + "(Image Width)"
-				cnf_log += " = %s pixel" % sub_DB.Option_Form._TextBox_ImageWidth.Text
+		##	 Image Width
+		#if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+		#	if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+		#		cnf_log += "\n\t\t" + "(Image Width)"
+		#		cnf_log += " = %s pixel" % sub_DB.Option_Form._TextBox_ImageWidth.Text
 
-		#	 Report Format
-		if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
-			cnf_log += "\n\t\t" + "(Report Format) = %d, %s" % (sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex, sub_DB.Option_Form._ComboBox_ReportFormat.Text)
+		##	 Report Format
+		#if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+		#	cnf_log += "\n\t\t" + "(Report Format) = %d, %s" % (sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex, sub_DB.Option_Form._ComboBox_ReportFormat.Text)
 
-		#	 Plot Eye with Mask
-		cnf_log += "\n\t\t" + "(Plot Eye with Mask) = %s" % sub_DB.Option_Form._CheckBox_PlotEye.Checked
+		##	 Plot Eye with Mask
+		#cnf_log += "\n\t\t" + "(Plot Eye with Mask) = %s" % sub_DB.Option_Form._CheckBox_PlotEye.Checked
 
-		#	 Check DDR Compliance
-		cnf_log += "\n\t\t" + "(Check DDR Compliance) = %s" % sub_DB.Option_Form._CheckBox_Compiance.Checked
+		##	 Check DDR Compliance
+		#cnf_log += "\n\t\t" + "(Check DDR Compliance) = %s" % sub_DB.Option_Form._CheckBox_Compiance.Checked
 
-		# --------- DDR Compliance ----------------
-		if sub_DB.Option_Form._CheckBox_Compiance.Visible:
-			#TODO : Save Cnf for DDR Compliance
-			cnf_log += "\n\n\t" + "<DDR Compliance>"
+		## --------- DDR Compliance ----------------
+		#if sub_DB.Option_Form._CheckBox_Compiance.Visible:
+		#	#TODO : Save Cnf for DDR Compliance
+		#	cnf_log += "\n\n\t" + "<DDR Compliance>"
 
 	except Exception as e:
 		Log("	<Auto Saved Cnf - Eye Analyzer> = Failed")
@@ -1403,8 +1415,8 @@ def CnfAutoLoad(self):
 	sub_DB.TBD_flag = False	
 	File = sub_DB.user_dir + r'\latest.cnf'		
 	Uenv = Load_env(File)
-	Uenv["File"] = File		
-	sub_DB.Uenv = Uenv
+	#Uenv["File"] = File		
+	#sub_DB.Uenv = Uenv
 	Log("	<Load the Auto Saved Cnf - %s>" % File)
 
 	version_check_flag = False	
@@ -1491,6 +1503,7 @@ def Initial():
 	Log("\n\n")
 	sub_DB.TBD_flag = True
 	sub_ScriptEnv.Release()	
+	sub_DB.Eye_Form._TextBox_VcentDQ.Text = "Auto"	
 	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()
 	
 	sub_DB.Eye_Form._ComboBox_Design.BackColor = System.Drawing.SystemColors.Window
@@ -1571,6 +1584,8 @@ def temp_get_waveform(self):
 		MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
 		
 	return Waveform
+
+
 
 
 

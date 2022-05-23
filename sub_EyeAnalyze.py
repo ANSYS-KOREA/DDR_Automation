@@ -33,28 +33,36 @@ def New_Default(self):
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 1	
 
 		if sub_DB.InputFile_Flag == 1: # *.aedt input
-			# Auto-default
+			# Auto Vref
 			if sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 0:
-				Vref = Cal_Vref_AEDT(self, Location)
+				Vref = float(Cal_Vref_AEDT(self, Location))
+
+			# Manual Vref
+			elif sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 1:
+				sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
+				sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_VcentDQ.Text
+				Get_Waveform(self)
+				Vref = float(sub_DB.Option_Form._TextBox_Vref.Text)
+
 			else:
 				pass
 						
 		elif sub_DB.InputFile_Flag == 2: # *.csv input
-			# Auto-default
+			# Auto Vref
 			if sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 0:
-				Vref = Cal_Vref_WaveForm()
+				Vref = float(Cal_Vref_WaveForm())
+
+			# Manual Vref
+			elif sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 1:
+				sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
+				sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_VcentDQ.Text
+				Vref = float(sub_DB.Option_Form._TextBox_Vref.Text)
+
 			else:
 				pass
 
-		# Manual Vref : Calculation Vref
-		if sub_DB.Option_Form._ComboBox_Vref.Text.lower() == "manual":
-			self._TextBox_VcentDQ.Text = sub_DB.Option_Form._TextBox_Vref.Text
-			sub_DB.Vref = float(sub_DB.Option_Form._TextBox_Vref.Text)
-
-		# Auto Vref : Calculation Vref
-		else:
-			self._TextBox_VcentDQ.Text = str(Vref)
-
+		sub_DB.Vref = Vref
+		self._TextBox_VcentDQ.Text = str(sub_DB.Vref)
 		Log("	<Vref Calculation> = Done")
 
 	except Exception as e:						
@@ -65,15 +73,14 @@ def New_Default(self):
 
 	#########################
 	#   Eye Analyze         #
-	#########################
-	print time.strftime('%H:%M:%S')
+	#########################	
 	try:
 		sub_DB.Cal_Form.Text = "Analyzing Eye Diagram"
 		sub_DB.Cal_Form._Label_Vref.Text = "Analyzing Eye Diagram..."
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 1	
 
 		Eye_Measure_Results = Measure_Eye(self, Location)
-
+		
 		#	Close Progress Form and change mouse cursor from defualt to wait
 		sub_DB.Cal_Form._Label_Vref.Text = "Wrapping up eye measurement results"
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
@@ -104,8 +111,7 @@ def New_Default(self):
 
 		sub_DB.Net_Form.Text = "Eye Analyze Results"
 		Log("	<Eye Analyze> = Done")
-
-		print time.strftime('%H:%M:%S')
+		
 	except Exception as e:						
 		Log("	<Launch Eye Analyze> = Failed")
 		Log(traceback.format_exc())
@@ -358,6 +364,7 @@ def New_Default(self):
 		Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 		#Log("[Save Log] = Done")
 		#LogSave()
+		pass
 
 	except Exception as e:						
 		Log("[Save Log] = Failed")
@@ -366,12 +373,12 @@ def New_Default(self):
 		EXIT()
 
 # Setup/Hold Eye Analyze
-def New_SetupHold(self):
+def New_SetupHold(self):	
 	###############################
 	#   Cal. Max. Progress Number #
 	###############################
 	Location = Cal_Max_Process(self, 5)
-
+	
 	#########################
 	#   Vref Calculation    #
 	#########################
@@ -410,7 +417,7 @@ def New_SetupHold(self):
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to launch Vref Calcultation","Warning")						
 		EXIT()
-
+	
 	#########################
 	#   Get Strobe Waveform #
 	#########################
@@ -434,7 +441,7 @@ def New_SetupHold(self):
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to get strobe waveform","Warning")						
 		EXIT()
-
+	
 	#########################
 	#   Eye Analyze         #
 	#########################
@@ -461,7 +468,7 @@ def New_SetupHold(self):
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to launch Eye Analyze","Warning")						
 		EXIT()
-
+	
 	#########################
 	#   Setup/Hold          #
 	#########################
@@ -480,7 +487,7 @@ def New_SetupHold(self):
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to measure setup/hold margin","Warning")						
 		EXIT()
-
+	
 	#########################
 	#   Show the Results    #
 	#########################	
@@ -543,7 +550,7 @@ def New_SetupHold(self):
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to show analyze results","Warning")						
 		EXIT()
-
+	
 	#########################
 	#   Eye Plot            #
 	#########################
@@ -714,7 +721,7 @@ def New_SetupHold(self):
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to launch Eye Plot","Warning")						
 		EXIT()
-
+	
 	#########################
 	#  Create Excel Report  #
 	#########################
@@ -774,7 +781,7 @@ def New_SetupHold(self):
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to launch create excel report","Warning")
 		EXIT()
-					
+	
 	#########################
 	#  Save Log File        #
 	#########################
@@ -782,14 +789,14 @@ def New_SetupHold(self):
 		Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 		#Log("[Save Log] = Done")
 		#LogSave()
+		pass
 
 	except Exception as e:						
 		Log("[Save Log] = Failed")
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to save log file","Warning")
 		EXIT()
-
-
+	
 ###############
 # for Old Eye #
 ###############
@@ -1366,9 +1373,10 @@ def Setup_Hold(self):
 	except Exception as e:
 		Log("            = Load Data setup & hold spec. : Failed")
 		Log(traceback.format_exc())
+		print traceback.format_exc()
 		MessageBox.Show("Compliance test - Loading data setup & hold spec. failed","Warning")
 		EXIT()
-
+	
 	#########################
 	# 2. Measure Setup/Hold #
 	#########################	
@@ -1382,7 +1390,7 @@ def Setup_Hold(self):
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 2
 		sub_DB.Cal_Form.Refresh()
 		Log("            = Check %s : Start" % checking_item)
-
+		
 		#############
 		# Set Spec. #
 		#############
@@ -1391,21 +1399,21 @@ def Setup_Hold(self):
 		Vref = float(self._TextBox_VcentDQ.Text)
 
 		Spec = sub_DB.Spec["Setup + Hold"][self._ComboBox_DataRate.Text]
-
+		
 		###########################################
 		# Set Target Net & Reference Net Wavefrom #
 		###########################################
 		Target_net = sub_DB.Waveform
 		Ref_net = sub_DB.Strobe_Waveform
-		for net in Ref_net.keys():
-			Group_idx, Match = Net_Identify(net.strip(), sub_DB.Uenv) # Match = "Group prefix / Net Number prefix"				
+		for net in Ref_net.keys():			
+			Group_idx, Match = Net_Identify(net.strip(), sub_DB.Cenv) # Match = "Group prefix / Net Number prefix"				
 			if Group_idx == 2: # DQS_P
 				pos = sub_DB.Strobe_Waveform[net]
 				Ref_key = Match
 			elif Group_idx == 3: # DQS_N
-				neg = sub_DB.Strobe_Waveform[net]
+				neg = sub_DB.Strobe_Waveform[net]		
 		Ref_net[Ref_key] = [i-j for i, j in zip(pos,neg)]
-
+		
 		######################################################
 		# Find Zero Crossing Points and Slew Rate for Strobe #
 		######################################################
@@ -1541,10 +1549,10 @@ def Setup_Hold(self):
 	except Exception as e:
 		Log("            = Check %s : Failed" % checking_item)
 		Log(traceback.format_exc())
-		print sub_DB.Log
+		print traceback.format_exc()
 		MessageBox.Show("(Measure Setup/Hold) - Check %s failed" % checking_item,"Warning")
 		EXIT()	
-
+	
 # Eye Measure for Default Eye Analyze - New Eye
 def Measure_Eye(self, Location):
 	try:		
@@ -1576,6 +1584,7 @@ def Measure_Eye(self, Location):
 			sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
 			Log("		(Waveform)")
 			Waveform = {}
+
 			with open(sub_DB.Waveform_File) as fp:
 				# Get Netlist and Create Waveform Dictionary keys
 				temp_data = fp.readline().replace("\"","").replace(" ","").strip().split(",")
@@ -1621,7 +1630,8 @@ def Measure_Eye(self, Location):
 			#else:
 			#	MessageBox.Show("The time unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
 			#sub_DB.Time = Time
-
+			
+			
 			# Check voltage unit
 			if sub_DB.Unit["Voltage"].lower() == "mv":
 				pass
@@ -1633,7 +1643,7 @@ def Measure_Eye(self, Location):
 				MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
 		
 			sub_DB.Waveform = Waveform
-
+			
 		elif sub_DB.InputFile_Flag == 2: # *.csv input file
 			Log("		(Waveform)")
 			Log("			= Imported from CSV")
@@ -1647,7 +1657,7 @@ def Measure_Eye(self, Location):
 		T_Vlow=[]
 		T_Vref=[]
 		if not sub_DB.CSV_flag:
-			for key in Waveform:				
+			for key in Waveform:
 				T_Vhigh=[]
 				T_Vlow=[]
 				T_Vref=[]
@@ -1708,8 +1718,8 @@ def Measure_Eye(self, Location):
 
 				# Calculate eye offset
 				input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)				
-				eye_offset = 0
-				while(1):
+				eye_offset = 0				
+				while(1):					
 					vol_pre = Waveform[key][eye_offset]
 					vol_post = Waveform[key][eye_offset+1]
 					if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for rising transition						
@@ -1760,7 +1770,7 @@ def Measure_Eye(self, Location):
 				Eye_Measure_Results[key].append(T_Vhigh)
 				Eye_Measure_Results[key].append(T_Vref)
 				Eye_Measure_Results[key].append(T_Vlow)
-	
+
 		# Get Group List
 		Group = []
 		for row in sub_DB.Net_Form._DataGridView.Rows:
