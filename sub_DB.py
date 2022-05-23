@@ -19,6 +19,7 @@ Log_File = ""
 
 Eye_Analyze_Flag = True
 
+#Debug_Mode = True
 Debug_Mode = False
 Cenv = {}
 Uenv = {}

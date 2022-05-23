@@ -210,8 +210,8 @@
 		(Rx Timing Window Total)		= 0.23!
 
 	<DDR4-3733>
-		(Rx Mask Voltage)		= 105!
-		(Rx Timing Window Total)		= 0.24!
+		(Rx Mask Voltage)		= 105
+		(Rx Timing Window Total)		= 0.24
 		
 	#####################################################################################################	
 	#	LPDDR4 - 1600, 1866, 2133, 2400, 3200, 3733, 4267 [Mbps]				
@@ -259,6 +259,7 @@
 	<CLK_P>	= CLK?, CLK_?, CK?, CK_?	
 	<DM>	= DM?, DM_?
 	<Ignore>
+
 
 
 

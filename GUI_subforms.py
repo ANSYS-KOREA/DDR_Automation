@@ -890,6 +890,9 @@ class NetForm(Form):
 				self._Label_ImageWidth_Unit.Visible = False
 				self._TextBox_ImageWidth.Visible = False
 
+			if sub_DB.Debug_Mode:
+				self.Button_CloseClick(self, sender)
+
 		except Exception as e:		
 			Log("[Net Form Load] = Failed")
 			Log(traceback.format_exc())
@@ -1388,11 +1391,25 @@ class NetForm(Form):
 	def Button_CloseClick(self, sender, e):
 		if sub_DB.Result_Flag:
 			try:
-				Log("	<Eye Analyze Results>")
-				Log("		= Net Name, Eye Width[ps], Timing Margin[ps], Analyze Group, Signal Group, Matched String")
-				for row in self._DataGridView.Rows:
-					if row.Cells[0].Value:
-						Log("		= %s, %s, %s, %s, %s, %s" % (row.Cells[1].Value, row.Cells[5].Value, row.Cells[6].Value, row.Cells[4].Value, row.Cells[2].Value, row.Cells[3].Value))
+				############################
+				# Analyze Method : Default #
+				############################
+				if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:
+					Log("	<Eye Analyze Results - %s>" % sub_DB.Option_Form._ComboBox_Analyze.Text)
+					Log("		= Net Name, Eye Width[ps], Timing Margin[ps], Analyze Group, Signal Group, Matched String")
+					for row in self._DataGridView.Rows:
+						if row.Cells[0].Value:
+							Log("		= %s, %s, %s, %s, %s, %s" % (row.Cells[1].Value, row.Cells[5].Value, row.Cells[6].Value, row.Cells[4].Value, row.Cells[2].Value, row.Cells[3].Value))
+
+				#################################
+				# Analyze Method : + Setup/Hold #
+				#################################
+				elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 1:
+					Log("	<Eye Analyze Results - %s>" % sub_DB.Option_Form._ComboBox_Analyze.Text)
+					Log("		= Net Name, Eye Width[ps], Setup Margin[ps], Hold Margin[ps], Timing Margin[ps], Analyze Group, Signal Group, Matched String")
+					for row in self._DataGridView.Rows:
+						if row.Cells[0].Value:
+							Log("		= %s, %s, %s, %s, %s, %s, %s, %s" % (row.Cells[1].Value, row.Cells[5].Value, row.Cells[7].Value, row.Cells[8].Value, row.Cells[6].Value, row.Cells[4].Value, row.Cells[2].Value, row.Cells[3].Value))
 
 				sub_DB.Net_Form = self
 				self.Close()
@@ -1400,6 +1417,7 @@ class NetForm(Form):
 			except Exception as e:
 				Log("	<Close Eye Analyze Results Form> = Failed")
 				Log(traceback.format_exc())
+				print traceback.format_exc()
 				MessageBox.Show("Fail to Close Eye Analyze Results Form","Warning")			
 				EXIT()
 
@@ -1904,7 +1922,8 @@ class OptionForm(Form):
 		# 
 		self._ComboBox_Analyze.FormattingEnabled = True
 		self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
-			["Default"]))
+			["Default",
+			"+ Setup/Hold"]))
 		self._ComboBox_Analyze.Location = System.Drawing.Point(418, 76)
 		self._ComboBox_Analyze.Name = "ComboBox_Analyze"
 		self._ComboBox_Analyze.Size = System.Drawing.Size(104, 23)
@@ -2067,52 +2086,40 @@ class OptionForm(Form):
 		try:
 			self._TextBox_Resource.Text = path + "\\Resources"
 			self._TextBox_Def.Text = sub_DB.Cenv["File"]
-			self._TextBox_Conf.Text = sub_DB.Uenv["File"]		
+			self._TextBox_Conf.Text = sub_DB.Uenv["File"]
+
+			# EM
 			if process_idx == 0:
 				self._GroupBox_EM.Visible = True
 				self._GroupBox_Tran.Visible = False
 				self._GroupBox_Eye.Visible = False
-				#self._GroupBox_Comp.Visible = False
+			
+			# TRAN
 			elif process_idx == 1:
 				self._GroupBox_EM.Visible = False
 				self._GroupBox_Tran.Visible = True
 				self._GroupBox_Eye.Visible = False
-				#self._GroupBox_Comp.Visible = False
+				
+			# EYE
 			elif process_idx == 2:
 				self._GroupBox_EM.Visible = False
 				self._GroupBox_Tran.Visible = False
-				self._GroupBox_Eye.Visible = True
-				#self._GroupBox_Comp.Visible = False
+				self._GroupBox_Eye.Visible = True				
 				self._TreeView.SelectedNode = self._TreeView.Nodes[2]
-			#elif process_idx == 3:
-			#	self._GroupBox_EM.Visible = False
-			#	self._GroupBox_Tran.Visible = False
-			#	self._GroupBox_Eye.Visible = False
-			#	self._GroupBox_Comp.Visible = True
 
+			#####################################
+			# Add [+ Setup/Hold] Analyze Method #
+			#####################################
 			temp = []
 			for row in sub_DB.Net_Form._DataGridView.Rows:
 				temp.append(row.Cells[2].Value)
 
 			if "DQS_P" in temp and "DQS_N" in temp:
-				flag = True
-				for item in self._ComboBox_Analyze.Items:
-					if item == "+ Setup/Hold":
-						flag = False
-						break
-				if flag:
-					self._ComboBox_Analyze.Items.Add("+ Setup/Hold")
-					self._ComboBox_Analyze.SelectedIndex = 1
+				self._ComboBox_Analyze.SelectedIndex = 1
 
-				flag = True
-				for item in self._ComboBox_ReportFormat.Items:
-					if item == "+ Setup/Hold":
-						flag = False
-						break
-				if flag:
-					self._ComboBox_ReportFormat.Items.Add("+ Setup/Hold")
-					self._ComboBox_ReportFormat.SelectedIndex = 1
-
+			######################
+			# Load Configuration #
+			######################
 			for key in sub_DB.Uenv:
 				if "[Eye]" in key:
 					if "<Analyze Option>" in key:
@@ -2128,8 +2135,15 @@ class OptionForm(Form):
 						elif "(Report Format)" in key:
 							sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex = int(sub_DB.Uenv[key][0])
 							
-			#if self._TextBox_OutputExcelFile.Text == "":
-			#	self._TextBox_OutputExcelFile.Text = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".xlsx"
+			###################
+			# Set Manual Vref #
+			###################
+			if not sub_DB.Eye_Form._TextBox_VcentDQ.Text == "Auto":
+				sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
+				sub_DB.Option_Form._TextBox_Vref.Text = sub_DB.Eye_Form._TextBox_VcentDQ.Text
+
+			if sub_DB.Debug_Mode:
+				self.Button_OKClick(self, sender)
 
 		except Exception as e:			
 			Log("[Option Form Load] = Failed")
