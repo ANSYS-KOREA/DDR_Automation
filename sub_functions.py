@@ -327,11 +327,18 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 				  "mV", ["NAME:MaskPoints",T_left, V_high,T_left, V_low,T_right, V_low,T_right, V_high]]]]])
 		Log("			= Create Eye Mask")
 
+		#noteh = (vmax - Vref) / (vmax - vmin) * 9500
+		#oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
+		#				"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
+		#				noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0]) + " / " + str(round(sub_DB.Jitter_RMS[PlotList[0]],1))]])
+		#Log("			= Add Note, Width:%s[ps] Jitter(RMS):%s[ps]" % (str(Eye_Measure_Results[PlotList[0]][0]), str(round(sub_DB.Jitter_RMS[PlotList[0]],1))))
+
 		noteh = (vmax - Vref) / (vmax - vmin) * 9500
 		oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
 						"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
-						noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0]) + " / " + str(round(sub_DB.Jitter_RMS[PlotList[0]],1))]])
-		Log("			= Add Note, Width:%s[ps] Jitter(RMS):%s[ps]" % (str(Eye_Measure_Results[PlotList[0]][0]), str(round(sub_DB.Jitter_RMS[PlotList[0]],1))))
+						noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0])]])
+		Log("			= Add Note, Width:%s[ps]" % str(Eye_Measure_Results[PlotList[0]][0]))
+
 
 		oModule.ChangeProperty(["NAME:AllTabs",
 					  ["NAME:Note", ["NAME:PropServers", Report_Name + ":Note1"], ["NAME:ChangedProps"

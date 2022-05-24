@@ -82,7 +82,8 @@ def Create_Excel_Report():
 				xlsheet_table.Cells[row_idx,1] = net_name
 				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
 				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width
-				xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+				#xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+				xlsheet_table.Cells[row_idx,4] = "N/A"
 				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
 				xlsheet_table.Cells[row_idx,6] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
 				xlsheet_table.Cells[row_idx,7] = round(sub_DB.Vref, 1) # Vref
@@ -220,7 +221,8 @@ def Create_Excel_Report_wo_fig():
 				xlsheet_table.Cells[row_idx,1] = net_name
 				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
 				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width
-				xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+				#xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+				xlsheet_table.Cells[row_idx,4] = "N/A"
 				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
 				xlsheet_table.Cells[row_idx,6] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
 				xlsheet_table.Cells[row_idx,7] = round(sub_DB.Vref, 1) # Vref
@@ -667,7 +669,8 @@ def Create_Setup_Hold_Excel_Report():
 				xlsheet_table.Cells[row_idx,1] = net_name
 				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
 				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width
-				xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+				#xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+				xlsheet_table.Cells[row_idx,4] = "N/A"
 				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
 				xlsheet_table.Cells[row_idx,6] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
 				xlsheet_table.Cells[row_idx,7] = sub_DB.Setup[net_name] # Setup
@@ -809,7 +812,8 @@ def Create_Setup_Hold_Excel_Report_wo_fig():
 				xlsheet_table.Cells[row_idx,1] = net_name
 				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
 				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width
-				xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+				#xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
+				xlsheet_table.Cells[row_idx,4] = "N/A"
 				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
 				xlsheet_table.Cells[row_idx,6] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
 				xlsheet_table.Cells[row_idx,7] = sub_DB.Setup[net_name] # Setup
