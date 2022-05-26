@@ -31,7 +31,7 @@ def Compliacne_Test(self):
     if sub_DB.InputFile_Flag == 1:
         # Export Waveform
         try:								
-		    #TODO : Export Waveform - need pos/neg differentiator and classification
+		    #TODO : Compliance Export Waveform - need pos/neg differentiator and classification
             sub_DB.Cal_Form.Text = "Compliance Testing"
             sub_DB.Cal_Form._Label_Vref.Text = "Export Waveform"
             sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
@@ -46,7 +46,7 @@ def Compliacne_Test(self):
 
         # Get Waveform
         try:
-            #TODO : Get Waveform
+            #TODO : Compliance Get Waveform
             sub_DB.Cal_Form.Text = "Compliance Testing"
             sub_DB.Cal_Form._Label_Vref.Text = "Get Waveform"
             sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
@@ -246,7 +246,7 @@ def Load_Spec(self):
 	#  DDR4  #
 	##########
     if self._ComboBox_DDRGen.Text == "DDR4":
-        # TODO : Load Spec for DDR4
+        # TODO : Compliance Load Spec for DDR4
         Log("            = Target DDR Type : DDR4")
         
         # Set the specification file according to the DDR type in Resources folder
@@ -269,7 +269,7 @@ def Load_Spec(self):
 	#  DDR5  #
 	##########
     if self._ComboBox_DDRGen.Text == "DDR5":
-        # TODO : Load Spec for DDR5
+        # TODO : Compliance Load Spec for DDR5
         pass
 
 def Load_Spec_DDR3_DQ_SetupHold(File, sheet_name):
@@ -521,7 +521,7 @@ def Comp_Test(Waveform, self, Form):
                 sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
                 sub_DB.Cal_Form.Refresh()
                 Log("            = Check %s : Start" % checking_item)
-                # TODO : Checking strobe to data skew
+                # TODO : Compliance Checking strobe to data skew
                 Log("            = Check %s : Done" % checking_item)
 
             except Exception as e:
@@ -539,7 +539,7 @@ def Comp_Test(Waveform, self, Form):
                 sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
                 sub_DB.Cal_Form.Refresh()
                 Log("            = Check %s : Start" % checking_item)
-                # TODO : Checking Data output hold time
+                # TODO : Compliance Checking Data output hold time
                 Log("            = Check %s : Done" % checking_item)
 
             except Exception as e:
@@ -557,7 +557,7 @@ def Comp_Test(Waveform, self, Form):
                 sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
                 sub_DB.Cal_Form.Refresh()
                 Log("            = Check %s : Start" % checking_item)
-                # TODO : Input Pulse Width
+                # TODO : Compliance Input Pulse Width
                 Log("            = Check %s : Done" % checking_item)
 
             except Exception as e:
