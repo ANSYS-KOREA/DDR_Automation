@@ -986,7 +986,8 @@ class Eye_Form(Form):
 		self._TextBox_Offset.Location = System.Drawing.Point(498, 106)
 		self._TextBox_Offset.Name = "TextBox_InputFile"
 		self._TextBox_Offset.Size = System.Drawing.Size(60, 23)
-		self._TextBox_Offset.TabIndex = 13
+		self._TextBox_Offset.Text = "5"
+		self._TextBox_Offset.TabIndex = 50
 		# 
 		# TextBox_AC_DQ
 		#
@@ -1799,6 +1800,8 @@ class Eye_Form(Form):
 					self._ComboBox_Design.Text = "N/A"
 					self._ComboBox_Design.Enabled = False
 					self._CheckedListBox_ReportName.Items.Clear()
+					self._CheckedListBox_ReportName.Items.Add("N/A")
+					self._CheckedListBox_ReportName.SetItemChecked(0, True)
 					self._CheckedListBox_ReportName.Enabled = False
 					self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Control
 					self._ComboBox_SolutionName.Text = "N/A"
@@ -1912,6 +1915,16 @@ class Eye_Form(Form):
 						MessageBox.Show("Input csv file parsing has been failed.\n\nPlease check the input file,\n\t%s." % File.split("\\")[-1],"Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
 						self._TextBox_InputFile.Text = ""
 						EXIT()
+
+					flag, show_msg_flag, msg = Check_Input(self)
+					if flag:
+						sub_DB.Net_Form.NetFormLoad(self, sender)
+						for row in sub_DB.Net_Form._DataGridView.Rows:
+							if row.Cells[0].Value:
+								self._Button_Analyze.Enabled = True
+								self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+								self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
+								break
 
 				# for *.tr0 File
 				elif extension == "tr0":

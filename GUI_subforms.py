@@ -1442,9 +1442,6 @@ class NetForm(Form):
 				MessageBox.Show("Fail to close Net Classification Form","Warning")			
 				EXIT()
 
-	#def Net_FormFormClosing(self, sender, e):
-	#	self.Button_CloseClick(self, sender)
-
 class CalForm(Form):
 	def __init__(self, Location):
 

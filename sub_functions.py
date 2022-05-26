@@ -569,7 +569,7 @@ def Check_Input(self):
 		msg += "   * Deseign\n"
 		flag = False
 		show_msg_flag = True
-		
+	
 	if len(self._CheckedListBox_ReportName.CheckedItems) == 0:
 		msg += "   * Report Name - No reports checked\n"
 		flag = False
@@ -589,6 +589,32 @@ def Check_Input(self):
 		msg += "   * Data Rate\n"
 		flag = False
 		show_msg_flag = True
+
+	if self._TextBox_Offset.Text == "":
+		msg += "   * Eye Offset\n"
+		flag = False
+		show_msg_flag = True
+
+	else:
+		Offset_list = list(self._TextBox_Offset.Text)
+		num_flag = True
+		for item in Offset_list:
+			# "."
+			if not ord(item) == 46:
+				if not 47 < ord(item) <58:
+					num_flag = False
+					break
+
+		if num_flag:
+			if float(self._TextBox_Offset.Text) > 10:
+				MessageBox.Show("The maximum eye offset is 10[ns].\n Check the entered value for eye offset.\n\n" + "Entered Value : %s[ns]" % self._TextBox_Offset.Text)
+				flag = False
+				show_msg_flag = False
+			
+		else:
+			MessageBox.Show("Only numbers can be entered for eye offset.\n\n" + "You entered : %s" % self._TextBox_Offset.Text)
+			flag = False
+			show_msg_flag = False
 
 	# New Eye
 	if sub_DB.Eyeflag:
