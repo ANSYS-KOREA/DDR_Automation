@@ -702,6 +702,7 @@ class NetForm(Form):
 		self.Load += self.NetFormLoad
 		self.ResizeEnd += self.NetFormResizeEnd
 		self.MouseDoubleClick += self.NetFormMouseDoubleClick
+		#self.FormClosing += self.Net_FormFormClosing
 		self.ResumeLayout(False)
 		self.PerformLayout()
 
@@ -1440,6 +1441,9 @@ class NetForm(Form):
 				Log(traceback.format_exc())
 				MessageBox.Show("Fail to close Net Classification Form","Warning")			
 				EXIT()
+
+	#def Net_FormFormClosing(self, sender, e):
+	#	self.Button_CloseClick(self, sender)
 
 class CalForm(Form):
 	def __init__(self, Location):

@@ -1976,12 +1976,13 @@ class Eye_Form(Form):
 			sub_DB.AEDT["Module"] = oModule
 
 			flag, show_msg_flag, msg = Check_Input(self)
-			if flag:				
+			if flag:
 				sub_DB.Net_Form.NetFormLoad(self, sender)
 				for row in sub_DB.Net_Form._DataGridView.Rows:
 					if row.Cells[0].Value:
 						self._Button_Analyze.Enabled = True
 						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 						break
 
 				
@@ -2370,6 +2371,7 @@ class Eye_Form(Form):
 				sub_DB.Net_Form._ComboBox_Report.Visible = False
 				sub_DB.Net_Form._Button_Export.Visible = False				
 				sub_DB.Net_Form.ShowDialog()
+				#sub_DB.Net_Form.Show()
 
 				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 				self._Button_Analyze.Enabled = True
@@ -2400,68 +2402,61 @@ class Eye_Form(Form):
 			else:				
 				sub_DB.Option_Form._CheckBox_Compiance.Visible = False
 				sub_DB.Option_Form._Button_Compliance.Visible = False
+							
+			#########################
+			#      Eye Analyze      #
+			#########################
 
-			result = sub_DB.Option_Form.ShowDialog()
+			# for New Eye
+			if sub_DB.Eyeflag:
+				# Default
+				if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:
+					sub_EyeAnalyze.New_Default(self)
 
-			# Press OK Button in Option Form
-			if result == DialogResult.OK:
-				#########################
-				#      Eye Analyze      #
-				#########################
+				# +Setup/Hold
+				elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 1:
+					sub_EyeAnalyze.New_SetupHold(self)
 
-				# for New Eye
-				if sub_DB.Eyeflag:
-					# Default
-					if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:
-						sub_EyeAnalyze.New_Default(self)
-
-					# +Setup/Hold
-					elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 1:
-						sub_EyeAnalyze.New_SetupHold(self)
-
-				# for Old Eye
-				else:
-					sub_EyeAnalyze.Old_Default(self)					
-					pass
-					
-				#############################
-				#      Compliance Test      #
-				#############################
-				if sub_DB.Option_Form._CheckBox_Compiance.Checked:						
-					Log("	<Compliance Test> = Start")
-					sub_Compliance.Compliacne_Test(self)
-
-				else:
-					Log("	<Compliance Test> = Unchecked")
-
-				#####################
-				#      Closing      #
-				#####################
-				sub_DB.Cal_Form.Close()
-				self.Cursor = Cursors.Default
-				sub_DB.Cal_Form.Cursor = Cursors.Default
-
-				#os.startfile(sub_DB.result_dir)
-				sub_DB.Result_Flag = True
-				sub_DB.Net_Form._Label_GroupName.Visible = False
-				sub_DB.Net_Form._ComboBox_AnalyzeGroup.Visible = False
-				sub_DB.Net_Form._Button_Update.Visible = False
-				sub_DB.Net_Form._Button_Auto.Visible = False
-				sub_DB.Net_Form._Button_EditRule.Visible = False
-				sub_DB.Net_Form._Button_Identify.Visible = False
-
-				sub_DB.Net_Form._CheckBox_PlotEye.Visible = True
-				sub_DB.Net_Form._Label_ReportFormat.Visible = True
-				sub_DB.Net_Form._ComboBox_Report.Visible = True
-				sub_DB.Net_Form._Button_Export.Visible = True				
-				sub_DB.Net_Form.ShowDialog()
-				sub_DB.Result_Flag = False
-				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
-				self._Button_ViewResult.Enabled = True
-
-			# Press Cancel Button in Option Form
+			# for Old Eye
 			else:
+				sub_EyeAnalyze.Old_Default(self)					
 				pass
+					
+			#############################
+			#      Compliance Test      #
+			#############################
+			if sub_DB.Option_Form._CheckBox_Compiance.Checked:						
+				Log("	<Compliance Test> = Start")
+				sub_Compliance.Compliacne_Test(self)
+
+			else:
+				Log("	<Compliance Test> = Unchecked")
+
+			#####################
+			#      Closing      #
+			#####################
+			sub_DB.Cal_Form.Close()
+			self.Cursor = Cursors.Default
+			sub_DB.Cal_Form.Cursor = Cursors.Default
+
+			#os.startfile(sub_DB.result_dir)
+			sub_DB.Result_Flag = True
+			sub_DB.Net_Form._Label_GroupName.Visible = False
+			sub_DB.Net_Form._ComboBox_AnalyzeGroup.Visible = False
+			sub_DB.Net_Form._Button_Update.Visible = False
+			sub_DB.Net_Form._Button_Auto.Visible = False
+			sub_DB.Net_Form._Button_EditRule.Visible = False
+			sub_DB.Net_Form._Button_Identify.Visible = False
+
+			sub_DB.Net_Form._CheckBox_PlotEye.Visible = True
+			sub_DB.Net_Form._Label_ReportFormat.Visible = True
+			sub_DB.Net_Form._ComboBox_Report.Visible = True
+			sub_DB.Net_Form._Button_Export.Visible = True				
+			sub_DB.Net_Form.ShowDialog()
+			sub_DB.Result_Flag = False
+			self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
+			self._Button_ViewResult.Enabled = True
+
 
 		except Exception as e:			
 			Log("[Eye Analyze Start] = Fail")
