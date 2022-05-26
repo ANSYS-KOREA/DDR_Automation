@@ -431,7 +431,7 @@ def New_SetupHold(self):
 			Get_Strobe(self)
 						
 		elif sub_DB.InputFile_Flag == 2: # *.csv input
-			#TODO : Setup/Hold for CSV input 
+			#TODO : Get Strobe Waveform for CSV input 
 			pass
 
 		Log("	<Get Strobe Waveform> = Done")
@@ -857,7 +857,7 @@ def Old_Default(self):
 		sub_DB.Net_Form._DataGridView.Columns[6].DisplayIndex = 3
 		sub_DB.Net_Form._DataGridView.Columns[4].DisplayIndex = 4
 
-		#TODO : Show eye analyze results
+		#TODO : Show eye analyze results for old eye
 		#for row in sub_DB.Net_Form._DataGridView.Rows:
 		#	if row.Cells[0].Value:								
 		#		row.Cells[5].Value = str(Eye_Measure_Results[row.Cells[1].Value][0])
@@ -885,11 +885,10 @@ def Old_Default(self):
 			Log("	<Eye Plot> = Start")
 			# *.aedt input
 			if sub_DB.InputFile_Flag == 1:
-				#TODO : AEDT Eye Plot
+				#TODO : AEDT Eye Plot for old eye
 				sub_DB.Excel_Img_File = []
 
-				# Find min./max. voltage value for Y-axis setup
-				#TODO : AEDT Eye Plot - Find min./max. voltage value for Y-axis setup
+				# Find min./max. voltage value for Y-axis setup				
 				#vol_max = []
 				#vol_min = []
 				#for key in sub_DB.Waveform:
@@ -903,16 +902,14 @@ def Old_Default(self):
 				#Log("		(Y-axis Max.) = %s[mV]" % vmax)
 				#Log("		(Y-axis Min.) = %s[mV]" % vmin)
 
-				# Get Group List
-				#TODO : AEDT Eye Plot - Get Group List
+				# Get Group List				
 				#Group = []
 				#for row in sub_DB.Net_Form._DataGridView.Rows:
 				#	if row.Cells[0].Value:
 				#		if not row.Cells[4].Value in Group:
 				#			Group.append(row.Cells[4].Value)
 
-				# Get Plot List
-				#TODO : AEDT Eye Plot - Get Plot List
+				# Get Plot List				
 				#Plot_list = {}
 				#for key in Group:
 				#	Plot_list[key] = []
@@ -921,8 +918,7 @@ def Old_Default(self):
 				#			if key == row.Cells[4].Value:
 				#				Plot_list[key].append(row.Cells[1].Value)
 
-				# Plot
-				#TODO : AEDT Eye Plot - Plot Eye Diagram
+				# Plot				
 				#key_list = Plot_list.keys()
 				#key_list.sort()
 				#Log("		(Report Name)")
@@ -946,17 +942,15 @@ def Old_Default(self):
 
 			# *.csv input
 			elif sub_DB.InputFile_Flag == 2: # *.csv input
-				#TODO : CSV Eye Plot
+				#TODO : CSV Eye Plot for old eye
 				sub_DB.Excel_Img_File = []
 
-				# Generate AEDT project
-				#TODO : CSV Eye Plot - Generate AEDT project
+				# Generate AEDT project				
 				#AEDT_File = sub_DB.result_dir + "\\" + sub_DB.Input_File.split(".")[0] + ".aedt"
 				#MessageBox.Show("The eye diagram will plot in Ansys Electronics Desktop.\n\n"+
 				#AEDT_File ,"Information",MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-				# Find min./max. voltage value for Y-axis setup
-				#TODO : CSV Eye Plot - Find min./max. voltage value for Y-axis setup
+				# Find min./max. voltage value for Y-axis setup				
 				#vol_max = []
 				#vol_min = []
 				#for key in sub_DB.Waveform:
@@ -976,16 +970,14 @@ def Old_Default(self):
 				#self.TopMost = False
 				#sub_DB.Cal_Form.TopMost = False
 
-				# Get Group List
-				#TODO : CSV Eye Plot - Get Group List
+				# Get Group List				
 				#Group = []
 				#for row in sub_DB.Net_Form._DataGridView.Rows:
 				#	if row.Cells[0].Value:
 				#		if not row.Cells[4].Value in Group:
 				#			Group.append(row.Cells[4].Value)
 
-				# Get Plot List
-				#TODO : CSV Eye Plot - Get Plot List
+				# Get Plot List				
 				#Plot_list = {}
 				#for key in Group:
 				#	Plot_list[key] = []
@@ -994,8 +986,7 @@ def Old_Default(self):
 				#			if key == row.Cells[4].Value:
 				#				Plot_list[key].append(row.Cells[1].Value)
 
-				# Plot
-				#TODO : CSV Eye Plot - Plot Eye Diagram
+				# Plot				
 				#key_list = Plot_list.keys()
 				#key_list.sort()
 				#Log("		(Report Name)")
@@ -1023,8 +1014,7 @@ def Old_Default(self):
 				#		Plot_Eye_Import(key, Import_file, Plot_list[key], vmin, vmax, Eye_Measure_Results, sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked)
 				#		os.remove(Import_file)
 
-				# Delete AEDT Project File and *.lock File + Release AEDT for Initialization
-				#TODO : CSV Eye Plot - Initialization
+				# Delete AEDT Project File and *.lock File + Release AEDT for Initialization				
 				#if os.path.isfile(AEDT_File):									
 				#	sub_DB.AEDT["Desktop"].CloseProject(AEDT_File.split("\\")[-1].split(".")[0])
 				#	os.remove(AEDT_File)
@@ -1058,7 +1048,7 @@ def Old_Default(self):
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 1				
 
 		if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
-			#TODO : Create Excel Report
+			#TODO : Create Excel Report for old eye
 			Log("	<Create Excel Report> = Start")
 			#if sub_DB.InputFile_Flag == 1:
 			#	Create_Excel_Report()
@@ -1082,6 +1072,7 @@ def Old_Default(self):
 		Log("[Eye Analyze End] = %s" % time.strftime('%Y.%m.%d, %H:%M:%S'))
 		#Log("[Save Log] = Done")
 		#LogSave()
+		pass
 
 	except Exception as e:						
 		Log("[Save Log] = Failed")

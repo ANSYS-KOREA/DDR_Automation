@@ -247,6 +247,21 @@
 		(Rx Mask Voltage)		= 120!
 		(Rx Timing Window Total)		= 0.25!
 		
+	#####################################################################################################	
+	#	LPDDR5 - 6400, 8533 [Mbps]				
+	#   	Units
+	# 	  -. voltage : [mV]
+	# 	  -. time : UI(Unit Interval)
+	#####################################################################################################	
+	<LPDDR5-6400>
+		(Rx Mask Voltage)		= 120!
+		(Rx Timing Window Total)		= 0.25!
+		
+	<LPDDR5-8533>
+		(Rx Mask Voltage)		= 120!
+		(Rx Timing Window Total)		= 0.25!
+		
+		
 [Net Identification]
 	# The priority of the net group classification specified between "<" and ">" symbols is the same as the order written below.
 	# <Ignore> : this string in net name will be ignored during net identifying process
@@ -259,6 +274,7 @@
 	<CLK_P>	= CLK?, CLK_?, CK?, CK_?	
 	<DM>	= DM?, DM_?
 	<Ignore>
+
 
 
 

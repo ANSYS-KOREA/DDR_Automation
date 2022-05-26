@@ -555,46 +555,159 @@ def Gen_waveform_file(Input_File, Plot_list, Group_flag):
 
 def Check_Input(self):
 	flag = True
+	show_msg_flag = False
 	msg = ""
+	###############
+	# Check Blank #
+	###############
 	if self._TextBox_InputFile.Text == "":
-		msg += "   *Input File\n"
+		msg += "   * Input File\n"
 		flag = False
+		show_msg_flag = True
 
 	if self._ComboBox_Design.Text == "":
-		msg += "   *Deseign\n"
+		msg += "   * Deseign\n"
 		flag = False
+		show_msg_flag = True
 		
 	if len(self._CheckedListBox_ReportName.CheckedItems) == 0:
-		msg += "   *Report Name - No reports checked\n"
+		msg += "   * Report Name - No reports checked\n"
 		flag = False
+		show_msg_flag = True
 
 	if self._ComboBox_SolutionName.Text == "":
-		msg += "   *Setup Name\n"
+		msg += "   * Setup Name\n"
 		flag = False
+		show_msg_flag = True
 
 	if self._ComboBox_DDRGen.Text == "":
-		msg += "   *DDR Generation\n"
+		msg += "   * DDR Generation\n"
 		flag = False
+		show_msg_flag = True
 
 	if self._ComboBox_DataRate.Text == "":
-		msg += "   *Data Rate\n"
-		flag = False	
+		msg += "   * Data Rate\n"
+		flag = False
+		show_msg_flag = True
 
-	return flag, msg
-
-def Check_spec():	
-	try:
-		Log("	<Check DDR Specification>")
-		# for New Eye
-		if sub_DB.Eyeflag:
-			pass
+	# New Eye
+	if sub_DB.Eyeflag:
+		# for VdIVW
+		###############
+		# Check Blank #
+		###############
+		if self._TextBox_VdIVW.Text == "":
+			msg += "   * VdIW - Voltage Spec\n"
+			flag = False
+			show_msg_flag = True
+		
 		else:
-			pass
-	except Exception as e:		
-		Log("	<Check DDR Specification> = Failed")
-		Log(traceback.format_exc())
-		MessageBox.Show("Fail to plot eye","Warning")						
-		EXIT()
+			################
+			# Check Number #
+			################
+			VdIVW_list = list(self._TextBox_VdIVW.Text)
+			num_flag = True
+			for item in VdIVW_list:
+				# "."
+				if not ord(item) == 46:
+					if not 47 < ord(item) <58:
+						num_flag = False
+						break
+
+			##############
+			# Check unit #
+			##############
+			if num_flag:
+				if float(self._TextBox_VdIVW.Text) < 3:
+					MessageBox.Show("The unit of VdIVW is [mV]. Check the entered value for VdIVW.\n\n" + "Entered Value : %s" % self._TextBox_VdIVW.Text)					
+					flag = False
+					show_msg_flag = False
+			
+			else:
+				MessageBox.Show("Only numbers can be entered for VdIVW.\n\n" + "You entered : %s" % self._TextBox_VdIVW.Text)
+				flag = False
+				show_msg_flag = False
+
+		# for TdIVW
+		###############
+		# Check Blank #
+		###############
+		if self._TextBox_TdIVW.Text == "":
+			msg += "   * TdIVW - Timing Spec\n"
+			flag = False
+			show_msg_flag = True
+		
+		else:
+			################
+			# Check Number #
+			################
+			TdIVW_list = list(self._TextBox_TdIVW.Text)
+			num_flag = True
+			for item in TdIVW_list:
+				# "."
+				if not ord(item) == 46:
+					if not 47 < ord(item) <58:
+						num_flag = False
+						break
+
+			##############
+			# Check unit #
+			##############
+			if num_flag:
+				if float(self._TextBox_TdIVW.Text) > 1:
+					MessageBox.Show("The unit of TdIVW is [UI]. Check the entered value for TdIVW.\n\n" + "Entered Value : %s" % self._TextBox_TdIVW.Text)					
+					flag = False
+					show_msg_flag = False
+			
+			else:
+				MessageBox.Show("Only numbers can be entered for TdIVW.\n\n" + "You entered : %s" % self._TextBox_TdIVW.Text)
+				flag = False
+				show_msg_flag = False
+
+		# for Vcent_DQ		
+		if not self._TextBox_VcentDQ.Text == "Auto":
+			###############
+			# Check Blank #
+			###############
+			if self._TextBox_VcentDQ.Text == "":
+				msg += "   * Vcent_DQ\n"
+				flag = False
+				show_msg_flag = True
+		
+			else:
+				################
+				# Check Number #
+				################
+				Vref_list = list(self._TextBox_VcentDQ.Text)
+				num_flag = True
+				for item in Vref_list:
+					# "."
+					if not ord(item) == 46:
+						if not 47 < ord(item) <58:
+							num_flag = False
+							break
+
+				##############
+				# Check unit #
+				##############
+				if num_flag:
+					if float(self._TextBox_VcentDQ.Text) < 1.5:
+						MessageBox.Show("The unit of Vcent_DQ is [mV]. Check the entered value for Vcent_DQ.\n\n" + "Entered Value : %s" % self._TextBox_VcentDQ.Text)
+						flag = False
+						show_msg_flag = False
+			
+				else:
+					MessageBox.Show("Only numbers and \"Auto\"can be entered for TdIVW.\n\n" + "You entered : %s" % self._TextBox_VcentDQ.Text)
+					flag = False
+					show_msg_flag = False
+
+
+	# Old Eye
+	else:
+		#TODO : Eye setup input check for old-eye
+		pass
+
+	return flag, show_msg_flag, msg
 
 def Log(msg):
 

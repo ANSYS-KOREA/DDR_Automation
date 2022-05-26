@@ -44,6 +44,8 @@ class Eye_Form(Form):
 
 		self._CheckedListBox_ReportName = System.Windows.Forms.CheckedListBox()
 
+		self._Label_ns = System.Windows.Forms.Label()
+		self._Label_Offset = System.Windows.Forms.Label()		
 		self._Label_Version = System.Windows.Forms.Label()		
 		self._Label_InputFile = System.Windows.Forms.Label()
 		self._Label_Design = System.Windows.Forms.Label()
@@ -87,6 +89,7 @@ class Eye_Form(Form):
 		self._V_Border_5 = System.Windows.Forms.Label()
 		self._V_Border_6 = System.Windows.Forms.Label()
 		
+		self._TextBox_Offset = System.Windows.Forms.TextBox()
 		self._TextBox_InputFile = System.Windows.Forms.TextBox()
 		self._TextBox_AC_DQ = System.Windows.Forms.TextBox()
 		self._TextBox_AC_ADDR = System.Windows.Forms.TextBox()
@@ -333,7 +336,10 @@ class Eye_Form(Form):
 		self._PictureBox_NewEye.TabStop = False
 		# 
 		# GroupBox_Setup
-		# 
+		#
+		self._GroupBox_Setup.Controls.Add(self._TextBox_Offset)
+		self._GroupBox_Setup.Controls.Add(self._Label_ns)
+		self._GroupBox_Setup.Controls.Add(self._Label_Offset)
 		self._GroupBox_Setup.Controls.Add(self._CheckedListBox_ReportName)
 		self._GroupBox_Setup.Controls.Add(self._ComboBox_Design)
 		self._GroupBox_Setup.Controls.Add(self._ComboBox_SolutionName)		
@@ -463,7 +469,7 @@ class Eye_Form(Form):
 		self._Label_Datarate.Name = "Label_Datarate"
 		self._Label_Datarate.Size = System.Drawing.Size(106, 28)
 		self._Label_Datarate.TabIndex = 11
-		self._Label_Datarate.Text = "Data Rate :"
+		self._Label_Datarate.Text = "Data-rate :"
 		self._Label_Datarate.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# Label_DDRGen
@@ -484,7 +490,28 @@ class Eye_Form(Form):
 		self._Label_Mbps.Size = System.Drawing.Size(45, 28)
 		self._Label_Mbps.TabIndex = 21
 		self._Label_Mbps.Text = "Mbps"
+		self._Label_Mbps.Visible = False
 		self._Label_Mbps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Offset
+		# 
+		self._Label_Offset.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Offset.Location = System.Drawing.Point(446, 104)
+		self._Label_Offset.Name = "Label_Offset"
+		self._Label_Offset.Size = System.Drawing.Size(55, 25)
+		self._Label_Offset.TabIndex = 21
+		self._Label_Offset.Text = "Offset :"
+		self._Label_Offset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_ns
+		# 
+		self._Label_ns.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_ns.Location = System.Drawing.Point(558, 104)
+		self._Label_ns.Name = "Label_ns"
+		self._Label_ns.Size = System.Drawing.Size(20, 25)
+		self._Label_ns.TabIndex = 21
+		self._Label_ns.Text = "ns"
+		self._Label_ns.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		# 
 		# Label_Version
 		# 
@@ -672,22 +699,22 @@ class Eye_Form(Form):
 		# Label_TimingSpec
 		# 
 		self._Label_TimingSpec.Font = System.Drawing.Font("Arial", 8)
-		self._Label_TimingSpec.Location = System.Drawing.Point(310, 285)
+		self._Label_TimingSpec.Location = System.Drawing.Point(298, 285)
 		self._Label_TimingSpec.Name = "Label_Timing_Spec"
-		self._Label_TimingSpec.Size = System.Drawing.Size(68, 16)
+		self._Label_TimingSpec.Size = System.Drawing.Size(88, 16)
 		self._Label_TimingSpec.TabIndex = 41
-		self._Label_TimingSpec.Text = "Timing Spec."
+		self._Label_TimingSpec.Text = "Timing Spec.[UI]"
 		self._Label_TimingSpec.Visible = True
 		self._Label_TimingSpec.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		# 
 		# Label_VoltageSpec
 		# 
 		self._Label_VoltageSpec.Font = System.Drawing.Font("Arial", 8)
-		self._Label_VoltageSpec.Location = System.Drawing.Point(70, 261)
+		self._Label_VoltageSpec.Location = System.Drawing.Point(60, 261)
 		self._Label_VoltageSpec.Name = "Label_Voltage_Spec"
-		self._Label_VoltageSpec.Size = System.Drawing.Size(72, 16)
+		self._Label_VoltageSpec.Size = System.Drawing.Size(97, 16)
 		self._Label_VoltageSpec.TabIndex = 41
-		self._Label_VoltageSpec.Text = "Voltage Spec."
+		self._Label_VoltageSpec.Text = "Voltage Spec.[mV]"
 		self._Label_VoltageSpec.Visible = True
 		self._Label_VoltageSpec.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		# 
@@ -896,7 +923,7 @@ class Eye_Form(Form):
 		self._ComboBox_DataRate.FormattingEnabled = True
 		self._ComboBox_DataRate.Location = System.Drawing.Point(377, 106)
 		self._ComboBox_DataRate.Name = "ComboBox_DataRate"
-		self._ComboBox_DataRate.Size = System.Drawing.Size(156, 24)
+		self._ComboBox_DataRate.Size = System.Drawing.Size(60, 24)
 		self._ComboBox_DataRate.TabIndex = 20
 		self._ComboBox_DataRate.Enabled = False
 		self._ComboBox_DataRate.SelectedIndexChanged += self.ComboBox_DataRateSelectedIndexChanged		
@@ -952,6 +979,14 @@ class Eye_Form(Form):
 		self._TextBox_InputFile.Name = "TextBox_InputFile"
 		self._TextBox_InputFile.Size = System.Drawing.Size(414, 23)
 		self._TextBox_InputFile.TabIndex = 13
+		# 
+		# TextBox_Offset
+		# 
+		self._TextBox_Offset.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._TextBox_Offset.Location = System.Drawing.Point(498, 106)
+		self._TextBox_Offset.Name = "TextBox_InputFile"
+		self._TextBox_Offset.Size = System.Drawing.Size(60, 23)
+		self._TextBox_Offset.TabIndex = 13
 		# 
 		# TextBox_AC_DQ
 		#
@@ -1880,7 +1915,7 @@ class Eye_Form(Form):
 
 				# for *.tr0 File
 				elif extension == "tr0":
-					# TODO : Input button for *.tr0
+					# TODO : Input Type for *.tr0
 					pass
 
 			else:
@@ -1895,7 +1930,7 @@ class Eye_Form(Form):
 			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")			
 			EXIT()
 
-	def ComboBox_DesignSelectedIndexChanged(self, sender, e):
+	def ComboBox_DesignSelectedIndexChanged(self, sender, e):		
 		try:
 			# Set ToopTip
 			self._ComboBox_Design_ToopTip.SetToolTip(self._ComboBox_Design, self._ComboBox_Design.Text)
@@ -1930,7 +1965,7 @@ class Eye_Form(Form):
 			for report in report_name:
 				self._CheckedListBox_ReportName.Items.Add(report)
 			self._CheckedListBox_ReportName.SetItemChecked(0, True)
-
+	
 			# Set Next Step
 			self._ComboBox_Design.BackColor = System.Drawing.SystemColors.Window
 			self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
@@ -1940,9 +1975,20 @@ class Eye_Form(Form):
 			sub_DB.AEDT["Design"] = oDesign
 			sub_DB.AEDT["Module"] = oModule
 
+			flag, show_msg_flag, msg = Check_Input(self)
+			if flag:				
+				sub_DB.Net_Form.NetFormLoad(self, sender)
+				for row in sub_DB.Net_Form._DataGridView.Rows:
+					if row.Cells[0].Value:
+						self._Button_Analyze.Enabled = True
+						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+						break
+
+				
 		except Exception as e:			
 			Log("[AEDT Design] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to set AEDT Design","Warning")
 			EXIT()
 
@@ -1950,9 +1996,9 @@ class Eye_Form(Form):
 		# Set ToopTip		
 		self._ComboBox_SolutionName_ToopTip.SetToolTip(self._ComboBox_SolutionName, self._ComboBox_SolutionName.Text)
 
-	def CheckedListBox_ReportNameSelectedIndexChanged(self, sender, e):
+	def CheckedListBox_ReportNameSelectedIndexChanged(self, sender, e):		
 		Initial()
-		sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+		sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)		
 		self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
@@ -2049,7 +2095,8 @@ class Eye_Form(Form):
 			self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Window
 			self._Button_Analyze.Enabled = False
 			self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
-			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+			if sub_DB.TBD_flag:
+				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
 			# Get Keywork
 			#	ex) <DDR3-800>
@@ -2058,7 +2105,8 @@ class Eye_Form(Form):
 
 			# Set Eye Specifications
 			#	for New Eye		
-			if sub_DB.Eyeflag: 
+			if sub_DB.Eyeflag:
+				self._TextBox_VcentDQ.Text = "Auto"
 				if self._ComboBox_DDRGen.Text == "DDR4":
 					for key in sub_DB.Cenv:
 						if keyword in key:
@@ -2087,8 +2135,31 @@ class Eye_Form(Form):
 								Log("	<TdIVW> : %s[UI]" % self._TextBox_TdIVW.Text)
 
 				elif self._ComboBox_DDRGen.Text == "DDR5":
-					#TODO : Setup DDR5 Eye Spec.
-					pass
+					for key in sub_DB.Cenv:
+						if keyword in key:
+							if "Rx Mask Voltage" in key:
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_VdIVW.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_VdIVW.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_VdIVW.Text = sub_DB.Cenv[key][0]
+								Log("	<VdIVW> : %s[mV]" % self._TextBox_VdIVW.Text)
+
+							elif "Rx Timing Window Total" in key:
+								if "!" in sub_DB.Cenv[key][0]:
+									if sub_DB.TBD_flag:
+										MessageBox.Show("Use undecied JEDEC specifications for %s-%s.\nCheck the specifications entered." % (self._ComboBox_DDRGen.Text, self._ComboBox_DataRate.Text),"Warning")
+										sub_DB.TBD_flag = False
+									self._TextBox_TdIVW.BackColor = System.Drawing.Color.PeachPuff
+									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0].replace("!","")
+								else:
+									self._TextBox_TdIVW.BackColor = System.Drawing.SystemColors.Window
+									self._TextBox_TdIVW.Text = sub_DB.Cenv[key][0]
+								Log("	<TdIVW> : %s[UI]" % self._TextBox_TdIVW.Text)
 
 				elif self._ComboBox_DDRGen.Text == "LPDDR4":
 					for key in sub_DB.Cenv:
@@ -2250,6 +2321,15 @@ class Eye_Form(Form):
 					#TODO : Setup LPDDR3 Eye Spec.
 					pass
 
+			flag, show_msg_flag, msg = Check_Input(self)
+			if flag:				
+				sub_DB.Net_Form.NetFormLoad(self, sender)
+				for row in sub_DB.Net_Form._DataGridView.Rows:
+					if row.Cells[0].Value:
+						self._Button_Analyze.Enabled = True
+						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+						break
+
 		except Exception as e:			
 			Log("[DDR datarate] = Failed")
 			Log(traceback.format_exc())
@@ -2259,15 +2339,14 @@ class Eye_Form(Form):
 	def Button_ViewNetClick(self, sender, e):
 		try:			
 			# Check if any of report name has been checked
-			flag, msg = Check_Input(self)			
+			flag, show_msg_flag, msg = Check_Input(self)
 
 			# CSV Input			
 			if sub_DB.InputFile_Flag == 2:
 				flag = True
 
 			if flag:				
-				# Target Net Setup
-				Check_spec()
+				# Target Net Setup				
 				sub_DB.Net_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
 				sub_DB.Net_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
 				sub_DB.Net_Form.Text = "Target Net Setup - " + sub_DB.Uenv["File"].split("\\")[-1]
@@ -2297,7 +2376,8 @@ class Eye_Form(Form):
 				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
 
 			else:
-				MessageBox.Show("The following entries are missing :\n\n" + msg + "\nPlease enter so that nothing is missing","Warning")
+				if show_msg_flag:
+					MessageBox.Show("The following entries are missing :\n\n" + msg + "\nPlease enter so that nothing is missing","Warning")
 
 		except Exception as e:			
 			Log("[Net Form Launch] = Failed")
@@ -2476,8 +2556,8 @@ class Eye_Form(Form):
 
 			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 455)
 
-			self._Label_TimingSpec.Location = System.Drawing.Point(310, 285)
-			self._Label_VoltageSpec.Location = System.Drawing.Point(70, 261)
+			self._Label_TimingSpec.Location = System.Drawing.Point(298, 285)
+			self._Label_VoltageSpec.Location = System.Drawing.Point(60, 261)
 
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
 			self.Height = 660			

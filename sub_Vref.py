@@ -573,7 +573,7 @@ def Cal_Vref(Waveform):
 	Ones = []
 	Zeros = []
 	UI = int(round(1/(float(sub_DB.Eye_Form._ComboBox_DataRate.Text))*1000000))
-	t_offset = int(UI*float(sub_DB.Eye_Form._TextBox_TdIVW.Text))	
+	t_offset = int(UI*float(sub_DB.Eye_Form._TextBox_TdIVW.Text)/2)	
 	
 	for key in Waveform:
 		iter = 0
@@ -611,4 +611,4 @@ def Cal_Vref(Waveform):
 	Avg_zero = sum(Zeros)/len(Zeros)
 	Vref = (Avg_one + Avg_zero) / 2
 
-	return Vref
+	return round(Vref,2)

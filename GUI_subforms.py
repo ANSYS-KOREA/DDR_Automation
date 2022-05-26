@@ -743,7 +743,7 @@ class NetForm(Form):
 			MessageBox.Show("Fail to resize Net Classification GUI","Warning")			
 			EXIT()
 
-	def NetFormLoad(self, sender, e):
+	def NetFormLoad(self, sender, e):		
 		try:
 			if self.Init_Flag:
 				self.Init_Flag = False
@@ -896,7 +896,8 @@ class NetForm(Form):
 		except Exception as e:		
 			Log("[Net Form Load] = Failed")
 			Log(traceback.format_exc())
-			MessageBox.Show("Fail to load Net Classification Form","Warning")			
+			print traceback.format_exc()
+			MessageBox.Show("Fail to load Net Classification Form","Warning")
 			EXIT()
 
 	def NetFormMouseDoubleClick(self, sender, e):
