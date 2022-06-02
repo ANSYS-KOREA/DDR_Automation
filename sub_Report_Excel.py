@@ -8,7 +8,11 @@ from sub_functions import *
 def Create_Excel_Report():
 	try:
 		xlApp = Excel.ApplicationClass()
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
+		Report_Name = ""
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:			
+			Report_Name += item + ""
+
+		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0] + " : " + Report_Name
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 
@@ -166,7 +170,11 @@ def Create_Excel_Report():
 def Create_Excel_Report_wo_fig():
 	try:
 		xlApp = Excel.ApplicationClass()
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
+		Report_Name = ""
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:			
+			Report_Name += item + ""
+
+		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0] + " : " + Report_Name
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 
@@ -298,12 +306,13 @@ def Create_Excel_Report_wo_fig():
 	except Exception as e:		
 		Log("	<Create Excel Report> = Failed")
 		Log(traceback.format_exc())
+		print traceback.format_exc()
 		MessageBox.Show("Fail to create excel report","Warning")						
 		EXIT()
 
 def Create_Excel_Report_Imported():
 	try:
-		xlApp = Excel.ApplicationClass()		
+		xlApp = Excel.ApplicationClass()
 		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
@@ -593,7 +602,11 @@ def Create_Excel_Report_Imported_wo_fig():
 def Create_Setup_Hold_Excel_Report():
 	try:
 		xlApp = Excel.ApplicationClass()
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
+		Report_Name = ""
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:			
+			Report_Name += item + ""
+
+		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0] + " : " + RReport_Name
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 
@@ -755,7 +768,11 @@ def Create_Setup_Hold_Excel_Report():
 def Create_Setup_Hold_Excel_Report_wo_fig():
 	try:
 		xlApp = Excel.ApplicationClass()
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
+		Report_Name = ""
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:			
+			Report_Name += item + ""
+
+		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0] + " : " + Report_Name
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 
