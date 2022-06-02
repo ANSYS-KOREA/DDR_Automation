@@ -749,12 +749,18 @@ class NetForm(Form):
 			if self.Init_Flag:
 				self.Init_Flag = False
 				# Get Simulated Waveform List
-				if sub_DB.InputFile_Flag == 1: # for *.aedt input
+				if sub_DB.InputFile_Flag == 1: # for *.aedt input					
+					oProject = sub_DB.AEDT["Project"]
 					oDesign = sub_DB.AEDT["Design"]
-					oModule = oDesign.GetModule("ReportSetup")
-
+					oModule = sub_DB.AEDT["Module"]
+					#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Items[0])
+					#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.SelectedIndex)
+					#oModule = oDesign.GetModule("ReportSetup")
+					
 					Report_Name = []
-					Report_Name = sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems
+					iter = 0
+
+					Report_Name = sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems					
 					Netlist = []
 					for report in Report_Name:
 						for net in oModule.GetReportTraceNames(report):							
@@ -826,6 +832,7 @@ class NetForm(Form):
 					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
 				else:
 					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+
 			###################
 			# Resize Net Form #
 			###################
@@ -1980,6 +1987,7 @@ class OptionForm(Form):
 		self._TextBox_EyeOffset.Size = System.Drawing.Size(83, 23)
 		self._TextBox_EyeOffset.Text = "5"
 		self._TextBox_EyeOffset.TabIndex = 42
+		self._TextBox_EyeOffset.TextChanged += self.TextBox_EyeOffsetTextChanged
 		# 
 		# TextBox_Vref
 		# 
@@ -2221,6 +2229,10 @@ class OptionForm(Form):
 			Log(traceback.format_exc())
 			MessageBox.Show("Fail to Select node in Option Form","Warning")			
 			EXIT()
+
+	def TextBox_EyeOffsetTextChanged(self, sender, e):		
+		sub_DB.Eye_Form._TextBox_Offset.Text = self._TextBox_EyeOffset.Text		
+		pass
 
 	def Button_Import_ResourceClick(self, sender, e):
 		try:
