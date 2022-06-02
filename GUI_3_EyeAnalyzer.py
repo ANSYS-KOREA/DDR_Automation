@@ -904,7 +904,7 @@ class Eye_Form(Form):
 		self._CheckedListBox_ReportName.Name = "CheckedListBox_ReportName"
 		self._CheckedListBox_ReportName.Size = System.Drawing.Size(198, 52)
 		self._CheckedListBox_ReportName.TabIndex = 31		
-		self._CheckedListBox_ReportName.SelectedIndexChanged += self.CheckedListBox_ReportNameSelectedIndexChanged
+		self._CheckedListBox_ReportName.ItemCheck += self.CheckedListBox_ReportNameItemCheck
 		# 
 		# ComboBox_DDRGen
 		# 
@@ -988,6 +988,7 @@ class Eye_Form(Form):
 		self._TextBox_Offset.Size = System.Drawing.Size(60, 23)
 		self._TextBox_Offset.Text = "5"
 		self._TextBox_Offset.TabIndex = 50
+		self._TextBox_Offset.TextChanged += self.TextBox_OffsetTextChanged
 		# 
 		# TextBox_AC_DQ
 		#
@@ -1122,6 +1123,7 @@ class Eye_Form(Form):
 		self._TextBox_VcentDQ.Size = System.Drawing.Size(59, 23)
 		self._TextBox_VcentDQ.Text = "Auto"			
 		self._TextBox_VcentDQ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+		self._TextBox_VcentDQ.TextChanged += self.TextBox_VcentDQTextChanged
 		self._TextBox_VcentDQ.TabIndex = 34
 		# 
 		# Button_Import
@@ -1263,6 +1265,7 @@ class Eye_Form(Form):
 		self._CheckBox_EditEnable_NewEye.TabIndex = 40
 		self._CheckBox_EditEnable_NewEye.Text = "Edit enable"
 		self._CheckBox_EditEnable_NewEye.UseVisualStyleBackColor = True
+		self._CheckBox_EditEnable_NewEye.Visible = False
 		self._CheckBox_EditEnable_NewEye.CheckedChanged += self.CheckBox_EditEnable_NewEyeCheckedChanged
 		# 
 		# CheckBox_EditEnable_OldEye
@@ -1273,7 +1276,8 @@ class Eye_Form(Form):
 		self._CheckBox_EditEnable_OldEye.Size = System.Drawing.Size(95, 29)
 		self._CheckBox_EditEnable_OldEye.TabIndex = 40
 		self._CheckBox_EditEnable_OldEye.Text = "Edit enable"
-		self._CheckBox_EditEnable_OldEye.UseVisualStyleBackColor = True
+		self._CheckBox_EditEnable_OldEye.UseVisualStyleBackColor = True		
+		self._CheckBox_EditEnable_OldEye.Visible = False
 		self._CheckBox_EditEnable_OldEye.CheckedChanged += self.CheckBox_EditEnable_OldEyeCheckedChanged
 		# 
 		# openFileDialog1
@@ -1289,6 +1293,7 @@ class Eye_Form(Form):
 		self.Image_flag_New = False
 		self.Image_flag_Old = False
 		self.Full_Size_flag = True
+		self.Init_Flag = True
 		self.Controls.Add(self._CheckBox_Debug)
 		self.Controls.Add(self._Button_LoadCnf)
 		self.Controls.Add(self._Button_Debug)
@@ -1330,7 +1335,7 @@ class Eye_Form(Form):
 		try:
 			# initialization
 			self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Info
-
+			
 			# Setup the Common Env. Info.		
 			#	Add DDR Type into ComboBox
 			DDR_Gen = []
@@ -1362,6 +1367,9 @@ class Eye_Form(Form):
 				#elif sub_DB.Uenv["(Input File)<Setup>[EYE]"][0].strip().split("\\")[-1].split(".")[-1] == "tr0":
 			else:	
 				pass
+
+			self._CheckBox_EditEnable_NewEye.Checked = True
+			self._CheckBox_EditEnable_OldEye.Checked = True
 
 		except Exception as e:			
 			Log("[Eye_FormLoad] = Failed")
@@ -1684,6 +1692,17 @@ class Eye_Form(Form):
 		MessageBox.Show("About ANSYS DDR Wizard", "To be done")
 		pass
 
+	def TextBox_OffsetTextChanged(self, sender, e):		
+		sub_DB.Option_Form._TextBox_EyeOffset.Text = self._TextBox_Offset.Text
+		pass
+
+	def TextBox_VcentDQTextChanged(self, sender, e):
+		if self._TextBox_VcentDQ.Text == "Auto":
+			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 0
+		else:
+			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
+			sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_VcentDQ.Text
+
 	def CheckBox_EditEnable_NewEyeCheckedChanged(self, sender, e):		
 		if self._CheckBox_EditEnable_NewEye.Checked:
 			color = System.Drawing.SystemColors.Info
@@ -1751,6 +1770,7 @@ class Eye_Form(Form):
 	def Button_ImportClick(self, sender, e):
 		try:
 			sub_DB.TBD_flag = True
+			self.Init_Flag = True
 			dialog = OpenFileDialog()			
 			dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
 
@@ -1936,7 +1956,7 @@ class Eye_Form(Form):
 
 			# Set ToopTip
 			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			
-
+			
 		except Exception as e:			
 			Log("[Input File Import] = Failed")
 			Log(traceback.format_exc())
@@ -1954,6 +1974,7 @@ class Eye_Form(Form):
 
 			oProject = sub_DB.AEDT["Project"]
 			oDesign = oProject.SetActiveDesign(self._ComboBox_Design.SelectedItem)
+			sub_DB.AEDT["Design"] = oDesign
 			Log("[AEDT Design] = %s" % self._ComboBox_Design.Text)
 
 			# Get Solutions
@@ -1964,6 +1985,7 @@ class Eye_Form(Form):
 				self._ComboBox_SolutionName.SelectedIndex = 0
 			else:
 				oModule = oDesign.GetModule("SimSetup")
+				sub_DB.AEDT["Module"] = oModule
 				for solution in oModule.GetAllSolutionSetups():
 					self._ComboBox_SolutionName.Items.Add(solution)
 				self._ComboBox_SolutionName.SelectedIndex = 0
@@ -1977,6 +1999,7 @@ class Eye_Form(Form):
 			report_name.sort()
 			for report in report_name:
 				self._CheckedListBox_ReportName.Items.Add(report)
+			self.Init_Flag = True
 			self._CheckedListBox_ReportName.SetItemChecked(0, True)
 	
 			# Set Next Step
@@ -1997,7 +2020,6 @@ class Eye_Form(Form):
 						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
 						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 						break
-
 				
 		except Exception as e:			
 			Log("[AEDT Design] = Failed")
@@ -2010,10 +2032,27 @@ class Eye_Form(Form):
 		# Set ToopTip		
 		self._ComboBox_SolutionName_ToopTip.SetToolTip(self._ComboBox_SolutionName, self._ComboBox_SolutionName.Text)
 
-	def CheckedListBox_ReportNameSelectedIndexChanged(self, sender, e):		
-		Initial()
-		sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)		
-		self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+	def CheckedListBox_ReportNameItemCheck(self, sender, e):
+		if self.Init_Flag:
+			self.Init_Flag = False
+			
+		else:
+			self.Init_Flag = True
+			self._CheckedListBox_ReportName.SetItemChecked(e.Index, e.NewValue)
+
+			Initial()
+			sub_AEDT.Get_AEDT_Info(self, self._TextBox_InputFile.Text)		
+			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+
+			flag, show_msg_flag, msg = Check_Input(self)			
+			if flag:
+				sub_DB.Net_Form.NetFormLoad(self, sender)
+				for row in sub_DB.Net_Form._DataGridView.Rows:
+					if row.Cells[0].Value:
+						self._Button_Analyze.Enabled = True
+						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
+						break
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
 		try:			
@@ -2785,8 +2824,7 @@ def Debug_Load_CNF(self, sender, File):
 			if Check_Setup(self):				
 				self.Cursor = Cursors.WaitCursor					
 				sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
-				self.Cursor = Cursors.Default
-				#self.Button_ViewNetClick(self, sender)
+				self.Cursor = Cursors.Default				
 				
 		# for CSV Input
 		elif sub_DB.InputFile_Flag == 2:

@@ -181,7 +181,7 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 	try:
 		oProject = sub_DB.AEDT["Project"]
 		oDesign = sub_DB.AEDT["Design"]
-		oModule = oDesign.GetModule("ReportSetup")	
+		oModule = sub_DB.AEDT["Module"]		
 		Log("		(AEDT Setup) = Done")
 
 		Report_names = oModule.GetAllReportNames()
@@ -561,16 +561,19 @@ def Check_Input(self):
 	# Check Blank #
 	###############
 	if self._TextBox_InputFile.Text == "":
+		#self._TextBox_InputFile.BackColor = System.Drawing.Color.Moccasin
 		msg += "   * Input File\n"
 		flag = False
 		show_msg_flag = True
 
 	if self._ComboBox_Design.Text == "":
+		#self._ComboBox_Design.BackColor = System.Drawing.Color.Moccasin
 		msg += "   * Deseign\n"
 		flag = False
 		show_msg_flag = True
 	
 	if len(self._CheckedListBox_ReportName.CheckedItems) == 0:
+		#self._CheckedListBox_ReportName.BackColor = System.Drawing.Color.Moccasin
 		msg += "   * Report Name - No reports checked\n"
 		flag = False
 		show_msg_flag = True
@@ -1649,7 +1652,8 @@ def ReleaseObject(obj):
 def Initial():
 	Log("\n\n")
 	sub_DB.TBD_flag = True
-	sub_ScriptEnv.Release()	
+	sub_ScriptEnv.Release()
+	sub_DB.AEDT = {}
 	sub_DB.Eye_Form._TextBox_VcentDQ.Text = "Auto"	
 	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()
 	
@@ -1657,7 +1661,7 @@ def Initial():
 	sub_DB.Eye_Form._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
 	sub_DB.Eye_Form._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 
-	sub_DB.Net_Form = ""
+	sub_DB.Net_Form = ""	
 	sub_DB.Net_Form = GUI_subforms.NetForm()
 
 	sub_DB.Option_Form = ""

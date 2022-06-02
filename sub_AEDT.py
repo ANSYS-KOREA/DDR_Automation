@@ -53,7 +53,11 @@ def Get_AEDT_Info(self, File):
 			oDesktop.OpenProject(File)
 
 		oProject = oDesktop.SetActiveProject(Input_Project_Name)
-				
+		
+		sub_DB.AEDT["App"] = oApp
+		sub_DB.AEDT["Desktop"] = oDesktop
+		sub_DB.AEDT["Project"] = oProject
+
 		# Add Designs into ComboBox
 		design_name = []
 		for design in oProject.GetDesigns():
@@ -62,12 +66,12 @@ def Get_AEDT_Info(self, File):
 		design_name.sort()
 		for design in design_name:
 			self._ComboBox_Design.Items.Add(design)
-
-		#self._ComboBox_Design.SelectedIndex = 0
-
-		sub_DB.AEDT["App"] = oApp
-		sub_DB.AEDT["Desktop"] = oDesktop
-		sub_DB.AEDT["Project"] = oProject
+		#self.Init_Flag = True
+		#self._ComboBox_Design.SelectedIndex = 0		
+		oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Items[0])
+		oModule = oDesign.GetModule("ReportSetup")
+		sub_DB.AEDT["Design"] = oDesign
+		sub_DB.AEDT["Module"] = oModule		
 
 		# Set Active Design
 		if "(Design)<Setup>[EYE]" in sub_DB.Uenv:		
@@ -76,7 +80,7 @@ def Get_AEDT_Info(self, File):
 					self._ComboBox_Design.SelectedItem = item
 					break
 			oDesign = oProject.SetActiveDesign(self._ComboBox_Design.SelectedItem)
-
+			
 			# Add reports into ComboBox
 			oModule = oDesign.GetModule("ReportSetup")
 			report_name = []
