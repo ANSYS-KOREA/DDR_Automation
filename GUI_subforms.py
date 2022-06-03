@@ -807,15 +807,14 @@ class NetForm(Form):
 					iter = len(temp_list)-1
 					for text in temp_list:
 						if 47 < ord(text) < 58:
-							val += ord(text) + iter*10*int(text)
+							val += ord(text) + iter*10**int(text)
 						else:
 							if flag:
 								val += ord(text)
 								flag = False
 							else:
 								val += ord(text)
-						iter -= 1
-					print temp_list, val
+						iter -= 1					
 
 					Name_idx.append(val)
 				Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)
@@ -2000,6 +1999,7 @@ class OptionForm(Form):
 		self._TextBox_Vref.Name = "TextBox_Vref"
 		self._TextBox_Vref.Size = System.Drawing.Size(70, 23)
 		self._TextBox_Vref.Visible = False
+		self._TextBox_Vref.TextChanged += self.TextBox_VrefTextChanged
 		self._TextBox_Vref.TabIndex = 64
 		# 
 		# TextBox_ImageWidth
@@ -2237,6 +2237,14 @@ class OptionForm(Form):
 		sub_DB.Eye_Form._TextBox_Offset.Text = self._TextBox_EyeOffset.Text		
 		pass
 
+	def TextBox_VrefTextChanged(self, sender, e):		
+		# New Eye
+		if sub_DB.Eyeflag:
+			sub_DB.Eye_Form._TextBox_VcentDQ.Text = self._TextBox_Vref.Text
+		# Old Eye
+		else:
+			sub_DB.Eye_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
+
 	def Button_Import_ResourceClick(self, sender, e):
 		try:
 			dialog = self._folderBrowserDialog1			
@@ -2297,9 +2305,22 @@ class OptionForm(Form):
 			if sender.SelectedIndex == 0: # Auto Vref
 				self._TextBox_Vref.Visible = False
 				self._Label_mV.Visible = False
+				# New Eye
+				if sub_DB.Eyeflag:
+					sub_DB.Eye_Form._TextBox_VcentDQ.Text = "Auto"
+				# Old Eye
+				else:
+					sub_DB.Eye_Form._TextBox_Vref.Text = "Auto"
+
 			elif sender.SelectedIndex == 1: # Manual Vref
 				self._TextBox_Vref.Visible = True
 				self._Label_mV.Visible = True			
+				# New Eye
+				if sub_DB.Eyeflag:
+					sub_DB.Eye_Form._TextBox_VcentDQ.Text = self._TextBox_Vref.Text
+				# Old Eye
+				else:
+					sub_DB.Eye_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
 
 		except Exception as e:			
 			Log("[Vref Select] = Failed")

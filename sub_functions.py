@@ -1643,7 +1643,7 @@ def CnfAutoLoad(self):
 def EXIT():	
 	sub_DB.exit_iter += 1	
 	LogSave(sub_DB.exit_iter)	
-	sub_ScriptEnv.Release()	
+	sub_ScriptEnv.Release()
 
 def ReleaseObject(obj):	
 	System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)

@@ -1045,6 +1045,7 @@ class Eye_Form(Form):
 		self._TextBox_Vref.Name = "TextBox_Vref"
 		self._TextBox_Vref.Size = System.Drawing.Size(52, 23)		
 		self._TextBox_Vref.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+		self._TextBox_Vref.TextChanged += self.TextBox_VrefTextChanged
 		self._TextBox_Vref.TabIndex = 34		
 		# 
 		# TextBox_DQSetup
@@ -1702,6 +1703,13 @@ class Eye_Form(Form):
 		else:
 			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
 			sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_VcentDQ.Text
+
+	def TextBox_VrefTextChanged(self, sender, e):
+		if self._TextBox_Vref.Text == "Auto":
+			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 0
+		else:
+			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
+			sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
 
 	def CheckBox_EditEnable_NewEyeCheckedChanged(self, sender, e):		
 		if self._CheckBox_EditEnable_NewEye.Checked:
