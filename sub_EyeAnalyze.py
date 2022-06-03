@@ -1089,8 +1089,6 @@ def Old_Default(self):
 
 
 
-
-
 #################
 # sub functions #
 #################

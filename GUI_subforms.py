@@ -804,15 +804,18 @@ class NetForm(Form):
 					temp_list = list(name)
 					val = 0
 					flag = True
+					iter = len(temp_list)-1
 					for text in temp_list:
 						if 47 < ord(text) < 58:
-							val += ord(text)							
+							val += ord(text) + iter*10*int(text)
 						else:
 							if flag:
-								val += ord(text)*1000
+								val += ord(text)
 								flag = False
 							else:
 								val += ord(text)
+						iter -= 1
+					print temp_list, val
 
 					Name_idx.append(val)
 				Name_idx = sorted(range(len(Name_idx)),key=lambda k: Name_idx[k], reverse=sub_DB.NetSort_Flag)

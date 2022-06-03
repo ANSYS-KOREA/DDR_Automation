@@ -1,3 +1,6 @@
+#import time
+#time_delay = 3
+
 from sub_functions import *
 
 # AEDT Export Based Vref input
@@ -18,6 +21,7 @@ def Cal_Vref_AEDT_Eye_Measure(self, Location):
 		File = sub_DB.result_dir + "\\temp.csv"
 		oModule.UpdateReports([Report_Name[0]])
 		oModule.ExportToFile(Report_Name[0], File)		
+		#time.sleep(time_delay)
 
 		#	Get time unit
 		with open(File) as fp:
@@ -104,12 +108,14 @@ def Cal_Vref_AEDT_Eye_Measure(self, Location):
 		# Export Eye Measure Data .\Resources\temp.csv
 		legend_file = sub_DB.result_dir + "\\temp1.csv"		
 		oModule.ExportTableToFile("temp_eye", legend_file, "Legend")
+		#time.sleep(time_delay)
 		Log("		(Export Eye Measure Data) = Done")		
 	
 		# Export Uniform Report	
 		File = sub_DB.result_dir + "\\Waveforms.csv"		
 		oModule.UpdateReports(["temp_eye"])
 		oModule.ExportUniformPointsToFile("temp_eye", File, "0ns", t_total, "1ps", False)
+		#time.sleep(time_delay)
 		sub_DB.Waveform_File = File
 		Log("		(Export Uniform Wavefrom File) = Done")
 
@@ -210,7 +216,8 @@ def Cal_Vref_AEDT(self, Location):
 		# export report as temp
 		File = sub_DB.result_dir + "\\temp.csv"
 		oModule.UpdateReports([Report_Name[0]])
-		oModule.ExportToFile(Report_Name[0], File)		
+		oModule.ExportToFile(Report_Name[0], File)
+		#time.sleep(time_delay)
 	
 		# load report to get time unit
 		with open(File) as fp:
@@ -326,6 +333,7 @@ def Cal_Vref_AEDT(self, Location):
 		File = sub_DB.result_dir + "\\Waveforms.csv"		
 		oModule.UpdateReports(["temp"])
 		oModule.ExportUniformPointsToFile("temp", File, "0ns", t_total, "1ps", False)
+		#time.sleep(time_delay)
 		sub_DB.Waveform_File = File
 		
 		# Delete temp Report	
@@ -463,6 +471,7 @@ def Get_Waveform(self):
 		File = sub_DB.result_dir + "\\temp.csv"
 		oModule.UpdateReports([Report_Name[0]])
 		oModule.ExportToFile(Report_Name[0], File)		
+		#time.sleep(time_delay)
 
 		#	Get time unit
 		with open(File) as fp:
@@ -544,6 +553,7 @@ def Get_Waveform(self):
 		File = sub_DB.result_dir + "\\Waveforms.csv"		
 		oModule.UpdateReports(["temp_eye"])
 		oModule.ExportUniformPointsToFile("temp_eye", File, "0ns", t_total, "1ps", False)
+		#time.sleep(time_delay)
 		sub_DB.Waveform_File = File
 		Log("		(Export Uniform Wavefrom File) = Done")
 
