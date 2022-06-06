@@ -1250,7 +1250,7 @@ class Eye_Form(Form):
 		self._CheckBox_VcentDQ.TabIndex = 36
 		self._CheckBox_VcentDQ.Text = "Auto VcentDQ"
 		self._CheckBox_VcentDQ.Visible = True
-		self._CheckBox_VcentDQ.Checked = False
+		self._CheckBox_VcentDQ.Checked = True
 		self._CheckBox_VcentDQ.UseVisualStyleBackColor = True
 		self._CheckBox_VcentDQ.CheckedChanged += self.CheckBox_VcentDQCheckedChanged
 		# 
@@ -1263,7 +1263,7 @@ class Eye_Form(Form):
 		self._CheckBox_Vref.TabIndex = 36
 		self._CheckBox_Vref.Text = "Auto Vref"
 		self._CheckBox_Vref.Visible = True
-		self._CheckBox_Vref.Checked = False
+		self._CheckBox_Vref.Checked = True
 		self._CheckBox_Vref.UseVisualStyleBackColor = True
 		self._CheckBox_Vref.CheckedChanged += self.CheckBox_VrefCheckedChanged
 		# 
@@ -2542,8 +2542,12 @@ class Eye_Form(Form):
 
 				# for Old Eye
 				else:
-					sub_EyeAnalyze.Old_Default(self)					
-					pass
+					if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:						
+						sub_EyeAnalyze.Old_Default(self)
+
+					# +Setup/Hold
+					elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 1:
+						sub_EyeAnalyze.Old_SetupHold(self)
 					
 				#############################
 				#      Compliance Test      #
