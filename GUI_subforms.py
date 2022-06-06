@@ -1205,8 +1205,8 @@ class NetForm(Form):
 			if sub_DB.InputFile_Flag == 1:
 				# Eye plot checked
 				if self._CheckBox_PlotEye.Checked:
-					# Eye diagrams were generated
-					if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+					# Eye diagrams were generated					
+					if not len(sub_DB.Excel_Img_File) == 0:
 						# Default
 						if self._ComboBox_Report.SelectedIndex == 0:
 							Create_Excel_Report()
@@ -1287,7 +1287,7 @@ class NetForm(Form):
 				# Eye plot checked
 				if self._CheckBox_PlotEye.Checked:
 					# Eye diagrams were generated
-					if sub_DB.Option_Form._CheckBox_PlotEye.Checked:
+					if not len(sub_DB.Excel_Img_File) == 0:
 						# Default
 						if sub_DB.Option_Form._ComboBox_ReportFormat.SelectedIndex == 0:
 							Create_Excel_Report_Imported()
@@ -1935,9 +1935,11 @@ class OptionForm(Form):
 		# ComboBox_Analyze
 		# 
 		self._ComboBox_Analyze.FormattingEnabled = True
+		#self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
+		#	["Default",
+		#	"+ Setup/Hold"]))
 		self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
-			["Default",
-			"+ Setup/Hold"]))
+			["Default"]))
 		self._ComboBox_Analyze.Location = System.Drawing.Point(418, 76)
 		self._ComboBox_Analyze.Name = "ComboBox_Analyze"
 		self._ComboBox_Analyze.Size = System.Drawing.Size(104, 23)
