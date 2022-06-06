@@ -116,6 +116,8 @@ class Eye_Form(Form):
 		self._openFileDialog1 = System.Windows.Forms.OpenFileDialog()
 		self._saveFileDialog1 = System.Windows.Forms.SaveFileDialog()
 
+		self._CheckBox_VcentDQ = System.Windows.Forms.CheckBox()
+		self._CheckBox_Vref = System.Windows.Forms.CheckBox()
 		self._CheckBox_AnalyzeDQ = System.Windows.Forms.CheckBox()
 		self._CheckBox_AnalyzeADDR = System.Windows.Forms.CheckBox()
 		self._CheckBox_EditEnable_NewEye = System.Windows.Forms.CheckBox()
@@ -364,6 +366,7 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_OldEye
 		#
+		self._GroupBox_OldEye.Controls.Add(self._CheckBox_Vref)
 		self._GroupBox_OldEye.Controls.Add(self._Label_Vac)
 		self._GroupBox_OldEye.Controls.Add(self._Label_Vdc)
 		self._GroupBox_OldEye.Controls.Add(self._Label_Setup)
@@ -428,6 +431,7 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_NewEye
 		#
+		self._GroupBox_NewEye.Controls.Add(self._CheckBox_VcentDQ)
 		self._GroupBox_NewEye.Controls.Add(self._Label_VoltageSpec)
 		self._GroupBox_NewEye.Controls.Add(self._Label_TimingSpec)
 		self._GroupBox_NewEye.Controls.Add(self._Label_VdIVW)
@@ -672,6 +676,7 @@ class Eye_Form(Form):
 		self._Label_Info.Size = System.Drawing.Size(460, 26)
 		self._Label_Info.TabIndex = 41
 		self._Label_Info.Text = "* Vcent_DQ will be automatically calculated after Target Net Setup.\n* To use manual values, check \"Edit enable\" and enter the values."
+		self._Label_Info.Visible = False
 		self._Label_Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		# 
 		# Label_VdIVW
@@ -984,6 +989,7 @@ class Eye_Form(Form):
 		# 
 		self._TextBox_Offset.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._TextBox_Offset.Location = System.Drawing.Point(498, 106)
+		self._TextBox_Offset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
 		self._TextBox_Offset.Name = "TextBox_InputFile"
 		self._TextBox_Offset.Size = System.Drawing.Size(60, 23)
 		self._TextBox_Offset.Text = "5"
@@ -1235,6 +1241,32 @@ class Eye_Form(Form):
 		self._CheckBox_Debug.UseVisualStyleBackColor = True
 		self._CheckBox_Debug.CheckedChanged += self.CheckBox_DebugCheckedChanged
 		# 
+		# CheckBox_VcentDQ
+		# 
+		self._CheckBox_VcentDQ.Font = System.Drawing.Font("Arial", 9)
+		self._CheckBox_VcentDQ.Location = System.Drawing.Point(548, 254)
+		self._CheckBox_VcentDQ.Name = "CheckBox_VcentDQ"
+		self._CheckBox_VcentDQ.Size = System.Drawing.Size(110, 18)
+		self._CheckBox_VcentDQ.TabIndex = 36
+		self._CheckBox_VcentDQ.Text = "Auto VcentDQ"
+		self._CheckBox_VcentDQ.Visible = True
+		self._CheckBox_VcentDQ.Checked = False
+		self._CheckBox_VcentDQ.UseVisualStyleBackColor = True
+		self._CheckBox_VcentDQ.CheckedChanged += self.CheckBox_VcentDQCheckedChanged
+		# 
+		# CheckBox_Vref
+		# 
+		self._CheckBox_Vref.Font = System.Drawing.Font("Arial", 9)
+		self._CheckBox_Vref.Location = System.Drawing.Point(103, 254)		
+		self._CheckBox_Vref.Name = "CheckBox_Vref"
+		self._CheckBox_Vref.Size = System.Drawing.Size(75, 18)
+		self._CheckBox_Vref.TabIndex = 36
+		self._CheckBox_Vref.Text = "Auto Vref"
+		self._CheckBox_Vref.Visible = True
+		self._CheckBox_Vref.Checked = False
+		self._CheckBox_Vref.UseVisualStyleBackColor = True
+		self._CheckBox_Vref.CheckedChanged += self.CheckBox_VrefCheckedChanged
+		# 
 		# CheckBox_AnalyzeDQ
 		# 
 		self._CheckBox_AnalyzeDQ.Font = System.Drawing.Font("Arial", 10)
@@ -1311,7 +1343,7 @@ class Eye_Form(Form):
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Eye_Form"
-		self.Text = "ANSYS DDR Eye Analyzer " + sub_DB.Version
+		self.Text = sub_DB.Title[0]
 		self.Load += self.Eye_FormLoad
 		self.ResizeEnd += self.Eye_FormResizeEnd		
 		self.FormClosing += self.Eye_FormFormClosing
@@ -1699,15 +1731,19 @@ class Eye_Form(Form):
 
 	def TextBox_VcentDQTextChanged(self, sender, e):
 		if self._TextBox_VcentDQ.Text == "Auto":
+			self._CheckBox_VcentDQ.Checked = True
 			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 0
 		else:
+			self._CheckBox_VcentDQ.Checked = False
 			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
 			sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_VcentDQ.Text
 
-	def TextBox_VrefTextChanged(self, sender, e):
+	def TextBox_VrefTextChanged(self, sender, e):		
 		if self._TextBox_Vref.Text == "Auto":
+			self._CheckBox_Vref.Checked = True
 			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 0
 		else:
+			self._CheckBox_Vref.Checked = False
 			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
 			sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
 
@@ -1753,6 +1789,27 @@ class Eye_Form(Form):
 		self._TextBox_ADDRSetup.ReadOnly = not self._CheckBox_EditEnable_OldEye.Checked
 		self._TextBox_ADDRHold.ReadOnly = not self._CheckBox_EditEnable_OldEye.Checked
 
+	def CheckBox_VcentDQCheckedChanged(self, sender, e):
+		if sender.Checked:
+			self._TextBox_VcentDQ.Text = "Auto"
+			
+		else:
+			if self._TextBox_VcentDQ.Text == "Auto":
+				self._TextBox_VcentDQ.Text = ""
+				
+		sub_DB.Title[2] = sub_DB.Option_Form._ComboBox_Vref.Text
+		self.Text = " : ".join(sub_DB.Title)
+
+	def CheckBox_VrefCheckedChanged(self, sender, e):		
+		if sender.Checked:
+			self._TextBox_Vref.Text = "Auto"
+		else:
+			if self._TextBox_Vref.Text == "Auto":
+				self._TextBox_Vref.Text = ""
+
+		sub_DB.Title[2] = sub_DB.Option_Form._ComboBox_Vref.Text
+		self.Text = " : ".join(sub_DB.Title)
+
 	def ComboBox_AC_DQSelectedIndexChanged(self, sender, e):		
 		keyword = "<" + self._ComboBox_DDRGen.Text + "-" + self._ComboBox_DataRate.Text + ">" + "[Eye Spec]"
 		for key in sub_DB.Cenv:
@@ -1793,7 +1850,10 @@ class Eye_Form(Form):
 					os.makedirs(result_dir)
 					sub_DB.result_dir = result_dir
 				self._TextBox_InputFile.Text = File
+
 				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension
+				sub_DB.Title[1] = File.split("\\")[-1]
+				self.Text = " : ".join(sub_DB.Title)
 
 				Initial()
 
@@ -2038,7 +2098,7 @@ class Eye_Form(Form):
 
 	def ComboBox_SolutionNameSelectedIndexChanged(self, sender, e):
 		# Set ToopTip		
-		self._ComboBox_SolutionName_ToopTip.SetToolTip(self._ComboBox_SolutionName, self._ComboBox_SolutionName.Text)
+		self._ComboBox_SolutionName_ToopTip.SetToolTip(self._ComboBox_SolutionName, self._ComboBox_SolutionName.Text)		
 
 	def CheckedListBox_ReportNameItemCheck(self, sender, e):
 		if self.Init_Flag:
@@ -2061,6 +2121,9 @@ class Eye_Form(Form):
 						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
 						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 						break
+
+		sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text		
+		self.Text = " : ".join(sub_DB.Title)
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
 		try:			
@@ -2436,7 +2499,7 @@ class Eye_Form(Form):
 			else:
 				if show_msg_flag:
 					MessageBox.Show("The following entries are missing :\n\n" + msg + "\nPlease enter so that nothing is missing","Warning")
-
+			
 		except Exception as e:			
 			Log("[Net Form Launch] = Failed")
 			Log(traceback.format_exc())
@@ -2445,7 +2508,7 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Button_AnalyzeClick(self, sender, e):
-		try:
+		try:			
 			# Check if any of report name has been checked
 			flag, show_msg_flag, msg = Check_Input(self)
 
@@ -2470,7 +2533,7 @@ class Eye_Form(Form):
 				# for New Eye
 				if sub_DB.Eyeflag:
 					# Default
-					if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:
+					if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:						
 						sub_EyeAnalyze.New_Default(self)
 
 					# +Setup/Hold
@@ -2577,14 +2640,15 @@ class Eye_Form(Form):
 			self._TextBox_VcentDQ.Location = System.Drawing.Point(527, 28)
 			self._TextBox_VcentDQ.Size = System.Drawing.Size(65, 23)
 
+			self._CheckBox_VcentDQ.Location = System.Drawing.Point(527, 51)
 			self._CheckBox_EditEnable_NewEye.Location = System.Drawing.Point(595, 31)
 
 			self._Label_Info.Location = System.Drawing.Point(170, 60)
 
 			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 95)
 
-			self._Label_VoltageSpec.Location = System.Drawing.Point(223, 9)
-			self._Label_TimingSpec.Location = System.Drawing.Point(363, 9)
+			self._Label_VoltageSpec.Location = System.Drawing.Point(223, 51)
+			self._Label_TimingSpec.Location = System.Drawing.Point(363, 51)
 			
 
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 300)
@@ -2608,6 +2672,7 @@ class Eye_Form(Form):
 			self._TextBox_VcentDQ.Location = System.Drawing.Point(548, 231)
 			self._TextBox_VcentDQ.Size = System.Drawing.Size(59, 23)
 
+			self._CheckBox_VcentDQ.Location = System.Drawing.Point(548, 254)
 			self._CheckBox_EditEnable_NewEye.Location = System.Drawing.Point(590, 423)
 
 			self._Label_Info.Location = System.Drawing.Point(10, 423)
@@ -2684,9 +2749,10 @@ class Eye_Form(Form):
 			self._TextBox_ADDRHold.Location = System.Drawing.Point(449, 61)			
 			self._TextBox_ADDRHold.Size = System.Drawing.Size(80, 23)
 
-			self._TextBox_Vref.Location = System.Drawing.Point(537, 47)			
+			self._TextBox_Vref.Location = System.Drawing.Point(539, 42)			
 			self._TextBox_Vref.Size = System.Drawing.Size(80, 23)
 
+			self._CheckBox_Vref.Location = System.Drawing.Point(539, 66)
 			self._CheckBox_EditEnable_OldEye.Location = System.Drawing.Point(537, 63)
 
 			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 95)
@@ -2758,6 +2824,7 @@ class Eye_Form(Form):
 			self._TextBox_Vref.Location = System.Drawing.Point(130, 232)
 			self._TextBox_Vref.Size = System.Drawing.Size(52, 23)
 
+			self._CheckBox_Vref.Location = System.Drawing.Point(103, 254)		
 			self._CheckBox_EditEnable_OldEye.Location = System.Drawing.Point(590, 423)
 
 			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 455)
@@ -2953,4 +3020,3 @@ def Debug_Load_CNF(self, sender, File):
 		print traceback.format_exc()
 		MessageBox.Show("Fail to load configuration file","Warning")
 		EXIT()
-	

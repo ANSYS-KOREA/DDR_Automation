@@ -1,6 +1,8 @@
 Version = "v0.0"
-start_time = ""
+Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
+Title[0] = "ADEA %s" % Version
 
+start_time = ""
 Start_Form = ""
 Eye_Form = ""
 Net_Form = ""

@@ -761,8 +761,8 @@ class NetForm(Form):
 					iter = 0
 
 					Report_Name = sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems					
-					Netlist = []
-					for report in Report_Name:
+					Netlist = []					
+					for report in Report_Name:						
 						for net in oModule.GetReportTraceNames(report):							
 							Netlist.append(net)
 
@@ -987,6 +987,9 @@ class NetForm(Form):
 		self._Label_ImageWidth.Visible = sender.Checked
 		self._Label_ImageWidth_Unit.Visible = sender.Checked
 		self._TextBox_ImageWidth.Visible = sender.Checked
+
+		sub_DB.Title[4] = str(sender.Checked)
+		sub_DB.Eye_Form.Text = " : ".join(sub_DB.Title)
 
 	def Button_UpdateClick(self, sender, e):
 		try:
@@ -1940,6 +1943,7 @@ class OptionForm(Form):
 		self._ComboBox_Analyze.Size = System.Drawing.Size(104, 23)
 		self._ComboBox_Analyze.TabIndex = 63
 		self._ComboBox_Analyze.Text = "Default"
+		self._ComboBox_Analyze.SelectedIndexChanged += self.ComboBox_AnalyzeSelectedIndexChanged
 		# 
 		# ComboBox_ReportFormat
 		# 
@@ -2290,6 +2294,9 @@ class OptionForm(Form):
 				self._Label_ImageWidth_Unit.Visible = sender.Checked
 				self._TextBox_ImageWidth.Visible = sender.Checked
 
+			sub_DB.Title[4] = str(sender.Checked)
+			sub_DB.Eye_Form.Text = " : ".join(sub_DB.Title)
+
 		except Exception as e:			
 			Log("[Check Eye Plot] = Failed")
 			Log(traceback.format_exc())
@@ -2312,21 +2319,25 @@ class OptionForm(Form):
 				else:
 					sub_DB.Eye_Form._TextBox_Vref.Text = "Auto"
 
-			elif sender.SelectedIndex == 1: # Manual Vref
+			elif sender.SelectedIndex == 1: # Manual Vref				
 				self._TextBox_Vref.Visible = True
 				self._Label_mV.Visible = True			
-				# New Eye
-				if sub_DB.Eyeflag:
-					sub_DB.Eye_Form._TextBox_VcentDQ.Text = self._TextBox_Vref.Text
-				# Old Eye
-				else:
-					sub_DB.Eye_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
+				## New Eye
+				#if sub_DB.Eyeflag:
+				#	sub_DB.Eye_Form._TextBox_VcentDQ.Text = self._TextBox_Vref.Text
+				## Old Eye
+				#else:
+				#	sub_DB.Eye_Form._TextBox_Vref.Text = self._TextBox_Vref.Text			
 
 		except Exception as e:			
 			Log("[Vref Select] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to change Vref calculating method","Warning")			
 			EXIT()
+
+	def ComboBox_AnalyzeSelectedIndexChanged(self, sender, e):
+		pass
 
 	def CheckBox_ExportExcelReportCheckedChanged(self, sender, e):
 		try:
@@ -2336,6 +2347,12 @@ class OptionForm(Form):
 				self._Label_ImageWidth_Unit.Visible = sender.Checked			
 			self._Label_ReportFormat.Visible = sender.Checked
 			self._ComboBox_ReportFormat.Visible = sender.Checked
+
+			if sender.Checked:
+				sub_DB.Title[5] = "True-%s" % self._ComboBox_ReportFormat.Text
+			else:
+				sub_DB.Title[5] = "False"
+			sub_DB.Eye_Form.Text = " : ".join(sub_DB.Title)
 
 		except Exception as e:			
 			Log("[Check Excel Report] = Failed")

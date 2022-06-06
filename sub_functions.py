@@ -312,26 +312,49 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 	
 		#oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
 		#		["NAME:ChangedProps",["NAME:DockMode","Value:=", "Dock Left"]]]])
-		#Log("			= Legend Location (Dock Left)")
-	
-	
-		Vref = float(sub_DB.Eye_Form._TextBox_VcentDQ.Text)
-		V_high = Vref + float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
-		V_low = Vref - float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
-		T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
-		T_right = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) + Eye_Measure_Results[PlotList[0]][0]/float(2)
-	
-		oModule.ChangeProperty(["NAME:AllTabs", ["NAME:Mask", ["NAME:PropServers",
-				  Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps", ["NAME:Mask", "Version:=",
-				  1, "ShowLimits:=", False, "UpperLimit:=", 1, "LowerLimit:=", 0, "XUnits:=", "ps", "YUnits:=",
-				  "mV", ["NAME:MaskPoints",T_left, V_high,T_left, V_low,T_right, V_low,T_right, V_high]]]]])
-		Log("			= Create Eye Mask")
+		#Log("			= Legend Location (Dock Left)")	
 
-		#noteh = (vmax - Vref) / (vmax - vmin) * 9500
-		#oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
-		#				"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
-		#				noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0]) + " / " + str(round(sub_DB.Jitter_RMS[PlotList[0]],1))]])
-		#Log("			= Add Note, Width:%s[ps] Jitter(RMS):%s[ps]" % (str(Eye_Measure_Results[PlotList[0]][0]), str(round(sub_DB.Jitter_RMS[PlotList[0]],1))))
+		# for New Eye
+		if sub_DB.Eyeflag:
+			Vref = float(sub_DB.Eye_Form._TextBox_VcentDQ.Text)
+			V_high = Vref + float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
+			V_low = Vref - float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
+			T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
+			T_right = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) + Eye_Measure_Results[PlotList[0]][0]/float(2)
+	
+			oModule.ChangeProperty(["NAME:AllTabs", ["NAME:Mask", ["NAME:PropServers",
+					  Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps", ["NAME:Mask", "Version:=",
+					  1, "ShowLimits:=", False, "UpperLimit:=", 1, "LowerLimit:=", 0, "XUnits:=", "ps", "YUnits:=",
+					  "mV", ["NAME:MaskPoints",T_left, V_high,T_left, V_low,T_right, V_low,T_right, V_high]]]]])
+			Log("			= Create Eye Mask")
+
+			#noteh = (vmax - Vref) / (vmax - vmin) * 9500
+			#oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
+			#				"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
+			#				noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0]) + " / " + str(round(sub_DB.Jitter_RMS[PlotList[0]],1))]])
+			#Log("			= Add Note, Width:%s[ps] Jitter(RMS):%s[ps]" % (str(Eye_Measure_Results[PlotList[0]][0]), str(round(sub_DB.Jitter_RMS[PlotList[0]],1))))
+
+		# for Old Eye
+		else:
+			Vref = float(sub_DB.Eye_Form._TextBox_Vref.Text)
+
+			V_IHAC_DQ = Vref + float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
+			V_ILAC_DQ = Vref - float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)		
+			V_IHAC_ADDR = Vref + float(sub_DB.Eye_Form._ComboBox_AC_ADDR.Text)
+			V_ILAC_ADDR = Vref - float(sub_DB.Eye_Form._ComboBox_AC_ADDR.Text)
+			V_IHDC_DQ = Vref + float(sub_DB.Eye_Form._TextBox_DC_DQ.Text)
+			V_ILDC_DQ = Vref - float(sub_DB.Eye_Form._TextBox_DC_DQ.Text)		
+			V_IHDC_ADDR = Vref + float(sub_DB.Eye_Form._TextBox_DC_ADDR.Text)
+			V_ILDC_ADDR = Vref - float(sub_DB.Eye_Form._TextBox_DC_ADDR.Text)
+
+			T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
+			T_right = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) + Eye_Measure_Results[PlotList[0]][0]/float(2)
+
+			oModule.ChangeProperty(["NAME:AllTabs", ["NAME:Mask", ["NAME:PropServers",
+					  Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps", ["NAME:Mask", "Version:=",
+					  1, "ShowLimits:=", False, "UpperLimit:=", 1, "LowerLimit:=", 0, "XUnits:=", "ps", "YUnits:=",
+					  "mV", ["NAME:MaskPoints",T_left, V_IHAC_DQ, T_left, V_ILAC_DQ, T_right, V_ILDC_DQ, T_right, V_IHDC_DQ]]]]])
+			Log("			= Create Eye Mask")
 
 		noteh = (vmax - Vref) / (vmax - vmin) * 9500
 		oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
@@ -341,10 +364,10 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 
 
 		oModule.ChangeProperty(["NAME:AllTabs",
-					  ["NAME:Note", ["NAME:PropServers", Report_Name + ":Note1"], ["NAME:ChangedProps"
-					  , ["NAME:Background Visibility", "Value:=", False]
-					  , ["NAME:Border Visibility", "Value:=", False]
-					  , ["NAME:Note Font", "Height:=", -17, "Width:=",
+						["NAME:Note", ["NAME:PropServers", Report_Name + ":Note1"], ["NAME:ChangedProps"
+						, ["NAME:Background Visibility", "Value:=", False]
+						, ["NAME:Border Visibility", "Value:=", False]
+						, ["NAME:Note Font", "Height:=", -17, "Width:=",
 						0, "Escapement:=", 0, "Orientation:=", 0, "Weight:=", 700, "Italic:=", 0, "Underline:=",
 						0, "StrikeOut:=", 0, "CharSet:=", 0, "OutPrecision:=", 3, "ClipPrecision:=", 2, "Quality:=",
 						1, "PitchAndFamily:=", 34, "FaceName:=", "Arial", "R:=", 0, "G:=", 0, "B:=", 0]]]])
@@ -459,24 +482,48 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 		#oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
 		#		["NAME:ChangedProps",["NAME:DockMode","Value:=", "Dock Left"]]]])
 		#Log("			= Legend Location (Dock Left)")
+
+		# for New Eye
+		if sub_DB.Eyeflag:	
+			Vref = float(sub_DB.Eye_Form._TextBox_VcentDQ.Text)
+			V_high = Vref + float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
+			V_low = Vref - float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
+			T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
+			T_right = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) + Eye_Measure_Results[PlotList[0]][0]/float(2)
 	
-		Vref = float(sub_DB.Eye_Form._TextBox_VcentDQ.Text)
-		V_high = Vref + float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
-		V_low = Vref - float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
-		T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
-		T_right = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) + Eye_Measure_Results[PlotList[0]][0]/float(2)
-	
-		oModule.ChangeProperty(["NAME:AllTabs", ["NAME:Mask", ["NAME:PropServers",
-				  Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps", ["NAME:Mask", "Version:=",
-				  1, "ShowLimits:=", False, "UpperLimit:=", 1, "LowerLimit:=", 0, "XUnits:=", "ps", "YUnits:=",
-				  "mV", ["NAME:MaskPoints",T_left, V_high,T_left, V_low,T_right, V_low,T_right, V_high]]]]])
-		Log("			= Create Eye Mask")
+			oModule.ChangeProperty(["NAME:AllTabs", ["NAME:Mask", ["NAME:PropServers",
+					  Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps", ["NAME:Mask", "Version:=",
+					  1, "ShowLimits:=", False, "UpperLimit:=", 1, "LowerLimit:=", 0, "XUnits:=", "ps", "YUnits:=",
+					  "mV", ["NAME:MaskPoints",T_left, V_high,T_left, V_low,T_right, V_low,T_right, V_high]]]]])
+			Log("			= Create Eye Mask")
+
+		# for Old Eye
+		else:
+			Vref = float(sub_DB.Eye_Form._TextBox_Vref.Text)
+
+			V_IHAC_DQ = Vref + float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
+			V_ILAC_DQ = Vref - float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)		
+			V_IHAC_ADDR = Vref + float(sub_DB.Eye_Form._ComboBox_AC_ADDR.Text)
+			V_ILAC_ADDR = Vref - float(sub_DB.Eye_Form._ComboBox_AC_ADDR.Text)
+			V_IHDC_DQ = Vref + float(sub_DB.Eye_Form._TextBox_DC_DQ.Text)
+			V_ILDC_DQ = Vref - float(sub_DB.Eye_Form._TextBox_DC_DQ.Text)		
+			V_IHDC_ADDR = Vref + float(sub_DB.Eye_Form._TextBox_DC_ADDR.Text)
+			V_ILDC_ADDR = Vref - float(sub_DB.Eye_Form._TextBox_DC_ADDR.Text)
+
+			T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
+			T_right = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) + Eye_Measure_Results[PlotList[0]][0]/float(2)
+
+			oModule.ChangeProperty(["NAME:AllTabs", ["NAME:Mask", ["NAME:PropServers",
+					  Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps", ["NAME:Mask", "Version:=",
+					  1, "ShowLimits:=", False, "UpperLimit:=", 1, "LowerLimit:=", 0, "XUnits:=", "ps", "YUnits:=",
+					  "mV", ["NAME:MaskPoints",T_left, V_IHAC_DQ, T_left, V_ILAC_DQ, T_right, V_ILDC_DQ, T_right, V_IHDC_DQ]]]]])
+			Log("			= Create Eye Mask")
 
 		noteh = (vmax - Vref) / (vmax - vmin) * 9500
 		oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
 						"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
-						noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0]) + " / " + str(Eye_Measure_Results[PlotList[0]][1])]])
-		Log("			= Add Note, Width:%s[ps] Jitter(RMS):%s[ps]" % (str(Eye_Measure_Results[PlotList[0]][0]), str(Eye_Measure_Results[PlotList[0]][1])))
+						noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0])]])
+		Log("			= Add Note, Width:%s[ps]" % str(Eye_Measure_Results[PlotList[0]][0]))
 
 		oModule.ChangeProperty(["NAME:AllTabs",
 					  ["NAME:Note", ["NAME:PropServers", Report_Name + ":Note1"], ["NAME:ChangedProps"
@@ -730,11 +777,260 @@ def Check_Input(self):
 					flag = False
 					show_msg_flag = False
 
-
 	# Old Eye
 	else:
-		#TODO : Eye setup input check for old-eye
-		pass
+		# for Vref
+		###############
+		# Check Blank #
+		###############
+		if not self._TextBox_Vref.Text == "Auto":
+			if self._TextBox_Vref.Text == "":
+				msg += "   * Vref\n"
+				flag = False
+				show_msg_flag = True
+		
+			else:
+				################
+				# Check Number #
+				################
+				Vref_list = list(self._TextBox_Vref.Text)
+				num_flag = True
+				for item in Vref_list:
+					# "."
+					if not ord(item) == 46:
+						if not 47 < ord(item) <58:
+							num_flag = False
+							break
+
+				##############
+				# Check unit #
+				##############
+				if num_flag:
+					if float(self._TextBox_Vref.Text) < 2:
+						MessageBox.Show("The unit of Vref is [mV]. Check the entered value for Vref.\n\n" + "Entered Value : %s" % self._TextBox_Vref.Text)
+						flag = False
+						show_msg_flag = False
+			
+				else:
+					MessageBox.Show("Only numbers can be entered for Vref.\n\n" + "You entered : %s" % self._TextBox_Vref.Text)
+					flag = False
+					show_msg_flag = False
+
+		# for DQ Setup Time
+		###############
+		# Check Blank #
+		###############
+		if self._TextBox_DQSetup.Text == "":
+			msg += "   * DQ Setup Time\n"
+			flag = False
+			show_msg_flag = True
+		
+		else:
+			################
+			# Check Number #
+			################
+			DQSetup_list = list(self._TextBox_DQSetup.Text)
+			num_flag = True
+			for item in DQSetup_list:
+				# "."
+				if not ord(item) == 46:
+					if not 47 < ord(item) <58:
+						num_flag = False
+						break
+
+			##############
+			# Check unit #
+			##############
+			if num_flag:
+				if float(self._TextBox_DQSetup.Text) < 1:
+					MessageBox.Show("The unit of DQ setup time is [ps]. Check the entered value for DQ setup time.\n\n" + "Entered Value : %s" % self._TextBox_DQSetup.Text)
+					flag = False
+					show_msg_flag = False
+			
+			else:
+				MessageBox.Show("Only numbers can be entered for DQ setup time.\n\n" + "You entered : %s" % self._TextBox_DQSetup.Text)
+				flag = False
+				show_msg_flag = False
+
+		# for DQ Hold Time
+		###############
+		# Check Blank #
+		###############
+		if self._TextBox_DQHold.Text == "":
+			msg += "   * DQ Hold Time\n"
+			flag = False
+			show_msg_flag = True
+		
+		else:
+			################
+			# Check Number #
+			################
+			DQHold_list = list(self._TextBox_DQHold.Text)
+			num_flag = True
+			for item in DQHold_list:
+				# "."
+				if not ord(item) == 46:
+					if not 47 < ord(item) <58:
+						num_flag = False
+						break
+
+			##############
+			# Check unit #
+			##############
+			if num_flag:
+				if float(self._TextBox_DQHold.Text) < 1:
+					MessageBox.Show("The unit of DQ hold time is [ps]. Check the entered value for DQ hold time.\n\n" + "Entered Value : %s" % self._TextBox_DQHold.Text)
+					flag = False
+					show_msg_flag = False
+			
+			else:
+				MessageBox.Show("Only numbers can be entered for DQ hold time.\n\n" + "You entered : %s" % self._TextBox_DQHold.Text)
+				flag = False
+				show_msg_flag = False
+
+		# for ADDR Setup Time
+		###############
+		# Check Blank #
+		###############
+		if self._TextBox_ADDRSetup.Text == "":
+			msg += "   * Address Setup Time\n"
+			flag = False
+			show_msg_flag = True
+		
+		else:
+			################
+			# Check Number #
+			################
+			ADDRSetup_list = list(self._TextBox_ADDRSetup.Text)
+			num_flag = True
+			for item in ADDRSetup_list:
+				# "."
+				if not ord(item) == 46:
+					if not 47 < ord(item) <58:
+						num_flag = False
+						break
+
+			##############
+			# Check unit #
+			##############
+			if num_flag:
+				if float(self._TextBox_ADDRSetup.Text) < 1:
+					MessageBox.Show("The unit of address setup time is [ps]. Check the entered value for address setup time.\n\n" + "Entered Value : %s" % self._TextBox_ADDRSetup.Text)
+					flag = False
+					show_msg_flag = False
+			
+			else:
+				MessageBox.Show("Only numbers can be entered for address setup time.\n\n" + "You entered : %s" % self._TextBox_ADDRSetup.Text)
+				flag = False
+				show_msg_flag = False
+
+		# for ADDR Hold Time
+		###############
+		# Check Blank #
+		###############
+		if self._TextBox_ADDRHold.Text == "":
+			msg += "   * Address Hold Time\n"
+			flag = False
+			show_msg_flag = True
+		
+		else:
+			################
+			# Check Number #
+			################
+			ADDRHold_list = list(self._TextBox_ADDRHold.Text)
+			num_flag = True
+			for item in ADDRHold_list:
+				# "."
+				if not ord(item) == 46:
+					if not 47 < ord(item) <58:
+						num_flag = False
+						break
+
+			##############
+			# Check unit #
+			##############
+			if num_flag:
+				if float(self._TextBox_ADDRHold.Text) < 1:
+					MessageBox.Show("The unit of address hold time is [ps]. Check the entered value for address hold time.\n\n" + "Entered Value : %s" % self._TextBox_ADDRHold.Text)
+					flag = False
+					show_msg_flag = False
+			
+			else:
+				MessageBox.Show("Only numbers can be entered for address hold time.\n\n" + "You entered : %s" % self._TextBox_ADDRHold.Text)
+				flag = False
+				show_msg_flag = False
+
+		# for VDC_DQ
+		###############
+		# Check Blank #
+		###############
+		if self._TextBox_DC_DQ.Text == "":
+			msg += "   * Vdc for DQ\n"
+			flag = False
+			show_msg_flag = True
+		
+		else:
+			################
+			# Check Number #
+			################
+			VDC_DQ_list = list(self._TextBox_DC_DQ.Text)
+			num_flag = True
+			for item in VDC_DQ_list:
+				# "."
+				if not ord(item) == 46:
+					if not 47 < ord(item) <58:
+						num_flag = False
+						break
+
+			##############
+			# Check unit #
+			##############
+			if num_flag:
+				if float(self._TextBox_DC_DQ.Text) < 2:
+					MessageBox.Show("The unit of Vdc DQ is [mV]. Check the entered value for Vdc DQ.\n\n" + "Entered Value : %s" % self._TextBox_DC_DQ.Text)
+					flag = False
+					show_msg_flag = False
+			
+			else:
+				MessageBox.Show("Only numbers can be entered for Vdc DQ.\n\n" + "You entered : %s" % self._TextBox_DC_DQ.Text)
+				flag = False
+				show_msg_flag = False
+
+		# for VDC_ADDR
+		###############
+		# Check Blank #
+		###############
+		if self._TextBox_DC_ADDR.Text == "":
+			msg += "   * Vdc for Address\n"
+			flag = False
+			show_msg_flag = True
+		
+		else:
+			################
+			# Check Number #
+			################
+			VDC_ADDR_list = list(self._TextBox_DC_ADDR.Text)
+			num_flag = True
+			for item in VDC_ADDR_list:
+				# "."
+				if not ord(item) == 46:
+					if not 47 < ord(item) <58:
+						num_flag = False
+						break
+
+			##############
+			# Check unit #
+			##############
+			if num_flag:
+				if float(self._TextBox_DC_ADDR.Text) < 2:
+					MessageBox.Show("The unit of Vdc address is [mV]. Check the entered value for Vdc address.\n\n" + "Entered Value : %s" % self._TextBox_DC_ADDR.Text)
+					flag = False
+					show_msg_flag = False
+			
+			else:
+				MessageBox.Show("Only numbers can be entered for Vdc address.\n\n" + "You entered : %s" % self._TextBox_DC_ADDR.Text)
+				flag = False
+				show_msg_flag = False
 
 	return flag, show_msg_flag, msg
 
@@ -1539,6 +1835,7 @@ def CnfAutoSave():
 		#if sub_DB.Option_Form._CheckBox_Compiance.Visible:
 		#	#TODO : Save Cnf for DDR Compliance
 		#	cnf_log += "\n\n\t" + "<DDR Compliance>"
+		pass
 
 	except Exception as e:
 		Log("	<Auto Saved Cnf - Eye Analyzer> = Failed")
@@ -1643,7 +1940,7 @@ def CnfAutoLoad(self):
 def EXIT():	
 	sub_DB.exit_iter += 1	
 	LogSave(sub_DB.exit_iter)	
-	sub_ScriptEnv.Release()
+	sub_ScriptEnv.Release()	
 
 def ReleaseObject(obj):	
 	System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
@@ -1652,6 +1949,7 @@ def ReleaseObject(obj):
 def Initial():
 	Log("\n\n")
 	sub_DB.TBD_flag = True
+	sub_DB.CSV_flag = True
 	sub_ScriptEnv.Release()
 	sub_DB.AEDT = {}
 	sub_DB.Eye_Form._TextBox_VcentDQ.Text = "Auto"	
@@ -1674,7 +1972,10 @@ def Initial():
 	sub_DB.Eye_Form._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
 
 	sub_DB.Eye_Form._Button_ViewResult.Enabled = False
-	sub_DB.Eye_Form._Button_ViewResult.BackColor = System.Drawing.SystemColors.Control
+	sub_DB.Eye_Form._Button_ViewResult.BackColor = System.Drawing.SystemColors.Control\
+
+	sub_DB.Eye_Form._CheckBox_VcentDQ.Checked = True
+	sub_DB.Eye_Form._CheckBox_Vref.Checked = True
 
 def temp_get_waveform(self):
 	Waveform = {}

@@ -409,7 +409,7 @@ def Cal_Vref_AEDT(self, Location):
 	#################
 	# Cacluate Vref #
 	#################
-	try:
+	try:		
 		Vref = Cal_Vref(Waveform)
 		Log("		(Vref Calculation) = Done, %fmV" % Vref)
 
@@ -426,25 +426,18 @@ def Cal_Vref_AEDT(self, Location):
 
 # Auto-default for CSV input
 def Cal_Vref_WaveForm():
-	try:
-		Log("		(Get Target Waveforms) = Done")
+	try:		
 		# Delete non-target trace data	
 		for row in sub_DB.Net_Form._DataGridView.Rows:
 			if not row.Cells[0].Value:
 				if row.Cells[1].Value in sub_DB.Waveform.keys():				
-					del sub_DB.Waveform[row.Cells[1].Value]			
+					del sub_DB.Waveform[row.Cells[1].Value]
+		Log("		(Get Target Waveforms) = Done")
 
-		Log("		(Get Min./Max Waveform Values) = Done")
-		# Get Min/Max Average and Calculate Vref	
-		Max = []
-		Min = []	
-		for key in sub_DB.Waveform:
-			Max.append(max(sub_DB.Waveform[key]))
-			Min.append(min(sub_DB.Waveform[key]))
-
-		Vref = round((sum(Max, 0.0)/len(Max) + sum(Min, 0.0)/len(Min))/2, 2)
+		# Calculate Vref	
+		Vref = Cal_Vref(sub_DB.Waveform)
 		Log("		(Calculate Vref) = Done, %s[mV]" % Vref)
-	
+
 		return Vref	
 
 	except Exception as e:		
@@ -583,7 +576,12 @@ def Cal_Vref(Waveform):
 	Ones = []
 	Zeros = []
 	UI = int(round(1/(float(sub_DB.Eye_Form._ComboBox_DataRate.Text))*1000000))
-	t_offset = int(UI*float(sub_DB.Eye_Form._TextBox_TdIVW.Text)/2)	
+	# for New Eye
+	if sub_DB.Eyeflag:
+		t_offset = int(UI*float(sub_DB.Eye_Form._TextBox_TdIVW.Text)/2)	
+
+	else:
+		t_offset = int(sub_DB.Eye_Form._TextBox_DQSetup.Text)
 	
 	for key in Waveform:
 		iter = 0
