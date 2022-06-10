@@ -1440,8 +1440,10 @@ class Eye_Form(Form):
 			self._ComboBox_Design.Size = System.Drawing.Size(self._ComboBox_Design.Width + Gap_W/2, self._ComboBox_Design.Height)
 			self._ComboBox_SolutionName.Size = System.Drawing.Size(self._ComboBox_SolutionName.Width + Gap_W/2, self._ComboBox_SolutionName.Height)
 			self._ComboBox_DDRGen.Size = System.Drawing.Size(self._ComboBox_DDRGen.Width + Gap_W/2, self._ComboBox_DDRGen.Height)
-			self._ComboBox_DataRate.Size = System.Drawing.Size(self._ComboBox_DataRate.Width + Gap_W/2, self._ComboBox_DataRate.Height)
+			self._ComboBox_DataRate.Size = System.Drawing.Size(self._ComboBox_DataRate.Width + Gap_W/4, self._ComboBox_DataRate.Height)
 			self._CheckedListBox_ReportName.Size = System.Drawing.Size(self._CheckedListBox_ReportName.Width + Gap_W/2, self._CheckedListBox_ReportName.Height)
+			self._TextBox_Offset.Size = System.Drawing.Size(self._TextBox_Offset.Width + Gap_W/4, self._TextBox_Offset.Height)
+			
 
 			# Relocate
 			self._Button_Import.Location = System.Drawing.Point(self._Button_Import.Location.X + Gap_W, self._Button_Import.Location.Y)
@@ -1453,6 +1455,10 @@ class Eye_Form(Form):
 			self._Button_ViewNet.Location = System.Drawing.Point(self._Button_ViewNet.Location.X + Gap_W, self._Button_ViewNet.Location.Y)
 			self._Button_Analyze.Location = System.Drawing.Point(self._Button_Analyze.Location.X + Gap_W, self._Button_Analyze.Location.Y)
 			self._Button_ViewResult.Location = System.Drawing.Point(self._Button_ViewResult.Location.X + Gap_W, self._Button_ViewResult.Location.Y)
+			self._Label_Offset.Location = System.Drawing.Point(self._Label_Offset.Location.X + Gap_W*3/4, self._Label_Offset.Location.Y)
+			self._TextBox_Offset.Location = System.Drawing.Point(self._TextBox_Offset.Location.X + Gap_W*3/4, self._TextBox_Offset.Location.Y)
+			
+			self._Label_ns.Location = System.Drawing.Point(self._Label_ns.Location.X + Gap_W, self._Label_ns.Location.Y)
 
 		except Exception as e:			
 			Log("[Eye_FormResizeEnd] = Failed")
@@ -1851,10 +1857,7 @@ class Eye_Form(Form):
 					sub_DB.result_dir = result_dir
 				self._TextBox_InputFile.Text = File
 
-				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension
-				sub_DB.Title[1] = File.split("\\")[-1]
-				self.Text = " : ".join(sub_DB.Title)
-
+				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension				
 				Initial()
 
 				# for *.aedt File
@@ -2018,6 +2021,15 @@ class Eye_Form(Form):
 				elif extension == "tr0":
 					# TODO : Input Type for *.tr0
 					pass
+				sub_DB.Title[1] = File.split("\\")[-1]
+				sub_DB.Title[2] = sub_DB.Option_Form._ComboBox_Vref.Text
+				sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text
+				sub_DB.Title[4] = str(sub_DB.Option_Form._CheckBox_PlotEye.Checked)
+				if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+					sub_DB.Title[5] = "True-%s" % sub_DB.Option_Form._ComboBox_ReportFormat.Text
+				else:
+					sub_DB.Title[5] = "False"
+				self.Text = " : ".join(sub_DB.Title)
 
 			else:
 				MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
@@ -2028,6 +2040,7 @@ class Eye_Form(Form):
 		except Exception as e:			
 			Log("[Input File Import] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")			
 			EXIT()
 
@@ -2154,7 +2167,8 @@ class Eye_Form(Form):
 			DDR_Gen = self._ComboBox_DDRGen.Text
 			if DDR_Gen.find("DDR4") != -1 or DDR_Gen.find("DDR5") != -1:
 				self._GroupBox_NewEye.Visible = True
-				self._GroupBox_OldEye.Visible = False			
+				self._GroupBox_OldEye.Visible = False
+				self.TextBox_VcentDQTextChanged(self, sender)
 				sub_DB.Eyeflag = True
 				
 				if self.Full_Size_flag:
