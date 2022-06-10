@@ -1589,7 +1589,7 @@ class OptionForm(Form):
 			[TreeNode_EM,
 			TreeNode_Tran,
 			TreeNode_Eye]))
-		self._TreeView.Size = System.Drawing.Size(232, 404)
+		self._TreeView.Size = System.Drawing.Size(132, 269)
 		self._TreeView.TabIndex = 0
 		self._TreeView.NodeMouseClick += self.TreeViewNodeMouseClick
 		# 
@@ -1610,12 +1610,13 @@ class OptionForm(Form):
 		self._GroupBox_General.Size = System.Drawing.Size(543, 129)
 		self._GroupBox_General.TabIndex = 33
 		self._GroupBox_General.TabStop = False
+		self._GroupBox_General.Visible = False
 		self._GroupBox_General.Text = "General Directories"
 		# 
 		# GroupBox_EM
 		# 
 		self._GroupBox_EM.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._GroupBox_EM.Location = System.Drawing.Point(255, 141)
+		self._GroupBox_EM.Location = System.Drawing.Point(155, 6)
 		self._GroupBox_EM.Name = "GroupBox_EM"
 		self._GroupBox_EM.Size = System.Drawing.Size(543, 275)
 		self._GroupBox_EM.TabIndex = 35
@@ -1626,7 +1627,7 @@ class OptionForm(Form):
 		# GroupBox_Tran
 		# 
 		self._GroupBox_Tran.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._GroupBox_Tran.Location = System.Drawing.Point(255, 141)
+		self._GroupBox_Tran.Location = System.Drawing.Point(155, 6)
 		self._GroupBox_Tran.Name = "GroupBox_Tran"
 		self._GroupBox_Tran.Size = System.Drawing.Size(543, 275)
 		self._GroupBox_Tran.TabIndex = 36
@@ -1662,9 +1663,9 @@ class OptionForm(Form):
 		self._GroupBox_Eye.Controls.Add(self._TextBox_EyeOffset)
 		self._GroupBox_Eye.Controls.Add(self._Label_EyeOffset)
 		self._GroupBox_Eye.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._GroupBox_Eye.Location = System.Drawing.Point(255, 141)
+		self._GroupBox_Eye.Location = System.Drawing.Point(155, 6)
 		self._GroupBox_Eye.Name = "GroupBox_Eye"
-		self._GroupBox_Eye.Size = System.Drawing.Size(543, 275)
+		self._GroupBox_Eye.Size = System.Drawing.Size(453, 275)
 		self._GroupBox_Eye.TabIndex = 34
 		self._GroupBox_Eye.TabStop = False
 		self._GroupBox_Eye.Visible = False
@@ -1729,7 +1730,7 @@ class OptionForm(Form):
 		# Button_Compliance
 		# 
 		self._Button_Compliance.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_Compliance.Location = System.Drawing.Point(404, 235)
+		self._Button_Compliance.Location = System.Drawing.Point(214, 192)
 		self._Button_Compliance.Name = "Button_Compliance"
 		self._Button_Compliance.Size = System.Drawing.Size(121, 23)
 		self._Button_Compliance.TabIndex = 69
@@ -1741,7 +1742,7 @@ class OptionForm(Form):
 		# Button_OK
 		# 
 		self._Button_OK.Font = System.Drawing.Font("Arial", 9)
-		self._Button_OK.Location = System.Drawing.Point(652, 422)
+		self._Button_OK.Location = System.Drawing.Point(462, 287)
 		self._Button_OK.Name = "Button_OK"
 		self._Button_OK.Size = System.Drawing.Size(70, 28)
 		self._Button_OK.TabIndex = 32
@@ -1752,7 +1753,7 @@ class OptionForm(Form):
 		# Button_Cancel
 		# 
 		self._Button_Cancel.Font = System.Drawing.Font("Arial", 9)
-		self._Button_Cancel.Location = System.Drawing.Point(728, 422)
+		self._Button_Cancel.Location = System.Drawing.Point(538, 287)
 		self._Button_Cancel.Name = "Button_Cancel"
 		self._Button_Cancel.Size = System.Drawing.Size(70, 28)
 		self._Button_Cancel.TabIndex = 29
@@ -1815,7 +1816,7 @@ class OptionForm(Form):
 		self._Label_TotalWaveform.Font = System.Drawing.Font("Arial", 9)
 		self._Label_TotalWaveform.Location = System.Drawing.Point(245, 26)
 		self._Label_TotalWaveform.Name = "Label_TotalWaveform"
-		self._Label_TotalWaveform.Size = System.Drawing.Size(289, 28)
+		self._Label_TotalWaveform.Size = System.Drawing.Size(199, 28)
 		self._Label_TotalWaveform.TabIndex = 44
 		self._Label_TotalWaveform.Text = ", (Total Waveform Length = N/A)"
 		self._Label_TotalWaveform.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1844,7 +1845,7 @@ class OptionForm(Form):
 		# Label_Analyze
 		# 
 		self._Label_Analyze.Font = System.Drawing.Font("Arial", 9)
-		self._Label_Analyze.Location = System.Drawing.Point(341, 72)
+		self._Label_Analyze.Location = System.Drawing.Point(254, 72)
 		self._Label_Analyze.Name = "Label_Analyze"
 		self._Label_Analyze.Size = System.Drawing.Size(71, 28)
 		self._Label_Analyze.TabIndex = 62
@@ -1865,7 +1866,7 @@ class OptionForm(Form):
 		# Label_ImageWidth_Unit
 		# 
 		self._Label_ImageWidth_Unit.Font = System.Drawing.Font("Arial", 9)
-		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(249, 152)
+		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(219, 152)
 		self._Label_ImageWidth_Unit.Name = "Label_ImageWidth_Unit"
 		self._Label_ImageWidth_Unit.Size = System.Drawing.Size(51, 28)
 		self._Label_ImageWidth_Unit.TabIndex = 49
@@ -1876,11 +1877,11 @@ class OptionForm(Form):
 		# Label_ReportFormat
 		# 		
 		self._Label_ReportFormat.Font = System.Drawing.Font("Arial", 9)
-		self._Label_ReportFormat.Location = System.Drawing.Point(326, 152)
+		self._Label_ReportFormat.Location = System.Drawing.Point(276, 152)
 		self._Label_ReportFormat.Name = "Label_ReportFormat"
-		self._Label_ReportFormat.Size = System.Drawing.Size(92, 28)
+		self._Label_ReportFormat.Size = System.Drawing.Size(52, 28)
 		self._Label_ReportFormat.TabIndex = 66
-		self._Label_ReportFormat.Text = "Report Format :"
+		self._Label_ReportFormat.Text = "Format :"
 		self._Label_ReportFormat.Visible = False
 		self._Label_ReportFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft		
 		# 
@@ -1898,25 +1899,25 @@ class OptionForm(Form):
 		# Label_V_Border1
 		# 
 		self._Label_V_Border1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		self._Label_V_Border1.Location = System.Drawing.Point(22, 62)
+		self._Label_V_Border1.Location = System.Drawing.Point(11, 62)
 		self._Label_V_Border1.Name = "Label_V_Border1"
-		self._Label_V_Border1.Size = System.Drawing.Size(512, 2)
+		self._Label_V_Border1.Size = System.Drawing.Size(432, 2)
 		self._Label_V_Border1.TabIndex = 56		
 		# 
 		# Label_V_Border2
 		# 
 		self._Label_V_Border2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		self._Label_V_Border2.Location = System.Drawing.Point(22, 112)
+		self._Label_V_Border2.Location = System.Drawing.Point(11, 112)
 		self._Label_V_Border2.Name = "Label_V_Border2"
-		self._Label_V_Border2.Size = System.Drawing.Size(512, 2)
+		self._Label_V_Border2.Size = System.Drawing.Size(432, 2)
 		self._Label_V_Border2.TabIndex = 58
 		# 
 		# Label_V_Border3
 		# 
 		self._Label_V_Border3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-		self._Label_V_Border3.Location = System.Drawing.Point(22, 225)
+		self._Label_V_Border3.Location = System.Drawing.Point(11, 225)
 		self._Label_V_Border3.Name = "Label_V_Border3"
-		self._Label_V_Border3.Size = System.Drawing.Size(512, 2)
+		self._Label_V_Border3.Size = System.Drawing.Size(432, 2)
 		self._Label_V_Border3.TabIndex = 59		
 		# 
 		# ComboBox_Vref
@@ -1940,7 +1941,7 @@ class OptionForm(Form):
 		#	"+ Setup/Hold"]))
 		self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
 			["Default"]))
-		self._ComboBox_Analyze.Location = System.Drawing.Point(418, 76)
+		self._ComboBox_Analyze.Location = System.Drawing.Point(328, 76)
 		self._ComboBox_Analyze.Name = "ComboBox_Analyze"
 		self._ComboBox_Analyze.Size = System.Drawing.Size(104, 23)
 		self._ComboBox_Analyze.TabIndex = 63
@@ -1952,7 +1953,7 @@ class OptionForm(Form):
 		self._ComboBox_ReportFormat.FormattingEnabled = True
 		self._ComboBox_ReportFormat.Items.AddRange(System.Array[System.Object](
 			["Default"]))
-		self._ComboBox_ReportFormat.Location = System.Drawing.Point(418, 156)
+		self._ComboBox_ReportFormat.Location = System.Drawing.Point(328, 156)
 		self._ComboBox_ReportFormat.Name = "ComboBox_ReportFormat"
 		self._ComboBox_ReportFormat.Size = System.Drawing.Size(104, 23)
 		self._ComboBox_ReportFormat.TabIndex = 67
@@ -2014,7 +2015,7 @@ class OptionForm(Form):
 		self._TextBox_ImageWidth.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._TextBox_ImageWidth.Location = System.Drawing.Point(160, 155)
 		self._TextBox_ImageWidth.Name = "TextBox_ImageWidth"
-		self._TextBox_ImageWidth.Size = System.Drawing.Size(83, 23)
+		self._TextBox_ImageWidth.Size = System.Drawing.Size(53, 23)
 		self._TextBox_ImageWidth.Text = "200"
 		self._TextBox_ImageWidth.Visible = False
 		self._TextBox_ImageWidth.TabIndex = 48
@@ -2059,7 +2060,7 @@ class OptionForm(Form):
 		# CheckBox_Compiance
 		# 
 		self._CheckBox_Compiance.Font = System.Drawing.Font("Arial", 9)
-		self._CheckBox_Compiance.Location = System.Drawing.Point(240, 232)
+		self._CheckBox_Compiance.Location = System.Drawing.Point(50, 190)
 		self._CheckBox_Compiance.Name = "CheckBox_Compiance"
 		self._CheckBox_Compiance.Size = System.Drawing.Size(162, 29)
 		self._CheckBox_Compiance.TabIndex = 68
@@ -2075,7 +2076,7 @@ class OptionForm(Form):
 		# 
 		# Option_Form
 		# 
-		self.ClientSize = System.Drawing.Size(805, 457)
+		self.ClientSize = System.Drawing.Size(615, 322)
 		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
 		self.MaximumSize = System.Drawing.Size(1500, self.Size.Height)
 		self.FormSize_W = self.Size.Width
@@ -2133,8 +2134,8 @@ class OptionForm(Form):
 			for row in sub_DB.Net_Form._DataGridView.Rows:
 				temp.append(row.Cells[2].Value)
 
-			if "DQS_P" in temp and "DQS_N" in temp:
-				self._ComboBox_Analyze.SelectedIndex = 1
+			#if "DQS_P" in temp and "DQS_N" in temp:
+			#	self._ComboBox_Analyze.SelectedIndex = 1
 
 			######################
 			# Load Configuration #
@@ -2167,6 +2168,7 @@ class OptionForm(Form):
 		except Exception as e:			
 			Log("[Option Form Load] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to load Option Form","Warning")			
 			EXIT()
 
@@ -2329,7 +2331,10 @@ class OptionForm(Form):
 				#	sub_DB.Eye_Form._TextBox_VcentDQ.Text = self._TextBox_Vref.Text
 				## Old Eye
 				#else:
-				#	sub_DB.Eye_Form._TextBox_Vref.Text = self._TextBox_Vref.Text			
+				#	sub_DB.Eye_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
+			
+			sub_DB.Title[2] = "%s" % self._ComboBox_Vref.Text
+			sub_DB.Eye_Form.Text = " : ".join(sub_DB.Title)
 
 		except Exception as e:			
 			Log("[Vref Select] = Failed")
@@ -2349,6 +2354,7 @@ class OptionForm(Form):
 				self._Label_ImageWidth_Unit.Visible = sender.Checked			
 			self._Label_ReportFormat.Visible = sender.Checked
 			self._ComboBox_ReportFormat.Visible = sender.Checked
+
 
 			if sender.Checked:
 				sub_DB.Title[5] = "True-%s" % self._ComboBox_ReportFormat.Text

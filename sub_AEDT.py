@@ -69,6 +69,7 @@ def Get_AEDT_Info(self, File):
 		#self.Init_Flag = True
 		#self._ComboBox_Design.SelectedIndex = 0		
 		oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Items[0])
+		#oDesign = oProject.SetActiveDesign(self._ComboBox_Design.SelectedItem)
 		oModule = oDesign.GetModule("ReportSetup")
 		sub_DB.AEDT["Design"] = oDesign
 		sub_DB.AEDT["Module"] = oModule		
@@ -100,6 +101,7 @@ def Get_AEDT_Info(self, File):
 	except Exception as e:		
 		Log("[AEDT Launch] : Failed")
 		Log(traceback.format_exc())
+		print traceback.format_exc()
 		MessageBox.Show("Fail to run AEDT","Warning")		
 		EXIT()
 

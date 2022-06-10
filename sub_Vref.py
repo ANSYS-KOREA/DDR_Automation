@@ -182,7 +182,8 @@ def Cal_Vref_AEDT(self, Location):
 	##############
 	try:		
 		oProject = sub_DB.AEDT["Project"]
-		oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Items[0])
+		#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Items[0])
+		oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Text)
 		oModule = oDesign.GetModule("ReportSetup")
 		Log("		(AEDT Launch) = Done")
 
