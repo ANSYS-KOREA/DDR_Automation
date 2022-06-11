@@ -110,7 +110,8 @@ class Eye_Form(Form):
 		self._Button_ViewResult = System.Windows.Forms.Button()
 		self._Button_ImgShow_New = System.Windows.Forms.Button()
 		self._Button_ImgShow_Old = System.Windows.Forms.Button()
-		self._Button_Add = System.Windows.Forms.Button()
+		self._Button_Add_New = System.Windows.Forms.Button()
+		self._Button_Add_Old = System.Windows.Forms.Button()
 		self._Button_LoadCnf = System.Windows.Forms.Button()
 		self._Button_Debug = System.Windows.Forms.Button()
 
@@ -375,7 +376,7 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_OldEye
 		#
-		self._GroupBox_OldEye.Controls.Add(self._Button_Add)
+		self._GroupBox_OldEye.Controls.Add(self._Button_Add_Old)
 		self._GroupBox_OldEye.Controls.Add(self._CheckBox_Vref)
 		self._GroupBox_OldEye.Controls.Add(self._Label_Vac)
 		self._GroupBox_OldEye.Controls.Add(self._Label_Vdc)
@@ -441,7 +442,7 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_NewEye
 		#
-		self._GroupBox_NewEye.Controls.Add(self._Button_Add)
+		self._GroupBox_NewEye.Controls.Add(self._Button_Add_New)
 		self._GroupBox_NewEye.Controls.Add(self._CheckBox_VcentDQ)
 		self._GroupBox_NewEye.Controls.Add(self._Label_VoltageSpec)
 		self._GroupBox_NewEye.Controls.Add(self._Label_TimingSpec)
@@ -1215,17 +1216,29 @@ class Eye_Form(Form):
 		self._Button_ImgShow_Old.UseVisualStyleBackColor = True
 		self._Button_ImgShow_Old.Click += self.Button_ImgShow_OldClick
 		# 
-		# Button_Add
+		# Button_Add_New
 		#
-		self._Button_Add.FlatStyle = System.Windows.Forms.FlatStyle.Standard
-		self._Button_Add.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_Add.Location = System.Drawing.Point(629, 36)
-		self._Button_Add.Name = "Button_Add"
-		self._Button_Add.Size = System.Drawing.Size(60, 28)
-		self._Button_Add.TabIndex = 43
-		self._Button_Add.Text = 'Add'
-		self._Button_Add.UseVisualStyleBackColor = True
-		#self._Button_Add.Click += self.Button_AddClick
+		self._Button_Add_New.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+		self._Button_Add_New.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Add_New.Location = System.Drawing.Point(629, 36)
+		self._Button_Add_New.Name = "Button_Add_New"
+		self._Button_Add_New.Size = System.Drawing.Size(60, 28)
+		self._Button_Add_New.TabIndex = 43
+		self._Button_Add_New.Text = 'Add'
+		self._Button_Add_New.UseVisualStyleBackColor = True
+		#self._Button_Add_New.Click += self.Button_Add_NewClick
+		# 
+		# Button_Add_Old
+		#
+		self._Button_Add_Old.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+		self._Button_Add_Old.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Add_Old.Location = System.Drawing.Point(629, 36)
+		self._Button_Add_Old.Name = "Button_Add_Old"
+		self._Button_Add_Old.Size = System.Drawing.Size(60, 28)
+		self._Button_Add_Old.TabIndex = 43
+		self._Button_Add_Old.Text = 'Add'
+		self._Button_Add_Old.UseVisualStyleBackColor = True
+		#self._Button_Add_Old.Click += self.Button_Old_NewClick
 		# 
 		# Button_LoadCnf
 		#

@@ -2314,7 +2314,6 @@ class OptionForm(Form):
 	def ComboBox_VrefSelectedIndexChanged(self, sender, e):
 		try:
 			if sender.SelectedIndex == 0: # Auto Vref
-				print "1"
 				self._TextBox_Vref.Visible = False
 				self._Label_mV.Visible = False
 				# New Eye
