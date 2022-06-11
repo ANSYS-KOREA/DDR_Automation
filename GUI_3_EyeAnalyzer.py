@@ -110,6 +110,7 @@ class Eye_Form(Form):
 		self._Button_ViewResult = System.Windows.Forms.Button()
 		self._Button_ImgShow_New = System.Windows.Forms.Button()
 		self._Button_ImgShow_Old = System.Windows.Forms.Button()
+		self._Button_Add = System.Windows.Forms.Button()
 		self._Button_LoadCnf = System.Windows.Forms.Button()
 		self._Button_Debug = System.Windows.Forms.Button()
 
@@ -145,6 +146,7 @@ class Eye_Form(Form):
 		self._Help_DDRAbout_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Tool_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._Options_BatchStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 
 		self._toolStripSeparator1 = System.Windows.Forms.ToolStripSeparator()
 		self._toolStripSeparator2 = System.Windows.Forms.ToolStripSeparator()
@@ -248,7 +250,8 @@ class Eye_Form(Form):
 		# Tool_ToolStripMenuItem
 		# 
 		self._Tool_ToolStripMenuItem.DropDownItems.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
-			[self._Options_ToolStripMenuItem]))
+			[self._Options_ToolStripMenuItem,
+				self._Options_BatchStripMenuItem]))
 		self._Tool_ToolStripMenuItem.Name = "Tool_ToolStripMenuItem"
 		self._Tool_ToolStripMenuItem.Size = System.Drawing.Size(46, 20)
 		self._Tool_ToolStripMenuItem.Text = "Tool"
@@ -258,8 +261,14 @@ class Eye_Form(Form):
 		self._Options_ToolStripMenuItem.Name = "Options_ToolStripMenuItem"
 		self._Options_ToolStripMenuItem.Size = System.Drawing.Size(152, 22)
 		self._Options_ToolStripMenuItem.Text = "Options"
-		#self._Options_ToolStripMenuItem.Enabled = False
 		self._Options_ToolStripMenuItem.Click += self.Options_ToolStripMenuItemClick
+		# 
+		# Options_BatchStripMenuItem
+		# 
+		self._Options_BatchStripMenuItem.Name = "Options_BatchStripMenuItem"
+		self._Options_BatchStripMenuItem.Size = System.Drawing.Size(152, 22)
+		self._Options_BatchStripMenuItem.Text = "Batch"
+		self._Options_BatchStripMenuItem.Click += self.Options_BatchStripMenuItemClick
 		# 
 		# Help_ToolStripMenuItem
 		# 
@@ -366,6 +375,7 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_OldEye
 		#
+		self._GroupBox_OldEye.Controls.Add(self._Button_Add)
 		self._GroupBox_OldEye.Controls.Add(self._CheckBox_Vref)
 		self._GroupBox_OldEye.Controls.Add(self._Label_Vac)
 		self._GroupBox_OldEye.Controls.Add(self._Label_Vdc)
@@ -431,6 +441,7 @@ class Eye_Form(Form):
 		# 
 		# GroupBox_NewEye
 		#
+		self._GroupBox_NewEye.Controls.Add(self._Button_Add)
 		self._GroupBox_NewEye.Controls.Add(self._CheckBox_VcentDQ)
 		self._GroupBox_NewEye.Controls.Add(self._Label_VoltageSpec)
 		self._GroupBox_NewEye.Controls.Add(self._Label_TimingSpec)
@@ -1204,6 +1215,18 @@ class Eye_Form(Form):
 		self._Button_ImgShow_Old.UseVisualStyleBackColor = True
 		self._Button_ImgShow_Old.Click += self.Button_ImgShow_OldClick
 		# 
+		# Button_Add
+		#
+		self._Button_Add.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+		self._Button_Add.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Add.Location = System.Drawing.Point(629, 36)
+		self._Button_Add.Name = "Button_Add"
+		self._Button_Add.Size = System.Drawing.Size(60, 28)
+		self._Button_Add.TabIndex = 43
+		self._Button_Add.Text = 'Add'
+		self._Button_Add.UseVisualStyleBackColor = True
+		#self._Button_Add.Click += self.Button_AddClick
+		# 
 		# Button_LoadCnf
 		#
 		self._Button_LoadCnf.FlatStyle = System.Windows.Forms.FlatStyle.Standard
@@ -1538,11 +1561,21 @@ class Eye_Form(Form):
 
 				# for AEDT Input
 				if sub_DB.InputFile_Flag == 1:
-					if Check_Setup(self):				
-						self.Cursor = Cursors.WaitCursor					
-						sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
-						self.Cursor = Cursors.Default
-						self.Button_ViewNetClick(self, sender)
+					sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+					flag, show_msg_flag, msg = Check_Input(self)
+					if flag:				
+						sub_DB.Net_Form.NetFormLoad(self, sender)
+						for row in sub_DB.Net_Form._DataGridView.Rows:
+							if row.Cells[0].Value:
+								self._Button_Analyze.Enabled = True
+								self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+								break
+
+					#if Check_Setup(self):				
+					#	self.Cursor = Cursors.WaitCursor					
+					#	sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
+					#	self.Cursor = Cursors.Default
+					#	self.Button_ViewNetClick(self, sender)
 
 				# for CSV Input
 				elif sub_DB.InputFile_Flag == 2:
@@ -1663,6 +1696,7 @@ class Eye_Form(Form):
 		except Exception as e:			
 			Log("[Load Configuration File] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to load configuration file","Warning")
 			EXIT()
 
@@ -1714,6 +1748,9 @@ class Eye_Form(Form):
 			Log(traceback.format_exc())
 			MessageBox.Show("Fail to load Option Form","Warning")
 			EXIT()
+
+	def Options_BatchStripMenuItemClick(self, sender, e):
+		pass
 
 	def Help_DDRHelp_ToolStripMenuItemClick(self, sender, e):
 		MessageBox.Show("ANSYS DDR Wizard Help", "To Be Done")
