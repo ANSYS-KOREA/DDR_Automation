@@ -181,7 +181,10 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 	try:
 		oProject = sub_DB.AEDT["Project"]
 		oDesign = sub_DB.AEDT["Design"]
-		oModule = sub_DB.AEDT["Module"]		
+		if "Module" in sub_DB.AEDT.keys():
+			oModule = sub_DB.AEDT["Module"]
+		else:
+			oModule = oDesign.GetModule("ReportSetup")
 		Log("		(AEDT Setup) = Done")
 
 		Report_names = oModule.GetAllReportNames()
@@ -773,7 +776,7 @@ def Check_Input(self):
 						show_msg_flag = False
 			
 				else:
-					MessageBox.Show("Only numbers and \"Auto\"can be entered for TdIVW.\n\n" + "You entered : %s" % self._TextBox_VcentDQ.Text)
+					MessageBox.Show("Only numbers and \"Auto\"can be entered for Vcent_DQ.\n\n" + "You entered : %s" % self._TextBox_VcentDQ.Text)
 					flag = False
 					show_msg_flag = False
 
@@ -1317,8 +1320,8 @@ def CnfLoad(self, File):
 	self._ComboBox_SolutionName.Items.Clear()
 
 	Uenv = Load_env(File)
-	Uenv["File"] = File		
-	sub_DB.Uenv = Uenv
+	Uenv["File"] = File
+	sub_DB.Uenv = Uenv	
 	Log("	<Load the Latest Cnf - %s>" % File)
 
 	version_check_flag = False
@@ -1400,6 +1403,7 @@ def CnfLoad(self, File):
 						# Report Name
 						elif "(Report Name)" in key:
 							for i in range(0, len(Uenv[key])):
+								self.Init_Flag = True
 								if "!" in Uenv[key][i]:
 									self._CheckedListBox_ReportName.Items.Add(Uenv[key][i].replace("!",""))
 									self._CheckedListBox_ReportName.SetItemChecked(i, True)
@@ -1530,7 +1534,7 @@ def CnfLoad(self, File):
 
 						# Vref Method
 						elif "(Vref Method)" in key:							
-							sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv[key][0])
+							sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv[key][0])							
 							Log("		(Load Eye - Vref Method) = %s" % Uenv[key][1])
 
 						# Analyze Method
@@ -1539,7 +1543,7 @@ def CnfLoad(self, File):
 							Log("		(Load Eye - Analyze Method) = %s" % Uenv[key][1])
 
 						# Export Excel Report
-						elif "(Export Excel Report)" in key:
+						elif "(Export Excel Report)" in key:							
 							if Uenv[key][0] == "True":
 								sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = True
 							else:
@@ -1557,7 +1561,7 @@ def CnfLoad(self, File):
 							Log("		(Load Eye - Report Format) = %s" % Uenv[key][1])
 
 						# Plot Eye with Mask
-						elif "(Plot Eye with Mask)" in key:
+						elif "(Plot Eye with Mask)" in key:							
 							if Uenv[key][0] == "True":
 								sub_DB.Option_Form._CheckBox_PlotEye.Checked = True
 							else:
@@ -1582,6 +1586,20 @@ def CnfLoad(self, File):
 					print traceback.format_exc() 
 					MessageBox.Show("Fail to Load Cnf for Eye Analyzer","Warning")						
 					EXIT()
+
+		sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = int(Uenv["(Vref Method)<Analyze Option>[Eye]"][0])
+		if flag:
+			if sub_DB.Option_Form._ComboBox_Vref.SelectedIndex==0:
+				self._CheckBox_VcentDQ.Checked = True
+			else:
+				self._CheckBox_VcentDQ.Checked = False
+				self._TextBox_VcentDQ.Text = Uenv["(Manual Vref)<Analyze Option>[Eye]"][0]
+		else:
+			if sub_DB.Option_Form._ComboBox_Vref.SelectedIndex==0:			
+				self._CheckBox_Vref.Checked = True
+			else:
+				self._CheckBox_Vref.Checked = False
+				self._TextBox_Vref.Text = Uenv["(Manual Vref)<Analyze Option>[Eye]"][0]
 
 	# Fail Version Check
 	else:

@@ -752,10 +752,10 @@ class NetForm(Form):
 				if sub_DB.InputFile_Flag == 1: # for *.aedt input					
 					oProject = sub_DB.AEDT["Project"]
 					oDesign = sub_DB.AEDT["Design"]
-					oModule = sub_DB.AEDT["Module"]
+					#oModule = sub_DB.AEDT["Module"]
 					#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Items[0])
 					#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.SelectedIndex)
-					#oModule = oDesign.GetModule("ReportSetup")
+					oModule = oDesign.GetModule("ReportSetup")
 					
 					Report_Name = []
 					iter = 0
@@ -2314,14 +2314,17 @@ class OptionForm(Form):
 	def ComboBox_VrefSelectedIndexChanged(self, sender, e):
 		try:
 			if sender.SelectedIndex == 0: # Auto Vref
+				print "1"
 				self._TextBox_Vref.Visible = False
 				self._Label_mV.Visible = False
 				# New Eye
 				if sub_DB.Eyeflag:
 					sub_DB.Eye_Form._TextBox_VcentDQ.Text = "Auto"
+					sub_DB.Eye_Form._CheckBox_VcentDQ.Checked = True
 				# Old Eye
 				else:
 					sub_DB.Eye_Form._TextBox_Vref.Text = "Auto"
+					sub_DB.Eye_Form._CheckBox_Vref.Checked = True
 
 			elif sender.SelectedIndex == 1: # Manual Vref				
 				self._TextBox_Vref.Visible = True
