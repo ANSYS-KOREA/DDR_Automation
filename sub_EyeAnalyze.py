@@ -2149,316 +2149,335 @@ def Measure_Eye(self, Location):
 		T_Vhigh=[]
 		T_Vlow=[]
 		T_Vref=[]
-		if not sub_DB.CSV_flag:			
-			for key in Waveform:
-				T_Vhigh=[]
-				T_Vlow=[]
-				T_Vref=[]
 
-				# Measure Auto Delay
-				time_idx = 0
-				t_x = [] # Get Vref crossing time point
-				while(1):
-					vol_pre = Waveform[key][time_idx]
-					vol_post = Waveform[key][time_idx+1]
-					if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for V_low
-						t_interpolate = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref)
-						t_x.append(t_interpolate%UI)
-					time_idx += 1
-					if time_idx+1 == len(Waveform[key]):
-						break
+		# for non-uniform waveform
+		if not sub_DB.CSV_flag:
+			# Default
+			if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0 or sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 2:
+				for key in Waveform:
+					T_Vhigh=[]
+					T_Vlow=[]
+					T_Vref=[]
 
-				if min(t_x) < 0.2*UI:
-					for i in range(0, len(t_x)):
-						t_x[i] = (t_x[i]+0.1*UI)%UI				
-				offset = int(sum(t_x)/len(t_x))
+					# Calculate eye offset
+					input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)
+					time_idx = 0
+					while(1):
+						vol_pre = Waveform[key][time_idx]
+						vol_post = Waveform[key][time_idx+1]
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for rising transition					
+							eye_offset = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref) - int(round(UI/2))					
+							break
+						time_idx += 1
 
-				# Get measuring start time based on Vref touch time + eye offset			
-				input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)				
-				input_eye_offset = input_eye_offset - input_eye_offset % UI + UI - UI/2 + offset
-
-				time_idx = 0
-				while(1):
-					if sub_DB.Time[time_idx] > input_eye_offset:
-						time_idx -= 1
-						break
-					time_idx += 1
-				
-				t_start = input_eye_offset
-				while(1):					
-					vol_pre = Waveform[key][time_idx]
-					vol_post = Waveform[key][time_idx+1]
-
-					# Measure T_Vref
-					if (vol_pre - Vref) * (vol_post - Vref) < 0 :
-						t_interpolate = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref)
-						T_Vref.append(t_interpolate - t_start)
-
-					# V_high
-					if (vol_pre - V_high) * (vol_post - V_high) < 0 :
-						t_interpolate = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref)
-						T_Vhigh.append(t_interpolate - t_start)
+					# Measure Time points			
+					for i in range(eye_offset + input_eye_offset, len(Waveform[key])-1):
+						vol_pre = Waveform[key][i]
+						vol_post = Waveform[key][i+1]
+						# Measure T_Vhigh
+						if (vol_pre - V_high) * (vol_post - V_high) < 0 :					
+							time_idx = Interpolate_1st(sub_DB.Time[i], vol_pre, sub_DB.Time[i+1], vol_post, V_high)
+							T_Vhigh.append(time_idx % UI)
 					
-					# Measure T_low
-					if (vol_pre - V_low) * (vol_post - V_low) < 0 :
-						t_interpolate = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref)
-						T_Vlow.append(t_interpolate - t_start)						
+						# Measure T_low
+						if (vol_pre - V_low) * (vol_post - V_low) < 0 :
+							time_idx = Interpolate_1st(sub_DB.Time[i], vol_pre, sub_DB.Time[i+1], vol_post, V_low)
+							T_Vlow.append(time_idx % UI)
 
-					time_idx += 1
-					if sub_DB.Time[time_idx] - t_start >= UI:
-						t_start += UI						
+						# Measure T_Vref
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 :
+							time_idx = Interpolate_1st(sub_DB.Time[i], vol_pre, sub_DB.Time[i+1], vol_post, Vref)
+							T_Vref.append(time_idx % UI)
 
-					if time_idx+1 == len(Waveform[key]):
-						break
+					# Calculate eye width, jitter, and margin
+					margin = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)])) - float(self._TextBox_TdIVW.Text)*UI
+					jitter = max(T_Vref) - min(T_Vref)
+					#width = UI - jitter
+					width = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)]))
 
-				# Calculate eye width, jitter, and margin
-				width = UI - max(max(T_Vhigh) - min(T_Vhigh), max(T_Vlow) - min(T_Vlow))
-				margin = width - float(self._TextBox_TdIVW.Text)*UI				
-				jitter = max(T_Vref) - min(T_Vref)
+					# Back-up the measured data
+					Eye_Measure_Results[key] = []
+					Eye_Measure_Results[key].append(width)
+					Eye_Measure_Results[key].append(jitter)
+					Eye_Measure_Results[key].append(margin)
+					Eye_Measure_Results[key].append(T_Vhigh)
+					Eye_Measure_Results[key].append(T_Vref)
+					Eye_Measure_Results[key].append(T_Vlow)
+
+			# Auto-Delay
+			elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 1:
+				for key in Waveform:
+					T_Vhigh=[]
+					T_Vlow=[]
+					T_Vref=[]
+
+					# Measure Auto Delay
+					time_idx = 0
+					t_x = [] # Get Vref crossing time point
+					while(1):
+						vol_pre = Waveform[key][time_idx]
+						vol_post = Waveform[key][time_idx+1]
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for V_low
+							t_interpolate = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref)
+							t_x.append(t_interpolate%UI)
+						time_idx += 1
+						if time_idx+1 == len(Waveform[key]):
+							break
+
+					if min(t_x) < 0.2*UI:
+						for i in range(0, len(t_x)):
+							t_x[i] = (t_x[i]+0.1*UI)%UI				
+					offset = int(sum(t_x)/len(t_x))
+
+					# Get measuring start time based on Vref touch time + eye offset			
+					input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)				
+					input_eye_offset = input_eye_offset - input_eye_offset % UI + UI - UI/2 + offset
+
+					time_idx = 0
+					while(1):
+						if sub_DB.Time[time_idx] > input_eye_offset:
+							time_idx -= 1
+							break
+						time_idx += 1
 				
-				# Back-up the measured data
-				Eye_Measure_Results[key] = []
-				Eye_Measure_Results[key].append(width)
-				Eye_Measure_Results[key].append(jitter)
-				Eye_Measure_Results[key].append(margin)
-				Eye_Measure_Results[key].append(T_Vhigh)
-				Eye_Measure_Results[key].append(T_Vref)
-				Eye_Measure_Results[key].append(T_Vlow)
+					t_start = input_eye_offset
+					while(1):					
+						vol_pre = Waveform[key][time_idx]
+						vol_post = Waveform[key][time_idx+1]
 
-				####################
-				## Previous Method #
-				####################
-				## Calculate eye offset
-				#input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)
-				#time_idx = 0
-				#while(1):
-				#	vol_pre = Waveform[key][time_idx]
-				#	vol_post = Waveform[key][time_idx+1]
-				#	if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for rising transition					
-				#		eye_offset = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref) - int(round(UI/2))					
-				#		break
-				#	time_idx += 1
+						# Measure T_Vref
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 :
+							t_interpolate = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref)
+							T_Vref.append(t_interpolate - t_start)
 
-				## Measure Time points			
-				#for i in range(eye_offset + input_eye_offset, len(Waveform[key])-1):
-				#	vol_pre = Waveform[key][i]
-				#	vol_post = Waveform[key][i+1]
-				#	# Measure T_Vhigh
-				#	if (vol_pre - V_high) * (vol_post - V_high) < 0 :					
-				#		time_idx = Interpolate_1st(sub_DB.Time[i], vol_pre, sub_DB.Time[i+1], vol_post, V_high)
-				#		T_Vhigh.append(time_idx % UI)
+						# V_high
+						if (vol_pre - V_high) * (vol_post - V_high) < 0 :
+							t_interpolate = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref)
+							T_Vhigh.append(t_interpolate - t_start)
 					
-				#	# Measure T_low
-				#	if (vol_pre - V_low) * (vol_post - V_low) < 0 :
-				#		time_idx = Interpolate_1st(sub_DB.Time[i], vol_pre, sub_DB.Time[i+1], vol_post, V_low)
-				#		T_Vlow.append(time_idx % UI)
+						# Measure T_low
+						if (vol_pre - V_low) * (vol_post - V_low) < 0 :
+							t_interpolate = Interpolate_1st(sub_DB.Time[time_idx], vol_pre, sub_DB.Time[time_idx+1], vol_post, Vref)
+							T_Vlow.append(t_interpolate - t_start)						
 
-				#	# Measure T_Vref
-				#	if (vol_pre - Vref) * (vol_post - Vref) < 0 :
-				#		time_idx = Interpolate_1st(sub_DB.Time[i], vol_pre, sub_DB.Time[i+1], vol_post, Vref)
-				#		T_Vref.append(time_idx % UI)
+						time_idx += 1
+						if sub_DB.Time[time_idx] - t_start >= UI:
+							t_start += UI						
 
-				## Calculate eye width, jitter, and margin
-				#margin = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)])) - float(self._TextBox_TdIVW.Text)*UI
-				#jitter = max(T_Vref) - min(T_Vref)
-				##width = UI - jitter
-				#width = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)]))
+						if time_idx+1 == len(Waveform[key]):
+							break
 
-				## Back-up the measured data
-				#Eye_Measure_Results[key] = []
-				#Eye_Measure_Results[key].append(width)
-				#Eye_Measure_Results[key].append(jitter)
-				#Eye_Measure_Results[key].append(margin)
-				#Eye_Measure_Results[key].append(T_Vhigh)
-				#Eye_Measure_Results[key].append(T_Vref)
-				#Eye_Measure_Results[key].append(T_Vlow)
+					# Calculate eye width, jitter, and margin
+					width = UI - max(max(T_Vhigh) - min(T_Vhigh), max(T_Vlow) - min(T_Vlow))
+					margin = width - float(self._TextBox_TdIVW.Text)*UI				
+					jitter = max(T_Vref) - min(T_Vref)
+				
+					# Back-up the measured data
+					Eye_Measure_Results[key] = []
+					Eye_Measure_Results[key].append(width)
+					Eye_Measure_Results[key].append(jitter)
+					Eye_Measure_Results[key].append(margin)
+					Eye_Measure_Results[key].append(T_Vhigh)
+					Eye_Measure_Results[key].append(T_Vref)
+					Eye_Measure_Results[key].append(T_Vlow)				
 
+		# Uniform (1ps step) waveform
 		else:
-			for key in Waveform:				
-				sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
-				T_Vhigh=[]
-				T_Vlow=[]
-				T_Vref=[]				
-				#############################
-				# Latest Method - '22.06.03 #
-				#############################
-				# Measure Auto Delay
-				input_eye_offset = 0
-				t_x = [] # Get Vref crossing time point
-				while(1):
-					vol_pre = Waveform[key][input_eye_offset]
-					vol_post = Waveform[key][input_eye_offset+1]
-					if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for V_low						
-						t_x.append(input_eye_offset%UI)
-					input_eye_offset += 1
-					if input_eye_offset+1 == len(Waveform[key]):
-						break
+			# Default
+			if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:
+				for key in Waveform:				
+					sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
+					T_Vhigh=[]
+					T_Vlow=[]
+					T_Vref=[]
+
+					# Get measuring start time based on Vref touch time + eye offset
+					t_start = []
+					input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)				
+					while(1):					
+						vol_pre = Waveform[key][input_eye_offset]
+						vol_post = Waveform[key][input_eye_offset+1]
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 : # Detect Rising/Falling transition
+							t_start.append(input_eye_offset + UI/2)
+						input_eye_offset += 1
+						if input_eye_offset + UI/2 >= len(Waveform[key]):
+							break
+
+					for t_s in t_start:
+						time_idx = 0
+						iter = 0
+						while(1):						
+							if t_s + time_idx + 1 >= len(Waveform[key]):
+								break
+							vol_pre = Waveform[key][t_s + time_idx]
+							vol_post = Waveform[key][t_s + time_idx + 1]
+							# Measure T_Vhigh
+							if (vol_pre - V_high) * (vol_post - V_high) < 0 :							
+								T_Vhigh.append(time_idx)
+								iter += 1
+								#t_Vhigh.append(i)
+
+							# Measure T_low
+							if (vol_pre - V_low) * (vol_post - V_low) < 0 :							
+								T_Vlow.append(time_idx)
+								iter += 1
+								#t_Vlow.append(i)
+
+							# Measure T_Vref
+							if (vol_pre - Vref) * (vol_post - Vref) < 0 :							
+								T_Vref.append(time_idx)
+								iter += 1
+								#t_Vref.append(i)
+
+							# Initialize time index
+							time_idx += 1
+							if time_idx == UI or iter == 3:							
+								break
+
+					# Calculate eye width, jitter, and margin
+					width = UI - max(max(T_Vhigh) - min(T_Vhigh), max(T_Vlow) - min(T_Vlow))
+					margin = width - float(self._TextBox_TdIVW.Text)*UI				
+					jitter = max(T_Vref) - min(T_Vref)
 				
-				if min(t_x) < 0.2*UI:
-					for i in range(0, len(t_x)):
-						t_x[i] = (t_x[i]+0.1*UI)%UI				
-				offset = int(sum(t_x)/len(t_x))
+					# Back-up the measured data
+					Eye_Measure_Results[key] = []
+					Eye_Measure_Results[key].append(width)
+					Eye_Measure_Results[key].append(jitter)
+					Eye_Measure_Results[key].append(margin)
+					Eye_Measure_Results[key].append(T_Vhigh)
+					Eye_Measure_Results[key].append(T_Vref)
+					Eye_Measure_Results[key].append(T_Vlow)
+			
+			# Auto-delay
+			elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 1:
+				for key in Waveform:				
+					sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
+					T_Vhigh=[]
+					T_Vlow=[]
+					T_Vref=[]
+
+					# Measure Auto Delay
+					input_eye_offset = 0
+					t_x = [] # Get Vref crossing time point
+					while(1):
+						vol_pre = Waveform[key][input_eye_offset]
+						vol_post = Waveform[key][input_eye_offset+1]
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for V_low						
+							t_x.append(input_eye_offset%UI)
+						input_eye_offset += 1
+						if input_eye_offset+1 == len(Waveform[key]):
+							break
+				
+					if min(t_x) < 0.2*UI:
+						for i in range(0, len(t_x)):
+							t_x[i] = (t_x[i]+0.1*UI)%UI				
+					offset = int(sum(t_x)/len(t_x))
 								
-				# Get measuring start time based on Vref touch time + eye offset			
-				input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)				
-				input_eye_offset = input_eye_offset - input_eye_offset % UI + UI - UI/2 + offset
+					# Get measuring start time based on Vref touch time + eye offset			
+					input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)				
+					input_eye_offset = input_eye_offset - input_eye_offset % UI + UI - UI/2 + offset
 
-				time_idx = 0				
-				while(1):
-					vol_pre = Waveform[key][input_eye_offset]
-					vol_post = Waveform[key][input_eye_offset+1]
+					time_idx = 0				
+					while(1):
+						vol_pre = Waveform[key][input_eye_offset]
+						vol_post = Waveform[key][input_eye_offset+1]
 
-					# Measure T_Vref
-					if (vol_pre - Vref) * (vol_post - Vref) < 0 :							
-						T_Vref.append(time_idx)
+						# Measure T_Vref
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 :							
+							T_Vref.append(time_idx)
 
-					# V_high
-					if (vol_pre - V_high) * (vol_post - V_high) < 0 :							
-						T_Vhigh.append(time_idx)
+						# V_high
+						if (vol_pre - V_high) * (vol_post - V_high) < 0 :							
+							T_Vhigh.append(time_idx)
 					
-					# Measure T_low
-					if (vol_pre - V_low) * (vol_post - V_low) < 0 :							
-						T_Vlow.append(time_idx)
+						# Measure T_low
+						if (vol_pre - V_low) * (vol_post - V_low) < 0 :							
+							T_Vlow.append(time_idx)
 						
-					time_idx += 1
-					if time_idx == UI:
-						time_idx = 0						
+						time_idx += 1
+						if time_idx == UI:
+							time_idx = 0						
 
-					input_eye_offset += 1
-					if input_eye_offset + 1 == len(Waveform[key]):
-						break
+						input_eye_offset += 1
+						if input_eye_offset + 1 == len(Waveform[key]):
+							break
 
-				# Calculate eye width, jitter, and margin
-				width = UI - max(max(T_Vhigh) - min(T_Vhigh), max(T_Vlow) - min(T_Vlow))
-				margin = width - float(self._TextBox_TdIVW.Text)*UI				
-				jitter = max(T_Vref) - min(T_Vref)
+					# Calculate eye width, jitter, and margin
+					width = UI - max(max(T_Vhigh) - min(T_Vhigh), max(T_Vlow) - min(T_Vlow))
+					margin = width - float(self._TextBox_TdIVW.Text)*UI				
+					jitter = max(T_Vref) - min(T_Vref)
 				
-				# Back-up the measured data
-				Eye_Measure_Results[key] = []
-				Eye_Measure_Results[key].append(width)
-				Eye_Measure_Results[key].append(jitter)
-				Eye_Measure_Results[key].append(margin)
-				Eye_Measure_Results[key].append(T_Vhigh)
-				Eye_Measure_Results[key].append(T_Vref)
-				Eye_Measure_Results[key].append(T_Vlow)
+					# Back-up the measured data
+					Eye_Measure_Results[key] = []
+					Eye_Measure_Results[key].append(width)
+					Eye_Measure_Results[key].append(jitter)
+					Eye_Measure_Results[key].append(margin)
+					Eye_Measure_Results[key].append(T_Vhigh)
+					Eye_Measure_Results[key].append(T_Vref)
+					Eye_Measure_Results[key].append(T_Vlow)
 
-				##################
-				## Latest Method #
-				##################
-				## Get measuring start time based on Vref touch time + eye offset
-				#t_start = []
-				#input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)				
-				#while(1):					
-				#	vol_pre = Waveform[key][input_eye_offset]
-				#	vol_post = Waveform[key][input_eye_offset+1]
-				#	if (vol_pre - Vref) * (vol_post - Vref) < 0 : # Detect Rising/Falling transition
-				#		t_start.append(input_eye_offset + UI/2)
-				#	input_eye_offset += 1
-				#	if input_eye_offset + UI/2 >= len(Waveform[key]):
-				#		break
+			# Tr-by-Tr
+			elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 2:
+				for key in Waveform:				
+					sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
+					T_Vhigh=[]
+					T_Vlow=[]
+					T_Vref=[]				
 
-				#for t_s in t_start:
-				#	time_idx = 0
-				#	iter = 0
-				#	while(1):						
-				#		if t_s + time_idx + 1 >= len(Waveform[key]):
-				#			break
-				#		vol_pre = Waveform[key][t_s + time_idx]
-				#		vol_post = Waveform[key][t_s + time_idx + 1]
-				#		# Measure T_Vhigh
-				#		if (vol_pre - V_high) * (vol_post - V_high) < 0 :							
-				#			T_Vhigh.append(time_idx)
-				#			iter += 1
-				#			#t_Vhigh.append(i)
+					# Calculate eye offset
+					input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)
+					eye_offset = 0				
+					while(1):					
+						vol_pre = Waveform[key][eye_offset]
+						vol_post = Waveform[key][eye_offset+1]
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for rising transition						
+							break
+						eye_offset += 1
 
-				#		# Measure T_low
-				#		if (vol_pre - V_low) * (vol_post - V_low) < 0 :							
-				#			T_Vlow.append(time_idx)
-				#			iter += 1
-				#			#t_Vlow.append(i)
-
-				#		# Measure T_Vref
-				#		if (vol_pre - Vref) * (vol_post - Vref) < 0 :							
-				#			T_Vref.append(time_idx)
-				#			iter += 1
-				#			#t_Vref.append(i)
-
-				#		# Initialize time index
-				#		time_idx += 1
-				#		if time_idx == UI or iter == 3:							
-				#			break
-
-				## Calculate eye width, jitter, and margin
-				#width = UI - max(max(T_Vhigh) - min(T_Vhigh), max(T_Vlow) - min(T_Vlow))
-				#margin = width - float(self._TextBox_TdIVW.Text)*UI				
-				#jitter = max(T_Vref) - min(T_Vref)
+					if eye_offset % UI > UI/2:
+						eye_offset = (eye_offset % UI) - UI/2
+					else:
+						eye_offset = (eye_offset % UI) + UI/2
 				
-				## Back-up the measured data
-				#Eye_Measure_Results[key] = []
-				#Eye_Measure_Results[key].append(width)
-				#Eye_Measure_Results[key].append(jitter)
-				#Eye_Measure_Results[key].append(margin)
-				#Eye_Measure_Results[key].append(T_Vhigh)
-				#Eye_Measure_Results[key].append(T_Vref)
-				#Eye_Measure_Results[key].append(T_Vlow)
+					# Measure Time points
+					time_idx = 0
+					print eye_offset + input_eye_offset
+					for i in range(eye_offset + input_eye_offset, len(Waveform[key])-1):
+						vol_pre = Waveform[key][i]
+						vol_post = Waveform[key][i+1]
+						# Measure T_Vhigh
+						if (vol_pre - V_high) * (vol_post - V_high) < 0 :
+							T_Vhigh.append(time_idx)
+							#t_Vhigh.append(i)
 
-				####################
-				## Previous Method #
-				####################
-				## Calculate eye offset
-				#input_eye_offset = int(float(sub_DB.Option_Form._TextBox_EyeOffset.Text)*1000)
-				#eye_offset = 0				
-				#while(1):					
-				#	vol_pre = Waveform[key][eye_offset]
-				#	vol_post = Waveform[key][eye_offset+1]
-				#	if (vol_pre - Vref) * (vol_post - Vref) < 0 : # for rising transition						
-				#		break
-				#	eye_offset += 1
+						# Measure T_low
+						if (vol_pre - V_low) * (vol_post - V_low) < 0 :
+							T_Vlow.append(time_idx)
+							#t_Vlow.append(i)
 
-				#if eye_offset % UI > UI/2:
-				#	eye_offset = (eye_offset % UI) - UI/2
-				#else:
-				#	eye_offset = (eye_offset % UI) + UI/2
-				
-				## Measure Time points
-				#time_idx = 0
-				#print eye_offset + input_eye_offset
-				#for i in range(eye_offset + input_eye_offset, len(Waveform[key])-1):
-				#	vol_pre = Waveform[key][i]
-				#	vol_post = Waveform[key][i+1]
-				#	# Measure T_Vhigh
-				#	if (vol_pre - V_high) * (vol_post - V_high) < 0 :
-				#		T_Vhigh.append(time_idx)
-				#		#t_Vhigh.append(i)
+						# Measure T_Vref
+						if (vol_pre - Vref) * (vol_post - Vref) < 0 :
+							T_Vref.append(time_idx)
+							#t_Vref.append(i)
 
-				#	# Measure T_low
-				#	if (vol_pre - V_low) * (vol_post - V_low) < 0 :
-				#		T_Vlow.append(time_idx)
-				#		#t_Vlow.append(i)
+						# Initialize time index
+						time_idx += 1
+						if time_idx == UI:
+							time_idx = 0
 
-				#	# Measure T_Vref
-				#	if (vol_pre - Vref) * (vol_post - Vref) < 0 :
-				#		T_Vref.append(time_idx)
-				#		#t_Vref.append(i)
+					# Calculate eye width, jitter, and margin
+					margin = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)])) - float(self._TextBox_TdIVW.Text)*UI				
+					jitter = max(T_Vref) - min(T_Vref)				
+					width = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)]))
 
-				#	# Initialize time index
-				#	time_idx += 1
-				#	if time_idx == UI:
-				#		time_idx = 0
-
-				## Calculate eye width, jitter, and margin
-				#margin = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)])) - float(self._TextBox_TdIVW.Text)*UI				
-				#jitter = max(T_Vref) - min(T_Vref)				
-				#width = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)]))
-
-				## Back-up the measured data
-				#Eye_Measure_Results[key] = []
-				#Eye_Measure_Results[key].append(width)
-				#Eye_Measure_Results[key].append(jitter)
-				#Eye_Measure_Results[key].append(margin)
-				#Eye_Measure_Results[key].append(T_Vhigh)
-				#Eye_Measure_Results[key].append(T_Vref)
-				#Eye_Measure_Results[key].append(T_Vlow)
+					# Back-up the measured data
+					Eye_Measure_Results[key] = []
+					Eye_Measure_Results[key].append(width)
+					Eye_Measure_Results[key].append(jitter)
+					Eye_Measure_Results[key].append(margin)
+					Eye_Measure_Results[key].append(T_Vhigh)
+					Eye_Measure_Results[key].append(T_Vref)
+					Eye_Measure_Results[key].append(T_Vlow)
 
 		# Get Group List
 		Group = []

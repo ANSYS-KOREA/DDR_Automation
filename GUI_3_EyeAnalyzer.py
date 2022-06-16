@@ -147,10 +147,31 @@ class Eye_Form(Form):
 		self._Help_DDRAbout_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Tool_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._Options_IBISStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_BatchStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
-
 		self._toolStripSeparator1 = System.Windows.Forms.ToolStripSeparator()
 		self._toolStripSeparator2 = System.Windows.Forms.ToolStripSeparator()
+
+		self._toolStrip1 = System.Windows.Forms.ToolStrip()
+		self._toolStrip_Input_Button = System.Windows.Forms.ToolStripButton()		
+		self._toolStrip_DefLoad_Button = System.Windows.Forms.ToolStripButton()
+		self._toolStrip_DefEdit_Button = System.Windows.Forms.ToolStripButton()		
+		self._toolStrip_CnfLoad_Button = System.Windows.Forms.ToolStripButton()
+		self._toolStrip_CnfSave_Button = System.Windows.Forms.ToolStripButton()		
+		self._toolStrip_CnfEdit_Button = System.Windows.Forms.ToolStripButton()
+		self._toolStrip_Option_Button = System.Windows.Forms.ToolStripButton()
+		self._toolStrip_Batch_Button = System.Windows.Forms.ToolStripButton()
+		self._toolStrip_IBIS_Button = System.Windows.Forms.ToolStripButton()
+		self._toolStripSplit_Help_Button = System.Windows.Forms.ToolStripSplitButton()
+		self._ADEAHelpToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._ADEAQuickGuideToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()		
+		self._WhatsNewInThisReleaseToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._toolStripSeparator3 = System.Windows.Forms.ToolStripSeparator()
+		self._toolStripSeparator4 = System.Windows.Forms.ToolStripSeparator()
+		self._toolStripSeparator5 = System.Windows.Forms.ToolStripSeparator()
+		self._toolStripSeparator6 = System.Windows.Forms.ToolStripSeparator()
+		self._toolStripSeparator7 = System.Windows.Forms.ToolStripSeparator()
 
 		self._PictureBox_OldEye.BeginInit()
 		self._PictureBox_NewEye.BeginInit()
@@ -159,12 +180,13 @@ class Eye_Form(Form):
 		self._GroupBox_OldEye.SuspendLayout()		
 		self._GroupBox_NewEye.SuspendLayout()
 		self._GroupBox_UnitOld.SuspendLayout()
-		self._GroupBox_UnitNew.SuspendLayout()		
+		self._GroupBox_UnitNew.SuspendLayout()
+		self._toolStrip1.SuspendLayout()
 		self.SuspendLayout()
 		# 
 		# MenuStrip
 		#
-		self._MenuStrip.BackColor = System.Drawing.Color.FromArgb(240, 240, 240)
+		self._MenuStrip.BackColor = System.Drawing.SystemColors.Window
 		self._MenuStrip.Font = System.Drawing.Font("Arial", 10)
 		self._MenuStrip.Items.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
 			[self._File_ToolStripMenuItem,
@@ -252,7 +274,8 @@ class Eye_Form(Form):
 		# 
 		self._Tool_ToolStripMenuItem.DropDownItems.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
 			[self._Options_ToolStripMenuItem,
-				self._Options_BatchStripMenuItem]))
+			 self._Options_IBISStripMenuItem,
+			 self._Options_BatchStripMenuItem]))
 		self._Tool_ToolStripMenuItem.Name = "Tool_ToolStripMenuItem"
 		self._Tool_ToolStripMenuItem.Size = System.Drawing.Size(46, 20)
 		self._Tool_ToolStripMenuItem.Text = "Tool"
@@ -263,6 +286,13 @@ class Eye_Form(Form):
 		self._Options_ToolStripMenuItem.Size = System.Drawing.Size(152, 22)
 		self._Options_ToolStripMenuItem.Text = "Options"
 		self._Options_ToolStripMenuItem.Click += self.Options_ToolStripMenuItemClick
+		# 
+		# Options_IBIShStripMenuItem
+		# 
+		self._Options_IBISStripMenuItem.Name = "Options_IBIShStripMenuItem"
+		self._Options_IBISStripMenuItem.Size = System.Drawing.Size(152, 22)
+		self._Options_IBISStripMenuItem.Text = "IBIS Optimization"
+		self._Options_IBISStripMenuItem.Click += self.Options_IBISStripMenuItemClick
 		# 
 		# Options_BatchStripMenuItem
 		# 
@@ -319,7 +349,255 @@ class Eye_Form(Form):
 		# toolStripSeparator2
 		#
 		self._toolStripSeparator2.Name = "toolStripSeparator2"
-		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)		
+		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)
+		# 
+		# toolStrip1
+		#
+		self._toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+		self._toolStrip1.BackColor = System.Drawing.SystemColors.Control
+		self._toolStrip1.Items.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
+			[self._toolStrip_Input_Button,
+			self._toolStripSeparator3,
+			self._toolStrip_DefLoad_Button,
+			self._toolStrip_DefEdit_Button,
+			self._toolStripSeparator4,
+			self._toolStrip_CnfLoad_Button,
+			self._toolStrip_CnfSave_Button,
+			self._toolStrip_CnfEdit_Button,
+			self._toolStripSeparator5,
+			self._toolStrip_Option_Button,			
+			self._toolStrip_IBIS_Button,
+			self._toolStrip_Batch_Button,
+			self._toolStripSeparator6,
+			self._toolStripSplit_Help_Button]))
+		self._toolStrip1.Location = System.Drawing.Point(0, 0)
+		self._toolStrip1.Name = "toolStrip1"
+		self._toolStrip1.AutoSize = False
+		self._toolStrip1.Size = System.Drawing.Size(1802, 35)
+		self._toolStrip1.TabIndex = 45
+		self._toolStrip1.Visible = True
+		self._toolStrip1.Text = "toolStrip1"
+		self._toolStrip1.ImageScalingSize = System.Drawing.Size(15, 20)
+		# 
+		# toolStrip_Input_Button
+		#
+		#File = path + r'\Resources\open-folder.png'
+		File = path + r'\Resources\folder.png'
+		self._toolStrip_Input_Button.AutoToolTip = False
+		self._toolStrip_Input_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_Input_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_Input_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_Input_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_Input_Button.Image = Bitmap(File)
+		self._toolStrip_Input_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_Input_Button.Margin = System.Windows.Forms.Padding(11, 3, 0, 2)
+		self._toolStrip_Input_Button.Name = "toolStrip_Input_Button"		
+		self._toolStrip_Input_Button.Text = "Open"
+		self._toolStrip_Input_Button.ToolTipText = "[Crtl+I] : Open Input File"
+		self._toolStrip_Input_Button.Click += self.toolStrip_Input_ButtonClick
+		# 
+		# toolStripSeparator3
+		# 
+		self._toolStripSeparator3.Name = "toolStripSeparator1"
+		self._toolStripSeparator3.Size = System.Drawing.Size(6, 25)
+		#
+		# toolStrip_DefLoad_Button
+		#
+		File = path + r'\Resources\import.png'
+		self._toolStrip_DefLoad_Button.AutoToolTip = False
+		self._toolStrip_DefLoad_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_DefLoad_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_DefLoad_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_DefLoad_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_DefLoad_Button.Image = Bitmap(File)
+		self._toolStrip_DefLoad_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_DefLoad_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStrip_DefLoad_Button.Name = "toolStrip_DefLoad_Button"		
+		self._toolStrip_DefLoad_Button.Text = "Load Def"
+		self._toolStrip_DefLoad_Button.ToolTipText = "Load Definition File"
+		self._toolStrip_DefLoad_Button.Click += self.toolStrip_DefLoad_ButtonClick		
+		#
+		# toolStrip_DefEdit_Button
+		#
+		File = path + r'\Resources\edit.png'
+		self._toolStrip_DefEdit_Button.AutoToolTip = False
+		self._toolStrip_DefEdit_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_DefEdit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_DefEdit_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_DefEdit_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_DefEdit_Button.Image = Bitmap(File)
+		self._toolStrip_DefEdit_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_DefEdit_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStrip_DefEdit_Button.Name = "toolStrip_DefEdit_Button"		
+		self._toolStrip_DefEdit_Button.Text = "Edit Def"
+		self._toolStrip_DefEdit_Button.ToolTipText = "Edit Definition File"
+		self._toolStrip_DefEdit_Button.Click += self.toolStrip_DefEdit_ButtonClick
+		# 
+		# toolStripSeparator4
+		# 
+		self._toolStripSeparator4.Name = "toolStripSeparator4"
+		self._toolStripSeparator4.Size = System.Drawing.Size(6, 25)
+		#
+		# toolStrip_CnfLoad_Button
+		#
+		File = path + r'\Resources\import.png'
+		self._toolStrip_CnfLoad_Button.AutoToolTip = False
+		self._toolStrip_CnfLoad_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_CnfLoad_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_CnfLoad_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_CnfLoad_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_CnfLoad_Button.Image = Bitmap(File)
+		self._toolStrip_CnfLoad_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_CnfLoad_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStrip_CnfLoad_Button.Name = "toolStrip_CnfLoad_Button"		
+		self._toolStrip_CnfLoad_Button.Text = "Load Cnf"
+		self._toolStrip_CnfLoad_Button.ToolTipText = "[Crtl+L] : Load Configuration File"
+		self._toolStrip_CnfLoad_Button.Click += self.toolStrip_CnfLoad_ButtonClick
+		#
+		# toolStrip_CnfSave_Button
+		#
+		File = path + r'\Resources\save.png'
+		self._toolStrip_CnfSave_Button.AutoToolTip = False
+		self._toolStrip_CnfSave_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_CnfSave_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_CnfSave_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_CnfSave_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_CnfSave_Button.Image = Bitmap(File)
+		self._toolStrip_CnfSave_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_CnfSave_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStrip_CnfSave_Button.Name = "toolStrip_CnfSave_Button"
+		self._toolStrip_CnfSave_Button.Text = "Save Cnf"
+		self._toolStrip_CnfSave_Button.ToolTipText = "[Crtl+S] : Soad Configuration File"
+		self._toolStrip_CnfSave_Button.Click += self.toolStrip_CnfSave_ButtonClick
+		#
+		# toolStrip_CnfEdit_Button
+		#
+		File = path + r'\Resources\edit.png'
+		self._toolStrip_CnfEdit_Button.AutoToolTip = False
+		self._toolStrip_CnfEdit_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_CnfEdit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_CnfEdit_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_CnfEdit_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_CnfEdit_Button.Image = Bitmap(File)
+		self._toolStrip_CnfEdit_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_CnfEdit_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStrip_CnfEdit_Button.Name = "toolStrip_CnfEdit_Button"
+		self._toolStrip_CnfEdit_Button.Text = "Edit Cnf"
+		self._toolStrip_CnfEdit_Button.ToolTipText = "[Crtl+E] : Load Configuration File"
+		self._toolStrip_CnfEdit_Button.Click += self.toolStrip_CnfEdit_ButtonClick
+		# 
+		# toolStripSeparator5
+		# 
+		self._toolStripSeparator5.Name = "toolStripSeparator5"
+		self._toolStripSeparator5.Size = System.Drawing.Size(6, 25)				
+		#
+		# toolStrip_Option_Button
+		#
+		File = path + r'\Resources\options.png'
+		self._toolStrip_Option_Button.AutoToolTip = False
+		self._toolStrip_Option_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_Option_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_Option_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_Option_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_Option_Button.Image = Bitmap(File)
+		self._toolStrip_Option_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_Option_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStrip_Option_Button.Name = "toolStrip_Option_Button"
+		self._toolStrip_Option_Button.Text = "Option"
+		self._toolStrip_Option_Button.ToolTipText = "[Crtl+O] : Set Eye Analysis Options"
+		self._toolStrip_Option_Button.Click += self.toolStrip_Option_ButtonClick		
+		#
+		# toolStrip_IBIS_Button
+		#
+		File = path + r'\Resources\IBIS.png'
+		self._toolStrip_IBIS_Button.AutoToolTip = False
+		self._toolStrip_IBIS_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_IBIS_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_IBIS_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_IBIS_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_IBIS_Button.Image = Bitmap(File)
+		self._toolStrip_IBIS_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_IBIS_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStrip_IBIS_Button.Name = "toolStrip_IBIS_Button"
+		self._toolStrip_IBIS_Button.Text = "IBIS Opt."
+		self._toolStrip_IBIS_Button.ToolTipText = "[Crtl+B] : DDR IBIS Optimization"
+		self._toolStrip_IBIS_Button.Click += self.toolStrip_IBIS_ButtonClick		
+		#
+		# toolStrip_Batch_Button
+		#
+		File = path + r'\Resources\batch.png'
+		self._toolStrip_Batch_Button.AutoToolTip = False
+		self._toolStrip_Batch_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStrip_Batch_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStrip_Batch_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStrip_Batch_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStrip_Batch_Button.Image = Bitmap(File)
+		self._toolStrip_Batch_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStrip_Batch_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStrip_Batch_Button.Name = "toolStrip_Batch_Button"
+		self._toolStrip_Batch_Button.Text = "Batch"
+		self._toolStrip_Batch_Button.ToolTipText = "[Crtl+C] : Batch Process for ADEA"
+		self._toolStrip_Batch_Button.Click += self.toolStrip_Batch_ButtonClick		
+		# 
+		# toolStripSeparator6
+		# 
+		self._toolStripSeparator6.Name = "toolStripSeparator4"
+		self._toolStripSeparator6.Size = System.Drawing.Size(6, 25)
+		#self._toolStripSplit_Help_Button
+		# 
+		# toolStripSplit_Help_Button
+		# 
+		File = path + r'\Resources\help.png'
+		self._toolStripSplit_Help_Button.AutoToolTip = False
+		self._toolStripSplit_Help_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+		self._toolStripSplit_Help_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
+		self._toolStripSplit_Help_Button.DropDownItems.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
+			[self._ADEAHelpToolStripMenuItem,
+			self._ADEAQuickGuideToolStripMenuItem,
+			self._toolStripSeparator7,
+			self._WhatsNewInThisReleaseToolStripMenuItem,
+			self._AboutAnsysDDREyeAnalyzerToolStripMenuItem]))
+		self._toolStripSplit_Help_Button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+		self._toolStripSplit_Help_Button.Font = System.Drawing.Font("Calibri", 8.25, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._toolStripSplit_Help_Button.Image = Bitmap(File)
+		self._toolStripSplit_Help_Button.ImageTransparentColor = System.Drawing.Color.Magenta
+		self._toolStripSplit_Help_Button.Margin = System.Windows.Forms.Padding(0, 4, 0, 2)
+		self._toolStripSplit_Help_Button.Name = "toolStrip_Help_Button"
+		self._toolStripSplit_Help_Button.Text = "Help"
+		self._toolStripSplit_Help_Button.ToolTipText = "Help for ADEA"	
+		# 
+		# ADEAHelpToolStripMenuItem
+		# 
+		self._ADEAHelpToolStripMenuItem.Name = "ADEAHelpToolStripMenuItem"
+		self._ADEAHelpToolStripMenuItem.Size = System.Drawing.Size(243, 22)
+		self._ADEAHelpToolStripMenuItem.Text = "ADEA Help"
+		self._ADEAHelpToolStripMenuItem.Click += self.ADEAHelpToolStripMenuItemClick
+		# 
+		# ADEAQuickGuideToolStripMenuItem
+		# 
+		self._ADEAQuickGuideToolStripMenuItem.Name = "ADEAQuickGuideToolStripMenuItem"
+		self._ADEAQuickGuideToolStripMenuItem.Size = System.Drawing.Size(243, 22)
+		self._ADEAQuickGuideToolStripMenuItem.Text = "ADEA Quick Guide"
+		self._ADEAQuickGuideToolStripMenuItem.Click += self.ADEAQuickGuideToolStripMenuItemClick
+		# 
+		# toolStripSeparator7
+		# 
+		self._toolStripSeparator7.Name = "toolStripSeparator1"
+		self._toolStripSeparator7.Size = System.Drawing.Size(240, 6)
+		# 
+		# WhatsNewInThisReleaseToolStripMenuItem
+		# 
+		self._WhatsNewInThisReleaseToolStripMenuItem.Name = "WhatsNewInThisReleaseToolStripMenuItem"
+		self._WhatsNewInThisReleaseToolStripMenuItem.Size = System.Drawing.Size(243, 22)
+		self._WhatsNewInThisReleaseToolStripMenuItem.Text = "What's New in this Release"
+		self._WhatsNewInThisReleaseToolStripMenuItem.Click += self.WhatsNewInThisReleaseToolStripMenuItemClick
+		# 
+		# AboutAnsysDDREyeAnalyzerToolStripMenuItem
+		# 
+		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Name = "AboutAnsysDDREyeAnalyzerToolStripMenuItem"
+		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Size = System.Drawing.Size(243, 22)
+		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Text = "About Ansys DDR Eye Analyzer"
+		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Click += self.AboutAnsysDDREyeAnalyzerToolStripMenuItemClick
 		# 
 		# PictureBox_OldEye
 		# 
@@ -367,7 +645,7 @@ class Eye_Form(Form):
 		self._GroupBox_Setup.Controls.Add(self._Label_DDRGen)
 		self._GroupBox_Setup.Controls.Add(self._Label_InputFile)
 		self._GroupBox_Setup.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)		
-		self._GroupBox_Setup.Location = System.Drawing.Point(5, 24)
+		self._GroupBox_Setup.Location = System.Drawing.Point(5, 56)
 		self._GroupBox_Setup.Name = "GroupBox_Setup"
 		self._GroupBox_Setup.Size = System.Drawing.Size(586, 138)
 		self._GroupBox_Setup.TabIndex = 8
@@ -420,7 +698,7 @@ class Eye_Form(Form):
 		self._GroupBox_OldEye.Controls.Add(self._TextBox_AC_ADDR)
 		self._GroupBox_OldEye.Controls.Add(self._PictureBox_OldEye)		
 		self._GroupBox_OldEye.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)
-		self._GroupBox_OldEye.Location = System.Drawing.Point(5, 162)
+		self._GroupBox_OldEye.Location = System.Drawing.Point(5, 197)
 		self._GroupBox_OldEye.Name = "GroupBox_OldEye"
 		self._GroupBox_OldEye.Size = System.Drawing.Size(690, 455)		
 		self._GroupBox_OldEye.TabIndex = 26
@@ -458,7 +736,7 @@ class Eye_Form(Form):
 		self._GroupBox_NewEye.Controls.Add(self._TextBox_VdIVW)
 		self._GroupBox_NewEye.Controls.Add(self._PictureBox_NewEye)
 		self._GroupBox_NewEye.Font = System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold)
-		self._GroupBox_NewEye.Location = System.Drawing.Point(5, 162)
+		self._GroupBox_NewEye.Location = System.Drawing.Point(5, 197)
 		self._GroupBox_NewEye.Name = "GroupBox_NewEye"
 		self._GroupBox_NewEye.Size = System.Drawing.Size(690, 455)
 		self._GroupBox_NewEye.TabIndex = 36
@@ -1159,7 +1437,7 @@ class Eye_Form(Form):
 		# Button_ViewNet
 		# 
 		self._Button_ViewNet.Font = System.Drawing.Font("Arial", 11)
-		self._Button_ViewNet.Location = System.Drawing.Point(595, 31)
+		self._Button_ViewNet.Location = System.Drawing.Point(595, 66)
 		self._Button_ViewNet.Name = "Button_ViewNet"
 		self._Button_ViewNet.Size = System.Drawing.Size(100, 37)
 		self._Button_ViewNet.TabIndex = 27
@@ -1171,7 +1449,7 @@ class Eye_Form(Form):
 		# Button_Analyze
 		# 
 		self._Button_Analyze.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_Analyze.Location = System.Drawing.Point(595, 78)
+		self._Button_Analyze.Location = System.Drawing.Point(595, 113)
 		self._Button_Analyze.Name = "Button_Analyze"
 		self._Button_Analyze.Size = System.Drawing.Size(100, 37)
 		self._Button_Analyze.TabIndex = 35
@@ -1183,7 +1461,7 @@ class Eye_Form(Form):
 		# Button_ViewResult
 		# 
 		self._Button_ViewResult.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_ViewResult.Location = System.Drawing.Point(595, 124)
+		self._Button_ViewResult.Location = System.Drawing.Point(595, 159)
 		self._Button_ViewResult.Name = "Button_ViewResult"
 		self._Button_ViewResult.Size = System.Drawing.Size(100, 37)
 		self._Button_ViewResult.TabIndex = 35
@@ -1355,7 +1633,7 @@ class Eye_Form(Form):
 		# 
 		# Eye_Form
 		# 
-		self.ClientSize = System.Drawing.Size(700, 622)
+		self.ClientSize = System.Drawing.Size(700, 657)
 		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
@@ -1363,6 +1641,7 @@ class Eye_Form(Form):
 		self.Image_flag_Old = False
 		self.Full_Size_flag = True
 		self.Init_Flag = True
+		self.Controls.Add(self._toolStrip1)
 		self.Controls.Add(self._CheckBox_Debug)
 		self.Controls.Add(self._Button_LoadCnf)
 		self.Controls.Add(self._Button_Debug)
@@ -1372,7 +1651,8 @@ class Eye_Form(Form):
 		self.Controls.Add(self._Button_ViewResult)
 		self.Controls.Add(self._GroupBox_OldEye)		
 		self.Controls.Add(self._Label_Version)
-		self.Controls.Add(self._GroupBox_Setup)
+		self.Controls.Add(self._GroupBox_Setup)		
+		
 		self.Controls.Add(self._MenuStrip)
 		self.MainMenuStrip = self._MenuStrip
 		IconFile = path + "\\Resources\\LOGO.ico"
@@ -1396,6 +1676,8 @@ class Eye_Form(Form):
 		self._GroupBox_NewEye.ResumeLayout(False)
 		self._GroupBox_NewEye.PerformLayout()
 		self._GroupBox_UnitNew.ResumeLayout(False)
+		self._toolStrip1.ResumeLayout(False)
+		self._toolStrip1.PerformLayout()
 		self._PictureBox_NewEye.EndInit()
 		self.ResumeLayout(False)
 
@@ -1446,18 +1728,38 @@ class Eye_Form(Form):
 			MessageBox.Show("Fail to load Eye Analyzer main GUI","Warning")			
 			EXIT()
 
-	def Eye_FormKeyPress(self, sender, e):
-		# Save Cnf
+	def Eye_FormKeyPress(self, sender, e):		
+		# Save Cnf - Ctrl + S
 		if e.KeyChar == chr(19):
 			self.UserConf_Save_ToolStripMenuItemClick(self, sender)
 
-		# Load Cnf
+		# Load Cnf - Ctrl + L
 		elif e.KeyChar == chr(12):		
 			self.UserConf_Load_ToolStripMenuItemClick(self, sender)
 
-		# Edit Cnf
+		# Edit Cnf - Ctrl + E
 		elif e.KeyChar == chr(5):
 			self.UserConf_Edit_ToolStripMenuItemClick(self, sender)
+
+		# Open Input File - Ctrl + I
+		elif e.KeyChar == chr(9):
+			self.Button_ImportClick(self, sender)
+
+		# Open Option Form - Ctrl + O
+		elif e.KeyChar == chr(15):
+			sub_DB.Option_Form.ShowDialog()
+
+		# DDR IBIS Optimization - Ctrl + B
+		elif e.KeyChar == chr(2):
+			pass
+
+		# ESC
+		#elif e.KeyChar == chr(27):
+		#	self.Close()
+
+		# Batch - Ctrl + C
+		elif e.KeyChar == chr(3):
+			pass		
 
 	def Eye_FormResizeEnd(self, sender, e):
 		try:
@@ -1502,6 +1804,7 @@ class Eye_Form(Form):
 			MessageBox.Show("Fail to resize Eye Analyzer main GUI","Warning")			
 			EXIT()
 
+	########################################################################
 	def DDRConf_Load_ToolStripMenuItemClick(self, sender, e):
 		try:
 			# Select DDR Definition File		
@@ -1762,7 +2065,12 @@ class Eye_Form(Form):
 			MessageBox.Show("Fail to load Option Form","Warning")
 			EXIT()
 
+	def Options_IBISStripMenuItemClick(self, sender, e):
+
+		pass
+
 	def Options_BatchStripMenuItemClick(self, sender, e):
+
 		pass
 
 	def Help_DDRHelp_ToolStripMenuItemClick(self, sender, e):
@@ -1781,6 +2089,60 @@ class Eye_Form(Form):
 		MessageBox.Show("About ANSYS DDR Wizard", "To be done")
 		pass
 
+	########################################################################
+	def toolStrip_Input_ButtonClick(self, sender, e):
+
+		self.Button_ImportClick(self, sender)
+
+	def toolStrip_DefLoad_ButtonClick(self, sender, e):
+
+		self.DDRConf_Load_ToolStripMenuItemClick(self, sender)
+
+	def toolStrip_DefEdit_ButtonClick(self, sender, e):
+
+		self.DDRConf_Edit_ToolStripMenuItemClick(self, sender)
+
+	def toolStrip_CnfLoad_ButtonClick(self, sender, e):
+
+		self.UserConf_Load_ToolStripMenuItemClick(self, sender)
+
+	def toolStrip_CnfSave_ButtonClick(self, sender, e):
+
+		self.UserConf_Save_ToolStripMenuItemClick(self, sender)
+
+	def toolStrip_CnfEdit_ButtonClick(self, sender, e):
+
+		self.UserConf_Edit_ToolStripMenuItemClick(self, sender)
+	
+	def toolStrip_Option_ButtonClick(self, sender, e):
+
+		self.Options_ToolStripMenuItemClick(self, sender)
+		
+	def toolStrip_IBIS_ButtonClick(self, sender, e):
+		flag, show_msg_flag, msg = Check_Input(self)
+		pass
+
+	def toolStrip_Batch_ButtonClick(self, sender, e):
+
+		pass
+
+	def ADEAHelpToolStripMenuItemClick(self, sender, e):
+
+		print "AEDT Help"
+
+	def ADEAQuickGuideToolStripMenuItemClick(self, sender, e):
+
+		print "AEDT Quick Guide"		
+
+	def WhatsNewInThisReleaseToolStripMenuItemClick(self, sender, e):
+
+		print "What's New"
+
+	def AboutAnsysDDREyeAnalyzerToolStripMenuItemClick(self, sender, e):
+
+		print "About DDR Analyzer"
+
+	########################################################################
 	def TextBox_OffsetTextChanged(self, sender, e):		
 		sub_DB.Option_Form._TextBox_EyeOffset.Text = self._TextBox_Offset.Text
 		pass
@@ -1803,6 +2165,7 @@ class Eye_Form(Form):
 			sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
 			sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
 
+	########################################################################
 	def CheckBox_EditEnable_NewEyeCheckedChanged(self, sender, e):		
 		if self._CheckBox_EditEnable_NewEye.Checked:
 			color = System.Drawing.SystemColors.Info
@@ -1866,6 +2229,7 @@ class Eye_Form(Form):
 		sub_DB.Title[2] = sub_DB.Option_Form._ComboBox_Vref.Text
 		self.Text = " : ".join(sub_DB.Title)
 
+	########################################################################
 	def ComboBox_AC_DQSelectedIndexChanged(self, sender, e):		
 		keyword = "<" + self._ComboBox_DDRGen.Text + "-" + self._ComboBox_DataRate.Text + ">" + "[Eye Spec]"
 		for key in sub_DB.Cenv:
@@ -1887,212 +2251,6 @@ class Eye_Form(Form):
 			if keyword in key:
 				if "ADDR Setup" in key and self._ComboBox_AC_ADDR.Text in key:
 					self._TextBox_ADDRSetup.Text = sub_DB.Cenv[key][0]
-
-	def Button_ImportClick(self, sender, e):
-		try:
-			sub_DB.TBD_flag = True
-			self.Init_Flag = True
-			dialog = OpenFileDialog()			
-			dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
-
-			if dialog.ShowDialog(self) == DialogResult.OK:
-				File = dialog.FileName
-				sub_DB.File = File
-				result_dir = File.split(".")[0] + "_DDR_Results"
-				sub_DB.Input_File = dialog.SafeFileName
-				if os.path.isdir(result_dir):
-					sub_DB.result_dir = result_dir
-				else:
-					os.makedirs(result_dir)
-					sub_DB.result_dir = result_dir
-				self._TextBox_InputFile.Text = File
-
-				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension				
-				Initial()
-
-				# for *.aedt File
-				if extension == "aedt":
-					Log("[Input File Type] = AEDT")
-					Log("	<Input File> = %s" % File)
-					#self.TopMost = True
-					self.Cursor = Cursors.WaitCursor					
-					sub_AEDT.Get_AEDT_Info(self, File)
-					self.Cursor = Cursors.Default
-					#self.TopMost = False
-
-					self._ComboBox_Design.Enabled = True
-					self._CheckedListBox_ReportName.Enabled = True
-					self._ComboBox_SolutionName.Enabled = True
-					self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Window
-
-					self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
-					self._ComboBox_Design.BackColor = System.Drawing.SystemColors.Info				
-					self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
-					self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
-					self._ComboBox_Design.SelectedIndex = 0
-					sub_DB.InputFile_Flag = 1
-
-				# for *.csv File
-				elif extension == "csv":
-					Log("[Input File Type] = CSV")
-					Log("	<Input File> = %s" % File)
-					# Disable unnecessary component
-					self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
-					self._ComboBox_Design.Text = "N/A"
-					self._ComboBox_Design.Enabled = False
-					self._CheckedListBox_ReportName.Items.Clear()
-					self._CheckedListBox_ReportName.Items.Add("N/A")
-					self._CheckedListBox_ReportName.SetItemChecked(0, True)
-					self._CheckedListBox_ReportName.Enabled = False
-					self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Control
-					self._ComboBox_SolutionName.Text = "N/A"
-					self._ComboBox_SolutionName.Enabled = False
-
-					# Read Input csv file, Backup Netlist and Waveforms
-					try:
-						Waveform = {}
-						with open(sub_DB.Eye_Form._TextBox_InputFile.Text) as fp:
-							# Read the fist line
-							temp_data = fp.readline().replace("\"","").replace(" ","").replace("-","_").strip().split(",")
-							temp_data = list(filter(None,temp_data))							
-
-							# Delete global & local variable data
-							for i in range(0, len(temp_data)):
-								if not "Time" in temp_data[i]:
-									del temp_data[i]
-								else:
-									break
-
-							# Get time and voltage unit
-							sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
-							sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
-							
-							# Delete Time Column
-							del temp_data[0]
-							data = [[0 for col in range(0)] for row in range(len(temp_data))]							
-							for i in range(0, len(temp_data)):								
-								data[i].append(temp_data[i])
-
-							# Get Waveform Data
-							Time = []
-							for line in fp:
-								Time.append(float(line.split(",")[0]))
-								for i in range(0, len(temp_data)):					
-									data[i].append(float(line.split(",")[i+1]))
-								
-						fp.close()
-
-						Log("	<Read WaveFrom>")
-						for cell in data:
-							key = cell[0].split("[")[0].replace("-","_")
-							del cell[0]
-							Waveform[key] = cell
-							Log("		= %s" % key)
-
-						# Check time unit
-						if sub_DB.Unit["Time"].lower() == "ps":
-							pass
-						elif sub_DB.Unit["Time"].lower() == "ns":
-							for i in range(0, len(Time)):
-								Time[i] = Time[i]*1000
-						else:
-							MessageBox.Show("The time unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
-						sub_DB.Time = Time
-
-						# Check voltage unit
-						if sub_DB.Unit["Voltage"].lower() == "mv":
-							pass
-						elif sub_DB.Unit["Voltage"].lower() == "v":
-							for key in Waveform:
-								for i in range(0, len(Waveform[key])):
-									Waveform[key][i] = Waveform[key][i]*1000
-						else:
-							MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
-						sub_DB.Waveform = Waveform
-						
-						# Create Netlist
-						Netlist = []
-						for i in range(0, len(temp_data)):
-							Netlist.append(temp_data[i].split("[")[0].replace("-","_"))
-						sub_DB.Netlist = Netlist
-
-						# Check input csv file time resolution
-						# Non uniform time resolution
-						if not sub_DB.Time[1] - sub_DB.Time[0] == 1:
-							sub_DB.CSV_flag = False
-							Log("	<Time Resolution> = Un-uniform")
-							# OK Click, keep going
-							if MessageBox.Show(							
-								"The most appropriate format of Eye Analyzer's input csv file is voltage waveform extracted uniformly in 1ps.\n\n"+
-								"\"%s\" does not meet this condition, which may result in inaccurate results.\n\n" % File.split("\\")[-1]+
-								"Will you continue?","Warning",MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK:
-
-								# Enable Next Step
-								self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
-								self._ComboBox_DDRGen.Enabled = True
-								self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
-								self._ComboBox_DataRate.Enabled = True
-								self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
-								sub_DB.InputFile_Flag = 2
-
-							# Cancel Click, re-select input file
-							else:
-								self._TextBox_InputFile.Text = ""
-
-						# Uniform time resolution
-						else:
-							Log("	<Time Resolution> = Uniform")
-							sub_DB.CSV_flag = True
-							self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
-							self._ComboBox_DDRGen.Enabled = True
-							self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
-							self._ComboBox_DataRate.Enabled = True
-							self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
-							sub_DB.InputFile_Flag = 2
-
-					except Exception as e:
-						Log("[Input CSV File Parsing] = Failed")
-						Log(traceback.format_exc())
-						MessageBox.Show("Input csv file parsing has been failed.\n\nPlease check the input file,\n\t%s." % File.split("\\")[-1],"Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
-						self._TextBox_InputFile.Text = ""
-						EXIT()
-
-					flag, show_msg_flag, msg = Check_Input(self)
-					if flag:
-						sub_DB.Net_Form.NetFormLoad(self, sender)
-						for row in sub_DB.Net_Form._DataGridView.Rows:
-							if row.Cells[0].Value:
-								self._Button_Analyze.Enabled = True
-								self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
-								self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
-								break
-
-				# for *.tr0 File
-				elif extension == "tr0":
-					# TODO : Input Type for *.tr0
-					pass
-				sub_DB.Title[1] = File.split("\\")[-1]
-				sub_DB.Title[2] = sub_DB.Option_Form._ComboBox_Vref.Text
-				sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text
-				sub_DB.Title[4] = str(sub_DB.Option_Form._CheckBox_PlotEye.Checked)
-				if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
-					sub_DB.Title[5] = "True-%s" % sub_DB.Option_Form._ComboBox_ReportFormat.Text
-				else:
-					sub_DB.Title[5] = "False"
-				self.Text = " : ".join(sub_DB.Title)
-
-			else:
-				MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
-
-			# Set ToopTip
-			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			
-			
-		except Exception as e:			
-			Log("[Input File Import] = Failed")
-			Log(traceback.format_exc())
-			print traceback.format_exc()
-			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")			
-			EXIT()
 
 	def ComboBox_DesignSelectedIndexChanged(self, sender, e):		
 		try:
@@ -2162,31 +2320,6 @@ class Eye_Form(Form):
 	def ComboBox_SolutionNameSelectedIndexChanged(self, sender, e):
 		# Set ToopTip		
 		self._ComboBox_SolutionName_ToopTip.SetToolTip(self._ComboBox_SolutionName, self._ComboBox_SolutionName.Text)		
-
-	def CheckedListBox_ReportNameItemCheck(self, sender, e):
-		if self.Init_Flag:
-			self.Init_Flag = False
-			
-		else:
-			self.Init_Flag = True
-			self._CheckedListBox_ReportName.SetItemChecked(e.Index, e.NewValue)
-
-			Initial()
-			sub_AEDT.Get_AEDT_Info(self, self._TextBox_InputFile.Text)		
-			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
-
-			flag, show_msg_flag, msg = Check_Input(self)			
-			if flag:
-				sub_DB.Net_Form.NetFormLoad(self, sender)
-				for row in sub_DB.Net_Form._DataGridView.Rows:
-					if row.Cells[0].Value:
-						self._Button_Analyze.Enabled = True
-						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
-						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
-						break
-
-		sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text		
-		self.Text = " : ".join(sub_DB.Title)
 
 	def ComboBox_DDRGenSelectedIndexChanged(self, sender, e):
 		try:			
@@ -2524,6 +2657,242 @@ class Eye_Form(Form):
 			MessageBox.Show("Fail to set DDR datarate","Warning")
 			EXIT()
 
+	def CheckedListBox_ReportNameItemCheck(self, sender, e):
+		if self.Init_Flag:
+			self.Init_Flag = False
+			
+		else:
+			self.Init_Flag = True
+			self._CheckedListBox_ReportName.SetItemChecked(e.Index, e.NewValue)
+
+			Initial()
+			sub_AEDT.Get_AEDT_Info(self, self._TextBox_InputFile.Text)		
+			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+
+			flag, show_msg_flag, msg = Check_Input(self)			
+			if flag:
+				sub_DB.Net_Form.NetFormLoad(self, sender)
+				for row in sub_DB.Net_Form._DataGridView.Rows:
+					if row.Cells[0].Value:
+						self._Button_Analyze.Enabled = True
+						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
+						break
+
+		sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text		
+		self.Text = " : ".join(sub_DB.Title)
+
+	########################################################################
+	def Button_ImportClick(self, sender, e):		
+		try:
+			print "1"
+			sub_DB.TBD_flag = True
+			self.Init_Flag = True
+			dialog = OpenFileDialog()			
+			dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
+
+			if dialog.ShowDialog(self) == DialogResult.OK:
+				File = dialog.FileName
+				sub_DB.File = File
+				result_dir = File.split(".")[0] + "_DDR_Results"
+				sub_DB.Input_File = dialog.SafeFileName
+				if os.path.isdir(result_dir):
+					sub_DB.result_dir = result_dir
+				else:
+					os.makedirs(result_dir)
+					sub_DB.result_dir = result_dir
+				self._TextBox_InputFile.Text = File
+
+				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension				
+				Initial()
+
+				# for *.aedt File
+				if extension == "aedt":					
+					Log("[Input File Type] = AEDT")
+					Log("	<Input File> = %s" % File)
+					#self.TopMost = True
+					self.Cursor = Cursors.WaitCursor					
+					sub_AEDT.Get_AEDT_Info(self, File)
+					self.Cursor = Cursors.Default
+					#self.TopMost = False
+
+					#Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, IBIS_File=True)
+					#print Parsing_data
+
+					self._ComboBox_Design.Enabled = True
+					self._CheckedListBox_ReportName.Enabled = True
+					self._ComboBox_SolutionName.Enabled = True
+					self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Window
+
+					self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
+					self._ComboBox_Design.BackColor = System.Drawing.SystemColors.Info				
+					self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+					self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+					self._ComboBox_Design.SelectedIndex = 0
+					sub_DB.InputFile_Flag = 1
+
+				# for *.csv File
+				elif extension == "csv":
+					Log("[Input File Type] = CSV")
+					Log("	<Input File> = %s" % File)
+					# Disable unnecessary component
+					self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Window
+					self._ComboBox_Design.Text = "N/A"
+					self._ComboBox_Design.Enabled = False
+					self._CheckedListBox_ReportName.Items.Clear()
+					self._CheckedListBox_ReportName.Items.Add("N/A")
+					self._CheckedListBox_ReportName.SetItemChecked(0, True)
+					self._CheckedListBox_ReportName.Enabled = False
+					self._CheckedListBox_ReportName.BackColor = System.Drawing.SystemColors.Control
+					self._ComboBox_SolutionName.Text = "N/A"
+					self._ComboBox_SolutionName.Enabled = False
+
+					# Read Input csv file, Backup Netlist and Waveforms
+					try:
+						Waveform = {}
+						with open(sub_DB.Eye_Form._TextBox_InputFile.Text) as fp:
+							# Read the fist line
+							temp_data = fp.readline().replace("\"","").replace(" ","").replace("-","_").strip().split(",")
+							temp_data = list(filter(None,temp_data))							
+
+							# Delete global & local variable data
+							for i in range(0, len(temp_data)):
+								if not "Time" in temp_data[i]:
+									del temp_data[i]
+								else:
+									break
+
+							# Get time and voltage unit
+							sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
+							sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
+							
+							# Delete Time Column
+							del temp_data[0]
+							data = [[0 for col in range(0)] for row in range(len(temp_data))]							
+							for i in range(0, len(temp_data)):								
+								data[i].append(temp_data[i])
+
+							# Get Waveform Data
+							Time = []
+							for line in fp:
+								Time.append(float(line.split(",")[0]))
+								for i in range(0, len(temp_data)):					
+									data[i].append(float(line.split(",")[i+1]))
+								
+						fp.close()
+
+						Log("	<Read WaveFrom>")
+						for cell in data:
+							key = cell[0].split("[")[0].replace("-","_")
+							del cell[0]
+							Waveform[key] = cell
+							Log("		= %s" % key)
+
+						# Check time unit
+						if sub_DB.Unit["Time"].lower() == "ps":
+							pass
+						elif sub_DB.Unit["Time"].lower() == "ns":
+							for i in range(0, len(Time)):
+								Time[i] = Time[i]*1000
+						else:
+							MessageBox.Show("The time unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+						sub_DB.Time = Time
+
+						# Check voltage unit
+						if sub_DB.Unit["Voltage"].lower() == "mv":
+							pass
+						elif sub_DB.Unit["Voltage"].lower() == "v":
+							for key in Waveform:
+								for i in range(0, len(Waveform[key])):
+									Waveform[key][i] = Waveform[key][i]*1000
+						else:
+							MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+						sub_DB.Waveform = Waveform
+						
+						# Create Netlist
+						Netlist = []
+						for i in range(0, len(temp_data)):
+							Netlist.append(temp_data[i].split("[")[0].replace("-","_"))
+						sub_DB.Netlist = Netlist
+
+						# Check input csv file time resolution
+						# Non uniform time resolution
+						if not sub_DB.Time[1] - sub_DB.Time[0] == 1:
+							sub_DB.CSV_flag = False
+							Log("	<Time Resolution> = Un-uniform")
+							# OK Click, keep going
+							if MessageBox.Show(							
+								"The most appropriate format of Eye Analyzer's input csv file is voltage waveform extracted uniformly in 1ps.\n\n"+
+								"\"%s\" does not meet this condition, which may result in inaccurate results.\n\n" % File.split("\\")[-1]+
+								"Will you continue?","Warning",MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK:
+
+								# Enable Next Step
+								self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
+								self._ComboBox_DDRGen.Enabled = True
+								self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+								self._ComboBox_DataRate.Enabled = True
+								self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+								sub_DB.InputFile_Flag = 2
+
+							# Cancel Click, re-select input file
+							else:
+								self._TextBox_InputFile.Text = ""
+
+						# Uniform time resolution
+						else:
+							Log("	<Time Resolution> = Uniform")
+							sub_DB.CSV_flag = True
+							self._ComboBox_DDRGen.BackColor = System.Drawing.SystemColors.Info
+							self._ComboBox_DDRGen.Enabled = True
+							self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+							self._ComboBox_DataRate.Enabled = True
+							self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+							sub_DB.InputFile_Flag = 2
+
+					except Exception as e:
+						Log("[Input CSV File Parsing] = Failed")
+						Log(traceback.format_exc())
+						MessageBox.Show("Input csv file parsing has been failed.\n\nPlease check the input file,\n\t%s." % File.split("\\")[-1],"Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
+						self._TextBox_InputFile.Text = ""
+						EXIT()
+
+					flag, show_msg_flag, msg = Check_Input(self)
+					if flag:
+						sub_DB.Net_Form.NetFormLoad(self, sender)
+						for row in sub_DB.Net_Form._DataGridView.Rows:
+							if row.Cells[0].Value:
+								self._Button_Analyze.Enabled = True
+								self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+								self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
+								break
+
+				# for *.tr0 File
+				elif extension == "tr0":
+					# TODO : Input Type for *.tr0
+					pass
+				sub_DB.Title[1] = File.split("\\")[-1]
+				sub_DB.Title[2] = sub_DB.Option_Form._ComboBox_Vref.Text
+				sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text
+				sub_DB.Title[4] = str(sub_DB.Option_Form._CheckBox_PlotEye.Checked)
+				if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
+					sub_DB.Title[5] = "True-%s" % sub_DB.Option_Form._ComboBox_ReportFormat.Text
+				else:
+					sub_DB.Title[5] = "False"
+				self.Text = " : ".join(sub_DB.Title)
+
+			else:
+				MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
+
+			# Set ToopTip
+			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			
+			
+		except Exception as e:			
+			Log("[Input File Import] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")			
+			EXIT()
+
 	def Button_ViewNetClick(self, sender, e):
 		try:			
 			# Check if any of report name has been checked
@@ -2719,8 +3088,8 @@ class Eye_Form(Form):
 			self._Label_TimingSpec.Location = System.Drawing.Point(363, 51)
 			
 
-			self.MinimumSize = System.Drawing.Size(self.Size.Width, 300)
-			self.Height = 300
+			self.MinimumSize = System.Drawing.Size(self.Size.Width, 335)
+			self.Height = 335
 			
 		# Full Size
 		else:
@@ -2825,8 +3194,8 @@ class Eye_Form(Form):
 
 			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 95)
 
-			self.MinimumSize = System.Drawing.Size(self.Size.Width, 300)
-			self.Height = 300
+			self.MinimumSize = System.Drawing.Size(self.Size.Width, 335)
+			self.Height = 335
 
 		# Full Size
 		else:
@@ -2931,6 +3300,7 @@ class Eye_Form(Form):
 
 			self.Button_ViewNetClick(self, sender)
 
+	########################################################################
 	def Eye_FormFormClosing(self, sender, e):
 		CnfAutoSave()
 		Log("[Save Log] = Done")
