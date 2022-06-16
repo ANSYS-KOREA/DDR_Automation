@@ -2055,26 +2055,35 @@ def temp_get_waveform(self):
 		
 	return Waveform
 
+def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
+	DB = {}
+	if IBIS_File:
+		IBIS_files = []
 
+		flag = True
+		with open(File) as fp:
+			while(flag):
+				# Read line
+				temp_data = fp.readline()
 
+				if "$begin \'Compdefs\'" in temp_data:
+					while(flag):
+						# Read line
+						temp_data = fp.readline()
 
+						if Design in temp_data:
+							while(flag):
+								# Read line
+								temp_data = fp.readline()
 
+								if 'Name of IBIS file' in temp_data:
+									item = temp_data.split(',')[4].replace('\'','').replace('\\\\','\\').strip()
+									if '<Project>' in item:
+										IBIS_files.append(File.replace(File.split('\\')[-1],'')+item.replace('<Project>',''))
 
+								if "$end \'Compdefs\'" in temp_data:
+									flag = False
+		DB['IBIS_File'] = IBIS_files
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	return DB
+		

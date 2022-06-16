@@ -1834,7 +1834,7 @@ class OptionForm(Form):
 		# Label_mV
 		# 
 		self._Label_mV.Font = System.Drawing.Font("Arial", 9)
-		self._Label_mV.Location = System.Drawing.Point(304, 72)
+		self._Label_mV.Location = System.Drawing.Point(254, 72)
 		self._Label_mV.Name = "Label_mV"
 		self._Label_mV.Size = System.Drawing.Size(36, 28)
 		self._Label_mV.TabIndex = 65
@@ -1845,7 +1845,7 @@ class OptionForm(Form):
 		# Label_Analyze
 		# 
 		self._Label_Analyze.Font = System.Drawing.Font("Arial", 9)
-		self._Label_Analyze.Location = System.Drawing.Point(254, 72)
+		self._Label_Analyze.Location = System.Drawing.Point(274, 72)
 		self._Label_Analyze.Name = "Label_Analyze"
 		self._Label_Analyze.Size = System.Drawing.Size(71, 28)
 		self._Label_Analyze.TabIndex = 62
@@ -1924,11 +1924,11 @@ class OptionForm(Form):
 		# 
 		self._ComboBox_Vref.FormattingEnabled = True
 		self._ComboBox_Vref.Items.AddRange(System.Array[System.Object](
-			["Auto-default",
+			["Auto",
 			"Manual"]))
 		self._ComboBox_Vref.Location = System.Drawing.Point(127, 76)
 		self._ComboBox_Vref.Name = "ComboBox_Vref"
-		self._ComboBox_Vref.Size = System.Drawing.Size(100, 23)
+		self._ComboBox_Vref.Size = System.Drawing.Size(70, 23)
 		self._ComboBox_Vref.TabIndex = 61
 		self._ComboBox_Vref.SelectedIndex = 0
 		self._ComboBox_Vref.SelectedIndexChanged += self.ComboBox_VrefSelectedIndexChanged
@@ -1940,10 +1940,12 @@ class OptionForm(Form):
 		#	["Default",
 		#	"+ Setup/Hold"]))
 		self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
-			["Default"]))
-		self._ComboBox_Analyze.Location = System.Drawing.Point(328, 76)
+			["Default",
+			"Auto-delay",
+			"Tr-by-Tr"]))
+		self._ComboBox_Analyze.Location = System.Drawing.Point(348, 76)
 		self._ComboBox_Analyze.Name = "ComboBox_Analyze"
-		self._ComboBox_Analyze.Size = System.Drawing.Size(104, 23)
+		self._ComboBox_Analyze.Size = System.Drawing.Size(84, 23)
 		self._ComboBox_Analyze.TabIndex = 63
 		self._ComboBox_Analyze.Text = "Default"
 		self._ComboBox_Analyze.SelectedIndexChanged += self.ComboBox_AnalyzeSelectedIndexChanged
@@ -2002,9 +2004,9 @@ class OptionForm(Form):
 		# 
 		self._TextBox_Vref.BackColor = System.Drawing.SystemColors.Window
 		self._TextBox_Vref.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_Vref.Location = System.Drawing.Point(233, 76)
+		self._TextBox_Vref.Location = System.Drawing.Point(203, 76)
 		self._TextBox_Vref.Name = "TextBox_Vref"
-		self._TextBox_Vref.Size = System.Drawing.Size(70, 23)
+		self._TextBox_Vref.Size = System.Drawing.Size(50, 23)
 		self._TextBox_Vref.Visible = False
 		self._TextBox_Vref.TextChanged += self.TextBox_VrefTextChanged
 		self._TextBox_Vref.TabIndex = 64
@@ -2093,7 +2095,7 @@ class OptionForm(Form):
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Option_Form"
-		self.Text = "Ansys DDR Wizard Options"
+		self.Text = "Ansys DDR Wizard Options"		
 		self.Load += self.Option_FormLoad
 		self.ResizeEnd += self.Option_FormResizeEnd		
 		self._GroupBox_General.ResumeLayout(False)
@@ -3063,3 +3065,6 @@ class ComplianceForm(Form):
 	def AutoCheckToolStripMenuItemClick(self, sender, e):
 		# TODO : Compliance Option Form 'Auto Check' ToolStripMenu
 		pass
+
+class IBIS_OptForm(Form):
+	pass
