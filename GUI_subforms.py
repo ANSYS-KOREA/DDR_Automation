@@ -3067,4 +3067,1335 @@ class ComplianceForm(Form):
 		pass
 
 class IBIS_OptForm(Form):
-	pass
+	def __init__(self):
+
+		self.InitializeComponent()
+	
+	def InitializeComponent(self):
+		global path
+		path = os.path.dirname(os.path.abspath(__file__))
+		self._GroupBox_Rx = System.Windows.Forms.GroupBox()
+		self._GroupBox_Tx = System.Windows.Forms.GroupBox()
+		
+		self._Label_IBIS_Tx = System.Windows.Forms.Label()
+		self._Label_Comp_Tx = System.Windows.Forms.Label()
+		self._Label_Model_Tx = System.Windows.Forms.Label()
+		self._Label_IBIS_Rx = System.Windows.Forms.Label()
+		self._Label_Comp_Rx = System.Windows.Forms.Label()
+		self._Label_Model_Rx = System.Windows.Forms.Label()
+
+		self._ComboBox_IBIS_Tx = System.Windows.Forms.ComboBox()
+		self._ComboBox_Comp_Tx = System.Windows.Forms.ComboBox()
+		self._ComboBox_Model_Tx = System.Windows.Forms.ComboBox()
+		self._ComboBox_IBIS_Rx = System.Windows.Forms.ComboBox()
+		self._ComboBox_Comp_Rx = System.Windows.Forms.ComboBox()
+		self._ComboBox_Model_Rx = System.Windows.Forms.ComboBox()
+
+		self._DataGridView_Tx = System.Windows.Forms.DataGridView()
+		self._DataGridView_Tx_CheckBoxColumn = System.Windows.Forms.DataGridViewCheckBoxColumn()
+		self._DataGridView_Tx_TextBoxColumn = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._DataGridView_Tx_TextBoxColumn1 = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._DataGridView_Rx = System.Windows.Forms.DataGridView()
+		self._DataGridView_Rx_CheckBoxColumn = System.Windows.Forms.DataGridViewCheckBoxColumn()
+		self._DataGridView_Rx_TextBoxColumn = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._DataGridView_Rx_TextBoxColumn1 = System.Windows.Forms.DataGridViewTextBoxColumn()
+		
+		self._Button_Run = System.Windows.Forms.Button()
+		self._Button_AnalysisOption = System.Windows.Forms.Button()
+		self._Button_View_Rx = System.Windows.Forms.Button()
+		self._Button_CaseView = System.Windows.Forms.Button()
+		self._Button_View_Tx = System.Windows.Forms.Button()
+		
+		self._ComboBox_IBIS_Tx_ToopTip = System.Windows.Forms.ToolTip()
+		self._ComboBox_IBIS_Rx_ToopTip = System.Windows.Forms.ToolTip()
+
+		self._GroupBox_Rx.SuspendLayout()
+		self._DataGridView_Rx.BeginInit()
+		self._GroupBox_Tx.SuspendLayout()
+		self._DataGridView_Tx.BeginInit()
+		self.SuspendLayout()
+		# 
+		# GroupBox_Tx
+		# 		
+		self._GroupBox_Tx.Controls.Add(self._ComboBox_Model_Tx)
+		self._GroupBox_Tx.Controls.Add(self._ComboBox_Comp_Tx)		
+		self._GroupBox_Tx.Controls.Add(self._DataGridView_Tx)
+		self._GroupBox_Tx.Controls.Add(self._Button_View_Tx)
+		self._GroupBox_Tx.Controls.Add(self._ComboBox_IBIS_Tx)
+		self._GroupBox_Tx.Controls.Add(self._Label_Comp_Tx)
+		self._GroupBox_Tx.Controls.Add(self._Label_Model_Tx)
+		self._GroupBox_Tx.Controls.Add(self._Label_IBIS_Tx)
+		self._GroupBox_Tx.Font = System.Drawing.Font("Arial", 10)
+		self._GroupBox_Tx.Location = System.Drawing.Point(12, 12)
+		self._GroupBox_Tx.Name = "GroupBox_Tx"
+		self._GroupBox_Tx.Size = System.Drawing.Size(286, 275)
+		self._GroupBox_Tx.TabIndex = 43
+		self._GroupBox_Tx.TabStop = False
+		self._GroupBox_Tx.Text = "Tx"
+		# 
+		# GroupBox_Rx
+		# 		
+		self._GroupBox_Rx.Controls.Add(self._ComboBox_Model_Rx)
+		self._GroupBox_Rx.Controls.Add(self._ComboBox_Comp_Rx)		
+		self._GroupBox_Rx.Controls.Add(self._DataGridView_Rx)
+		self._GroupBox_Rx.Controls.Add(self._Button_View_Rx)
+		self._GroupBox_Rx.Controls.Add(self._ComboBox_IBIS_Rx)
+		self._GroupBox_Rx.Controls.Add(self._Label_Comp_Rx)
+		self._GroupBox_Rx.Controls.Add(self._Label_Model_Rx)
+		self._GroupBox_Rx.Controls.Add(self._Label_IBIS_Rx)
+		self._GroupBox_Rx.Font = System.Drawing.Font("Arial", 10)
+		self._GroupBox_Rx.Location = System.Drawing.Point(319, 12)
+		self._GroupBox_Rx.Name = "GroupBox_Rx"
+		self._GroupBox_Rx.Size = System.Drawing.Size(286, 275)
+		self._GroupBox_Rx.TabIndex = 45
+		self._GroupBox_Rx.TabStop = False
+		self._GroupBox_Rx.Text = "Rx"
+		# 
+		# Label_IBIS_Tx
+		# 
+		self._Label_IBIS_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_IBIS_Tx.Location = System.Drawing.Point(6, 19)
+		self._Label_IBIS_Tx.Name = "Label_IBIS_Tx"
+		self._Label_IBIS_Tx.Size = System.Drawing.Size(42, 28)
+		self._Label_IBIS_Tx.TabIndex = 30
+		self._Label_IBIS_Tx.Text = "IBIS :"
+		self._Label_IBIS_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Comp_Tx
+		# 
+		self._Label_Comp_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Comp_Tx.Location = System.Drawing.Point(6, 47)
+		self._Label_Comp_Tx.Name = "Label_Comp_Tx"
+		self._Label_Comp_Tx.Size = System.Drawing.Size(68, 28)
+		self._Label_Comp_Tx.TabIndex = 38
+		self._Label_Comp_Tx.Text = "Comp. :"
+		self._Label_Comp_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Model_Tx
+		# 
+		self._Label_Model_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Model_Tx.Location = System.Drawing.Point(6, 77)
+		self._Label_Model_Tx.Name = "Label_Model_Tx"
+		self._Label_Model_Tx.Size = System.Drawing.Size(68, 28)
+		self._Label_Model_Tx.TabIndex = 38
+		self._Label_Model_Tx.Text = "Model :"
+		self._Label_Model_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_IBIS_Rx
+		# 
+		self._Label_IBIS_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_IBIS_Rx.Location = System.Drawing.Point(6, 19)
+		self._Label_IBIS_Rx.Name = "Label_IBIS_Rx"
+		self._Label_IBIS_Rx.Size = System.Drawing.Size(42, 28)
+		self._Label_IBIS_Rx.TabIndex = 30
+		self._Label_IBIS_Rx.Text = "IBIS :"
+		self._Label_IBIS_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Comp_Rx
+		# 
+		self._Label_Comp_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Comp_Rx.Location = System.Drawing.Point(6, 47)
+		self._Label_Comp_Rx.Name = "Label_Comp_Rx"
+		self._Label_Comp_Rx.Size = System.Drawing.Size(68, 28)
+		self._Label_Comp_Rx.TabIndex = 38
+		self._Label_Comp_Rx.Text = "Comp. :"
+		self._Label_Comp_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_Model_Rx
+		# 
+		self._Label_Model_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Model_Rx.Location = System.Drawing.Point(6, 77)
+		self._Label_Model_Rx.Name = "Label_Model_Rx"
+		self._Label_Model_Rx.Size = System.Drawing.Size(68, 28)
+		self._Label_Model_Rx.TabIndex = 38
+		self._Label_Model_Rx.Text = "Model :"
+		self._Label_Model_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# ComboBox_IBIS_Tx
+		# 
+		self._ComboBox_IBIS_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_IBIS_Tx.FormattingEnabled = True
+		self._ComboBox_IBIS_Tx.Location = System.Drawing.Point(59, 22)
+		self._ComboBox_IBIS_Tx.Name = "ComboBox_IBIS_Tx"
+		self._ComboBox_IBIS_Tx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_IBIS_Tx.TabIndex = 31
+		self._ComboBox_IBIS_Tx.SelectedIndexChanged += self.ComboBox_IBIS_TxSelectedIndexChanged
+		# 
+		# ComboBox_Comp_Tx
+		# 
+		self._ComboBox_Comp_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_Comp_Tx.FormattingEnabled = True
+		self._ComboBox_Comp_Tx.Location = System.Drawing.Point(59, 52)
+		self._ComboBox_Comp_Tx.Name = "ComboBox_Comp_Tx"
+		self._ComboBox_Comp_Tx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Comp_Tx.TabIndex = 39
+		self._ComboBox_Comp_Tx.SelectedIndexChanged += self.ComboBox_Comp_TxSelectedIndexChanged
+		# 
+		# ComboBox_Model_Tx
+		# 
+		self._ComboBox_Model_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_Model_Tx.FormattingEnabled = True
+		self._ComboBox_Model_Tx.Location = System.Drawing.Point(59, 82)
+		self._ComboBox_Model_Tx.Name = "ComboBox_Model_Tx"
+		self._ComboBox_Model_Tx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Model_Tx.TabIndex = 39
+		self._ComboBox_Model_Tx.SelectedIndexChanged += self.ComboBox_Model_TxSelectedIndexChanged
+		# 
+		# ComboBox_IBIS_Rx
+		# 
+		self._ComboBox_IBIS_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_IBIS_Rx.FormattingEnabled = True
+		self._ComboBox_IBIS_Rx.Location = System.Drawing.Point(59, 22)
+		self._ComboBox_IBIS_Rx.Name = "ComboBox_IBIS_Rx"
+		self._ComboBox_IBIS_Rx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_IBIS_Rx.TabIndex = 31
+		self._ComboBox_IBIS_Rx.SelectedIndexChanged += self.ComboBox_IBIS_RxSelectedIndexChanged
+		# 
+		# ComboBox_Comp_Rx
+		# 
+		self._ComboBox_Comp_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_Comp_Rx.FormattingEnabled = True
+		self._ComboBox_Comp_Rx.Location = System.Drawing.Point(59, 52)
+		self._ComboBox_Comp_Rx.Name = "ComboBox_Comp_Rx"
+		self._ComboBox_Comp_Rx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Comp_Rx.TabIndex = 39
+		self._ComboBox_Comp_Rx.SelectedIndexChanged += self.ComboBox_Comp_RxSelectedIndexChanged
+		# 
+		# ComboBox_Model_Rx
+		# 
+		self._ComboBox_Model_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_Model_Rx.FormattingEnabled = True
+		self._ComboBox_Model_Rx.Location = System.Drawing.Point(59, 82)
+		self._ComboBox_Model_Rx.Name = "ComboBox_Model_Rx"
+		self._ComboBox_Model_Rx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Model_Rx.TabIndex = 39
+		self._ComboBox_Model_Rx.SelectedIndexChanged += self.ComboBox_Model_RxSelectedIndexChanged
+		# 
+		# DataGridView_Tx
+		# 
+		self._DataGridView_Tx.AllowUserToAddRows = False
+		self._DataGridView_Tx.AllowUserToDeleteRows = False
+		self._DataGridView_Tx.AllowUserToOrderColumns = True
+		self._DataGridView_Tx.AllowUserToResizeRows = False
+		self._DataGridView_Tx.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+		self._DataGridView_Tx.Columns.AddRange(System.Array[System.Windows.Forms.DataGridViewColumn](
+			[self._DataGridView_Tx_CheckBoxColumn,
+			self._DataGridView_Tx_TextBoxColumn,
+			self._DataGridView_Tx_TextBoxColumn1]))
+		self._DataGridView_Tx.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+		self._DataGridView_Tx.Location = System.Drawing.Point(6, 112)
+		self._DataGridView_Tx.Name = "DataGridView_Tx"
+		self._DataGridView_Tx.RowHeadersVisible = False
+		self._DataGridView_Tx.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+		self._DataGridView_Tx.Size = System.Drawing.Size(274, 156)
+		self._DataGridView_Tx.TabIndex = 37
+		# 
+		# DataGridView_Tx_CheckBoxColumn
+		# 
+		self._DataGridView_Tx_CheckBoxColumn.HeaderText = ""
+		self._DataGridView_Tx_CheckBoxColumn.Name = "Col_TargetTxModel"
+		self._DataGridView_Tx_CheckBoxColumn.Width = 35
+		# 
+		# DataGridView_Tx_TextBoxColumn
+		# 
+		self._DataGridView_Tx_TextBoxColumn.HeaderText = "Models"
+		self._DataGridView_Tx_TextBoxColumn.Name = "Col_TxModelName"
+		self._DataGridView_Tx_TextBoxColumn.Width = 100
+		# 
+		# DataGridView_Tx_TextBoxColumn1
+		# 
+		self._DataGridView_Tx_TextBoxColumn1.HeaderText = "Note"
+		self._DataGridView_Tx_TextBoxColumn1.Name = "Col_TxNote"
+		self._DataGridView_Tx_TextBoxColumn1.Width = 136
+		# 
+		# DataGridView_Rx
+		# 
+		self._DataGridView_Rx.AllowUserToAddRows = False
+		self._DataGridView_Rx.AllowUserToDeleteRows = False
+		self._DataGridView_Rx.AllowUserToOrderColumns = True
+		self._DataGridView_Rx.AllowUserToResizeRows = False
+		self._DataGridView_Rx.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+		self._DataGridView_Rx.Columns.AddRange(System.Array[System.Windows.Forms.DataGridViewColumn](
+			[self._DataGridView_Rx_CheckBoxColumn,
+			self._DataGridView_Rx_TextBoxColumn,
+			self._DataGridView_Rx_TextBoxColumn1]))
+		self._DataGridView_Rx.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+		self._DataGridView_Rx.Location = System.Drawing.Point(6, 112)
+		self._DataGridView_Rx.Name = "DataGridView_Rx"
+		self._DataGridView_Rx.RowHeadersVisible = False
+		self._DataGridView_Rx.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+		self._DataGridView_Rx.Size = System.Drawing.Size(274, 156)
+		self._DataGridView_Rx.TabIndex = 37
+		# 
+		# DataGridView_Rx_CheckBoxColumn
+		# 
+		self._DataGridView_Rx_CheckBoxColumn.HeaderText = ""
+		self._DataGridView_Rx_CheckBoxColumn.Name = "Col_TargetTxModel"
+		self._DataGridView_Rx_CheckBoxColumn.Width = 35
+		# 
+		# DataGridView_Rx_TextBoxColumn
+		# 
+		self._DataGridView_Rx_TextBoxColumn.HeaderText = "Models"
+		self._DataGridView_Rx_TextBoxColumn.Name = "Col_RxModelName"
+		self._DataGridView_Rx_TextBoxColumn.Width = 100
+		# 
+		# DataGridView_Rx_TextBoxColumn1
+		# 
+		self._DataGridView_Rx_TextBoxColumn1.HeaderText = "Note"
+		self._DataGridView_Rx_TextBoxColumn1.Name = "Col_RxNote"
+		self._DataGridView_Rx_TextBoxColumn1.Width = 136
+		# 
+		# Button_View_Tx
+		# 
+		self._Button_View_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_View_Tx.Location = System.Drawing.Point(235, 21)
+		self._Button_View_Tx.Name = "Button_View_Tx"
+		self._Button_View_Tx.Size = System.Drawing.Size(45, 25)
+		self._Button_View_Tx.TabIndex = 33
+		self._Button_View_Tx.Text = "View"
+		self._Button_View_Tx.UseVisualStyleBackColor = True
+		self._Button_View_Tx.Click += self.Button_View_TxClick
+		# 
+		# Button_View_Rx
+		# 
+		self._Button_View_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_View_Rx.Location = System.Drawing.Point(235, 21)
+		self._Button_View_Rx.Name = "Button_View_Rx"
+		self._Button_View_Rx.Size = System.Drawing.Size(45, 25)
+		self._Button_View_Rx.TabIndex = 33
+		self._Button_View_Rx.Text = "View"
+		self._Button_View_Rx.UseVisualStyleBackColor = True
+		self._Button_View_Rx.Click += self.Button_View_RxClick
+		# 
+		# Button_CaseView
+		# 
+		self._Button_CaseView.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_CaseView.Location = System.Drawing.Point(12, 293)
+		self._Button_CaseView.Name = "Button_CaseView"
+		self._Button_CaseView.Size = System.Drawing.Size(175, 35)
+		self._Button_CaseView.TabIndex = 44
+		self._Button_CaseView.Text = "View Simulation Cases"
+		self._Button_CaseView.UseVisualStyleBackColor = True
+		self._Button_CaseView.Click += self.Button_CaseViewClick
+		# 
+		# Button_AnalysisOption
+		# 
+		self._Button_AnalysisOption.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_AnalysisOption.Location = System.Drawing.Point(221, 293)
+		self._Button_AnalysisOption.Name = "Button_AnalysisOption"
+		self._Button_AnalysisOption.Size = System.Drawing.Size(175, 35)
+		self._Button_AnalysisOption.TabIndex = 46
+		self._Button_AnalysisOption.Text = "Set Analysis Option"
+		self._Button_AnalysisOption.UseVisualStyleBackColor = True
+		self._Button_AnalysisOption.Click += self.Button_AnalysisOptionClick
+		# 
+		# Button_Run
+		# 
+		self._Button_Run.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Run.Location = System.Drawing.Point(430, 293)
+		self._Button_Run.Name = "Button_Run"
+		self._Button_Run.Size = System.Drawing.Size(175, 35)
+		self._Button_Run.TabIndex = 42
+		self._Button_Run.Text = "Run"
+		self._Button_Run.UseVisualStyleBackColor = True
+		self._Button_Run.Click += self.Button_RunClick
+		# 
+		# IBIS_Form
+		# 				
+		self.ClientSize = System.Drawing.Size(618, 339)
+		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
+		self.FormSize_W = self.Size.Width
+		self.FormSize_H = self.Size.Height
+		self.Controls.Add(self._Button_AnalysisOption)
+		self.Controls.Add(self._GroupBox_Rx)
+		self.Controls.Add(self._Button_CaseView)
+		self.Controls.Add(self._GroupBox_Tx)
+		self.Controls.Add(self._Button_Run)
+		IconFile = path + "\\Resources\\LOGO.ico"
+		self.Icon = Icon(IconFile)
+		self.Name = "IBIS_Form"
+		self.Text = "IBIS Optimizer"
+		self.Load += self.IBIS_FormLoad
+		self.ResizeEnd += self.IBIS_FormResizeEnd
+		self.DoubleClick += self.IBIS_FormDoubleClick
+		self._GroupBox_Rx.ResumeLayout(False)
+		self._DataGridView_Rx.EndInit()
+		self._GroupBox_Tx.ResumeLayout(False)
+		self._DataGridView_Tx.EndInit()
+		self.ResumeLayout(False)
+
+	def IBIS_FormLoad(self, sender, e):
+		try:			
+			self.Cursor = Cursors.WaitCursor
+			File = ""
+			if not self._ComboBox_IBIS_Tx.Text == "":				
+				for item in sub_DB.Parsing_data['IBIS_File']:
+					if self._ComboBox_IBIS_Tx.Text in item:
+						File = item
+						break
+				
+				if not File == "":
+					sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)					
+					#for item in sub_DB.IBIS_Tx['Component']:
+					#	self._ComboBox_Comp_Tx.Items.Add(item)					
+					if not sub_DB.IBIS_Tx['Component'] in self._ComboBox_Comp_Tx.Items:
+						self._ComboBox_Comp_Tx.Items.Add(sub_DB.IBIS_Tx['Component'])
+					self._ComboBox_Comp_Tx.SelectedIndex = 0
+					
+			File = ""
+			if not self._ComboBox_IBIS_Rx.Text == "":				
+				for item in sub_DB.Parsing_data['IBIS_File']:
+					if self._ComboBox_IBIS_Rx.Text in item:
+						File = item
+						break
+				if not File == "":
+					sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
+					#for item in sub_DB.IBIS_Rx['Component']:
+					#	self._ComboBox_Comp_Rx.Items.Add(item)
+					if not sub_DB.IBIS_Rx['Component'] in self._ComboBox_Comp_Rx.Items:
+						self._ComboBox_Comp_Rx.Items.Add(sub_DB.IBIS_Rx['Component'])
+					self._ComboBox_Comp_Rx.SelectedIndex = 0
+
+			self.Cursor = Cursors.Default
+
+			# Set ToopTip			
+			self._ComboBox_IBIS_Tx_ToopTip.SetToolTip(self._ComboBox_IBIS_Tx, self._ComboBox_IBIS_Tx.Text)
+			self._ComboBox_IBIS_Rx_ToopTip.SetToolTip(self._ComboBox_IBIS_Rx, self._ComboBox_IBIS_Rx.Text)
+
+		except Exception as e:			
+			Log("[IBIS Form Load] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to load IBIS Opt Form","Warning")
+			EXIT()
+
+	def IBIS_FormResizeEnd(self, sender, e):
+		try:
+			# Get previous Eye_Form width/height and resized Eye_Form width/height
+			# Calculate Gap betweent previous and resized width/height		
+			Gap_W = self.Size.Width - self.FormSize_W
+			Gap_H = self.Size.Height - self.FormSize_H
+			
+			# Backup the resized Eye_Form width/height as previous MainFomr width/height
+			self.FormSize_W = self.Size.Width
+			self.FormSize_H = self.Size.Height
+
+			# Resize
+			self._GroupBox_Tx.Size = System.Drawing.Size(self._GroupBox_Tx.Width + Gap_W/2, self._GroupBox_Tx.Height + Gap_H)
+			self._GroupBox_Rx.Size = System.Drawing.Size(self._GroupBox_Rx.Width + Gap_W/2, self._GroupBox_Rx.Height + Gap_H)
+			self._DataGridView_Tx.Size = System.Drawing.Size(self._DataGridView_Tx.Width + Gap_W/2, self._DataGridView_Tx.Height + Gap_H)
+			self._DataGridView_Tx_TextBoxColumn.Width = self._DataGridView_Tx_TextBoxColumn.Width + Gap_W/2
+			self._DataGridView_Rx.Size = System.Drawing.Size(self._DataGridView_Rx.Width + Gap_W/2, self._DataGridView_Rx.Height + Gap_H)			
+			self._DataGridView_Rx_TextBoxColumn.Width = self._DataGridView_Rx_TextBoxColumn.Width + Gap_W/2
+			self._ComboBox_IBIS_Tx.Size = System.Drawing.Size(self._ComboBox_IBIS_Tx.Width + Gap_W/2, self._ComboBox_IBIS_Tx.Height)
+			self._ComboBox_Comp_Tx.Size = System.Drawing.Size(self._ComboBox_Comp_Tx.Width + Gap_W/2, self._ComboBox_Comp_Tx.Height)
+			self._ComboBox_Model_Tx.Size = System.Drawing.Size(self._ComboBox_Model_Tx.Width + Gap_W/2, self._ComboBox_Model_Tx.Height)
+			self._ComboBox_IBIS_Rx.Size = System.Drawing.Size(self._ComboBox_IBIS_Rx.Width + Gap_W/2, self._ComboBox_IBIS_Rx.Height)
+			self._ComboBox_Comp_Rx.Size = System.Drawing.Size(self._ComboBox_Comp_Rx.Width + Gap_W/2, self._ComboBox_Comp_Rx.Height)
+			self._ComboBox_Model_Rx.Size = System.Drawing.Size(self._ComboBox_Model_Rx.Width + Gap_W/2, self._ComboBox_Model_Rx.Height)
+			
+			# Relocate
+			self._GroupBox_Rx.Location = System.Drawing.Point(self._GroupBox_Rx.Location.X + Gap_W/2, self._GroupBox_Rx.Location.Y)
+			self._Button_View_Tx.Location = System.Drawing.Point(self._Button_View_Tx.Location.X + Gap_W/2, self._Button_View_Tx.Location.Y)
+			self._Button_View_Rx.Location = System.Drawing.Point(self._Button_View_Rx.Location.X + Gap_W/2, self._Button_View_Rx.Location.Y)
+			self._Button_CaseView.Location = System.Drawing.Point(self._Button_CaseView.Location.X, self._Button_CaseView.Location.Y + Gap_H)
+			self._Button_AnalysisOption.Location = System.Drawing.Point(self._Button_AnalysisOption.Location.X, self._Button_AnalysisOption.Location.Y + Gap_H)
+			self._Button_Run.Location = System.Drawing.Point(self._Button_Run.Location.X, self._Button_Run.Location.Y + Gap_H)
+
+		except Exception as e:			
+			Log("[IBIS_FormResizeEnd] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to resize Eye Analyzer IBIS Optimizer GUI","Warning")			
+			EXIT()
+
+	def IBIS_FormDoubleClick(self, sender, e):				
+		self._GroupBox_Tx.Location = System.Drawing.Point(12, 12)		
+		self._GroupBox_Tx.Size = System.Drawing.Size(286, 275)
+		self._GroupBox_Rx.Location = System.Drawing.Point(319, 12)		
+		self._GroupBox_Rx.Size = System.Drawing.Size(286, 275)
+		self._DataGridView_Tx.Location = System.Drawing.Point(6, 112)
+		self._DataGridView_Tx.Size = System.Drawing.Size(274, 156)
+		self._DataGridView_Tx_CheckBoxColumn.Width = 35		
+		self._DataGridView_Tx_TextBoxColumn.Width = 236		
+		self._DataGridView_Rx.Location = System.Drawing.Point(6, 112)		
+		self._DataGridView_Rx.Size = System.Drawing.Size(274, 156)		
+		self._DataGridView_Rx_CheckBoxColumn.Width = 35		
+		self._DataGridView_Rx_TextBoxColumn.Width = 236
+		self._ComboBox_IBIS_Tx.Location = System.Drawing.Point(59, 22)		
+		self._ComboBox_IBIS_Tx.Size = System.Drawing.Size(170, 24)		
+		self._ComboBox_Comp_Tx.Location = System.Drawing.Point(59, 52)
+		self._ComboBox_Comp_Tx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Model_Tx.Location = System.Drawing.Point(59, 82)		
+		self._ComboBox_Model_Tx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_IBIS_Rx.Location = System.Drawing.Point(59, 22)
+		self._ComboBox_IBIS_Rx.Size = System.Drawing.Size(170, 24)		
+		self._ComboBox_Comp_Rx.Location = System.Drawing.Point(59, 52)		
+		self._ComboBox_Comp_Rx.Size = System.Drawing.Size(170, 24)		
+		self._ComboBox_Model_Rx.Location = System.Drawing.Point(59, 82)		
+		self._ComboBox_Model_Rx.Size = System.Drawing.Size(170, 24)
+		self._Button_View_Tx.Location = System.Drawing.Point(235, 21)		
+		self._Button_View_Rx.Location = System.Drawing.Point(235, 21)		
+		self._Button_CaseView.Location = System.Drawing.Point(12, 293)		
+		self._Button_AnalysisOption.Location = System.Drawing.Point(221, 293)
+		self._Button_Run.Location = System.Drawing.Point(430, 293)
+		self.ClientSize = System.Drawing.Size(618, 339)
+		self.FormSize_W = self.Size.Width
+		self.FormSize_H = self.Size.Height
+
+	def ComboBox_IBIS_TxSelectedIndexChanged(self, sender, e):		
+		try:
+			self.Cursor = Cursors.WaitCursor			
+			for item in sub_DB.Parsing_data['IBIS_File']:
+				if self._ComboBox_IBIS_Tx.Text in item:
+					File = item
+					break				
+			sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)
+			#for item in sub_DB.IBIS_Tx['Component']:
+			#	self._ComboBox_Comp_Tx.Items.Add(item)
+			if not sub_DB.IBIS_Tx['Component'] in self._ComboBox_Comp_Tx.Items:
+				self._ComboBox_Comp_Tx.Items.Add(sub_DB.IBIS_Tx['Component'])
+			self._ComboBox_Comp_Tx.SelectedIndex = 0
+			self.Cursor = Cursors.Default
+			
+			for models in sub_DB.IBIS_Tx["Model Selector"].keys():
+				self._ComboBox_Model_Tx.Items.Add(models)
+			self._ComboBox_Model_Tx.Text = "Select"
+			self._ComboBox_Model_Tx.BackColor = System.Drawing.SystemColors.Info
+
+			# Set ToopTip
+			self._ComboBox_IBIS_Tx_ToopTip.SetToolTip(self._ComboBox_IBIS_Tx, self._ComboBox_IBIS_Tx.Text)			
+
+		except Exception as e:			
+			Log("[IBIS Form Tx File ComboBox] = Index Change Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to change index for Tx IBIS File","Warning")
+			EXIT()
+
+	def ComboBox_IBIS_RxSelectedIndexChanged(self, sender, e):		
+		try:
+			self.Cursor = Cursors.WaitCursor			
+			for item in sub_DB.Parsing_data['IBIS_File']:
+				if self._ComboBox_IBIS_Rx.Text in item:
+					File = item
+					break				
+			sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
+			#for item in sub_DB.IBIS_Rx['Component']:
+			#	self._ComboBox_Comp_Rx.Items.Add(item)
+			if not sub_DB.IBIS_Rx['Component'] in self._ComboBox_Comp_Rx.Items:
+				self._ComboBox_Comp_Rx.Items.Add(sub_DB.IBIS_Rx['Component'])
+			self._ComboBox_Comp_Rx.SelectedIndex = 0
+			self.Cursor = Cursors.Default
+
+			for models in sub_DB.IBIS_Rx["Model Selector"].keys():
+				self._ComboBox_Model_Rx.Items.Add(models)
+			self._ComboBox_Model_Rx.Text = "Select"
+			self._ComboBox_Model_Rx.BackColor = System.Drawing.SystemColors.Info
+
+			# Set ToopTip			
+			self._ComboBox_IBIS_Rx_ToopTip.SetToolTip(self._ComboBox_IBIS_Rx, self._ComboBox_IBIS_Rx.Text)
+
+		except Exception as e:			
+			Log("[IBIS Form Rx File ComboBox] = Index Change Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to change index for Rx IBIS File","Warning")
+			EXIT()
+
+	def ComboBox_Comp_TxSelectedIndexChanged(self, sender, e):
+		try:
+			#print sub_DB.IBIS_Tx['Model Selector'].keys()
+			#self.IBIS["Model Selector"] = {self.DB["Text"][init_idx].split(']')[-1].strip():temp}
+			pass
+
+		except Exception as e:			
+			Log("[IBIS Form Tx Comp ComboBox] = Index Change Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to change index for Tx Component","Warning")
+			EXIT()
+
+	def ComboBox_Comp_RxSelectedIndexChanged(self, sender, e):
+
+		pass
+
+	def ComboBox_Model_TxSelectedIndexChanged(self, sender, e):
+		self._ComboBox_Model_Tx.BackColor = System.Drawing.SystemColors.Window
+		self._DataGridView_Tx.Rows.Clear()
+		for item in sub_DB.IBIS_Tx["Model Selector"][self._ComboBox_Model_Tx.Text]:
+			self._DataGridView_Tx.Rows.Add(False, item[0], item[1])		
+
+	def ComboBox_Model_RxSelectedIndexChanged(self, sender, e):
+		self._ComboBox_Model_Rx.BackColor = System.Drawing.SystemColors.Window
+		self._DataGridView_Rx.Rows.Clear()
+		for item in sub_DB.IBIS_Rx["Model Selector"][self._ComboBox_Model_Rx.Text]:
+			self._DataGridView_Rx.Rows.Add(False, item[0], item[1])		
+
+	def Button_View_TxClick(self, sender, e):
+		try:
+			if not sub_DB.IBISInfo_Tx_Form == "":
+				sub_DB.IBISInfo_Tx_Form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+				sub_DB.IBISInfo_Tx_Form.ShowDialog()
+
+		except Exception as e:			
+			Log("[Tx IBIS Viwer Launch] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to Open Tx IBIS Viwer","Warning")
+			EXIT()
+
+	def Button_View_RxClick(self, sender, e):
+		try:
+			if not sub_DB.IBISInfo_Rx_Form == "":
+				sub_DB.IBISInfo_Rx_Form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+				sub_DB.IBISInfo_Rx_Form.ShowDialog()
+
+		except Exception as e:			
+			Log("[Rx IBIS Viwer Launch] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to Open Rx IBIS Viwer","Warning")
+			EXIT()
+
+	def Button_CaseViewClick(self, sender, e):
+		pass
+
+	def Button_AnalysisOptionClick(self, sender, e):
+		pass
+
+	def Button_RunClick(self, sender, e):
+		pass
+
+class IBIS_Viwer(Form):
+	def __init__(self, File, Flag):
+
+		self.InitializeComponent(File, Flag)
+	
+	def InitializeComponent(self, File, Flag):
+		global path
+		path = os.path.dirname(os.path.abspath(__file__))
+		self._components = System.ComponentModel.Container()
+		self._treeView1 = System.Windows.Forms.TreeView()
+		self._richTextBox1 = System.Windows.Forms.RichTextBox()
+		self._openFileDialog1 = System.Windows.Forms.OpenFileDialog()		
+		self._contextMenuStrip1 = System.Windows.Forms.ContextMenuStrip(self._components)
+		self._expandAllToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._collapseAllToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._label1 = System.Windows.Forms.Label()
+		self._label2 = System.Windows.Forms.Label()
+		self._progressBar1 = System.Windows.Forms.ProgressBar()
+		self._button1 = System.Windows.Forms.Button()
+		self._contextMenuStrip1.SuspendLayout()
+		self.SuspendLayout()
+		# 
+		# treeView1
+		# 
+		self._treeView1.BackColor = System.Drawing.Color.White
+		self._treeView1.ContextMenuStrip = self._contextMenuStrip1
+		self._treeView1.Font = System.Drawing.Font("Microsoft Sans Serif", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._treeView1.Location = System.Drawing.Point(12, 30)
+		self._treeView1.Name = "treeView1"
+		self._treeView1.Size = System.Drawing.Size(375, 537)
+		self._treeView1.TabIndex = 0
+		self._treeView1.NodeMouseClick += self.TreeView1NodeMouseClick
+		# 
+		# richTextBox1
+		# 
+		self._richTextBox1.Font = System.Drawing.Font("Microsoft Sans Serif", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._richTextBox1.Location = System.Drawing.Point(406, 30)
+		self._richTextBox1.Name = "richTextBox1"
+		self._richTextBox1.Size = System.Drawing.Size(637, 537)
+		self._richTextBox1.TabIndex = 1
+		self._richTextBox1.Text = ""
+		# 
+		# openFileDialog1
+		# 
+		self._openFileDialog1.FileName = "openFileDialog1"
+		# 
+		# contextMenuStrip1
+		# 
+		self._contextMenuStrip1.Items.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
+			[self._expandAllToolStripMenuItem,
+			self._collapseAllToolStripMenuItem]))
+		self._contextMenuStrip1.Name = "contextMenuStrip1"
+		self._contextMenuStrip1.Size = System.Drawing.Size(138, 48)
+		# 
+		# expandAllToolStripMenuItem
+		# 
+		self._expandAllToolStripMenuItem.Name = "expandAllToolStripMenuItem"
+		self._expandAllToolStripMenuItem.Size = System.Drawing.Size(137, 22)
+		self._expandAllToolStripMenuItem.Text = "Expand All"
+		self._expandAllToolStripMenuItem.Click += self.ExpandAllToolStripMenuItemClick
+		# 
+		# collapseAllToolStripMenuItem
+		# 
+		self._collapseAllToolStripMenuItem.Name = "collapseAllToolStripMenuItem"
+		self._collapseAllToolStripMenuItem.Size = System.Drawing.Size(137, 22)
+		self._collapseAllToolStripMenuItem.Text = "Collapse All"
+		self._collapseAllToolStripMenuItem.Click += self.CollapseAllToolStripMenuItemClick
+		# 
+		# label1
+		# 
+		self._label1.Font = System.Drawing.Font("Microsoft Sans Serif", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._label1.Location = System.Drawing.Point(12, 12)
+		self._label1.Name = "label1"
+		self._label1.Size = System.Drawing.Size(350, 15)
+		self._label1.TabIndex = 2
+		self._label1.Text = "label1"
+		# 
+		# label2
+		# 
+		self._label2.Font = System.Drawing.Font("Microsoft Sans Serif", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._label2.Location = System.Drawing.Point(406, 12)
+		self._label2.Name = "label2"
+		self._label2.Size = System.Drawing.Size(400, 15)
+		self._label2.TabIndex = 3
+		self._label2.Text = "label2"
+		# 
+		# progressBar1
+		# 
+		self._progressBar1.Location = System.Drawing.Point(12, 573)
+		self._progressBar1.Name = "progressBar1"
+		self._progressBar1.Size = System.Drawing.Size(940, 22)
+		self._progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+		self._progressBar1.Visible = False
+		self._progressBar1.TabIndex = 4
+		# 
+		# button1
+		# 
+		self._button1.Font = System.Drawing.Font("Microsoft Sans Serif", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._button1.Location = System.Drawing.Point(964, 571)
+		self._button1.Name = "button1"
+		self._button1.Size = System.Drawing.Size(78, 25)
+		self._button1.TabIndex = 5
+		self._button1.Text = "Close"
+		self._button1.UseVisualStyleBackColor = True
+		self._button1.Click += self.Button1Click
+		# 
+		# MainForm
+		# 
+		self.ClientSize = System.Drawing.Size(1055, 604)
+		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
+		self.FormSize_W = self.Size.Width
+		self.FormSize_H = self.Size.Height
+		self.ResizeEnd += self.MainFormResizeEnd
+		self.Controls.Add(self._button1)
+		self.Controls.Add(self._progressBar1)
+		self.Controls.Add(self._label2)
+		self.Controls.Add(self._label1)
+		self.Controls.Add(self._richTextBox1)
+		self.Controls.Add(self._treeView1)
+		IconFile = path + "\\Resources\\LOGO.ico"
+		self.Icon = Icon(IconFile)
+		self.Name = "MainForm"
+		if Flag:
+			self.Text = "Tx IBIS Model"
+		else:
+			self.Text = "Rx IBIS Model"
+		self._label1.Text = "Hierarchy view for " + File.split('\\')[-1]
+		self._label2.Text = File.split('\\')[-1]
+		self._contextMenuStrip1.ResumeLayout(False)
+		self.ResumeLayout(False)
+		self.PerformLayout()		
+
+		self.IBIS = {}
+
+		self.IBIS["Model Selector"] = {}
+
+		self.IBIS["Model"] = {}
+		self.IBIS["Model"]["Name"] = []
+		self.IBIS["Model"]["Type"] = []
+
+		self.IBIS["Pin"] = {}
+		self.IBIS["Pin"]["Name"] = []
+		self.IBIS["Pin"]["Signal_name"] = []
+		self.IBIS["Pin"]["Model_name"] = []
+
+		self.IBIS["Diff_pin"] = {}
+		self.IBIS["Diff_pin"]["Name"] = []
+		self.IBIS["Diff_pin"]["Signal_name"] = []
+		self.IBIS["Diff_pin"]["Model_name"] = []
+
+		self.IBIS["AMI"] = {}
+		self.IBIS["AMI"]["Ex"] = []
+		self.IBIS["AMI"]["OS"] = []
+		self.IBIS["AMI"]["Compiler"] = []
+		self.IBIS["AMI"]["Platform"] = []
+		self.IBIS["AMI"]["Ex_file"] = []	# *.dll
+		self.IBIS["AMI"]["Para_file"] = []	# *.ami		
+
+		self.AMI_flag = False
+		self.Algorithmic_model_flag = False
+		self.DB = {}
+		self.Line = {}
+		self.Length = {}
+		self.Key = {}
+		self.Model_Type = []
+		self.TopNode_keyword = []
+		self.SecondNode_keyword = {}
+		self.ThirdNode_keyword = {}
+		self.FourthNode_keyword = {}
+		self.File = File
+		
+
+		self.Model_Type = [
+			"Input",
+			"I/O",
+			"I/O_open_drain",
+			"I/O_open_sink",
+			"I/O_open_source",
+			"Input_ECL",
+			"I/O_ECL",
+			"Terminator",
+			"Output",
+			"3-state",
+			"Open_sink",
+			"Open_drain",
+			"Open_source",
+			"Input_ECL",
+			"Output_ECL",
+			"I/O_ECL",
+			"3-state_ECL",
+			"Series",
+			"Series_switch",
+			"Input_diff",
+			"Output_diff",
+			"I/O_diff",
+			"3-state_diff"
+			]
+
+		self.TopNode_keyword = [
+			# [Header]
+			"[Component]",
+			"[Model Selector]",
+			"[Model]",
+			"[Submodel]",
+			"[External Circuit]",
+			"[Test Data]",
+			"[Test Load]",
+			"[Define Package Model]",
+			"[Interconnect Model Set]",
+			"[End]"
+			]
+
+		self.SecondNode_keyword["[Header]"] = [
+			"[IBIS Ver]",
+			"[Comment Char]",
+			"[File Name]",
+			"[File Rev]",
+			"[Date]",
+			"[Source]",
+			"[Notes]",
+			"[Disclaimer]",
+			"[Copyright]"
+			]
+
+		self.SecondNode_keyword["[Component]"] = [
+			"[Manufacturer]",
+			"[Package]",
+			"[Pin]",
+			"[Package Model]",				
+			"[Interconnect Model Group]",
+			"[Pin Mapping]",
+			"[Bus Label]",
+			"[Die Supply Pads]",
+			"[Diff Pin]",
+			"[Repeater Pin]",
+			"[Series Pin Mapping]",
+			"[Series Switch Groups]",
+			"[Node Declarations]",
+			"[Circuit Call]",
+			"[Begin EMI Component]"
+			]
+
+		self.SecondNode_keyword["[Model]"] = [
+			"[Model Spec]",
+			"[Receiver Thresholds]",
+			"[Add Submodel]",
+			"[Driver Schedule]",
+			"[Temperature Range]",
+			"[Voltage Range]",
+			"[Pullup Reference]",
+			"[Pulldown Reference]",
+			"[POWER Clamp Reference]",
+			"[GND Clamp Reference]",
+			"[External Reference]",
+			"[C Comp Corner]",
+			"[TTgnd]",
+			"[TTpower]",
+			"[Pulldown]",
+			"[Pullup]",
+			"[GND Clamp]",
+			"[POWER Clamp]",
+			"[ISSO PU]",
+			"[ISSO PD]",
+			"[Rgnd]",
+			"[Rpower]",
+			"[Rac]",
+			"[Cac]",
+			"[On]",
+			"[Off]",
+			"[R Series]",
+			"[L Series]",
+			"[Rl Series]",
+			"[C Series]",
+			"[Lc Seeries]",
+			"[Rc Series]",
+			"[Series Current]",
+			"[Series MOSFET]",
+			"[Ramp]",
+			"[Rising Waveform]",
+			"[Falling Waveform]",				
+			"[Initial Delay]",
+			"[External Model]",
+			"[Algorithmic Model]",
+			"[Begin EMI Model]"
+			]
+
+		self.SecondNode_keyword["[Submodel]"] = [
+			"[Submodel Spec]",
+			"[POWER Pulse Table]",
+			"[GND Pulse Table]",
+			"[Pulldown]",
+			"[Pullup]",
+			"[GND Clamp]",
+			"[POWER Clamp]",
+			"[Ramp]",
+			"[Rising Waveform]",
+			"[Falling Waveform]",
+			"[Initial Delay]"
+			]
+
+		self.SecondNode_keyword["[External Circuit]"] = [
+			"[End External Circuit]"
+			]
+
+		self.SecondNode_keyword["[Test Data]"] = [
+			"[Rising Waveform Near]",
+			"[Falling Waveform Near]",
+			"[Rising Waveform Far]",
+			"[Falling Waveform Far]",
+			"[Diff Rising Waveform Near]",
+			"[Diff Falling Waveform Near]",
+			"[Diff Rising Waveform Far]",
+			"[Diff Falling Waveform Far]"
+			]
+
+		self.SecondNode_keyword["[Define Package Model]"] = [
+			"[Manufacturer]",
+			"[OEM]",
+			"[Description]",
+			"[Number Of Sections]",
+			"[Number of Pins]",
+			"[Pin Numbers]",
+			"[Merged Pins]",
+			"[Model Data]",
+			"[End Package Model]"
+			]
+
+		self.SecondNode_keyword["[Interconnect Model Set]"] = [
+			"[Manufacturer]",
+			"[Description]",
+			"[Interconnect Model]",
+			"[End Interconnect Model Set]"
+			]
+
+		self.ThirdNode_keyword["[Package Model]"] = [
+			"[Alternate Package Models]"			
+			]
+
+		self.ThirdNode_keyword["[Interconnect Model Group]"] = [
+			"[End Interconnect Model Group]"
+			]
+		
+		self.ThirdNode_keyword["[Node Declarations]"] = [
+			"[End Node Declarations]"
+			]
+
+		self.ThirdNode_keyword["[Circuit Call]"] = [
+			"[End Circuit Call]"
+			]
+
+		self.ThirdNode_keyword["[Begin EMI Component]"] = [			
+			"[Pin EMI]",
+			"[Pin Domain EMI]",
+			"[End EMI Component]"
+			]
+
+		self.ThirdNode_keyword["[Rising Waveform]"] = [
+			"[Composite Current]"	
+			]
+
+		self.ThirdNode_keyword["[Falling Waveform]"] = [
+			"[Composite Current]"	
+			]
+
+		self.ThirdNode_keyword["[External Model]"] = [
+			"[End External Model]"
+			]
+
+		self.ThirdNode_keyword["[Algorithmic Model]"] = [
+			"[End Algorithmic Model]"
+			]
+		
+		self.ThirdNode_keyword["[Begin EMI Model]"] = [
+			"[End EMI Model]"
+			]
+
+		self.ThirdNode_keyword["[Model Data]"] = [
+			"[Resistance Matrix]",
+			"[Inductance Matrix]",
+			"[Capacitance Matrix]",
+			"[End Model Data]"
+			]
+
+		self.ThirdNode_keyword["[Interconnect Model]"] = [
+			"[End Interconnect Model]"
+			]
+
+		self.FourthNode_keyword["[Alternate Package Models]"] = [
+			"[End Alternate Package Models]"
+			]
+
+		self.FourthNode_keyword["[Resistance Matrix]"] = [
+			"[Bandwidth]",
+			"[Row]"
+			]
+
+		self.FourthNode_keyword["[Inductance Matrix]"] = [
+			"[Bandwidth]",
+			"[Row]"
+			]
+
+		self.FourthNode_keyword["[Capacitance Matrix]"] = [
+			"[Bandwidth]",
+			"[Row]"
+			]
+	
+		try:
+			self._treeView1.Nodes.Clear()
+			self._richTextBox1.Clear()
+			self.DB = {}
+			self.Line = {}
+			self.Length = {}
+			self.Key = {}
+
+			self._treeView1.Nodes.Add(File.split('\\')[-1])
+
+			iter = 0			
+			self.DB["Text"] = []							
+			with open(File) as fp:
+				total_lines = sum(1 for line in fp)
+			self._progressBar1.Maximum = total_lines
+			fp.close()
+
+			with open(File) as fp:
+				for line in fp:
+					if not line[0] == "|":
+						if line.find('[') > 0:
+							line = line.replace('[','(').replace(']',')')						
+					self.DB["Text"].append(line)
+					if line[0]=="|":
+						self._richTextBox1.SelectionColor = Color.Green						
+					else:
+						self._richTextBox1.SelectionColor = Color.Black							
+					self._richTextBox1.AppendText(line)
+					iter += 1
+					self._progressBar1.Value = iter
+					print iter
+			fp.close()
+			print "1 - Total Line : %d" % iter
+
+			self._treeView1.Nodes[0].Nodes.Add("[Header]")
+			
+			Line_iter = 0
+			index = 0
+			self.Line["0"] = 0
+			self.Length["0"] = 1
+			self.Key["0"] = "Start"
+
+			self.Line["0_0"] = 0
+			self.Length["0_0"] = 1
+			self.Key["0_0"] = "[Header]"
+			while(1):
+				line = self.DB["Text"][Line_iter]
+				for key in self.SecondNode_keyword["[Header]"]:
+					if line.lower().find(key.lower()) != -1:						
+						self._treeView1.Nodes[0].Nodes[0].Nodes.Add(line)
+						dic_key = "0_0" + "_" + str(index)
+						self.Line[dic_key] = Line_iter
+						self.Length[dic_key] = self.DB["Text"][Line_iter].Length
+						self.Key[dic_key] = key
+						index += 1
+					
+				if line.lower().find(self.TopNode_keyword[0].lower()) != -1:					
+					break
+				Line_iter += 1
+			print "2 - Total Line : %d" % Line_iter
+
+			Line_iter -= 1
+			TopNode_index = 1
+			SecondNode_index = 0
+			ThirdNode_index = 0
+			FourthNode_index = 0
+			keyword = "junghyun"
+			pre_keyword2 = "junghyun"
+			pre_keyword3 = "junghyun"   
+			flag = True				
+			while(1):
+				print Line_iter
+				# End of Line : Escape While				
+				if keyword.lower() == "[end]":
+					key1 = [s for s in self.TopNode_keyword if keyword.lower() in s.lower()]
+					if not len(key1) == 0:
+						self._treeView1.Nodes[0].Nodes.Add(self.DB["Text"][Line_iter])
+						dic_key = "0_"+str(TopNode_index)
+						self.Line[dic_key] = Line_iter
+						self.Length[dic_key] = self.DB["Text"][Line_iter].Length
+						self.Key[dic_key] = key1[0]
+					break
+
+				# Get Line Text until the text include "["
+				if flag:
+					keyword, Line_iter = Get_Keyword(Line_iter, self)						
+					
+				# Find First Node
+				key1 = [s for s in self.TopNode_keyword if keyword.lower() in s.lower()]					
+				if not len(key1) == 0:
+					# ==================== Get Component Info. ====================
+					if key1[0].lower() == "[component]":						
+						self.IBIS["Component"] = self.DB["Text"][Line_iter].split(']')[-1].strip()						
+
+					# ==================== Get Model Selector Info. ====================
+					if key1[0].lower() == "[model selector]":
+						temp = []
+						init_idx = Line_iter
+						while(1):
+							Line_iter += 1
+							if self.DB["Text"][Line_iter][0] != "|" and self.DB["Text"][Line_iter].strip() != "":
+								if self.DB["Text"][Line_iter][0] == "[":									
+									break
+								else:									
+									model = ' '.join(self.DB["Text"][Line_iter].split()).split(" ", 1)[0]
+									note = ' '.join(self.DB["Text"][Line_iter].split()).split(" ", 1)[1]
+									temp.append([model, note])						
+						self.IBIS["Model Selector"][self.DB["Text"][init_idx].split(']')[-1].strip()] = temp
+						Line_iter = init_idx
+						
+					# ==================== Get Model Info. ====================
+					elif key1[0].lower() == "[model]":						
+						self.IBIS["Model"]["Name"].append(self.DB["Text"][Line_iter].split(']')[-1].lstrip().rstrip())
+						self.IBIS["Model"]["Type"].append(self.DB["Text"][Line_iter+1].split(' ')[-1].lstrip().rstrip())						
+
+					self._treeView1.Nodes[0].Nodes.Add(self.DB["Text"][Line_iter])						
+					dic_key = "0_" + str(TopNode_index)
+					self.Line[dic_key] = Line_iter
+					self.Length[dic_key] = self.DB["Text"][Line_iter].Length
+					self.Key[dic_key] = key1[0]
+					TopNode_index += 1
+					SecondNode_index = 0
+
+					temp_key = [s for s in self.SecondNode_keyword.keys() if key1[0].lower() in s.lower()]						
+					if not len(temp_key) == 0:
+						while(1):
+							keyword, Line_iter = Get_Keyword(Line_iter, self)
+							key2 = [s for s in self.SecondNode_keyword[temp_key[0]] if keyword.lower() in s.lower()]								
+							if not len(key2) == 0:
+								# ==================== Get Pin Info. ====================
+								if key2[0].lower() == "[pin]":
+									iter = 0
+									while(1):
+										iter += 1
+										if self.DB["Text"][Line_iter+iter][0] == "[":
+											break
+										elif self.DB["Text"][Line_iter+iter].lstrip() == "" or self.DB["Text"][Line_iter+iter][0] == "|":
+											pass
+										else:
+											self.IBIS["Pin"]["Name"].append(self.DB["Text"][Line_iter+iter].split()[0])
+											self.IBIS["Pin"]["Signal_name"].append(self.DB["Text"][Line_iter+iter].split()[1])
+											self.IBIS["Pin"]["Model_name"].append(self.DB["Text"][Line_iter+iter].split()[2])											
+											
+								# ==================== Get Diff Pin Info. ====================
+								elif key2[0].lower() == "[diff pin]":
+									iter = 0
+									while(1):
+										iter += 1
+										if self.DB["Text"][Line_iter+iter][0] == "[":
+											break
+										elif self.DB["Text"][Line_iter+iter].lstrip() == "" or self.DB["Text"][Line_iter+iter][0] == "|":
+											pass
+										else:											
+											self.IBIS["Diff_pin"]["Name"].append(self.DB["Text"][Line_iter+iter].split()[0] + " - " + self.DB["Text"][Line_iter+iter].split()[1])
+											pos_index = self.IBIS["Pin"]["Name"].index(self.DB["Text"][Line_iter+iter].split()[0])
+											neg_index = self.IBIS["Pin"]["Name"].index(self.DB["Text"][Line_iter+iter].split()[1])
+											self.IBIS["Diff_pin"]["Signal_name"].append(self.IBIS["Pin"]["Signal_name"][pos_index] + " - " + self.IBIS["Pin"]["Signal_name"][neg_index])
+											self.IBIS["Diff_pin"]["Model_name"].append(self.IBIS["Pin"]["Model_name"][pos_index] + " - " + self.IBIS["Pin"]["Model_name"][neg_index])											
+
+								# ==================== Get AMI Info. ====================
+								elif key2[0].lower() == "[algorithmic model]":									
+									self.Algorithmic_model_flag = True
+									iter = 0
+									while(1):
+										iter += 1
+										if self.DB["Text"][Line_iter+iter][0] == "[":
+											break
+										elif self.DB["Text"][Line_iter+iter].lstrip() == "" or self.DB["Text"][Line_iter+iter][0] == "|":
+											pass
+										else:											
+											self.IBIS["AMI"]["Ex"].append(self.DB["Text"][Line_iter+iter].split()[0])
+											self.IBIS["AMI"]["OS"].append(self.DB["Text"][Line_iter+iter].split()[1].split("_")[0])
+											self.IBIS["AMI"]["Compiler"].append(self.DB["Text"][Line_iter+iter].split()[1].split("_")[1])
+											self.IBIS["AMI"]["Platform"].append(self.DB["Text"][Line_iter+iter].split()[1].split("_")[2])
+											self.IBIS["AMI"]["Ex_file"].append(self.DB["Text"][Line_iter+iter].split()[2])
+											self.IBIS["AMI"]["Para_file"].append(self.DB["Text"][Line_iter+iter].split()[3])
+											
+											ex_file_path = os.path.dirname(File) + "\\" + self.DB["Text"][Line_iter+iter].split()[2]
+											para_file_path = os.path.dirname(File) + "\\" + self.DB["Text"][Line_iter+iter].split()[3]
+
+											if not os.path.isfile(ex_file_path):
+												MessageBox.Show("Please check the AMI executable model file \"" + self.DB["Text"][Line_iter+iter].split()[2] + "\"",
+													"Executable model file(*.dll/*.so) is missed",MessageBoxButtons.OK, MessageBoxIcon.Error)
+												self.AMI_flag = False
+											if not os.path.isfile(para_file_path):
+												MessageBox.Show("Please check the AMI parameter definition file \"" + self.DB["Text"][Line_iter+iter].split()[3] + "\"",
+													"Control file(*.ami) is missed",MessageBoxButtons.OK, MessageBoxIcon.Error)
+												self.AMI_flag = False
+
+								pre_keyword2 = key2[0]
+								self._treeView1.Nodes[0].Nodes[TopNode_index- 1].Nodes.Add(key2[0])
+								dic_key = "0_" + str(TopNode_index-1) + "_" + str(SecondNode_index)									
+								self.Line[dic_key] = Line_iter
+								self.Length[dic_key] = self.DB["Text"][Line_iter].Length
+								self.Key[dic_key] = key2[0]
+								SecondNode_index += 1
+								ThirdNode_index = 0
+							else:
+								temp_key2 = [s for s in self.ThirdNode_keyword.keys() if pre_keyword2 in s]
+								if not len(temp_key2) == 0:
+									key3 = [s for s in self.ThirdNode_keyword[pre_keyword2] if keyword.lower() in s.lower()]										
+									if not len(key3) == 0:
+										pre_keyword3 = key3[0]
+										self._treeView1.Nodes[0].Nodes[TopNode_index- 1].Nodes[SecondNode_index-1].Nodes.Add(key3[0])
+										dic_key = "0_" + str(TopNode_index-1) + "_" + str(SecondNode_index-1) + "_" + str(ThirdNode_index)
+										self.Line[dic_key] = Line_iter
+										self.Length[dic_key] = self.DB["Text"][Line_iter].Length
+										self.Key[dic_key] = key3[0]
+										ThirdNode_index += 1
+										FourthNode_index = 0
+									else:
+										temp_key3 = [s for s in self.FourthNode_keyword.keys() if pre_keyword3 in s]
+										if not len(temp_key3) == 0:
+											key4 = [s for s in self.FourthNode_keyword[pre_keyword3] if keyword.lower() in s.lower()]
+											if not len(key4) == 0:
+												self._treeView1.Nodes[0].Nodes[TopNode_index-1].Nodes[SecondNode_index-1].Nodes[ThirdNode_index-1].Nodes.Add(key4[0])
+												dic_key = "0_" + str(TopNode_index-1) + "_" + str(SecondNode_index-1) + "_" + str(ThirdNode_index-1) + "_" + str(FourthNode_index)
+												self.Line[dic_key] = Line_iter
+												self.Length[dic_key] = self.DB["Text"][Line_iter].Length
+												self.Key[dic_key] = key4[0]
+												FourthNode_index += 1
+											else:
+												flag = False
+												break
+										else:
+											flag = False
+											break
+								else:
+									flag = False
+									break
+					else:
+						flag = True
+
+			self._treeView1.Nodes[0].Expand()
+			if Flag:
+				sub_DB.IBIS_Tx = self.IBIS
+			else:
+				sub_DB.IBIS_Rx = self.IBIS
+			print "3 - Total Line : %d" % Line_iter
+
+		except Exception as e:	
+			print traceback.format_exc()
+			self._treeView1.Nodes[0].Expand()
+			MessageBox.Show("Fail to completely generate IBIS Keyword Tree.\nPlease check the keword " + keyword, "IBIS Information",
+			    MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+		#if self.AMI_flag and self.Algorithmic_model_flag:
+		#	self.AMI_flag = True
+		#else:
+		#	self.AMI_flag = False
+
+		#if not self.Algorithmic_model_flag:
+		#	if Flag:
+		#		TxRx = "Tx"
+		#	else:
+		#		TxRx = "Rx"
+		#	MessageBox.Show("Imported " + TxRx + " IBIS Model does not have \"[Algorithmic Model]\"\nPlease Check the AMI Model", "IBIS AMI Information",
+		#	    MessageBoxButtons.OK, MessageBoxIcon.Error)
+		pass
+
+	def MainFormResizeEnd(self, sender, e):				
+		# Get previous Eye_Form width/height and resized Eye_Form width/height
+		# Calculate Gap betweent previous and resized width/height		
+		Gap_W = self.Size.Width - self.FormSize_W
+		Gap_H = self.Size.Height - self.FormSize_H
+
+		# Backup the resized Eye_Form width/height as previous MainFomr width/height
+		self.FormSize_W = self.Size.Width
+		self.FormSize_H = self.Size.Height
+
+		# Resize
+		self._treeView1.Size = System.Drawing.Size(self._treeView1.Width + Gap_W/2, self._treeView1.Height + Gap_H)
+		self._richTextBox1.Size = System.Drawing.Size(self._richTextBox1.Width + Gap_W/2, self._richTextBox1.Height + Gap_H)
+		self._progressBar1.Size = System.Drawing.Size(self._progressBar1.Width + Gap_W, self._progressBar1.Height)
+
+		# Relocate
+		self._richTextBox1.Location = System.Drawing.Point(self._richTextBox1.Location.X + Gap_W/2, self._richTextBox1.Location.Y)
+		self._progressBar1.Location = System.Drawing.Point(self._progressBar1.Location.X, self._progressBar1.Location.Y + Gap_H)
+		self._button1.Location = System.Drawing.Point(self._button1.Location.X + Gap_W, self._button1.Location.Y + Gap_H)
+		
+	def TreeView1NodeMouseClick(self, sender, e):
+		key = str(e.Node.Index)
+		temp_Node = e.Node
+		while(temp_Node.Parent != None):			
+			key = str(temp_Node.Parent.Index) + "_" + key
+			temp_Node = temp_Node.Parent
+		
+		if key != "0_0":
+			HighLight(self, key)
+
+	def ExpandAllToolStripMenuItemClick(self, sender, e):
+
+		self._treeView1.ExpandAll()
+
+	def CollapseAllToolStripMenuItemClick(self, sender, e):
+		self._treeView1.CollapseAll()
+		self._treeView1.Nodes[0].Expand()
+
+	def Button1Click(self, sender, e):		
+
+		self.Close()
+
+	def AMI_ListView_ModelSpecSelectedIndexChanged(self, sender, e):
+
+		pass
+
+def HighLight(self, key):
+	for temp_key in self.Line:
+		self._richTextBox1.Select(self._richTextBox1.GetFirstCharIndexFromLine(self.Line[temp_key]), self.Length[temp_key])
+		self._richTextBox1.SelectionColor = Color.Black
+		self._richTextBox1.SelectionFont = Font("Arial", 9)
+	
+	self._richTextBox1.Select(self._richTextBox1.GetFirstCharIndexFromLine(self.Line[key]), self.Length[key])
+	self._richTextBox1.Focus()
+	self._richTextBox1.SelectionColor = Color.Blue
+	self._richTextBox1.SelectionFont = Font("Arial", 12, FontStyle.Bold)
+		
+def Get_Keyword(Line_iter, self):
+	while(1):
+		Line_iter += 1					
+		line = self.DB["Text"][Line_iter]		
+		if line.find("[") == 0:
+			keyword = "[" + line.replace("_"," ").split("[")[1].split("]")[0] + "]"
+			break
+
+	return keyword, Line_iter

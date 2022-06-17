@@ -64,6 +64,7 @@ sub_DB.Eye_Form = GUI_3_EyeAnalyzer.Eye_Form()
 sub_DB.Option_Form = OptionForm(2)
 sub_DB.Net_Form = NetForm()
 sub_DB.Compliance_Form = ComplianceForm()
+sub_DB.IBIS_Form = IBIS_OptForm()
 
 ###########################
 # Launch Eye Analyzer GUI #
