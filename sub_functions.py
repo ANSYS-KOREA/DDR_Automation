@@ -116,7 +116,7 @@ def Net_Identify(name, Cenv):
 	Match = ""
 
 	for key in Cenv:
-		if "<Ignore>" in key:
+		if "<Ignore>[Net Identification]" in key:
 			name = name.replace(Cenv[key][0], "")
 
 	for keyword in Cenv["<DM>[Net Identification]"]:
@@ -173,6 +173,29 @@ def Net_Identify(name, Cenv):
 		if m:
 			Match = m.group()
 			Group = 1 # DQ
+			break
+
+	return Group, Match
+
+def IBIS_Identify(name, Cenv):	
+	Match = ""
+	Group = ""
+	for key in Cenv:
+		if "<Ignore>[IBIS Identification]" in key:
+			name = name.replace(Cenv[key][0], "")
+
+	for keyword in Cenv["<Tx>[IBIS Identification]"]:		
+		m = re.search(keyword, name, re.I) # re.I (or re.IGNORECASE) = No distinction between upper and lower case letters.
+		if m:
+			Match = m.group()
+			Group = "Tx"
+			break
+
+	for keyword in Cenv["<Rx>[IBIS Identification]"]:		
+		m = re.search(keyword, name, re.I) # re.I (or re.IGNORECASE) = No distinction between upper and lower case letters.
+		if m:
+			Match = m.group()
+			Group = "Rx"
 			break
 
 	return Group, Match
@@ -1983,6 +2006,9 @@ def Initial():
 	sub_DB.Option_Form = ""
 	sub_DB.Option_Form = GUI_subforms.OptionForm(2)
 
+	sub_DB.IBIS_Form = ""
+	sub_DB.IBIS_Form = GUI_subforms.IBIS_OptForm()
+
 	sub_DB.Result_Flag = False
 	sub_DB.Eye_Analyze_Flag = True
 	
@@ -2066,7 +2092,7 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 				# Read line
 				temp_data = fp.readline()
 
-				if "$begin \'Compdefs\'" in temp_data:
+				if "$begin \'NexximCircuit\'" in temp_data:
 					while(flag):
 						# Read line
 						temp_data = fp.readline()
@@ -2076,12 +2102,14 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 								# Read line
 								temp_data = fp.readline()
 
-								if 'Name of IBIS file' in temp_data:
+								if 'Name of IBIS file' in temp_data:									
 									item = temp_data.split(',')[4].replace('\'','').replace('\\\\','\\').strip()
 									if '<Project>' in item:
-										IBIS_files.append(File.replace(File.split('\\')[-1],'')+item.replace('<Project>',''))
+										item = File.replace(File.split('\\')[-1],'') + item.replace('<Project>','')
+									if not item in IBIS_files:
+										IBIS_files.append(item)
 
-								if "$end \'Compdefs\'" in temp_data:
+								if "$end \'NexximCircuit\'" in temp_data:
 									flag = False
 		DB['IBIS_File'] = IBIS_files
 

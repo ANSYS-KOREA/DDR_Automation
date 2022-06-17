@@ -9,6 +9,9 @@ Net_Form = ""
 Env_Form = ""
 Cal_Form = ""
 Option_Form = ""
+IBIS_Form = ""
+IBISInfo_Tx_Form = ""
+IBISInfo_Rx_Form = ""
 
 File = ""
 Input_File = ""
@@ -57,3 +60,6 @@ exit_iter = 0
 Spec = {}
 TBD_flag = True
 AutoLoad_flag = False
+Parsing_data = "" # AEDT Parsing data
+IBIS_Tx = ""
+IBIS_Rx = ""

@@ -162,6 +162,11 @@ class Eye_Form(Form):
 		self._toolStrip_Option_Button = System.Windows.Forms.ToolStripButton()
 		self._toolStrip_Batch_Button = System.Windows.Forms.ToolStripButton()
 		self._toolStrip_IBIS_Button = System.Windows.Forms.ToolStripButton()
+		
+		self._toolStripSplit_IBIS_Button = System.Windows.Forms.ToolStripSplitButton()
+		self._IBISToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._ADEAQuickGuideToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()		
+
 		self._toolStripSplit_Help_Button = System.Windows.Forms.ToolStripSplitButton()
 		self._ADEAHelpToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._ADEAQuickGuideToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()		
@@ -1437,7 +1442,7 @@ class Eye_Form(Form):
 		# Button_ViewNet
 		# 
 		self._Button_ViewNet.Font = System.Drawing.Font("Arial", 11)
-		self._Button_ViewNet.Location = System.Drawing.Point(595, 66)
+		self._Button_ViewNet.Location = System.Drawing.Point(595, 64)
 		self._Button_ViewNet.Name = "Button_ViewNet"
 		self._Button_ViewNet.Size = System.Drawing.Size(100, 37)
 		self._Button_ViewNet.TabIndex = 27
@@ -1449,7 +1454,7 @@ class Eye_Form(Form):
 		# Button_Analyze
 		# 
 		self._Button_Analyze.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_Analyze.Location = System.Drawing.Point(595, 113)
+		self._Button_Analyze.Location = System.Drawing.Point(595, 110)
 		self._Button_Analyze.Name = "Button_Analyze"
 		self._Button_Analyze.Size = System.Drawing.Size(100, 37)
 		self._Button_Analyze.TabIndex = 35
@@ -1461,7 +1466,7 @@ class Eye_Form(Form):
 		# Button_ViewResult
 		# 
 		self._Button_ViewResult.Font = System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold)
-		self._Button_ViewResult.Location = System.Drawing.Point(595, 159)
+		self._Button_ViewResult.Location = System.Drawing.Point(595, 156)
 		self._Button_ViewResult.Name = "Button_ViewResult"
 		self._Button_ViewResult.Size = System.Drawing.Size(100, 37)
 		self._Button_ViewResult.TabIndex = 35
@@ -2066,8 +2071,59 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Options_IBISStripMenuItemClick(self, sender, e):
+		try:			
+			self.Cursor = Cursors.WaitCursor
+			Log("[IBIS Form Launch]")
+			flag, show_msg_flag, msg = Check_Input(self)
+			if flag:
+				# for *.aedt Input File
+				if sub_DB.InputFile_Flag == 1:
+					Sim_type = sub_DB.AEDT["Design"].GetDesignType()
+					if Sim_type == "Circuit Netlist":
+						MessageBox.Show("IBIS Optimization is not Supported for AEDT Circuit Netlist Input Files.", "Warning")
 
-		pass
+					else:
+						File = self._TextBox_InputFile.Text
+						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
+
+						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = "Select"						
+						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = "Select"
+						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Info
+						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Info
+
+						for item in sub_DB.Parsing_data['IBIS_File']:
+							IBIS_File_name = item.split('\\')[-1]
+							sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Items.Add(IBIS_File_name)
+							sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Items.Add(IBIS_File_name)										
+							Group, Match = IBIS_Identify(IBIS_File_name, sub_DB.Cenv)							
+							if Group == "Tx":								
+								sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = IBIS_File_name
+								sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Window
+							elif Group == "Rx":								
+								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = IBIS_File_name
+								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Window
+						# Target Net Setup				
+						sub_DB.IBIS_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
+						sub_DB.IBIS_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
+						sub_DB.IBIS_Form.Text = "Test"			
+						sub_DB.IBIS_Form.ShowDialog()
+
+				# for *.csv Input File
+				else:
+					MessageBox.Show("IBIS Optimization is not Supported for CSV Input Files.", "Warning")
+
+			else:
+				if show_msg_flag:
+					MessageBox.Show("The following entries are missing :\n\n" + msg + "\nPlease enter so that nothing is missing","Warning")
+
+			self.Cursor = Cursors.Default
+
+		except Exception as e:			
+			Log("[IBIS Form Launch] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to Launch IBIS Opt Form","Warning")
+			EXIT()
 
 	def Options_BatchStripMenuItemClick(self, sender, e):
 
@@ -2119,8 +2175,8 @@ class Eye_Form(Form):
 		self.Options_ToolStripMenuItemClick(self, sender)
 		
 	def toolStrip_IBIS_ButtonClick(self, sender, e):
-		flag, show_msg_flag, msg = Check_Input(self)
-		pass
+		
+		self.Options_IBISStripMenuItemClick(self, sender)		
 
 	def toolStrip_Batch_ButtonClick(self, sender, e):
 
@@ -2684,8 +2740,7 @@ class Eye_Form(Form):
 
 	########################################################################
 	def Button_ImportClick(self, sender, e):		
-		try:
-			print "1"
+		try:			
 			sub_DB.TBD_flag = True
 			self.Init_Flag = True
 			dialog = OpenFileDialog()			
@@ -2716,8 +2771,6 @@ class Eye_Form(Form):
 					self.Cursor = Cursors.Default
 					#self.TopMost = False
 
-					#Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, IBIS_File=True)
-					#print Parsing_data
 
 					self._ComboBox_Design.Enabled = True
 					self._CheckedListBox_ReportName.Enabled = True
@@ -2870,10 +2923,12 @@ class Eye_Form(Form):
 				elif extension == "tr0":
 					# TODO : Input Type for *.tr0
 					pass
+
 				sub_DB.Title[1] = File.split("\\")[-1]
 				sub_DB.Title[2] = sub_DB.Option_Form._ComboBox_Vref.Text
 				sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text
 				sub_DB.Title[4] = str(sub_DB.Option_Form._CheckBox_PlotEye.Checked)
+
 				if sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked:
 					sub_DB.Title[5] = "True-%s" % sub_DB.Option_Form._ComboBox_ReportFormat.Text
 				else:
