@@ -14,7 +14,6 @@ clr.AddReference('Microsoft.Office.Interop.Excel')
 import System.Drawing
 import System.Windows.Forms
 
-from sub_functions import *
 from System.Drawing import *
 from System.Windows.Forms import *
 from Microsoft.Office.Interop import Excel
@@ -2083,9 +2082,9 @@ def temp_get_waveform(self):
 
 def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 	DB = {}
-	if IBIS_File:
+	if IBIS_File:		
+		#
 		IBIS_files = []
-
 		flag = True
 		with open(File) as fp:
 			while(flag):
@@ -2111,7 +2110,55 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 
 								if "$end \'NexximCircuit\'" in temp_data:
 									flag = False
-		DB['IBIS_File'] = IBIS_files
 
-	return DB
+		#
+		IBIS_default_Comp = []
+		IBIS_default_Model = []
+		flag = True
+		with open(File) as fp:
+			while(flag):
+				# Read line
+				temp_data = fp.readline()
+
+				if '$begin \'Compdefs\'' in temp_data:
+					while(flag):
+						# Read line
+						temp_data = fp.readline()
+
+						if Design in temp_data:
+							while(flag):
+								# Read line
+								temp_data = fp.readline()								
+								if 'TextProp(\'comp_name\'' in temp_data:									
+									item = temp_data.split(',')[3].replace('\'','').strip()									
+									if not item in IBIS_default_Comp:
+										IBIS_default_Comp.append(item)
+
+								if 'Name of model' in temp_data:									
+									item = temp_data.split(',')[3].replace('\'','').strip()									
+									if not item in IBIS_default_Model:
+										IBIS_default_Model.append(item)
+
+								if '$end \'Compdefs\'' in temp_data:
+									flag = False
+
+		DB['IBIS_File'] = IBIS_files
+		DB['IBIS_Component'] = IBIS_default_Comp
+		DB['IBIS_Model'] = IBIS_default_Model
 		
+	return DB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

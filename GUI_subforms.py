@@ -9,6 +9,7 @@ import sub_AEDT
 import sub_DB
 
 from sub_functions import *
+from sub_IBIS import *
 from System.Drawing import *
 from System.Windows.Forms import *
 from sub_Report_Excel import *
@@ -261,6 +262,7 @@ class EnvEditor(Form):
 		except Exception as e:		
 			Log("[EnvEditor Treeview Node Mouse Click] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to Select node in Editor","Warning")			
 			EXIT()
 
@@ -452,7 +454,7 @@ class NetForm(Form):
 		self._DataGridView.TabIndex = 36
 		self._DataGridView.Columns[1].ReadOnly = True
 		self._DataGridView.Columns[3].ReadOnly = False
-		self._DataGridView.KeyPress += self.DataGridViewKeyPress		
+		self._DataGridView.KeyPress += self.DataGridViewKeyPress
 		self._DataGridView.ColumnHeaderMouseClick += self.DataGridViewColumnHeaderMouseClick
 		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
 		# 
@@ -3100,11 +3102,12 @@ class IBIS_OptForm(Form):
 		self._DataGridView_Rx_TextBoxColumn = System.Windows.Forms.DataGridViewTextBoxColumn()
 		self._DataGridView_Rx_TextBoxColumn1 = System.Windows.Forms.DataGridViewTextBoxColumn()
 		
-		self._Button_Run = System.Windows.Forms.Button()
-		self._Button_AnalysisOption = System.Windows.Forms.Button()
+		self._Button_View_Tx = System.Windows.Forms.Button()
 		self._Button_View_Rx = System.Windows.Forms.Button()
 		self._Button_CaseView = System.Windows.Forms.Button()
-		self._Button_View_Tx = System.Windows.Forms.Button()
+		self._Button_ResultView = System.Windows.Forms.Button()
+		self._Button_AnalysisOption = System.Windows.Forms.Button()
+		self._Button_Run = System.Windows.Forms.Button()
 		
 		self._ComboBox_IBIS_Tx_ToopTip = System.Windows.Forms.ToolTip()
 		self._ComboBox_IBIS_Rx_ToopTip = System.Windows.Forms.ToolTip()
@@ -3218,7 +3221,7 @@ class IBIS_OptForm(Form):
 		self._ComboBox_IBIS_Tx.Location = System.Drawing.Point(59, 22)
 		self._ComboBox_IBIS_Tx.Name = "ComboBox_IBIS_Tx"
 		self._ComboBox_IBIS_Tx.Size = System.Drawing.Size(170, 24)
-		self._ComboBox_IBIS_Tx.TabIndex = 31
+		self._ComboBox_IBIS_Tx.TabIndex = 31		
 		self._ComboBox_IBIS_Tx.SelectedIndexChanged += self.ComboBox_IBIS_TxSelectedIndexChanged
 		# 
 		# ComboBox_Comp_Tx
@@ -3228,7 +3231,7 @@ class IBIS_OptForm(Form):
 		self._ComboBox_Comp_Tx.Location = System.Drawing.Point(59, 52)
 		self._ComboBox_Comp_Tx.Name = "ComboBox_Comp_Tx"
 		self._ComboBox_Comp_Tx.Size = System.Drawing.Size(170, 24)
-		self._ComboBox_Comp_Tx.TabIndex = 39
+		self._ComboBox_Comp_Tx.TabIndex = 39		
 		self._ComboBox_Comp_Tx.SelectedIndexChanged += self.ComboBox_Comp_TxSelectedIndexChanged
 		# 
 		# ComboBox_Model_Tx
@@ -3277,6 +3280,7 @@ class IBIS_OptForm(Form):
 		self._DataGridView_Tx.AllowUserToDeleteRows = False
 		self._DataGridView_Tx.AllowUserToOrderColumns = True
 		self._DataGridView_Tx.AllowUserToResizeRows = False
+		self._DataGridView_Tx.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
 		self._DataGridView_Tx.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
 		self._DataGridView_Tx.Columns.AddRange(System.Array[System.Windows.Forms.DataGridViewColumn](
 			[self._DataGridView_Tx_CheckBoxColumn,
@@ -3289,6 +3293,12 @@ class IBIS_OptForm(Form):
 		self._DataGridView_Tx.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
 		self._DataGridView_Tx.Size = System.Drawing.Size(274, 156)
 		self._DataGridView_Tx.TabIndex = 37
+		self._DataGridView_Tx.Columns[1].ReadOnly = True
+		self._DataGridView_Tx.Columns[2].ReadOnly = True
+		self._DataGridView_Tx.KeyPress += self.DataGridView_TxKeyPress
+		#self._DataGridView_Tx.ColumnHeaderMouseClick += self.DataGridView_TxColumnHeaderMouseClick
+		self._DataGridView_Tx.CellMouseClick += self.DataGridView_TxCellMouseClick
+
 		# 
 		# DataGridView_Tx_CheckBoxColumn
 		# 
@@ -3314,6 +3324,7 @@ class IBIS_OptForm(Form):
 		self._DataGridView_Rx.AllowUserToDeleteRows = False
 		self._DataGridView_Rx.AllowUserToOrderColumns = True
 		self._DataGridView_Rx.AllowUserToResizeRows = False
+		self._DataGridView_Rx.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
 		self._DataGridView_Rx.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
 		self._DataGridView_Rx.Columns.AddRange(System.Array[System.Windows.Forms.DataGridViewColumn](
 			[self._DataGridView_Rx_CheckBoxColumn,
@@ -3326,6 +3337,11 @@ class IBIS_OptForm(Form):
 		self._DataGridView_Rx.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
 		self._DataGridView_Rx.Size = System.Drawing.Size(274, 156)
 		self._DataGridView_Rx.TabIndex = 37
+		self._DataGridView_Rx.Columns[1].ReadOnly = True
+		self._DataGridView_Rx.Columns[2].ReadOnly = True
+		self._DataGridView_Rx.KeyPress += self.DataGridView_RxKeyPress
+		#self._DataGridView_Rx.ColumnHeaderMouseClick += self.DataGridView_RxColumnHeaderMouseClick
+		self._DataGridView_Rx.CellMouseClick += self.DataGridView_RxCellMouseClick
 		# 
 		# DataGridView_Rx_CheckBoxColumn
 		# 
@@ -3353,6 +3369,7 @@ class IBIS_OptForm(Form):
 		self._Button_View_Tx.Size = System.Drawing.Size(45, 25)
 		self._Button_View_Tx.TabIndex = 33
 		self._Button_View_Tx.Text = "View"
+		self._Button_View_Tx.Enabled = False
 		self._Button_View_Tx.UseVisualStyleBackColor = True
 		self._Button_View_Tx.Click += self.Button_View_TxClick
 		# 
@@ -3364,6 +3381,7 @@ class IBIS_OptForm(Form):
 		self._Button_View_Rx.Size = System.Drawing.Size(45, 25)
 		self._Button_View_Rx.TabIndex = 33
 		self._Button_View_Rx.Text = "View"
+		self._Button_View_Rx.Enabled = False
 		self._Button_View_Rx.UseVisualStyleBackColor = True
 		self._Button_View_Rx.Click += self.Button_View_RxClick
 		# 
@@ -3372,40 +3390,55 @@ class IBIS_OptForm(Form):
 		self._Button_CaseView.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Button_CaseView.Location = System.Drawing.Point(12, 293)
 		self._Button_CaseView.Name = "Button_CaseView"
-		self._Button_CaseView.Size = System.Drawing.Size(175, 35)
+		self._Button_CaseView.Size = System.Drawing.Size(135, 35)
 		self._Button_CaseView.TabIndex = 44
-		self._Button_CaseView.Text = "View Simulation Cases"
+		self._Button_CaseView.Text = "Sim. Cases"
 		self._Button_CaseView.UseVisualStyleBackColor = True
-		self._Button_CaseView.Click += self.Button_CaseViewClick
+		self._Button_CaseView.Click += self.Button_CaseViewClick		
 		# 
 		# Button_AnalysisOption
 		# 
 		self._Button_AnalysisOption.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_AnalysisOption.Location = System.Drawing.Point(221, 293)
+		self._Button_AnalysisOption.Location = System.Drawing.Point(164, 293)
 		self._Button_AnalysisOption.Name = "Button_AnalysisOption"
-		self._Button_AnalysisOption.Size = System.Drawing.Size(175, 35)
+		self._Button_AnalysisOption.Size = System.Drawing.Size(135, 35)
 		self._Button_AnalysisOption.TabIndex = 46
-		self._Button_AnalysisOption.Text = "Set Analysis Option"
+		self._Button_AnalysisOption.Text = "Analysis Option"
 		self._Button_AnalysisOption.UseVisualStyleBackColor = True
 		self._Button_AnalysisOption.Click += self.Button_AnalysisOptionClick
 		# 
 		# Button_Run
 		# 
 		self._Button_Run.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_Run.Location = System.Drawing.Point(430, 293)
+		self._Button_Run.Location = System.Drawing.Point(316, 293)
 		self._Button_Run.Name = "Button_Run"
-		self._Button_Run.Size = System.Drawing.Size(175, 35)
+		self._Button_Run.Size = System.Drawing.Size(135, 35)
 		self._Button_Run.TabIndex = 42
 		self._Button_Run.Text = "Run"
 		self._Button_Run.UseVisualStyleBackColor = True
 		self._Button_Run.Click += self.Button_RunClick
 		# 
+		# Button_ResultView
+		# 
+		self._Button_ResultView.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_ResultView.Location = System.Drawing.Point(470, 293)
+		self._Button_ResultView.Name = "Button_ResultView"
+		self._Button_ResultView.Size = System.Drawing.Size(135, 35)
+		self._Button_ResultView.TabIndex = 44
+		self._Button_ResultView.Enabled = False
+		self._Button_ResultView.Text = "Results"
+		self._Button_ResultView.UseVisualStyleBackColor = True
+		self._Button_ResultView.Click += self.Button_ResultViewClick
+		# 
 		# IBIS_Form
-		# 				
+		#
+		self.def_Tx_model = ""
+		self.def_Rx_model = ""
 		self.ClientSize = System.Drawing.Size(618, 339)
 		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
+		self.Controls.Add(self._Button_ResultView)
 		self.Controls.Add(self._Button_AnalysisOption)
 		self.Controls.Add(self._GroupBox_Rx)
 		self.Controls.Add(self._Button_CaseView)
@@ -3427,34 +3460,84 @@ class IBIS_OptForm(Form):
 	def IBIS_FormLoad(self, sender, e):
 		try:			
 			self.Cursor = Cursors.WaitCursor
+			self.Text = "IBIS Optimizer - [Project]:%s, [Design]:%s" % (sub_DB.File.split('\\')[-1].split('.')[0].strip(), sub_DB.Eye_Form._ComboBox_Design.Text)
+			##########
+			# for Tx #
+			##########
 			File = ""
-			if not self._ComboBox_IBIS_Tx.Text == "":				
+			if not self._ComboBox_IBIS_Tx.Text == "":
+				###############################
+				# 1.Get full path for Tx IBIS #
+				###############################
 				for item in sub_DB.Parsing_data['IBIS_File']:
 					if self._ComboBox_IBIS_Tx.Text in item:
 						File = item
 						break
 				
 				if not File == "":
-					sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)					
-					#for item in sub_DB.IBIS_Tx['Component']:
-					#	self._ComboBox_Comp_Tx.Items.Add(item)					
-					if not sub_DB.IBIS_Tx['Component'] in self._ComboBox_Comp_Tx.Items:
-						self._ComboBox_Comp_Tx.Items.Add(sub_DB.IBIS_Tx['Component'])
-					self._ComboBox_Comp_Tx.SelectedIndex = 0
+					#########################
+					# 2.Parsing for Tx IBIS #
+					#########################
+					sub_DB.IBIS_Tx = IBIS_Parsing(File)
+					#sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)
 					
+					###################
+					# 3.Add Component #
+					###################
+					count = 0
+					for item in sub_DB.IBIS_Tx['Component']:
+						if not item in self._ComboBox_Comp_Tx.Items:
+							self._ComboBox_Comp_Tx.Items.Add(item)
+							count += 1
+
+					###########################
+					# 4.Set Default Component #
+					###########################
+					if count == 1:
+						self._ComboBox_Comp_Tx.SelectedIndex = 0
+					else:
+						for i in range(0, self._ComboBox_Comp_Tx.Items.Count):
+							if self._ComboBox_Comp_Tx.Items[i] in sub_DB.Parsing_data['IBIS_Component']:
+								self._ComboBox_Comp_Tx.SelectedIndex = i
+					
+			##########
+			# for Rx #
+			##########
 			File = ""
-			if not self._ComboBox_IBIS_Rx.Text == "":				
+			if not self._ComboBox_IBIS_Rx.Text == "":
+				###############################
+				# 1.Get full path for Tx IBIS #
+				###############################
 				for item in sub_DB.Parsing_data['IBIS_File']:
 					if self._ComboBox_IBIS_Rx.Text in item:
 						File = item
 						break
+
 				if not File == "":
-					sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
-					#for item in sub_DB.IBIS_Rx['Component']:
-					#	self._ComboBox_Comp_Rx.Items.Add(item)
-					if not sub_DB.IBIS_Rx['Component'] in self._ComboBox_Comp_Rx.Items:
-						self._ComboBox_Comp_Rx.Items.Add(sub_DB.IBIS_Rx['Component'])
-					self._ComboBox_Comp_Rx.SelectedIndex = 0
+					#########################
+					# 2.Parsing for Tx IBIS #
+					#########################
+					sub_DB.IBIS_Rx = IBIS_Parsing(File)
+					#sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
+
+					###################
+					# 3.Add Component #
+					###################				
+					count = 0	
+					for item in sub_DB.IBIS_Rx['Component']:
+						if not item in self._ComboBox_Comp_Rx.Items:
+							self._ComboBox_Comp_Rx.Items.Add(item)
+							count += 1
+
+					###########################
+					# 4.Set Default Component #
+					###########################
+					if count == 1:
+						self._ComboBox_Comp_Rx.SelectedIndex = 0
+					else:
+						for i in range(0, self._ComboBox_Comp_Rx.Items.Count):
+							if self._ComboBox_Comp_Rx.Items[i] in sub_DB.Parsing_data['IBIS_Component']:
+								self._ComboBox_Comp_Rx.SelectedIndex = i
 
 			self.Cursor = Cursors.Default
 
@@ -3501,6 +3584,7 @@ class IBIS_OptForm(Form):
 			self._Button_CaseView.Location = System.Drawing.Point(self._Button_CaseView.Location.X, self._Button_CaseView.Location.Y + Gap_H)
 			self._Button_AnalysisOption.Location = System.Drawing.Point(self._Button_AnalysisOption.Location.X, self._Button_AnalysisOption.Location.Y + Gap_H)
 			self._Button_Run.Location = System.Drawing.Point(self._Button_Run.Location.X, self._Button_Run.Location.Y + Gap_H)
+			self._Button_ResultView.Location = System.Drawing.Point(self._Button_ResultView.Location.X, self._Button_ResultView.Location.Y + Gap_H)
 
 		except Exception as e:			
 			Log("[IBIS_FormResizeEnd] = Failed")
@@ -3535,36 +3619,77 @@ class IBIS_OptForm(Form):
 		self._ComboBox_Model_Rx.Location = System.Drawing.Point(59, 82)		
 		self._ComboBox_Model_Rx.Size = System.Drawing.Size(170, 24)
 		self._Button_View_Tx.Location = System.Drawing.Point(235, 21)		
-		self._Button_View_Rx.Location = System.Drawing.Point(235, 21)		
+		self._Button_View_Rx.Location = System.Drawing.Point(235, 21)
 		self._Button_CaseView.Location = System.Drawing.Point(12, 293)		
-		self._Button_AnalysisOption.Location = System.Drawing.Point(221, 293)
-		self._Button_Run.Location = System.Drawing.Point(430, 293)
+		self._Button_AnalysisOption.Location = System.Drawing.Point(164, 293)		
+		self._Button_Run.Location = System.Drawing.Point(316, 293)		
+		self._Button_ResultView.Location = System.Drawing.Point(470, 293)		
 		self.ClientSize = System.Drawing.Size(618, 339)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
 
 	def ComboBox_IBIS_TxSelectedIndexChanged(self, sender, e):		
 		try:
-			self.Cursor = Cursors.WaitCursor			
+			self.Cursor = Cursors.WaitCursor
+			####################
+			# 0.Initialization #
+			####################
+			self._DataGridView_Tx.Rows.Clear()
+			self._ComboBox_Comp_Tx.Items.Clear()
+			self._ComboBox_Model_Tx.Items.Clear()
+
+			###############################
+			# 1.Get full path for Tx IBIS #
+			###############################
 			for item in sub_DB.Parsing_data['IBIS_File']:
 				if self._ComboBox_IBIS_Tx.Text in item:
 					File = item
-					break				
-			sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)
-			#for item in sub_DB.IBIS_Tx['Component']:
-			#	self._ComboBox_Comp_Tx.Items.Add(item)
-			if not sub_DB.IBIS_Tx['Component'] in self._ComboBox_Comp_Tx.Items:
-				self._ComboBox_Comp_Tx.Items.Add(sub_DB.IBIS_Tx['Component'])
-			self._ComboBox_Comp_Tx.SelectedIndex = 0
-			self.Cursor = Cursors.Default
+					break
+
+			#########################
+			# 2.Parsing for Tx IBIS #
+			#########################
+			sub_DB.IBIS_Tx = IBIS_Parsing(File)
+			#sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)
+
+			###################
+			# 3.Add Component #
+			###################
+			count = 0
+			for item in sub_DB.IBIS_Tx['Component']:
+				if not item in self._ComboBox_Comp_Tx.Items:
+					self._ComboBox_Comp_Tx.Items.Add(item)
+					count += 1
 			
+			###########################
+			# 4.Set Default Component #
+			###########################
+			if count == 1:
+				self._ComboBox_Comp_Tx.SelectedIndex = 0
+			else:
+				for i in range(0, self._ComboBox_Comp_Tx.Items.Count):
+					if self._ComboBox_Comp_Tx.Items[i] in sub_DB.Parsing_data['IBIS_Component']:
+						self._ComboBox_Comp_Tx.SelectedIndex = i
+			
+			################
+			# 5.Add Models #
+			################
 			for models in sub_DB.IBIS_Tx["Model Selector"].keys():
 				self._ComboBox_Model_Tx.Items.Add(models)
-			self._ComboBox_Model_Tx.Text = "Select"
-			self._ComboBox_Model_Tx.BackColor = System.Drawing.SystemColors.Info
-
-			# Set ToopTip
-			self._ComboBox_IBIS_Tx_ToopTip.SetToolTip(self._ComboBox_IBIS_Tx, self._ComboBox_IBIS_Tx.Text)			
+			
+			# Set Default Model
+			for models in sub_DB.IBIS_Tx["Model Selector"].keys():				
+				for model in sub_DB.IBIS_Tx["Model Selector"][models]:					
+					if model[0] in sub_DB.Parsing_data['IBIS_Model']:
+						self.def_Tx_model = model[0]
+						self._ComboBox_Model_Tx.Text = models
+						break
+			
+			#################
+			# 6.Set ToopTip #
+			#################
+			self._ComboBox_IBIS_Tx_ToopTip.SetToolTip(self._ComboBox_IBIS_Tx, self._ComboBox_IBIS_Tx.Text)
+			self.Cursor = Cursors.Default
 
 		except Exception as e:			
 			Log("[IBIS Form Tx File ComboBox] = Index Change Failed")
@@ -3575,26 +3700,66 @@ class IBIS_OptForm(Form):
 
 	def ComboBox_IBIS_RxSelectedIndexChanged(self, sender, e):		
 		try:
-			self.Cursor = Cursors.WaitCursor			
+			self.Cursor = Cursors.WaitCursor	
+			####################
+			# 0.Initialization #
+			####################
+			self._DataGridView_Rx.Rows.Clear()
+			self._ComboBox_Comp_Rx.Items.Clear()
+			self._ComboBox_Model_Rx.Items.Clear()
+
+			###############################
+			# 1.Get full path for Tx IBIS #
+			###############################
 			for item in sub_DB.Parsing_data['IBIS_File']:
 				if self._ComboBox_IBIS_Rx.Text in item:
 					File = item
-					break				
-			sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
-			#for item in sub_DB.IBIS_Rx['Component']:
-			#	self._ComboBox_Comp_Rx.Items.Add(item)
-			if not sub_DB.IBIS_Rx['Component'] in self._ComboBox_Comp_Rx.Items:
-				self._ComboBox_Comp_Rx.Items.Add(sub_DB.IBIS_Rx['Component'])
-			self._ComboBox_Comp_Rx.SelectedIndex = 0
-			self.Cursor = Cursors.Default
+					break
 
+			#########################
+			# 2.Parsing for Tx IBIS #
+			#########################
+			sub_DB.IBIS_Rx = IBIS_Parsing(File)
+			#sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
+
+			###################
+			# 3.Add Component #
+			###################
+			count = 0
+			for item in sub_DB.IBIS_Rx['Component']:
+				if not item in self._ComboBox_Comp_Rx.Items:
+					self._ComboBox_Comp_Rx.Items.Add(item)
+					count += 1
+
+			###########################
+			# 4.Set Default Component #
+			###########################
+			if count == 1:
+				self._ComboBox_Comp_Rx.SelectedIndex = 0
+			else:
+				for i in range(0, self._ComboBox_Comp_Rx.Items.Count):
+					if self._ComboBox_Comp_Rx.Items[i] in sub_DB.Parsing_data['IBIS_Component']:
+						self._ComboBox_Comp_Rx.SelectedIndex = i
+
+			################
+			# 5.Add Models #
+			################
 			for models in sub_DB.IBIS_Rx["Model Selector"].keys():
 				self._ComboBox_Model_Rx.Items.Add(models)
-			self._ComboBox_Model_Rx.Text = "Select"
-			self._ComboBox_Model_Rx.BackColor = System.Drawing.SystemColors.Info
 
-			# Set ToopTip			
+			# Set Default Model
+			for models in sub_DB.IBIS_Rx["Model Selector"].keys():
+				for model in sub_DB.IBIS_Rx["Model Selector"][models]:
+					if model[0] in sub_DB.Parsing_data['IBIS_Model']:
+						self.def_Rx_model = model[0]
+						self._ComboBox_Model_Rx.Text = models
+						break
+			
+			#################
+			# 6.Set ToopTip #
+			#################
 			self._ComboBox_IBIS_Rx_ToopTip.SetToolTip(self._ComboBox_IBIS_Rx, self._ComboBox_IBIS_Rx.Text)
+			self.Cursor = Cursors.Default
 
 		except Exception as e:			
 			Log("[IBIS Form Rx File ComboBox] = Index Change Failed")
@@ -3621,16 +3786,162 @@ class IBIS_OptForm(Form):
 		pass
 
 	def ComboBox_Model_TxSelectedIndexChanged(self, sender, e):
+		#self.IBIS_FormDoubleClick(self, sender)
 		self._ComboBox_Model_Tx.BackColor = System.Drawing.SystemColors.Window
 		self._DataGridView_Tx.Rows.Clear()
+		iter = 0
 		for item in sub_DB.IBIS_Tx["Model Selector"][self._ComboBox_Model_Tx.Text]:
-			self._DataGridView_Tx.Rows.Add(False, item[0], item[1])		
+			if item[0] == self.def_Tx_model:
+				self._DataGridView_Tx.Rows.Add(True, item[0], item[1])
+				self._DataGridView_Tx.Rows[iter].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+				iter += 1
+			else:
+				self._DataGridView_Tx.Rows.Add(False, item[0], item[1])
+				iter += 1		
+
+		#Gap = self._DataGridView_Tx_TextBoxColumn.Width + self._DataGridView_Tx_TextBoxColumn1.Width - 275
+		#self._GroupBox_Tx.Size = System.Drawing.Size(self._GroupBox_Tx.Width + Gap, self._GroupBox_Tx.Height)
+		#self._DataGridView_Tx.Size = System.Drawing.Size(self._DataGridView_Tx.Width + Gap, self._DataGridView_Tx.Height)
+		#self._ComboBox_IBIS_Tx.Size = System.Drawing.Size(self._ComboBox_IBIS_Tx.Width + Gap, self._ComboBox_IBIS_Tx.Height)
+		#self._ComboBox_Comp_Tx.Size = System.Drawing.Size(self._ComboBox_Comp_Tx.Width + Gap, self._ComboBox_Comp_Tx.Height)
+		#self._ComboBox_Model_Tx.Size = System.Drawing.Size(self._ComboBox_Model_Tx.Width + Gap, self._ComboBox_Model_Tx.Height)
+		#self.ClientSize = System.Drawing.Size(self.Size.Width + Gap, self.Size.Height)
+		#self._Button_View_Tx.Location = System.Drawing.Point(self._Button_View_Tx.Location.X + Gap, self._Button_View_Tx.Location.Y)
+		#self._GroupBox_Rx.Location = System.Drawing.Point(self._GroupBox_Rx.Location.X + Gap, self._GroupBox_Rx.Location.Y)
+		pass
 
 	def ComboBox_Model_RxSelectedIndexChanged(self, sender, e):
+		#self.IBIS_FormDoubleClick(self, sender)
 		self._ComboBox_Model_Rx.BackColor = System.Drawing.SystemColors.Window
 		self._DataGridView_Rx.Rows.Clear()
+		iter = 0
 		for item in sub_DB.IBIS_Rx["Model Selector"][self._ComboBox_Model_Rx.Text]:
-			self._DataGridView_Rx.Rows.Add(False, item[0], item[1])		
+			if item[0] == self.def_Rx_model:
+				self._DataGridView_Rx.Rows.Add(True, item[0], item[1])
+				self._DataGridView_Rx.Rows[iter].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+				iter += 1
+			else:
+				self._DataGridView_Rx.Rows.Add(False, item[0], item[1])
+				iter += 1
+
+		#Gap = self._DataGridView_Rx_TextBoxColumn.Width + self._DataGridView_Rx_TextBoxColumn1.Width - 275
+		#self._GroupBox_Rx.Size = System.Drawing.Size(self._GroupBox_Rx.Width + Gap, self._GroupBox_Rx.Height)
+		#self._DataGridView_Rx.Size = System.Drawing.Size(self._DataGridView_Rx.Width + Gap, self._DataGridView_Rx.Height)
+		#self._ComboBox_IBIS_Rx.Size = System.Drawing.Size(self._ComboBox_IBIS_Rx.Width + Gap, self._ComboBox_IBIS_Rx.Height)
+		#self._ComboBox_Comp_Rx.Size = System.Drawing.Size(self._ComboBox_Comp_Rx.Width + Gap, self._ComboBox_Comp_Rx.Height)
+		#self._ComboBox_Model_Rx.Size = System.Drawing.Size(self._ComboBox_Model_Rx.Width + Gap, self._ComboBox_Model_Rx.Height)
+		#self.ClientSize = System.Drawing.Size(self.Size.Width + Gap, self.Size.Height)
+		#self._Button_View_Rx.Location = System.Drawing.Point(self._Button_View_Rx.Location.X + Gap, self._Button_View_Rx.Location.Y)
+		pass
+
+	def DataGridView_TxKeyPress(self, sender, e):
+		try:
+			# Spacebar = Check/Uncheck all the selected rows
+			if e.KeyChar == chr(32):
+				for row in self._DataGridView_Tx.SelectedRows:
+					row.Cells[0].Value = not row.Cells[0].Value
+					if row.Cells[0].Value:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+					else:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+
+				# Calculate Total Simulation Cases
+				tx_count = 0
+				for row in self._DataGridView_Tx.Rows:			
+					if row.Cells[0].Value:
+						tx_count += 1
+
+				rx_count = 0
+				for row in self._DataGridView_Rx.Rows:
+					if row.Cells[0].Value:
+						rx_count += 1
+
+				case = tx_count*rx_count
+				self._Button_CaseView.Text = ""
+				self._Button_CaseView.Text = "Sim. Cases:[%d]" % case
+
+		except Exception as e:		
+			Log("[Net Form Key Press] = Failed")
+			Log(traceback.format_exc())
+			MessageBox.Show("Fail to press key in Net Classificiton Form","Warning")			
+			EXIT()
+
+	def DataGridView_TxCellMouseClick(self, sender, e):
+		# Set Checked and Un-checked Row Back Color
+		if e.ColumnIndex == 0:
+			if self._DataGridView_Tx.Rows[e.RowIndex].Cells[0].Value:
+				self._DataGridView_Tx.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+			else:
+				self._DataGridView_Tx.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+
+		# Calculate Total Simulation Cases
+		tx_count = 0
+		for row in self._DataGridView_Tx.Rows:			
+			if row.Cells[0].Value:
+				tx_count += 1
+
+		rx_count = 0
+		for row in self._DataGridView_Rx.Rows:
+			if row.Cells[0].Value:
+				rx_count += 1
+
+		case = tx_count*rx_count
+		self._Button_CaseView.Text = ""
+		self._Button_CaseView.Text = "Sim. Cases:[%d]" % case
+
+	def DataGridView_RxKeyPress(self, sender, e):
+		try:
+			# Spacebar = Check/Uncheck all the selected rows
+			if e.KeyChar == chr(32):
+				for row in self._DataGridView_Rx.SelectedRows:
+					row.Cells[0].Value = not row.Cells[0].Value
+					if row.Cells[0].Value:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+					else:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+
+				# Calculate Total Simulation Cases
+				tx_count = 0
+				for row in self._DataGridView_Tx.Rows:			
+					if row.Cells[0].Value:
+						tx_count += 1
+
+				rx_count = 0
+				for row in self._DataGridView_Rx.Rows:
+					if row.Cells[0].Value:
+						rx_count += 1
+
+				case = tx_count*rx_count
+				self._Button_CaseView.Text = ""
+				self._Button_CaseView.Text = "Sim. Cases:[%d]" % case
+
+		except Exception as e:		
+			Log("[Net Form Key Press] = Failed")
+			Log(traceback.format_exc())
+			MessageBox.Show("Fail to press key in Net Classificiton Form","Warning")			
+			EXIT()
+
+	def DataGridView_RxCellMouseClick(self, sender, e):
+		if e.ColumnIndex == 0:
+			if self._DataGridView_Rx.Rows[e.RowIndex].Cells[0].Value:
+				self._DataGridView_Rx.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+			else:
+				self._DataGridView_Rx.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+
+		# Calculate Total Simulation Cases
+		tx_count = 0
+		for row in self._DataGridView_Tx.Rows:			
+			if row.Cells[0].Value:
+				tx_count += 1
+
+		rx_count = 0
+		for row in self._DataGridView_Rx.Rows:
+			if row.Cells[0].Value:
+				rx_count += 1
+
+		case = tx_count*rx_count
+		self._Button_CaseView.Text = ""
+		self._Button_CaseView.Text = "Sim. Cases:[%d]" % case
 
 	def Button_View_TxClick(self, sender, e):
 		try:
@@ -3659,13 +3970,35 @@ class IBIS_OptForm(Form):
 			EXIT()
 
 	def Button_CaseViewClick(self, sender, e):
-		pass
+		sub_DB.IBIS_Form = self
+		sub_DB.IBIS_Result_Init_Flag = True
+		sub_DB.IBIS_CaseForm = IBIS_Case()
+		sub_DB.IBIS_CaseForm.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+		sub_DB.IBIS_CaseForm.ShowDialog()
 
 	def Button_AnalysisOptionClick(self, sender, e):
-		pass
+		sub_DB.Option_Form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+		sub_DB.Option_Form.ShowDialog()
 
-	def Button_RunClick(self, sender, e):
-		pass
+	def Button_RunClick(self, sender, e):		
+		sub_DB.IBIS_Result_Init_Flag = True
+		sub_DB.IBIS_ResultForm = IBIS_Case()		
+		sub_DB.IBIS_ResultForm.IBIS_CaseFormLoad(self, sender)		
+		sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Results)
+		sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Avg_Width)
+		sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Avg_Margin)
+		sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Worst_Width)
+		sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Worst_Margin)
+		sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Vref)
+		sub_DB.IBIS_ResultForm._DataGridView.Size = System.Drawing.Size(659, 300)
+		sub_DB.IBIS_ResultForm.Size = System.Drawing.Size(700, 390)
+		sub_DB.IBIS_ResultForm.Text = "IBIS Optimization Results"
+		IBIS_Opt_Run(self)
+		self._Button_ResultView.Enabled = True
+		sub_DB.IBIS_ResultForm.ShowDialog()
+
+	def Button_ResultViewClick(self, sender, e):
+		sub_DB.IBIS_ResultForm.ShowDialog()
 
 class IBIS_Viwer(Form):
 	def __init__(self, File, Flag):
@@ -4102,13 +4435,10 @@ class IBIS_Viwer(Form):
 						self._richTextBox1.SelectionColor = Color.Black							
 					self._richTextBox1.AppendText(line)
 					iter += 1
-					self._progressBar1.Value = iter
-					print iter
+					self._progressBar1.Value = iter					
 			fp.close()
-			print "1 - Total Line : %d" % iter
-
-			self._treeView1.Nodes[0].Nodes.Add("[Header]")
 			
+			self._treeView1.Nodes[0].Nodes.Add("[Header]")			
 			Line_iter = 0
 			index = 0
 			self.Line["0"] = 0
@@ -4131,8 +4461,7 @@ class IBIS_Viwer(Form):
 					
 				if line.lower().find(self.TopNode_keyword[0].lower()) != -1:					
 					break
-				Line_iter += 1
-			print "2 - Total Line : %d" % Line_iter
+				Line_iter += 1			
 
 			Line_iter -= 1
 			TopNode_index = 1
@@ -4143,8 +4472,7 @@ class IBIS_Viwer(Form):
 			pre_keyword2 = "junghyun"
 			pre_keyword3 = "junghyun"   
 			flag = True				
-			while(1):
-				print Line_iter
+			while(1):				
 				# End of Line : Escape While				
 				if keyword.lower() == "[end]":
 					key1 = [s for s in self.TopNode_keyword if keyword.lower() in s.lower()]
@@ -4310,8 +4638,7 @@ class IBIS_Viwer(Form):
 			if Flag:
 				sub_DB.IBIS_Tx = self.IBIS
 			else:
-				sub_DB.IBIS_Rx = self.IBIS
-			print "3 - Total Line : %d" % Line_iter
+				sub_DB.IBIS_Rx = self.IBIS			
 
 		except Exception as e:	
 			print traceback.format_exc()
@@ -4361,7 +4688,7 @@ class IBIS_Viwer(Form):
 			temp_Node = temp_Node.Parent
 		
 		if key != "0_0":
-			HighLight(self, key)
+			HighLight_IBIS(self, key)
 
 	def ExpandAllToolStripMenuItemClick(self, sender, e):
 
@@ -4379,7 +4706,281 @@ class IBIS_Viwer(Form):
 
 		pass
 
-def HighLight(self, key):
+class IBIS_Case(Form):
+	def __init__(self):
+
+		self.InitializeComponent()
+
+	def InitializeComponent(self):
+		path = os.path.dirname(os.path.abspath(__file__))
+
+		self._DataGridView = System.Windows.Forms.DataGridView()
+		self._Col_CaseNum = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Tx_IBIS_Model = System.Windows.Forms.DataGridViewComboBoxColumn()
+		self._Col_Rx_IBIS_Model = System.Windows.Forms.DataGridViewComboBoxColumn()
+		
+		self._Col_Results = System.Windows.Forms.DataGridViewButtonColumn()
+		self._Col_Avg_Width = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Avg_Margin = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Worst_Width = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Worst_Margin = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Vref = System.Windows.Forms.DataGridViewTextBoxColumn()
+
+		self._Button_Add = System.Windows.Forms.Button()
+		self._Button_Delete = System.Windows.Forms.Button()
+		self._Button_Close = System.Windows.Forms.Button()
+
+		self.SuspendLayout()
+		# 
+		# DataGridView
+		# 
+		self._DataGridView.AllowUserToAddRows = False
+		self._DataGridView.AllowUserToDeleteRows = False
+		self._DataGridView.AllowUserToOrderColumns = True
+		self._DataGridView.AllowUserToResizeRows = False
+		self._DataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+		self._DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+		self._DataGridView.Columns.AddRange(System.Array[System.Windows.Forms.DataGridViewColumn](
+			[self._Col_CaseNum,
+			self._Col_Tx_IBIS_Model,
+			self._Col_Rx_IBIS_Model]))
+		self._DataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+		self._DataGridView.Location = System.Drawing.Point(12, 12)
+		self._DataGridView.Name = "DataGridView"
+		self._DataGridView.RowHeadersVisible = False
+		self._DataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+		self._DataGridView.Size = System.Drawing.Size(259, 300)
+		self._DataGridView.TabIndex = 36
+		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
+		# 
+		# Col_CaseNum
+		# 
+		self._Col_CaseNum.HeaderText = "#"
+		self._Col_CaseNum.Name = "Col_CaseNum"
+		self._Col_CaseNum.Width = 26
+		# 
+		# Col_Tx_IBIS_Model
+		# 
+		self._Col_Tx_IBIS_Model.HeaderText = "Tx IBIS Model"
+		self._Col_Tx_IBIS_Model.Name = "Col_Tx_IBIS_Model"
+		self._Col_Tx_IBIS_Model.Width = 130		
+		for row in sub_DB.IBIS_Form._DataGridView_Tx.Rows:			
+			#if row.Cells[0].Value:				
+			#	self._Col_Tx_IBIS_Model.Items.Add(row.Cells[1].Value)
+			self._Col_Tx_IBIS_Model.Items.Add(row.Cells[1].Value)
+		# 
+		# Col_Rx_IBIS_Model
+		#
+		self._Col_Rx_IBIS_Model.HeaderText = "Rx IBIS Model"
+		self._Col_Rx_IBIS_Model.Name = "Col_Rx_IBIS_Model"
+		self._Col_Rx_IBIS_Model.Width = 130
+		for row in sub_DB.IBIS_Form._DataGridView_Rx.Rows:
+			#if row.Cells[0].Value:
+			#	self._Col_Rx_IBIS_Model.Items.Add(row.Cells[1].Value)
+			self._Col_Rx_IBIS_Model.Items.Add(row.Cells[1].Value)
+		# 
+		# Col_Results
+		# 
+		self._Col_Results.HeaderText = "Result"
+		self._Col_Results.Name = "Col_Results"
+		self._Col_Results.ReadOnly = True
+		self._Col_Results.Text = "Result"
+		self._Col_Results.UseColumnTextForButtonValue = True
+		self._Col_Results.Width = 100
+		self._Col_Results.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+		# 
+		# Col_Avg_Width
+		# 
+		self._Col_Avg_Width.HeaderText = "Width(Avg.)"
+		self._Col_Avg_Width.Name = "Col_Avg_Width"
+		self._Col_Avg_Width.Width = 100
+		# 
+		# Col_Avg_Margin
+		# 
+		self._Col_Avg_Margin.HeaderText = "Margin(Avg.)"
+		self._Col_Avg_Margin.Name = "Col_Avg_Margin"
+		self._Col_Avg_Margin.Width = 100
+		# 
+		# Col_Worst_Width
+		# 
+		self._Col_Worst_Width.HeaderText = "Width(Worst)"
+		self._Col_Worst_Width.Name = "Col_Worst_Width"
+		self._Col_Worst_Width.Width = 100
+		# 
+		# Col_Worst_Margin
+		# 
+		self._Col_Worst_Margin.HeaderText = "Margin(Worst)"
+		self._Col_Worst_Margin.Name = "Col_Worst_Margin"
+		self._Col_Worst_Margin.Width = 100
+		# 
+		# Col_Vref
+		# 
+		self._Col_Vref.HeaderText = "Vref"
+		self._Col_Vref.Name = "Col_Vref"
+		self._Col_Vref.Width = 80
+		# 
+		# Button_Add
+		# 
+		self._Button_Add.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Add.Location = System.Drawing.Point(12, 320)
+		self._Button_Add.Name = "Button_Add"
+		self._Button_Add.Size = System.Drawing.Size(80, 25)
+		self._Button_Add.TabIndex = 33
+		self._Button_Add.Text = "Add"		
+		self._Button_Add.UseVisualStyleBackColor = True
+		self._Button_Add.Enabled = False
+		self._Button_Add.Click += self.Button_AddClick
+		# 
+		# Button_Delete
+		# 
+		self._Button_Delete.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Delete.Location = System.Drawing.Point(102, 320)
+		self._Button_Delete.Name = "Button_Delete"
+		self._Button_Delete.Size = System.Drawing.Size(80, 25)
+		self._Button_Delete.TabIndex = 33
+		self._Button_Delete.Text = "Delete"		
+		self._Button_Delete.UseVisualStyleBackColor = True
+		self._Button_Delete.Enabled = False
+		self._Button_Delete.Click += self.Button_DeleteClick
+		# 
+		# Button_Close
+		# 
+		self._Button_Close.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Close.Location = System.Drawing.Point(192, 320)
+		self._Button_Close.Name = "Button_Close"
+		self._Button_Close.Size = System.Drawing.Size(80, 25)
+		self._Button_Close.TabIndex = 33
+		self._Button_Close.Text = "Close"		
+		self._Button_Close.UseVisualStyleBackColor = True
+		self._Button_Close.Click += self.Button_CloseClick
+
+		# 
+		# IBIS_CaseForm
+		#
+		self.Size = System.Drawing.Size(300, 390)
+		self.MinimumSize = System.Drawing.Size(300, 390)
+		self.FormSize_W = self.Size.Width
+		self.FormSize_H = self.Size.Height
+		self.Controls.Add(self._Button_Close)
+		self.Controls.Add(self._Button_Delete)
+		self.Controls.Add(self._Button_Add)
+		self.Controls.Add(self._DataGridView)
+		IconFile = path + "\\Resources\\LOGO.ico"
+		self.Icon = Icon(IconFile)
+		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
+		self.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
+		self.Name = "IBIS_CaseForm"
+		self.Text = "IBIS Simulation Cases"
+		self.Load += self.IBIS_CaseFormLoad
+		self.ResizeEnd += self.IBIS_CaseFormResizeEnd
+		self.DoubleClick += self.IBIS_CaseFormDoubleClick
+		self.ResumeLayout(False)
+		self.PerformLayout()
+
+		self.case = 1		
+
+	def IBIS_CaseFormLoad(self, sender, e):
+		try:
+			if sub_DB.IBIS_Result_Init_Flag:
+				sub_DB.IBIS_Result_Init_Flag = False
+				for tx_row in sub_DB.IBIS_Form._DataGridView_Tx.Rows:
+					if tx_row.Cells[0].Value:
+						for rx_row in sub_DB.IBIS_Form._DataGridView_Rx.Rows:
+							if rx_row.Cells[0].Value:
+								for tx_item in self._Col_Tx_IBIS_Model.Items:								
+									if tx_item == tx_row.Cells[1].Value:									
+										break
+
+								for rx_item in self._Col_Rx_IBIS_Model.Items:
+									if rx_item == rx_row.Cells[1].Value:									
+										break
+
+								self._DataGridView.Rows.Add(self.case, tx_item, rx_item)
+								self.case += 1
+
+		except Exception as e:			
+			Log("[IBIS Result Form Load] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to load IBIS Result Form","Warning")
+			EXIT()
+
+	def IBIS_CaseFormResizeEnd(self, sender, e):
+		try:
+			# Get previous Eye_Form width/height and resized Eye_Form width/height
+			# Calculate Gap betweent previous and resized width/height		
+			Gap_W = self.Size.Width - self.FormSize_W
+			Gap_H = self.Size.Height - self.FormSize_H
+			
+			# Backup the resized Eye_Form width/height as previous MainFomr width/height
+			self.FormSize_W = self.Size.Width
+			self.FormSize_H = self.Size.Height
+
+			# Resize
+			self._DataGridView.Size = System.Drawing.Size(self._DataGridView.Width + Gap_W, self._DataGridView.Height + Gap_H)
+			
+			# Relocate			
+			self._Button_Add.Location = System.Drawing.Point(self._Button_Add.Location.X, self._Button_Add.Location.Y + Gap_H)
+			self._Button_Delete.Location = System.Drawing.Point(self._Button_Delete.Location.X, self._Button_Delete.Location.Y + Gap_H)
+			self._Button_Close.Location = System.Drawing.Point(self._Button_Close.Location.X, self._Button_Close.Location.Y + Gap_H)
+
+		except Exception as e:			
+			Log("[IBIS_CaseFormResizeEnd] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to resize Eye Analyzer IBIS Result GUI","Warning")			
+			EXIT()
+
+	def IBIS_CaseFormDoubleClick(self, sender, e):		
+		self._DataGridView.Size = System.Drawing.Size(259, 300)		
+		self._Col_CaseNum.Width = 26		
+		self._Col_Tx_IBIS_Model.Width = 130				
+		self._Col_Rx_IBIS_Model.Width = 130		
+		self._Button_Add.Location = System.Drawing.Point(12, 320)
+		self._Button_Add.Size = System.Drawing.Size(80, 25)
+		self._Button_Delete.Location = System.Drawing.Point(102, 320)
+		self._Button_Delete.Size = System.Drawing.Size(80, 25)
+		self._Button_Close.Location = System.Drawing.Point(192, 320)
+		self._Button_Close.Size = System.Drawing.Size(80, 25)
+		self.Size = System.Drawing.Size(300, 390)
+		self.MinimumSize = System.Drawing.Size(300, 390)
+		self.FormSize_W = self.Size.Width
+		self.FormSize_H = self.Size.Height
+
+	def DataGridViewCellMouseClick(self, sender, e):
+		for row in self._DataGridView.Rows:
+			if row.Selected:
+				self._Button_Delete.Enabled = False
+				break
+			else:
+				self._Button_Delete.Enabled = False
+
+	def Button_AddClick(self, sender, e):
+		self._DataGridView.Rows.Add(self.case, "", "")
+		self.case += 1
+		self.Refresh()
+
+	def Button_DeleteClick(self, sender, e):
+		try:
+			#for row in self._DataGridView.Rows:			
+			#	if row.Selected:
+			#		self._DataGridView.Rows.Remove(row)
+			for i in range(0, self._DataGridView.Rows.Count-1):
+				if self._DataGridView.Rows[i].Selected:
+					self._DataGridView.Rows.Remove(self._DataGridView.Rows[i])
+					#i -= 1
+
+			self.Refresh()
+
+		except Exception as e:						
+			print traceback.format_exc()			
+
+	def Button_CloseClick(self, sender, e):
+
+		self.Close()
+
+
+def HighLight_IBIS(self, key):
 	for temp_key in self.Line:
 		self._richTextBox1.Select(self._richTextBox1.GetFirstCharIndexFromLine(self.Line[temp_key]), self.Length[temp_key])
 		self._richTextBox1.SelectionColor = Color.Black

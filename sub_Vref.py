@@ -1,5 +1,6 @@
 #import time
 #time_delay = 3
+import sub_DB
 
 from sub_functions import *
 
@@ -180,7 +181,7 @@ def Cal_Vref_AEDT(self, Location):
 	##############
 	# Initialize #
 	##############
-	try:		
+	try:
 		oProject = sub_DB.AEDT["Project"]
 		#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Items[0])
 		oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Text)
@@ -422,8 +423,6 @@ def Cal_Vref_AEDT(self, Location):
 		EXIT()
 
 	return Vref
-
-	
 
 # Auto-default for CSV input
 def Cal_Vref_WaveForm():
