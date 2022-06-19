@@ -58,6 +58,9 @@
     <Compile Include="sub_AEDT.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="sub_IBIS.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="sub_Report_Excel.py">
       <SubType>Code</SubType>
     </Compile>

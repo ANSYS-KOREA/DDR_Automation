@@ -279,9 +279,10 @@
 [IBIS Identification]
 	# ? : arbitrary number in range [0~99]
 	# It is not case sensitive.
-	<Tx> = TX, DS, drv
-	<Rx> = RX, ODT,
+	<Tx> = TX, DS, drv, SoC
+	<Rx> = RX, ODT, DDR
 	<Ignore> = ddr3
+
 
 
 

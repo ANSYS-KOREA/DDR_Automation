@@ -34,8 +34,8 @@ def New_Default(self):
 
 		if sub_DB.InputFile_Flag == 1: # *.aedt input
 			# Auto Vref			
-			if sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 0:				
-				Vref = float(Cal_Vref_AEDT(self, Location))
+			if sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 0:
+				Vref = float(Cal_Vref_AEDT(self, Location))				
 				
 			# Manual Vref
 			elif sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 1:				

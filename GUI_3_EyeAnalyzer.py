@@ -13,6 +13,7 @@ import traceback
 
 from GUI_subforms import *
 from sub_functions import *
+from sub_IBIS import *
 from System.Drawing import *
 from System.Windows.Forms import *
 
@@ -2071,7 +2072,8 @@ class Eye_Form(Form):
 			EXIT()
 
 	def Options_IBISStripMenuItemClick(self, sender, e):
-		try:			
+		try:
+			IBIS_Init()
 			self.Cursor = Cursors.WaitCursor
 			Log("[IBIS Form Launch]")
 			flag, show_msg_flag, msg = Check_Input(self)
@@ -2104,8 +2106,7 @@ class Eye_Form(Form):
 								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Window
 						# Target Net Setup				
 						sub_DB.IBIS_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-						sub_DB.IBIS_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
-						sub_DB.IBIS_Form.Text = "Test"			
+						sub_DB.IBIS_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)						
 						sub_DB.IBIS_Form.ShowDialog()
 
 				# for *.csv Input File
