@@ -2085,32 +2085,51 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 	if IBIS_File:		
 		#
 		IBIS_files = []
+		temp_IBIS_files = []
 		flag = True
+		#with open(File) as fp:
+		#	while(flag):
+		#		# Read line
+		#		temp_data = fp.readline()
+
+		#		if "$begin \'NexximCircuit\'" in temp_data:
+		#			while(flag):
+		#				# Read line
+		#				temp_data = fp.readline()
+
+		#				if Design in temp_data:
+		#					while(flag):
+		#						# Read line
+		#						temp_data = fp.readline()
+
+		#						if 'Name of IBIS file' in temp_data:									
+		#							item = temp_data.split(',')[4].replace('\'','').replace('\\\\','\\').strip()
+		#							if '<Project>' in item:
+		#								item = File.replace(File.split('\\')[-1],'') + item.replace('<Project>','')
+		#							if not item in IBIS_files:
+		#								print item
+		#								IBIS_files.append(item)
+
+		#						if "$end \'NexximCircuit\'" in temp_data:
+		#							flag = False
+
 		with open(File) as fp:
 			while(flag):
 				# Read line
 				temp_data = fp.readline()
 
-				if "$begin \'NexximCircuit\'" in temp_data:
-					while(flag):
-						# Read line
-						temp_data = fp.readline()
+				if 'Name of IBIS file' in temp_data:									
+					item = temp_data.split(',')[4].replace('\'','').replace('\\\\','\\').replace('/','\\').strip()
+					if '<Project>' in item:
+						item = File.replace(File.split('\\')[-1],'') + item.replace('<Project>','')
+					if not item in temp_IBIS_files:						
+						temp_IBIS_files.append(item)
 
-						if Design in temp_data:
-							while(flag):
-								# Read line
-								temp_data = fp.readline()
-
-								if 'Name of IBIS file' in temp_data:									
-									item = temp_data.split(',')[4].replace('\'','').replace('\\\\','\\').strip()
-									if '<Project>' in item:
-										item = File.replace(File.split('\\')[-1],'') + item.replace('<Project>','')
-									if not item in IBIS_files:
-										IBIS_files.append(item)
-
-								if "$end \'NexximCircuit\'" in temp_data:
-									flag = False
-
+				if "$end \'AnsoftProject\'" in temp_data:
+					flag = False
+		for file in temp_IBIS_files:
+			if os.path.isfile(file):
+				IBIS_files.append(file)
 		#
 		IBIS_default_Comp = []
 		IBIS_default_Model = []

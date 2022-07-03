@@ -2718,7 +2718,7 @@ class Eye_Form(Form):
 		if self.Init_Flag:
 			self.Init_Flag = False
 			
-		else:
+		else:			
 			self.Init_Flag = True
 			self._CheckedListBox_ReportName.SetItemChecked(e.Index, e.NewValue)
 
