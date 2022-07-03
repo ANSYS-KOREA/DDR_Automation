@@ -753,19 +753,17 @@ class NetForm(Form):
 				# Get Simulated Waveform List
 				if sub_DB.InputFile_Flag == 1: # for *.aedt input					
 					oProject = sub_DB.AEDT["Project"]
-					oDesign = sub_DB.AEDT["Design"]
+					#oDesign = sub_DB.AEDT["Design"]
 					#oModule = sub_DB.AEDT["Module"]
 					#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Items[0])
-					#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.SelectedIndex)
-					oModule = oDesign.GetModule("ReportSetup")
-					
+					oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Text)
+					oModule = oDesign.GetModule("ReportSetup")					
 					Report_Name = []
 					iter = 0
-
 					Report_Name = sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems					
-					Netlist = []					
+					Netlist = []
 					for report in Report_Name:						
-						for net in oModule.GetReportTraceNames(report):							
+						for net in oModule.GetReportTraceNames(str(report)):
 							Netlist.append(net)
 
 					sub_DB.Netlist = Netlist

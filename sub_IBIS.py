@@ -74,6 +74,13 @@ def IBIS_Parsing(File):
 								temp_list.append([model, note])
 					IBIS["Model Selector"][model_name] = temp_list
 
+				# TODO
+				##############
+				# Find Model #
+				##############
+				if '[model]' in line.lower():
+					pass
+
 			line_num += 1
 			if line_num==len(Text):
 				break
