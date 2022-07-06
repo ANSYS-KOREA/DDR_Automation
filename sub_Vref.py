@@ -424,6 +424,316 @@ def Cal_Vref_AEDT(self, Location):
 
 	return Vref
 
+def Cal_Vref_AEDT_VB(self, Location):	
+	##############
+	# Initialize #
+	##############
+	try:
+		oProject = sub_DB.AEDT["Project"]
+		#oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Items[0])
+		oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Text)
+		oModule = oDesign.GetModule("ReportSetup")
+		Log("		(AEDT Launch) = Done")
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Generate AEDT Object")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to generate AEDT objects","Warning")
+		EXIT()
+
+	#################
+	# Update report #
+	#################
+	try:
+		Report_Name = []
+		Report_Name = self._CheckedListBox_ReportName.CheckedItems
+		for report in Report_Name:	
+			oModule.UpdateReports([report])
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Update Reports")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to update Report","Warning")		
+		EXIT()	
+
+	#################
+	# Get time unit #
+	#################	
+	try:
+		# export report as temp
+		File = sub_DB.result_dir + "\\temp.csv"
+		oModule.UpdateReports([Report_Name[0]])
+		oModule.ExportToFile(Report_Name[0], File)
+		#time.sleep(time_delay)
+	
+		# load report to get time unit
+		with open(File) as fp:
+			temp_data = fp.readline().split(",")			
+			iter = 0
+			while(1):
+				if not "Time" in temp_data[0]:
+					del temp_data[0]
+					iter += 1
+				else:
+					break
+		fp.close()		
+		t_unit = temp_data[0].split("[")[-1].split("]")[0]
+		Log("		(Get Time Unit) = %s" % t_unit)
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Get Time Unit")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to get time unit","Warning")		
+		EXIT()	
+
+	#######################
+	# Get variable string #
+	#######################
+	try:
+		idx = 1
+		pre_var_string = ""
+		for i in range(1, len(temp_data)):
+			if "-" in temp_data[i]:
+				var_string = temp_data[i].split("]")[-1].split("-")[-1].strip().replace("\"","")				
+			else:
+				var_string = ""
+				break
+		sub_DB.var_string = var_string
+		Log("		(Get Variables) = Done")
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Get Variables")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to get variables","Warning")		
+		EXIT()
+
+	#############################
+	# Get total simulation time #
+	#############################
+	try:
+		with open(File) as fp:
+			for line in reversed(list(fp)):
+				t_total = line.split(",")[iter] + t_unit
+				break
+		fp.close()
+		
+		sub_DB.total_waveform_length = t_total
+		Log("		(Get total simulation time) = %s" % t_total)
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Get Total Simulation Time")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to get total simulation time","Warning")		
+		EXIT()
+
+	######################
+	# Create temp report #
+	######################
+	try:
+		# generate plot list
+		PlotList = []
+		for i in range(0, sub_DB.Net_Form._DataGridView.Rows.Count):
+			if sub_DB.Net_Form._DataGridView.Rows[i].Cells[0].Value:
+				PlotList.append(sub_DB.Net_Form._DataGridView.Rows[i].Cells[1].Value.replace("\"","").split("[")[0].strip())
+
+		# Create Variable List
+		Var_list = []
+		Var_list.append("Time:=")
+		Var_list.append(["All"])
+		Sim_type = oDesign.GetDesignType()			
+		if Sim_type == "Circuit Netlist":
+			pass
+		else:
+			Global_Varlist = oProject.GetVariables()
+			Local_Varlist = oDesign.GetVariables()					
+			for var in Global_Varlist:
+				Var_list.append(var + ":=")
+				Var_list.append(["All"])
+		
+		oModule.CreateReport("temp", "Standard", "Rectangular Plot", self._ComboBox_SolutionName.Text, 
+		[
+			"NAME:Context",
+			"SimValueContext:="	, [1,0,2,0,False,False,-1,1,0,1,1,"",0,0,"DE",False,"0","DP",False,"500000000","DT",False,"0.001","NUMLEVELS",False,"0","WE",False,sub_DB.total_waveform_length,"WM",False,sub_DB.total_waveform_length,"WN",False,"0ps","WS",False,"0ps"]
+		], 
+		Var_list, 
+		[
+			"X Component:="		, "Time",
+			"Y Component:="		, PlotList
+		])
+		Log("		(Create temp report) = Done")
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Create temp Report")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to create temp report","Warning")		
+		EXIT()
+
+	####################
+	# Export Wavefomrs #
+	####################
+	try:
+		oModule.UpdateReports(["temp"])
+		
+		# Export Uniform Report			
+		File = sub_DB.result_dir + "\\Waveforms_Vref.csv"		
+		oModule.ExportUniformPointsToFile("temp", File, "0ns", t_total, "1ps", False)
+		sub_DB.Waveform_Vref_File = File
+
+		File = sub_DB.result_dir + "\\Waveforms.csv"
+		oModule.ExportToFile("temp", File)		
+		sub_DB.Waveform_File = File
+		Log("		(Export Wavefrom File) = Done")
+
+		# Delete temp Report	
+		oModule.DeleteReports(["temp"])		
+		Log("		(Export Uniform Point Waveforms) = Done")
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Export temp Report")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to export temp report","Warning")		
+		EXIT()
+
+	##################
+	# Load Waveforms #
+	##################
+	try:
+		#################################
+		# for Measurement - Non-unifrom #
+		#################################
+		# Open Waveform.csv and Load
+		Waveform = {}
+		with open(sub_DB.Waveform_File) as fp:
+			# Get Netlist and Create Waveform Dictionary keys
+			temp_data = fp.readline().replace("\"","").replace(" ","").strip().split(",")
+
+			# Delete global & local variable data
+			iter = 0
+			while(1):
+				if not "Time" in temp_data[0]:
+					del temp_data[0]
+					iter += 1
+				else:
+					break
+			
+			# Get time and voltage unit
+			sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
+			sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
+			
+			# Delete Time Column
+			del temp_data[0]
+
+			data = [[0 for col in range(0)] for row in range(len(temp_data))]
+			for i in range(0, len(temp_data)):
+				data[i].append(temp_data[i])
+
+			# Get Waveform Data
+			Time = []
+			for line in fp:
+				Time.append(float(line.split(",")[0]))
+				for i in range(0, len(temp_data)):
+					data[i].append(float(line.split(",")[i+1+iter]))
+		fp.close()
+
+		Log("		(Load Uniform Point Waveforms)")
+		for cell in data:
+			key = cell[0].split("[")[0]
+			del cell[0]
+			Waveform[key] = cell
+			Log("			= %s" % key)
+
+		# Check voltage unit
+		if sub_DB.Unit["Voltage"].lower() == "mv":
+			pass
+		elif sub_DB.Unit["Voltage"].lower() == "v":
+			for key in Waveform:
+				for i in range(0, len(Waveform[key])):
+					Waveform[key][i] = Waveform[key][i]*1000
+
+		sub_DB.Waveform = Waveform
+		sub_DB.Time = Time
+
+		##################################
+		# for Vref Calculation - Uniform #
+		##################################
+		# Open Waveform_Vref.csv and Load
+		Waveform_Vref = {}
+		with open(sub_DB.Waveform_Vref_File) as fp:
+			# Get Netlist and Create Waveform Dictionary keys
+			temp_data = fp.readline().replace("\"","").replace(" ","").strip().split(",")
+
+			# Delete global & local variable data
+			iter = 0
+			while(1):
+				if not "Time" in temp_data[0]:
+					del temp_data[0]
+					iter += 1
+				else:
+					break
+			# Get time and voltage unit
+			sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
+			sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
+
+			# Delete Time Column
+			del temp_data[0]
+
+			data = [[0 for col in range(0)] for row in range(len(temp_data))]
+			for i in range(0, len(temp_data)):
+				data[i].append(temp_data[i])
+
+			# Get Waveform Data			
+			for line in fp:				
+				for i in range(0, len(temp_data)):
+					data[i].append(float(line.split(",")[i+1+iter]))
+		fp.close()
+
+		Log("		(Load Uniform Point Waveforms)")
+		for cell in data:
+			key = cell[0].split("[")[0]
+			del cell[0]
+			Waveform_Vref[key] = cell
+			Log("			= %s" % key)
+
+		# Check voltage unit
+		if sub_DB.Unit["Voltage"].lower() == "mv":
+			pass
+		elif sub_DB.Unit["Voltage"].lower() == "v":
+			for key in Waveform_Vref:
+				for i in range(0, len(Waveform_Vref[key])):
+					Waveform_Vref[key][i] = Waveform_Vref[key][i]*1000
+
+		sub_DB.Waveform_Vref = Waveform_Vref
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Get Waveforms")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to get waveforms","Warning")		
+		EXIT()
+
+	#################
+	# Cacluate Vref #
+	#################
+	try:		
+		Vref = Cal_Vref(Waveform_Vref)
+		Log("		(Vref Calculation) = Done, %fmV" % Vref)
+
+	except Exception as e:		
+		Log("	<Vref Calculation> = Failed to Calculate Vref")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Vref Calculation - Fail to calculate Vref","Warning")		
+		EXIT()
+
+	return Vref
+
 # Auto-default for CSV input
 def Cal_Vref_WaveForm():
 	try:		
@@ -449,24 +759,32 @@ def Cal_Vref_WaveForm():
 # Get Waveform for Manual Vref
 def Get_Waveform(self):
 	try:
-		# Initialize
+		##############
+		# Initialize #
+		##############
 		Log("		(AEDT Launch) = Done")
 		oProject = sub_DB.AEDT["Project"]
 		oDesign = sub_DB.AEDT["Design"]
 		oModule = oDesign.GetModule("ReportSetup")
+
+		#################
+		# Update report #
+		#################
 		Report_Name = []
 		Report_Name = self._CheckedListBox_ReportName.CheckedItems
 		for report in Report_Name:	
 			oModule.UpdateReports([report])
 
-		# find total simulation time
-		# Export Report using "ExportToFile" to find total simulation time		
+		#################
+		# Get time unit #
+		#################
+		# export report as temp		
 		File = sub_DB.result_dir + "\\temp.csv"
 		oModule.UpdateReports([Report_Name[0]])
 		oModule.ExportToFile(Report_Name[0], File)		
 		#time.sleep(time_delay)
 
-		#	Get time unit
+		# load report to get time unit
 		with open(File) as fp:
 			temp_data = fp.readline().split(",")			
 			iter = 0
@@ -476,11 +794,13 @@ def Get_Waveform(self):
 					iter += 1
 				else:
 					break
-		fp.close()
-		
+		fp.close()		
 		t_unit = temp_data[0].split("[")[-1].split("]")[0]
+		Log("		(Get Time Unit) = %s" % t_unit)
 
-		#	Get Variable string
+		#######################
+		# Get variable string #
+		#######################
 		idx = 1
 		pre_var_string = ""
 		for i in range(1, len(temp_data)):
@@ -490,8 +810,11 @@ def Get_Waveform(self):
 				var_string = ""
 				break
 		sub_DB.var_string = var_string
+		Log("		(Get Variables) = Done")
 
-		#	Get last time value
+		#############################
+		# Get total simulation time #
+		#############################
 		with open(File) as fp:
 			for line in reversed(list(fp)):
 				t_total = line.split(",")[iter] + t_unit
@@ -501,7 +824,9 @@ def Get_Waveform(self):
 		sub_DB.total_waveform_length = t_total
 		Log("		(Get total waveform Length) = %s" % t_total)
 
-		# Create temp eye diagram	
+		######################
+		# Create temp report #
+		######################	
 		PlotList = []
 		for i in range(0, sub_DB.Net_Form._DataGridView.Rows.Count):
 			if sub_DB.Net_Form._DataGridView.Rows[i].Cells[0].Value:
@@ -521,7 +846,7 @@ def Get_Waveform(self):
 				Var_list.append(var + ":=")
 				Var_list.append(["All"])
 		
-		oModule.CreateReport("temp_eye", "Eye Diagram", "Rectangular Plot", self._ComboBox_SolutionName.Text, 
+		oModule.CreateReport("temp", "Eye Diagram", "Rectangular Plot", self._ComboBox_SolutionName.Text, 
 		[
 			"NAME:Context",
 			"SimValueContext:="	, [1,0,2,0,False,False,-1,1,0,1,1,"",0,0,"DE",False,"0","DP",False,"500000000","DT",False,"0.001","NUMLEVELS",False,"0","WE",False,sub_DB.total_waveform_length,"WM",False,sub_DB.total_waveform_length,"WN",False,"0ps","WS",False,"0ps"]
@@ -542,21 +867,77 @@ def Get_Waveform(self):
 		])
 		Log("		(Create temp eye-diagram) = Done")
 	
-		# Export Uniform Report	
+		####################
+		# Export Wavefomrs #
+		####################
+		oModule.UpdateReports(["temp"])
 		File = sub_DB.result_dir + "\\Waveforms.csv"		
-		oModule.UpdateReports(["temp_eye"])
-		oModule.ExportUniformPointsToFile("temp_eye", File, "0ns", t_total, "1ps", False)
-		#time.sleep(time_delay)
+		oModule.ExportToFile("temp", File)
 		sub_DB.Waveform_File = File
-		Log("		(Export Uniform Wavefrom File) = Done")
+		Log("		(Export Wavefrom File) = Done")
 
 		# Delete temp Report	
-		oModule.DeleteReports(["temp_eye"])
+		oModule.DeleteReports(["temp"])
 		Log("		(Delete temp eye-diagram) = Done")
+
+		##################
+		# Load Waveforms #
+		##################
+		Waveform = {}
+		with open(sub_DB.Waveform_File) as fp:
+			# Get Netlist and Create Waveform Dictionary keys
+			temp_data = fp.readline().replace("\"","").replace(" ","").strip().split(",")
+
+			# Delete global & local variable data
+			iter = 0
+			while(1):
+				if not "Time" in temp_data[0]:
+					del temp_data[0]
+					iter += 1
+				else:
+					break
+			
+			# Get time and voltage unit
+			sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
+			sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
+			
+			# Delete Time Column
+			del temp_data[0]
+
+			data = [[0 for col in range(0)] for row in range(len(temp_data))]
+			for i in range(0, len(temp_data)):
+				data[i].append(temp_data[i])
+
+			# Get Waveform Data
+			Time = []
+			for line in fp:
+				Time.append(float(line.split(",")[0]))
+				for i in range(0, len(temp_data)):
+					data[i].append(float(line.split(",")[i+1+iter]))
+		fp.close()
+
+		Log("		(Load Uniform Point Waveforms)")
+		for cell in data:
+			key = cell[0].split("[")[0]
+			del cell[0]
+			Waveform[key] = cell
+			Log("			= %s" % key)
+
+		# Check voltage unit
+		if sub_DB.Unit["Voltage"].lower() == "mv":
+			pass
+		elif sub_DB.Unit["Voltage"].lower() == "v":
+			for key in Waveform:
+				for i in range(0, len(Waveform[key])):
+					Waveform[key][i] = Waveform[key][i]*1000
+
+		sub_DB.Waveform = Waveform
+		sub_DB.Time = Time
 
 	except Exception as e:		
 		Log("	<AEDT Vref Calculation> = Failed")
 		Log(traceback.format_exc())
+		print traceback.format_exc()
 		MessageBox.Show("Fail to Export Waveform","Warning")		
 		EXIT()
 

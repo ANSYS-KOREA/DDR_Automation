@@ -11,8 +11,11 @@ def Get_AEDT_Version():
 	max = 0.0
 	ANSYSEM_Env_Var = [s for s in os.environ.keys() if 'ANSYSEM' in s]
 	if 'ANSYSEM_INSTALL_DIR' in ANSYSEM_Env_Var:
-		ansysEmInstallDirectory = os.environ['ANSYSEM_INSTALL_DIR']        
-		version = "20" + ansysEmInstallDirectory.split("\\")[-2].replace("AnsysEM","")
+		ansysEmInstallDirectory = os.environ['ANSYSEM_INSTALL_DIR']
+		temp_version = ansysEmInstallDirectory.split("\\")[-2].replace("AnsysEM","")
+		if temp_version == "v221":
+			temp_version = "22.1"
+		version = "20" + temp_version
 
 	else:
 		for var in ANSYSEM_Env_Var:
@@ -42,7 +45,7 @@ def Get_AEDT_Dir():
 def Get_AEDT_Info(self, File):
 	try:
 		Delete_LockFile(File)
-		Version = Get_AEDT_Version()
+		Version = Get_AEDT_Version()		
 		Log("[AEDT Version] : %s" % Version)
 		oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Version)
 		oDesktop.RestoreWindow()

@@ -1692,7 +1692,8 @@ class Eye_Form(Form):
 		try:
 			# initialization
 			self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Info
-			
+			self._TextBox_Offset.Text = "7.5"
+
 			# Setup the Common Env. Info.		
 			#	Add DDR Type into ComboBox
 			DDR_Gen = []

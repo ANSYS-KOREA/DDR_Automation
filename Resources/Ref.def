@@ -253,7 +253,7 @@
 	# 	  -. voltage : [mV]
 	# 	  -. time : UI(Unit Interval)
 	#####################################################################################################	
-	<LPDDR5-6400>
+	<LPDDR5-6400>aqau7
 		(Rx Mask Voltage)		= 120
 		(Rx Timing Window Total)		= 0.25
 		

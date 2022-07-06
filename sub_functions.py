@@ -577,6 +577,10 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 def Interpolate_1st(x1,y1,x2,y2,y3):
 	x = abs(y3-y1)*(x2-x1)/abs(y2-y1)+x1
 	return int(round(x))
+	
+def Interpolate_VB(t1, t2, v1, v2, ref):
+	x = t1 + (ref - v1) * (t2 - t1) / (v2 - v1)
+	return x
 
 def Gen_waveform_file(Input_File, Plot_list, Group_flag):
 	try:
