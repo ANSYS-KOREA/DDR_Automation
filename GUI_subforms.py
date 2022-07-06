@@ -739,6 +739,7 @@ class NetForm(Form):
 			self._Button_Identify.Location = System.Drawing.Point(self._Button_Identify.Location.X + Gap_W, self._Button_Identify.Location.Y + Gap_H)
 			self._Button_Export.Location = System.Drawing.Point(self._Button_Export.Location.X + Gap_W, self._Button_Export.Location.Y + Gap_H)
 			self._Button_Close.Location = System.Drawing.Point(self._Button_Close.Location.X + Gap_W, self._Button_Close.Location.Y + Gap_H)
+			self._CheckBox_PlotEye.Location = System.Drawing.Point(self._CheckBox_PlotEye.Location.X, self._CheckBox_PlotEye.Location.Y + Gap_H)
 
 		except Exception as e:		
 			Log("[NetFrom ResizeEnd] = Failed")
@@ -1939,10 +1940,12 @@ class OptionForm(Form):
 		#self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
 		#	["Default",
 		#	"+ Setup/Hold"]))
+		#self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
+		#	["Default",
+		#	"Auto-delay",
+		#	"Tr-by-Tr"]))
 		self._ComboBox_Analyze.Items.AddRange(System.Array[System.Object](
-			["Default",
-			"Auto-delay",
-			"Tr-by-Tr"]))
+			["Default"]))
 		self._ComboBox_Analyze.Location = System.Drawing.Point(348, 76)
 		self._ComboBox_Analyze.Name = "ComboBox_Analyze"
 		self._ComboBox_Analyze.Size = System.Drawing.Size(84, 23)

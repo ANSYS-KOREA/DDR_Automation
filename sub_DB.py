@@ -40,9 +40,11 @@ Eyeflag = True
 
 Netlist = []
 Waveform = {}
+Waveform_Vref = {}
 Strobe_Waveform = {}
 Jitter_RMS = {}
 total_waveform_length = ""
+Waveform_Vref_File = ""
 Waveform_File = ""
 Excel_Img_File = []
 NetSort_Flag = False
