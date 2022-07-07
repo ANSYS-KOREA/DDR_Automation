@@ -202,7 +202,8 @@ def IBIS_Identify(name, Cenv):
 def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag):
 	try:
 		oProject = sub_DB.AEDT["Project"]
-		oDesign = sub_DB.AEDT["Design"]
+		oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Text)
+		sub_DB.AEDT["Design"] = oDesign
 		if "Module" in sub_DB.AEDT.keys():
 			oModule = sub_DB.AEDT["Module"]
 		else:
@@ -2003,9 +2004,9 @@ def Initial():
 	sub_DB.Eye_Form._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
 	sub_DB.Eye_Form._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
 
-	sub_DB.Net_Form = ""	
+	sub_DB.Net_Form = ""
 	sub_DB.Net_Form = GUI_subforms.NetForm()
-
+		 
 	sub_DB.Option_Form = ""
 	sub_DB.Option_Form = GUI_subforms.OptionForm(2)
 

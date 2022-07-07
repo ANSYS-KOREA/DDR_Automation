@@ -75,7 +75,7 @@ def New_Default(self):
 	#########################
 	#   Eye Analyze         #
 	#########################	
-	try:		
+	try:
 		sub_DB.Cal_Form.Text = "Analyzing Eye Diagram"
 		sub_DB.Cal_Form._Label_Vref.Text = "Analyzing Eye Diagram..."
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 1	
@@ -834,7 +834,7 @@ def Old_Default(self):
 			elif sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 1:								
 				sub_DB.Option_Form._ComboBox_Vref.SelectedIndex = 1
 				sub_DB.Option_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
-				Get_Waveform(self)
+				Get_Waveform_Old(self)
 				Vref = float(sub_DB.Option_Form._TextBox_Vref.Text)
 
 			else:
@@ -2570,75 +2570,14 @@ def Measure_Eye_Old(self, Location):
 		Log("		(Unit Interval) = %s[ps]" % UI)
 
 		# Get Waveform
-		if sub_DB.InputFile_Flag == 1: # *.aedt input file
-			sub_DB.Cal_Form._Label_Vref.Text = "Analyzing Eye...."
-			sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
+		if sub_DB.InputFile_Flag == 1: # *.aedt input file			
 			Log("		(Waveform)")
-			Waveform = {}
-
-			with open(sub_DB.Waveform_File) as fp:
-				# Get Netlist and Create Waveform Dictionary keys
-				temp_data = fp.readline().replace("\"","").replace(" ","").strip().split(",")
-
-				# Delete global & local variable data
-				iter = 0
-				while(1):
-					if not "Time" in temp_data[0]:
-						del temp_data[0]
-						iter += 1
-					else:
-						break
-			
-				# Get time and voltage unit
-				sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
-				sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
-			
-				# Delete Time Column
-				del temp_data[0]
-
-				data = [[0 for col in range(0)] for row in range(len(temp_data))]
-				for i in range(0, len(temp_data)):
-					data[i].append(temp_data[i])
-
-				# Get Waveform Data				
-				for line in fp:
-					for i in range(0, len(temp_data)):
-						data[i].append(float(line.split(",")[i+1+iter]))
-			fp.close()
-
-			for cell in data:
-				key = cell[0].split("[")[0]
-				del cell[0]
-				Waveform[key] = cell
-				Log("			= %s" % key)
-
-			# Check time unit - Does not check time unit in AEDT input file process (1ps uniform exported)
-			#if sub_DB.Unit["Time"].lower() == "ps":
-			#	pass
-			#elif sub_DB.Unit["Time"].lower() == "ns":
-			#	for i in range(0, len(Time)):
-			#		Time[i] = Time[i]*1000
-			#else:
-			#	MessageBox.Show("The time unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
-			#sub_DB.Time = Time
-			
-			
-			# Check voltage unit
-			if sub_DB.Unit["Voltage"].lower() == "mv":
-				pass
-			elif sub_DB.Unit["Voltage"].lower() == "v":
-				for key in Waveform:
-					for i in range(0, len(Waveform[key])):
-						Waveform[key][i] = Waveform[key][i]*1000
-			else:
-				MessageBox.Show("The voltage unit in the input csv file is not supported.","Warning",MessageBoxButtons.OK, MessageBoxIcon.Warning)
-		
-			sub_DB.Waveform = Waveform
+			Log("			= Imported from AEDT")			
 			
 		elif sub_DB.InputFile_Flag == 2: # *.csv input file
 			Log("		(Waveform)")
 			Log("			= Imported from CSV")
-			Waveform = sub_DB.Waveform
+		Waveform = sub_DB.Waveform
 
 		# Measure Eye Width & Margin
 		sub_DB.Cal_Form._Label_Vref.Text = "Analyzing Eye."	
