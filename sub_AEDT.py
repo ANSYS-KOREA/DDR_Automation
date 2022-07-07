@@ -71,8 +71,11 @@ def Get_AEDT_Info(self, File):
 			self._ComboBox_Design.Items.Add(design)
 		#self.Init_Flag = True
 		#self._ComboBox_Design.SelectedIndex = 0		
-		oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Items[0])
-		#oDesign = oProject.SetActiveDesign(self._ComboBox_Design.SelectedItem)
+		#oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Items[0])		
+		if self._ComboBox_Design.Text == "":
+			oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Items[0])
+		else:
+			oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Text)
 		oModule = oDesign.GetModule("ReportSetup")
 		sub_DB.AEDT["Design"] = oDesign
 		sub_DB.AEDT["Module"] = oModule		
@@ -83,7 +86,7 @@ def Get_AEDT_Info(self, File):
 				if item == sub_DB.Uenv["(Design)<Setup>[EYE]"][0]:
 					self._ComboBox_Design.SelectedItem = item
 					break
-			oDesign = oProject.SetActiveDesign(self._ComboBox_Design.SelectedItem)
+			oDesign = oProject.SetActiveDesign(self._ComboBox_Design.Text)
 			
 			# Add reports into ComboBox
 			oModule = oDesign.GetModule("ReportSetup")

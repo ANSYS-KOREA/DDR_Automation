@@ -305,6 +305,7 @@ class Eye_Form(Form):
 		self._Options_BatchStripMenuItem.Name = "Options_BatchStripMenuItem"
 		self._Options_BatchStripMenuItem.Size = System.Drawing.Size(152, 22)
 		self._Options_BatchStripMenuItem.Text = "Batch"
+		self._Options_BatchStripMenuItem.Visible = False
 		self._Options_BatchStripMenuItem.Click += self.Options_BatchStripMenuItemClick
 		# 
 		# Help_ToolStripMenuItem
@@ -323,14 +324,14 @@ class Eye_Form(Form):
 		# 
 		self._Help_DDRHelp_ToolStripMenuItem.Name = "Help_DDRHelp_ToolStripMenuItem"
 		self._Help_DDRHelp_ToolStripMenuItem.Size = System.Drawing.Size(300, 22)
-		self._Help_DDRHelp_ToolStripMenuItem.Text = "Ansys DDR Wizard Help"
+		self._Help_DDRHelp_ToolStripMenuItem.Text = "Ansys DDR Eye Analyzer User Guide"
 		self._Help_DDRHelp_ToolStripMenuItem.Click += self.Help_DDRHelp_ToolStripMenuItemClick
 		# 
 		# Help_DDRGuid_ToolStripMenuItem
 		# 
 		self._Help_DDRGuid_ToolStripMenuItem.Name = "Help_DDRGuid_ToolStripMenuItem"
 		self._Help_DDRGuid_ToolStripMenuItem.Size = System.Drawing.Size(300, 22)
-		self._Help_DDRGuid_ToolStripMenuItem.Text = "Ansys DDR Wizard Quick Guide"
+		self._Help_DDRGuid_ToolStripMenuItem.Text = "Ansys DDR Eye Analyzer Quick Guide"
 		self._Help_DDRGuid_ToolStripMenuItem.Click += self.Help_DDRGuid_ToolStripMenuItemClick
 		# 
 		# Help_DDRNew_ToolStripMenuItem
@@ -338,6 +339,7 @@ class Eye_Form(Form):
 		self._Help_DDRNew_ToolStripMenuItem.Name = "Help_DDRNew_ToolStripMenuItem"
 		self._Help_DDRNew_ToolStripMenuItem.Size = System.Drawing.Size(300, 22)
 		self._Help_DDRNew_ToolStripMenuItem.Text = "What's New in this Release"
+		self._Help_DDRNew_ToolStripMenuItem.Visible = False
 		self._Help_DDRNew_ToolStripMenuItem.Click += self.Help_DDRNew_ToolStripMenuItemClick
 		# 
 		# Help_DDRAbout_ToolStripMenuItem
@@ -345,6 +347,7 @@ class Eye_Form(Form):
 		self._Help_DDRAbout_ToolStripMenuItem.Name = "Help_DDRAbout_ToolStripMenuItem"
 		self._Help_DDRAbout_ToolStripMenuItem.Size = System.Drawing.Size(300, 22)
 		self._Help_DDRAbout_ToolStripMenuItem.Text = "About Ansys DDR Wizard"
+		self._Help_DDRAbout_ToolStripMenuItem.Visible = False
 		self._Help_DDRAbout_ToolStripMenuItem.Click += self.Help_DDRAbout_ToolStripMenuItemClick
 		# 
 		# toolStripSeparator1
@@ -356,6 +359,7 @@ class Eye_Form(Form):
 		#
 		self._toolStripSeparator2.Name = "toolStripSeparator2"
 		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)
+		self._toolStripSeparator2.Visible = False
 		# 
 		# toolStrip1
 		#
@@ -543,13 +547,13 @@ class Eye_Form(Form):
 		self._toolStrip_Batch_Button.Name = "toolStrip_Batch_Button"
 		self._toolStrip_Batch_Button.Text = "Batch"
 		self._toolStrip_Batch_Button.ToolTipText = "[Crtl+C] : Batch Process for ADEA"
+		self._toolStrip_Batch_Button.Visible = False
 		self._toolStrip_Batch_Button.Click += self.toolStrip_Batch_ButtonClick		
 		# 
 		# toolStripSeparator6
 		# 
 		self._toolStripSeparator6.Name = "toolStripSeparator4"
 		self._toolStripSeparator6.Size = System.Drawing.Size(6, 25)
-		#self._toolStripSplit_Help_Button
 		# 
 		# toolStripSplit_Help_Button
 		# 
@@ -576,7 +580,7 @@ class Eye_Form(Form):
 		# 
 		self._ADEAHelpToolStripMenuItem.Name = "ADEAHelpToolStripMenuItem"
 		self._ADEAHelpToolStripMenuItem.Size = System.Drawing.Size(243, 22)
-		self._ADEAHelpToolStripMenuItem.Text = "ADEA Help"
+		self._ADEAHelpToolStripMenuItem.Text = "ADEA User Guide"
 		self._ADEAHelpToolStripMenuItem.Click += self.ADEAHelpToolStripMenuItemClick
 		# 
 		# ADEAQuickGuideToolStripMenuItem
@@ -589,6 +593,7 @@ class Eye_Form(Form):
 		# toolStripSeparator7
 		# 
 		self._toolStripSeparator7.Name = "toolStripSeparator1"
+		self._toolStripSeparator7.Visible = False
 		self._toolStripSeparator7.Size = System.Drawing.Size(240, 6)
 		# 
 		# WhatsNewInThisReleaseToolStripMenuItem
@@ -596,6 +601,7 @@ class Eye_Form(Form):
 		self._WhatsNewInThisReleaseToolStripMenuItem.Name = "WhatsNewInThisReleaseToolStripMenuItem"
 		self._WhatsNewInThisReleaseToolStripMenuItem.Size = System.Drawing.Size(243, 22)
 		self._WhatsNewInThisReleaseToolStripMenuItem.Text = "What's New in this Release"
+		self._WhatsNewInThisReleaseToolStripMenuItem.Visible = False
 		self._WhatsNewInThisReleaseToolStripMenuItem.Click += self.WhatsNewInThisReleaseToolStripMenuItemClick
 		# 
 		# AboutAnsysDDREyeAnalyzerToolStripMenuItem
@@ -603,6 +609,7 @@ class Eye_Form(Form):
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Name = "AboutAnsysDDREyeAnalyzerToolStripMenuItem"
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Size = System.Drawing.Size(243, 22)
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Text = "About Ansys DDR Eye Analyzer"
+		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Visible = False
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Click += self.AboutAnsysDDREyeAnalyzerToolStripMenuItemClick
 		# 
 		# PictureBox_OldEye
@@ -2131,12 +2138,12 @@ class Eye_Form(Form):
 
 		pass
 
-	def Help_DDRHelp_ToolStripMenuItemClick(self, sender, e):
-		MessageBox.Show("ANSYS DDR Wizard Help", "To Be Done")
+	def Help_DDRHelp_ToolStripMenuItemClick(self, sender, e):		
+		os.startfile(path + r'\Resources\User_Guide.pdf')
 		pass
 
 	def Help_DDRGuid_ToolStripMenuItemClick(self, sender, e):
-		MessageBox.Show("ANSYS DDR Wizard User Guide", "To be done")
+		os.startfile(path + r'\Resources\Quick_Guide.pdf')
 		pass
 
 	def Help_DDRNew_ToolStripMenuItemClick(self, sender, e):
@@ -2186,11 +2193,11 @@ class Eye_Form(Form):
 
 	def ADEAHelpToolStripMenuItemClick(self, sender, e):
 
-		print "AEDT Help"
+		self.Help_DDRHelp_ToolStripMenuItemClick(self, sender)		
 
 	def ADEAQuickGuideToolStripMenuItemClick(self, sender, e):
 
-		print "AEDT Quick Guide"		
+		self.Help_DDRGuid_ToolStripMenuItemClick(self, sender)
 
 	def WhatsNewInThisReleaseToolStripMenuItemClick(self, sender, e):
 
@@ -2715,36 +2722,42 @@ class Eye_Form(Form):
 			MessageBox.Show("Fail to set DDR datarate","Warning")
 			EXIT()
 
-	def CheckedListBox_ReportNameItemCheck(self, sender, e):
-		if self.Init_Flag:
-			self.Init_Flag = False
+	def CheckedListBox_ReportNameItemCheck(self, sender, e):		
+		try:
+			if self.Init_Flag:
+				self.Init_Flag = False
 			
-		else:			
-			self.Init_Flag = True
-			self._CheckedListBox_ReportName.SetItemChecked(e.Index, e.NewValue)
+			else:			
+				self.Init_Flag = True
+				self._CheckedListBox_ReportName.SetItemChecked(e.Index, e.NewValue)
 
-			Initial()
-			sub_AEDT.Get_AEDT_Info(self, self._TextBox_InputFile.Text)		
-			self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
+				Initial()
+				sub_AEDT.Get_AEDT_Info(self, self._TextBox_InputFile.Text)
+				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
-			flag, show_msg_flag, msg = Check_Input(self)			
-			if flag:
-				sub_DB.Net_Form.NetFormLoad(self, sender)
-				for row in sub_DB.Net_Form._DataGridView.Rows:
-					if row.Cells[0].Value:
-						self._Button_Analyze.Enabled = True
-						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
-						self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
-						break
+				flag, show_msg_flag, msg = Check_Input(self)			
+				if flag:
+					sub_DB.Net_Form.NetFormLoad(self, sender)
+					for row in sub_DB.Net_Form._DataGridView.Rows:
+						if row.Cells[0].Value:
+							self._Button_Analyze.Enabled = True
+							self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
+							self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Control
+							break
 
-		sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text		
-		self.Text = " : ".join(sub_DB.Title)
+			sub_DB.Title[3] = sub_DB.Option_Form._ComboBox_Analyze.Text		
+			self.Text = " : ".join(sub_DB.Title)
+
+		except Exception as e:			
+			print traceback.format_exc()			
+			EXIT()
 
 	########################################################################
 	def Button_ImportClick(self, sender, e):		
 		try:			
 			sub_DB.TBD_flag = True
 			self.Init_Flag = True
+			self._ComboBox_Design.Text = ""
 			dialog = OpenFileDialog()			
 			dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
 
