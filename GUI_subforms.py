@@ -606,6 +606,7 @@ class NetForm(Form):
 		self._TextBox_ImageWidth.Text = "200"
 		self._TextBox_ImageWidth.Visible = False
 		self._TextBox_ImageWidth.TabIndex = 48
+		self._TextBox_ImageWidth.TextChanged += self.TextBox_ImageWidthTextChanged
 		# 
 		# Button_Update
 		# 
@@ -988,9 +989,15 @@ class NetForm(Form):
 		self._Label_ImageWidth.Visible = sender.Checked
 		self._Label_ImageWidth_Unit.Visible = sender.Checked
 		self._TextBox_ImageWidth.Visible = sender.Checked
+		sub_DB.Option_Form._CheckBox_PlotEye.Checked = sender.Checked
+		sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = sender.Checked
 
 		sub_DB.Title[4] = str(sender.Checked)
 		sub_DB.Eye_Form.Text = " : ".join(sub_DB.Title)
+
+	def TextBox_ImageWidthTextChanged(self, sender, e):
+
+		sub_DB.Option_Form._TextBox_ImageWidth.Text = sender.Text
 
 	def Button_UpdateClick(self, sender, e):
 		try:
@@ -2024,6 +2031,7 @@ class OptionForm(Form):
 		self._TextBox_ImageWidth.Text = "200"
 		self._TextBox_ImageWidth.Visible = False
 		self._TextBox_ImageWidth.TabIndex = 48
+		self._TextBox_ImageWidth.TextChanged += self.TextBox_ImageWidthTextChanged
 		# 
 		# TextBox_OutputExcelFile
 		# 
@@ -2258,6 +2266,10 @@ class OptionForm(Form):
 		else:
 			sub_DB.Eye_Form._TextBox_Vref.Text = self._TextBox_Vref.Text
 
+	def TextBox_ImageWidthTextChanged(self, sender, e):
+
+		sub_DB.Net_Form._TextBox_ImageWidth.Text = sender.Text
+
 	def Button_Import_ResourceClick(self, sender, e):
 		try:
 			dialog = self._folderBrowserDialog1			
@@ -2303,6 +2315,7 @@ class OptionForm(Form):
 				self._Label_ImageWidth_Unit.Visible = sender.Checked
 				self._TextBox_ImageWidth.Visible = sender.Checked
 
+			sub_DB.Net_Form._CheckBox_PlotEye.Checked = sender.Checked
 			sub_DB.Title[4] = str(sender.Checked)
 			sub_DB.Eye_Form.Text = " : ".join(sub_DB.Title)
 
@@ -2351,6 +2364,7 @@ class OptionForm(Form):
 			EXIT()
 
 	def ComboBox_AnalyzeSelectedIndexChanged(self, sender, e):
+
 		pass
 
 	def CheckBox_ExportExcelReportCheckedChanged(self, sender, e):
