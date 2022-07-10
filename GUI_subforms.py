@@ -123,7 +123,7 @@ class EnvEditor(Form):
 		self._CheckBox.Name = "CheckBox"
 		self._CheckBox.Size = System.Drawing.Size(101, 25)
 		self._CheckBox.TabIndex = 269
-		self._CheckBox.Text = "Edit enable"
+		self._CheckBox.Text = "Edit enable"		
 		self._CheckBox.UseVisualStyleBackColor = False
 		self._CheckBox.CheckedChanged += self.CheckBoxCheckedChanged
 		# 
@@ -219,7 +219,7 @@ class EnvEditor(Form):
 								GrandChildNode_idx += 1
 					self._RichTextBox.AppendText(line)
 			fp.close()
-
+			self._CheckBox.Checked = True
 			if self.File.find(".def") != -1:
 				self.Text = "Ansys DDR Wizard %s File Editor - %s" % ("Definition", self.File.split("\\")[-1])			
 			else:
@@ -1593,10 +1593,12 @@ class OptionForm(Form):
 		TreeNode_Eye.Text = "Eye Analyzer"
 		#TreeNode_Comp.Name = "Compliance Test"
 		#TreeNode_Comp.Text = "Compliance Test"
+		#self._TreeView.Nodes.AddRange(System.Array[System.Windows.Forms.TreeNode](
+		#	[TreeNode_EM,
+		#	TreeNode_Tran,
+		#	TreeNode_Eye]))
 		self._TreeView.Nodes.AddRange(System.Array[System.Windows.Forms.TreeNode](
-			[TreeNode_EM,
-			TreeNode_Tran,
-			TreeNode_Eye]))
+			[TreeNode_Eye]))
 		self._TreeView.Size = System.Drawing.Size(132, 269)
 		self._TreeView.TabIndex = 0
 		self._TreeView.NodeMouseClick += self.TreeViewNodeMouseClick
@@ -2138,7 +2140,7 @@ class OptionForm(Form):
 				self._GroupBox_EM.Visible = False
 				self._GroupBox_Tran.Visible = False
 				self._GroupBox_Eye.Visible = True				
-				self._TreeView.SelectedNode = self._TreeView.Nodes[2]
+				self._TreeView.SelectedNode = self._TreeView.Nodes[0]
 
 			#####################################
 			# Add [+ Setup/Hold] Analyze Method #
@@ -2224,35 +2226,36 @@ class OptionForm(Form):
 			MessageBox.Show("Fail to resize Option Form GUI","Warning")			
 			EXIT()
 				
-	def TreeViewNodeMouseClick(self, sender, e):
-		try:
-			if e.Node.Level == 0:
-				if e.Node.Index == 0: # for EM
-					self._GroupBox_EM.Visible = True
-					self._GroupBox_Tran.Visible = False
-					self._GroupBox_Eye.Visible = False
-					self._GroupBox_Comp.Visible = False
-				elif e.Node.Index == 1: # for Tran
-					self._GroupBox_EM.Visible = False
-					self._GroupBox_Tran.Visible = True
-					self._GroupBox_Eye.Visible = False
-					self._GroupBox_Comp.Visible = False
-				elif e.Node.Index == 2: # for Eye
-					self._GroupBox_EM.Visible = False
-					self._GroupBox_Tran.Visible = False
-					self._GroupBox_Eye.Visible = True
-					self._GroupBox_Comp.Visible = False
-				elif e.Node.Index == 3: # for Comp
-					self._GroupBox_EM.Visible = False
-					self._GroupBox_Tran.Visible = False
-					self._GroupBox_Eye.Visible = False
-					self._GroupBox_Comp.Visible = True
+	def TreeViewNodeMouseClick(self, sender, e):		
+		#try:
+		#	if e.Node.Level == 0:
+		#		if e.Node.Index == 0: # for EM
+		#			self._GroupBox_EM.Visible = True
+		#			self._GroupBox_Tran.Visible = False
+		#			self._GroupBox_Eye.Visible = False
+		#			self._GroupBox_Comp.Visible = False
+		#		elif e.Node.Index == 1: # for Tran
+		#			self._GroupBox_EM.Visible = False
+		#			self._GroupBox_Tran.Visible = True
+		#			self._GroupBox_Eye.Visible = False
+		#			self._GroupBox_Comp.Visible = False
+		#		elif e.Node.Index == 2: # for Eye
+		#			self._GroupBox_EM.Visible = False
+		#			self._GroupBox_Tran.Visible = False
+		#			self._GroupBox_Eye.Visible = True
+		#			self._GroupBox_Comp.Visible = False
+		#		elif e.Node.Index == 3: # for Comp
+		#			self._GroupBox_EM.Visible = False
+		#			self._GroupBox_Tran.Visible = False
+		#			self._GroupBox_Eye.Visible = False
+		#			self._GroupBox_Comp.Visible = True
 
-		except Exception as e:			
-			Log("[Option Form Treeview Node Mouse Click] = Failed")
-			Log(traceback.format_exc())
-			MessageBox.Show("Fail to Select node in Option Form","Warning")			
-			EXIT()
+		#except Exception as e:			
+		#	Log("[Option Form Treeview Node Mouse Click] = Failed")
+		#	Log(traceback.format_exc())
+		#	MessageBox.Show("Fail to Select node in Option Form","Warning")			
+		#	EXIT()
+		pass
 
 	def TextBox_EyeOffsetTextChanged(self, sender, e):		
 		sub_DB.Eye_Form._TextBox_Offset.Text = self._TextBox_EyeOffset.Text		
