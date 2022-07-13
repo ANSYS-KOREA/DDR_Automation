@@ -2323,8 +2323,10 @@ class Eye_Form(Form):
 			self._ComboBox_Design_ToopTip.SetToolTip(self._ComboBox_Design, self._ComboBox_Design.Text)
 
 			# Initialization 
+			sub_DB.Eye_Form._CheckBox_VcentDQ.Checked = True
+			sub_DB.Eye_Form._CheckBox_Vref.Checked = True
 			sub_DB.Net_Form.Init_Flag = True
-			self._CheckedListBox_ReportName.Items.Clear()		
+			self._CheckedListBox_ReportName.Items.Clear()
 
 			oProject = sub_DB.AEDT["Project"]
 			oDesign = oProject.SetActiveDesign(self._ComboBox_Design.SelectedItem)

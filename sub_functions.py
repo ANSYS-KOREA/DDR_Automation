@@ -1980,7 +1980,8 @@ def CnfAutoLoad(self):
 					EXIT()
 
 	else:
-		MessageBox.Show("Version of Eye Analyzer(%s) and Cnf(%s) File do not match.\nFail to load auto saved cnf file." % (sub_DB.Version, cnf_version), "Warning")
+		#MessageBox.Show("Version of Eye Analyzer(%s) and Cnf(%s) File do not match.\nFail to load auto saved cnf file." % (sub_DB.Version, cnf_version), "Warning")
+		pass
 
 def EXIT():	
 	sub_DB.exit_iter += 1	
