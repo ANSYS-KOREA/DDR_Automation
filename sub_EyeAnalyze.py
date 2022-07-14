@@ -63,7 +63,7 @@ def New_Default(self):
 				pass
 		
 		sub_DB.Vref = Vref		
-		self._TextBox_VcentDQ.Text = str(sub_DB.Vref)
+		#self._TextBox_VcentDQ.Text = str(sub_DB.Vref)
 		Log("	<Vref Calculation> = Done")
 
 	except Exception as e:						
@@ -417,7 +417,7 @@ def New_SetupHold(self):
 				pass
 
 		sub_DB.Vref = Vref		
-		self._TextBox_Vref.Text = str(sub_DB.Vref)
+		#self._TextBox_Vref.Text = str(sub_DB.Vref)
 		Log("	<Vref Calculation> = Done")
 
 	except Exception as e:						
@@ -855,7 +855,7 @@ def Old_Default(self):
 				pass
 
 		sub_DB.Vref = Vref		
-		self._TextBox_Vref.Text = str(sub_DB.Vref)
+		#self._TextBox_Vref.Text = str(sub_DB.Vref)
 		Log("	<Vref Calculation> = Done")
 
 	except Exception as e:						
@@ -1202,7 +1202,7 @@ def Old_SetupHold(self):
 				pass
 
 		sub_DB.Vref = Vref		
-		self._TextBox_Vref.Text = str(sub_DB.Vref)
+		#self._TextBox_Vref.Text = str(sub_DB.Vref)
 		Log("	<Vref Calculation> = Done")
 
 	except Exception as e:						
@@ -1888,9 +1888,9 @@ def Setup_Hold(self):
 		#############
 		# Set Spec. #
 		#############
-		V_high = float(self._TextBox_VcentDQ.Text) + 0.5*float(self._TextBox_VdIVW.Text)
-		V_low = float(self._TextBox_VcentDQ.Text) - 0.5*float(self._TextBox_VdIVW.Text)
-		Vref = float(self._TextBox_VcentDQ.Text)
+		Vref = float(sub_DB.Vref)
+		V_high = Vref + 0.5*float(self._TextBox_VdIVW.Text)
+		V_low = Vref - 0.5*float(self._TextBox_VdIVW.Text)		
 
 		Spec = sub_DB.Spec["Setup + Hold"][self._ComboBox_DataRate.Text]
 		
@@ -2055,7 +2055,7 @@ def Measure_Eye(self, Location):
 		# Get Vref
 		sub_DB.Cal_Form._Label_Vref.Text = "Analyzing Eye."
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 1		
-		Vref = float(self._TextBox_VcentDQ.Text)
+		Vref = float(sub_DB.Vref)
 		Log("		(Vref) = %s[mV]" % Vref)
 
 		# Calculate Voltage Boundary
@@ -2535,7 +2535,7 @@ def Measure_Eye_Old(self, Location):
 		# Get Vref
 		sub_DB.Cal_Form._Label_Vref.Text = "Analyzing Eye."
 		sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
-		Vref = float(self._TextBox_Vref.Text)
+		Vref = float(sub_DB.Vref)
 		Log("		(Vref) = %s[mV]" % Vref)
 
 		# Calculate Voltage Boundary
