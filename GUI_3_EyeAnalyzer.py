@@ -1517,6 +1517,7 @@ class Eye_Form(Form):
 		self._Button_Add_New.TabIndex = 43
 		self._Button_Add_New.Text = 'Add'
 		self._Button_Add_New.UseVisualStyleBackColor = True
+		self._Button_Add_New.Visible = False
 		#self._Button_Add_New.Click += self.Button_Add_NewClick
 		# 
 		# Button_Add_Old
@@ -1529,6 +1530,7 @@ class Eye_Form(Form):
 		self._Button_Add_Old.TabIndex = 43
 		self._Button_Add_Old.Text = 'Add'
 		self._Button_Add_Old.UseVisualStyleBackColor = True
+		self._Button_Add_Old.Visible = False
 		#self._Button_Add_Old.Click += self.Button_Old_NewClick
 		# 
 		# Button_LoadCnf

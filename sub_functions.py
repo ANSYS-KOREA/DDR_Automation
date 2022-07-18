@@ -2133,6 +2133,7 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 
 				if "$end \'AnsoftProject\'" in temp_data:
 					flag = False
+
 		for file in temp_IBIS_files:
 			if os.path.isfile(file):
 				IBIS_files.append(file)
