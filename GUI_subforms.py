@@ -2008,7 +2008,7 @@ class OptionForm(Form):
 		self._TextBox_EyeOffset.Location = System.Drawing.Point(127, 29)
 		self._TextBox_EyeOffset.Name = "TextBox_EyeOffset"
 		self._TextBox_EyeOffset.Size = System.Drawing.Size(83, 23)
-		self._TextBox_EyeOffset.Text = "5"
+		self._TextBox_EyeOffset.Text = "7.5"
 		self._TextBox_EyeOffset.TabIndex = 42
 		self._TextBox_EyeOffset.TextChanged += self.TextBox_EyeOffsetTextChanged
 		# 
@@ -3495,7 +3495,7 @@ class IBIS_OptForm(Form):
 				if not File == "":
 					#########################
 					# 2.Parsing for Tx IBIS #
-					#########################
+					#########################					
 					sub_DB.IBIS_Tx = IBIS_Parsing(File)
 					#sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)
 					
@@ -3534,7 +3534,7 @@ class IBIS_OptForm(Form):
 				if not File == "":
 					#########################
 					# 2.Parsing for Tx IBIS #
-					#########################
+					#########################					
 					sub_DB.IBIS_Rx = IBIS_Parsing(File)
 					#sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
 
@@ -3666,7 +3666,7 @@ class IBIS_OptForm(Form):
 
 			#########################
 			# 2.Parsing for Tx IBIS #
-			#########################
+			#########################			
 			sub_DB.IBIS_Tx = IBIS_Parsing(File)
 			#sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)
 
@@ -3692,16 +3692,35 @@ class IBIS_OptForm(Form):
 			################
 			# 5.Add Models #
 			################
-			for models in sub_DB.IBIS_Tx["Model Selector"].keys():
-				self._ComboBox_Model_Tx.Items.Add(models)
+			# If [Model Selector] exists
+			if not len(sub_DB.IBIS_Tx["Model Selector"]) == 0:
+				for models in sub_DB.IBIS_Tx["Model Selector"].keys():
+					self._ComboBox_Model_Tx.Items.Add(models)
 			
-			# Set Default Model
-			for models in sub_DB.IBIS_Tx["Model Selector"].keys():				
-				for model in sub_DB.IBIS_Tx["Model Selector"][models]:					
-					if model[0] in sub_DB.Parsing_data['IBIS_Model']:
-						self.def_Tx_model = model[0]
-						self._ComboBox_Model_Tx.Text = models
+				# Set Default Model
+				for models in sub_DB.IBIS_Tx["Model Selector"].keys():				
+					for model in sub_DB.IBIS_Tx["Model Selector"][models]:					
+						if model[0] in sub_DB.Parsing_data['IBIS_Model']:
+							self.def_Tx_model = model[0]
+							self._ComboBox_Model_Tx.Text = models
+							break
+
+			# If [Model Selector] is not exists
+			else:				
+				self._ComboBox_Model_Tx.Text = "N/A"
+				for model in sub_DB.IBIS_Tx["Model"]:
+					if model in sub_DB.Parsing_data['IBIS_Model']:
+						self.def_Tx_model = model
 						break
+				iter = 0
+				for model in sub_DB.IBIS_Tx["Model"]:
+					if model == self.def_Tx_model:
+						self._DataGridView_Tx.Rows.Add(True, model, "N/A")
+						self._DataGridView_Tx.Rows[iter].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+						iter += 1
+					else:
+						self._DataGridView_Tx.Rows.Add(False, model, "N/A")
+						iter += 1
 			
 			#################
 			# 6.Set ToopTip #
@@ -3736,7 +3755,7 @@ class IBIS_OptForm(Form):
 
 			#########################
 			# 2.Parsing for Tx IBIS #
-			#########################
+			#########################			
 			sub_DB.IBIS_Rx = IBIS_Parsing(File)
 			#sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
 
@@ -3762,17 +3781,36 @@ class IBIS_OptForm(Form):
 			################
 			# 5.Add Models #
 			################
-			for models in sub_DB.IBIS_Rx["Model Selector"].keys():
-				self._ComboBox_Model_Rx.Items.Add(models)
-
-			# Set Default Model
-			for models in sub_DB.IBIS_Rx["Model Selector"].keys():
-				for model in sub_DB.IBIS_Rx["Model Selector"][models]:
-					if model[0] in sub_DB.Parsing_data['IBIS_Model']:
-						self.def_Rx_model = model[0]
-						self._ComboBox_Model_Rx.Text = models
-						break
+			# If [Model Selector] exists
+			if not len(sub_DB.IBIS_Rx["Model Selector"]) == 0:
+				for models in sub_DB.IBIS_Rx["Model Selector"].keys():
+					self._ComboBox_Model_Rx.Items.Add(models)
 			
+				# Set Default Model
+				for models in sub_DB.IBIS_Rx["Model Selector"].keys():				
+					for model in sub_DB.IBIS_Rx["Model Selector"][models]:					
+						if model[0] in sub_DB.Parsing_data['IBIS_Model']:
+							self.def_Rx_model = model[0]
+							self._ComboBox_Model_Rx.Text = models
+							break
+
+			# If [Model Selector] is not exists
+			else:				
+				self._ComboBox_Model_Rx.Text = "N/A"
+				for model in sub_DB.IBIS_Rx["Model"]:
+					if model in sub_DB.Parsing_data['IBIS_Model']:
+						self.def_Rx_model = model
+						break
+				iter = 0
+				for model in sub_DB.IBIS_Rx["Model"]:
+					if model == self.def_Rx_model:
+						self._DataGridView_Rx.Rows.Add(True, model, "N/A")
+						self._DataGridView_Rx.Rows[iter].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+						iter += 1
+					else:
+						self._DataGridView_Rx.Rows.Add(False, model, "N/A")
+						iter += 1
+
 			#################
 			# 6.Set ToopTip #
 			#################
@@ -4017,6 +4055,7 @@ class IBIS_OptForm(Form):
 
 	def Button_ResultViewClick(self, sender, e):
 		sub_DB.IBIS_ResultForm.ShowDialog()
+		pass
 
 class IBIS_Viwer(Form):
 	def __init__(self, File, Flag):

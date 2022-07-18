@@ -37,6 +37,7 @@ def IBIS_Parsing(File):
 	IBIS = {}
 	IBIS['Component'] = []
 	IBIS['Model Selector'] = {}
+	IBIS['Model'] = []
 
 	with open(File) as fp:
 		Text = list(enumerate(fp))
@@ -74,17 +75,17 @@ def IBIS_Parsing(File):
 								temp_list.append([model, note])
 					IBIS["Model Selector"][model_name] = temp_list
 
-				# TODO
 				##############
 				# Find Model #
 				##############
 				if '[model]' in line.lower():
-					pass
+					model_name = line.split(']')[-1].strip()
+					IBIS["Model"].append(model_name)
 
 			line_num += 1
 			if line_num==len(Text):
 				break
-
+	
 	return IBIS
 
 def IBIS_Opt_Run(self):	
@@ -174,7 +175,7 @@ def IBIS_Opt_Run(self):
 			if not i == len(sub_DB.IBIS_Tx_Model)-1:
 				tx_str += "\"" + sub_DB.IBIS_Tx_Model[i] + "\", "				
 			else:
-				tx_str += "\"" + sub_DB.IBIS_Tx_Model[i] + "\"]"
+				tx_str += "\"" + sub_DB.IBIS_Tx_Model[i] + "\"]"				
 
 		oDesign.ChangeProperty(
 			["NAME:AllTabs",

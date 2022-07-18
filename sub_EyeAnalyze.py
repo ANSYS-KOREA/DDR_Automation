@@ -805,6 +805,8 @@ def New_SetupHold(self):
 		MessageBox.Show("Fail to save log file","Warning")
 		EXIT()
 
+
+
 ##########################################################################################
 # for Old Eye #
 ##########################################################################################
@@ -1589,6 +1591,9 @@ def Old_SetupHold(self):
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to save log file","Warning")
 		EXIT()
+
+
+
 
 
 ##########################################################################################
