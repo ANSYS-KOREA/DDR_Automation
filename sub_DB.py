@@ -14,6 +14,7 @@ IBISInfo_Tx_Form = ""
 IBISInfo_Rx_Form = ""
 IBIS_CaseForm = ""
 IBIS_ResultForm = ""
+IBIS_Case_ResultForm = "test"
 
 File = ""
 Input_File = ""
@@ -49,6 +50,7 @@ Waveform_File = ""
 Excel_Img_File = []
 NetSort_Flag = False
 Eye_Measure_Results = {}
+IBIS_Eye_Measure_Results = {}
 Setup = {}
 Hold = {}
 Vref = ""
