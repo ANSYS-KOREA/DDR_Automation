@@ -4036,7 +4036,8 @@ class IBIS_OptForm(Form):
 		sub_DB.Option_Form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
 		sub_DB.Option_Form.ShowDialog()
 
-	def Button_RunClick(self, sender, e):	
+	def Button_RunClick(self, sender, e):
+		print "Test Branch"
 		IBIS_Init()
 		self.Cursor = Cursors.WaitCursor
 		sub_DB.IBIS_Result_Init_Flag = True
