@@ -4036,7 +4036,9 @@ class IBIS_OptForm(Form):
 		sub_DB.Option_Form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
 		sub_DB.Option_Form.ShowDialog()
 
-	def Button_RunClick(self, sender, e):		
+	def Button_RunClick(self, sender, e):	
+		IBIS_Init()
+		self.Cursor = Cursors.WaitCursor
 		sub_DB.IBIS_Result_Init_Flag = True
 		sub_DB.IBIS_ResultForm = IBIS_Case()		
 		sub_DB.IBIS_ResultForm.IBIS_CaseFormLoad(self, sender)		
@@ -4050,6 +4052,7 @@ class IBIS_OptForm(Form):
 		sub_DB.IBIS_ResultForm.Size = System.Drawing.Size(700, 390)
 		sub_DB.IBIS_ResultForm.Text = "IBIS Optimization Results"
 		IBIS_Opt_Run(self)
+		self.Cursor = Cursors.Default
 		self._Button_ResultView.Enabled = True
 		sub_DB.IBIS_ResultForm.ShowDialog()
 
