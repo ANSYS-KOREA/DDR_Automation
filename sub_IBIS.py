@@ -14,8 +14,10 @@ clr.AddReference('Microsoft.Office.Interop.Excel')
 import System.Drawing
 import System.Windows.Forms
 
+from GUI_subforms import *
 from sub_functions import *
 from sub_Vref import *
+from sub_EyeAnalyze import *
 from System.Drawing import *
 from System.Windows.Forms import *
 from Microsoft.Office.Interop import Excel
@@ -409,12 +411,21 @@ def IBIS_Opt_Run(self):
 					"EyeMeasurementPoint:="	, "2.3441162681669e-10s"
 				])
 
+			# Create Net Form for Result
+			
+
 			# for New Eye
 			# Vref Calculation
-			Vref = float(Cal_Vref_AEDT_IBIS(report_name, Design.split(";")[-1], Tx_IBIS_Model_idx, Rx_IBIS_Model_idx))
+			Vref = float(Cal_Vref_AEDT_IBIS(report_name, Design.split(";")[-1], Tx_IBIS_Model_idx, Rx_IBIS_Model_idx))			
 			
 			# Measure Eye Diagram
-			Eye_Measure_Results["case%d" % case] = Measure_Eye_IBIS(sub_DB.Eye_Form, Vref)			
+			#Eye_Measure_Results["case%d" % case] = Measure_Eye_IBIS(sub_DB.Eye_Form, Vref)
+			x_axis = self.Location.X + self.Size.Width/2
+			y_axis = self.Location.Y + self.Size.Height/2
+			Location = [x_axis, y_axis]
+			sub_DB.Cal_Form = GUI_subforms.CalForm(Location)
+
+			Eye_Measure_Results["case%d" % case] = Measure_Eye(sub_DB.Eye_Form, Vref)
 			Width = []
 			Margin = []
 			for key in Eye_Measure_Results["case%d" % case].keys():				
@@ -432,6 +443,8 @@ def IBIS_Opt_Run(self):
 			sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[6].Value = round(Worst_Width, 1)
 			sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[7].Value = round(Worst_Margin, 1)
 			sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[8].Value = round(Vref, 1)
+
+		sub_DB.IBIS_Eye_Measure_Results = Eye_Measure_Results
 
 	except Exception as e:		
 		#Log("	<Run IBIS Opt> = Failed")
@@ -586,20 +599,23 @@ def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Mode
 		MessageBox.Show("Vref Calculation - Fail to create temp report","Warning")		
 		EXIT()
 
-	############################
-	# Export Uniform Wavefomrs #
-	############################
+	####################
+	# Export Wavefomrs #
+	####################
 	try:
-		# Export Uniform Report	
-		File = sub_DB.result_dir + "\\Waveforms.csv"		
 		oModule.UpdateReports(["temp"])
+
+		# Export Uniform Report	
+		File = sub_DB.result_dir + "\\Waveforms_Vref.csv"		
 		oModule.ExportUniformPointsToFile("temp", File, "0ns", t_total, "1ps", False)
-		#time.sleep(time_delay)
-		sub_DB.Waveform_File = File
+		sub_DB.Waveform_Vref_File = File
 		
+		File = sub_DB.result_dir + "\\Waveforms.csv"
+		oModule.ExportToFile("temp", File)		
+		sub_DB.Waveform_File = File
+
 		# Delete temp Report	
-		oModule.DeleteReports(["temp"])		
-		Log("		(Export Uniform Point Waveforms) = Done")
+		oModule.DeleteReports(["temp"])
 
 	except Exception as e:		
 		Log("	<Vref Calculation> = Failed to Export temp Report")
@@ -608,10 +624,13 @@ def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Mode
 		MessageBox.Show("Vref Calculation - Fail to export temp report","Warning")		
 		EXIT()
 
-	##########################
-	# Load Uniform Wavefomrs #
-	##########################
+	##################
+	# Load Wavefomrs #
+	##################
 	try:
+		#################################
+		# for Measurement - Non-unifrom #
+		#################################
 		# Open Waveform.csv and Load
 		Waveform = {}
 		with open(sub_DB.Waveform_File) as fp:
@@ -638,8 +657,10 @@ def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Mode
 			for i in range(0, len(temp_data)):
 				data[i].append(temp_data[i])
 
-			# Get Waveform Data				
+			# Get Waveform Data
+			Time = []
 			for line in fp:
+				Time.append(float(line.split(",")[0]))
 				for i in range(0, len(temp_data)):
 					data[i].append(float(line.split(",")[i+1+iter]))
 		fp.close()
@@ -657,8 +678,61 @@ def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Mode
 		elif sub_DB.Unit["Voltage"].lower() == "v":
 			for key in Waveform:
 				for i in range(0, len(Waveform[key])):
-					Waveform[key][i] = Waveform[key][i]*1000		
+					Waveform[key][i] = Waveform[key][i]*1000
+
 		sub_DB.Waveform = Waveform
+		sub_DB.Time = Time
+
+		##################################
+		# for Vref Calculation - Uniform #
+		##################################
+		# Open Waveform_Vref.csv and Load
+		Waveform_Vref = {}
+		with open(sub_DB.Waveform_Vref_File) as fp:
+			# Get Netlist and Create Waveform Dictionary keys
+			temp_data = fp.readline().replace("\"","").replace(" ","").strip().split(",")
+
+			# Delete global & local variable data
+			iter = 0
+			while(1):
+				if not "Time" in temp_data[0]:
+					del temp_data[0]
+					iter += 1
+				else:
+					break
+			# Get time and voltage unit
+			sub_DB.Unit["Time"] = temp_data[0].split("[")[-1].split("]")[0]
+			sub_DB.Unit["Voltage"] = temp_data[1].split("[")[-1].split("]")[0]
+
+			# Delete Time Column
+			del temp_data[0]
+
+			data = [[0 for col in range(0)] for row in range(len(temp_data))]
+			for i in range(0, len(temp_data)):
+				data[i].append(temp_data[i])
+
+			# Get Waveform Data			
+			for line in fp:				
+				for i in range(0, len(temp_data)):
+					data[i].append(float(line.split(",")[i+1+iter]))
+		fp.close()
+
+		Log("		(Load Uniform Point Waveforms)")
+		for cell in data:
+			key = cell[0].split("[")[0]
+			del cell[0]
+			Waveform_Vref[key] = cell
+			Log("			= %s" % key)
+
+		# Check voltage unit
+		if sub_DB.Unit["Voltage"].lower() == "mv":
+			pass
+		elif sub_DB.Unit["Voltage"].lower() == "v":
+			for key in Waveform_Vref:
+				for i in range(0, len(Waveform_Vref[key])):
+					Waveform_Vref[key][i] = Waveform_Vref[key][i]*1000
+
+		sub_DB.Waveform_Vref = Waveform_Vref
 
 	except Exception as e:		
 		Log("	<Vref Calculation> = Failed to Get Waveforms")
@@ -671,7 +745,8 @@ def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Mode
 	# Cacluate Vref #
 	#################
 	try:		
-		Vref = Cal_Vref(Waveform)
+		Vref = Cal_Vref(Waveform_Vref)
+		sub_DB.Vref = Vref
 		Log("		(Vref Calculation) = Done, %fmV" % Vref)
 
 	except Exception as e:		

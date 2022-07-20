@@ -36,7 +36,7 @@ def New_Default(self):
 			# Auto Vref			
 			if sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 0:
 				#Vref = float(Cal_Vref_AEDT(self, Location)) 
-				Vref = float(Cal_Vref_AEDT_VB(self, Location))				
+				Vref = float(Cal_Vref_AEDT_VB(self, Location))
 				
 			# Manual Vref
 			elif sub_DB.Option_Form._ComboBox_Vref.SelectedIndex == 1:				

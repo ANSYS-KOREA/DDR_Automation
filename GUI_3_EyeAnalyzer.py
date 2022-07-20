@@ -1896,7 +1896,7 @@ class Eye_Form(Form):
 					sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
 					flag, show_msg_flag, msg = Check_Input(self)
 					if flag:				
-						sub_DB.Net_Form.NetFormLoad(self, sender)
+						sub_DB.Net_Form.NetFormLoad(self, sender)						
 						for row in sub_DB.Net_Form._DataGridView.Rows:
 							if row.Cells[0].Value:
 								self._Button_Analyze.Enabled = True
@@ -2371,7 +2371,7 @@ class Eye_Form(Form):
 
 			flag, show_msg_flag, msg = Check_Input(self)
 			if flag:
-				sub_DB.Net_Form.NetFormLoad(self, sender)
+				sub_DB.Net_Form.NetFormLoad(self, sender)				
 				for row in sub_DB.Net_Form._DataGridView.Rows:
 					if row.Cells[0].Value:
 						self._Button_Analyze.Enabled = True
@@ -2713,7 +2713,7 @@ class Eye_Form(Form):
 
 			flag, show_msg_flag, msg = Check_Input(self)
 			if flag:				
-				sub_DB.Net_Form.NetFormLoad(self, sender)
+				sub_DB.Net_Form.NetFormLoad(self, sender)				
 				for row in sub_DB.Net_Form._DataGridView.Rows:
 					if row.Cells[0].Value:
 						self._Button_Analyze.Enabled = True
@@ -2741,7 +2741,7 @@ class Eye_Form(Form):
 
 				flag, show_msg_flag, msg = Check_Input(self)			
 				if flag:
-					sub_DB.Net_Form.NetFormLoad(self, sender)
+					sub_DB.Net_Form.NetFormLoad(self, sender)										
 					for row in sub_DB.Net_Form._DataGridView.Rows:
 						if row.Cells[0].Value:
 							self._Button_Analyze.Enabled = True
@@ -2930,7 +2930,7 @@ class Eye_Form(Form):
 
 					flag, show_msg_flag, msg = Check_Input(self)
 					if flag:
-						sub_DB.Net_Form.NetFormLoad(self, sender)
+						sub_DB.Net_Form.NetFormLoad(self, sender)						
 						for row in sub_DB.Net_Form._DataGridView.Rows:
 							if row.Cells[0].Value:
 								self._Button_Analyze.Enabled = True
@@ -3085,7 +3085,8 @@ class Eye_Form(Form):
 				sub_DB.Net_Form._CheckBox_PlotEye.Visible = True
 				sub_DB.Net_Form._Label_ReportFormat.Visible = True
 				sub_DB.Net_Form._ComboBox_Report.Visible = True
-				sub_DB.Net_Form._Button_Export.Visible = True				
+				sub_DB.Net_Form._Button_Export.Visible = True
+				sub_DB.Net_Form.Text += ' - Vref = %s[mV]' % sub_DB.Vref
 				sub_DB.Net_Form.ShowDialog()
 				sub_DB.Result_Flag = False
 				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
