@@ -6,8 +6,7 @@ import traceback
 
 from sub_functions import *
 
-def Get_AEDT_Version():
-	import os
+def Get_AEDT_Version():	
 	max = 0.0
 	ANSYSEM_Env_Var = [s for s in os.environ.keys() if 'ANSYSEM' in s]
 	if 'ANSYSEM_INSTALL_DIR' in ANSYSEM_Env_Var:
