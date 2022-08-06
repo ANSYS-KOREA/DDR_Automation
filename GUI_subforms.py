@@ -570,7 +570,7 @@ class NetForm(Form):
 		self._ComboBox_AnalyzeGroup.FormattingEnabled = True
 		self._ComboBox_AnalyzeGroup.Location = System.Drawing.Point(121, 801)
 		self._ComboBox_AnalyzeGroup.Name = "ComboBox_AnalyzeGroup"
-		self._ComboBox_AnalyzeGroup.Items.AddRange(System.Array[System.Object](["None","Byte0","Byte1","Byte2","Byte3"]))
+		self._ComboBox_AnalyzeGroup.Items.AddRange(System.Array[System.Object](["None","CA", "Byte0","Byte1","Byte2","Byte3"]))
 		self._ComboBox_AnalyzeGroup.Size = System.Drawing.Size(125, 21)
 		self._ComboBox_AnalyzeGroup.TabIndex = 40		
 		# 
