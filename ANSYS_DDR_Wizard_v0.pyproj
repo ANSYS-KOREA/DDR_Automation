@@ -70,9 +70,6 @@
     <Compile Include="sub_Vref.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Test.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="C:\AnsysEM\AnsysEM21.2\Win64\common\IronPython\">

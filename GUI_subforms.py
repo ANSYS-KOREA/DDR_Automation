@@ -139,7 +139,7 @@ class EnvEditor(Form):
 		self.Controls.Add(self._Button_SaveAs)
 		self.Controls.Add(self._RichTextBox)
 		self.Controls.Add(self._TreeView)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent		
 		self.Name = "Env_Editor"
@@ -696,7 +696,7 @@ class NetForm(Form):
 		self.Controls.Add(self._Button_Close)				
 		self.Controls.Add(self._Label_GroupName)
 		self.Controls.Add(self._DataGridView)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
@@ -1501,7 +1501,7 @@ class CalForm(Form):
 		self.ClientSize = System.Drawing.Size(324, 74)
 		self.Controls.Add(self._ProgressBar_Vref)
 		self.Controls.Add(self._Label_Vref)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(Location[0], Location[1])		
@@ -2104,7 +2104,7 @@ class OptionForm(Form):
 		self.Controls.Add(self._GroupBox_Comp)
 		self.Controls.Add(self._Button_OK)
 		self.Controls.Add(self._Button_Cancel)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Option_Form"
@@ -2780,7 +2780,7 @@ class ComplianceForm(Form):
 		self.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
 		self.Checked_Num = 0
 		self.Init_flag = True
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(sub_DB.Option_Form.Location.X + sub_DB.Option_Form.Size.Width*2, sub_DB.Option_Form.Location.Y + sub_DB.Option_Form.Size.Height)
@@ -3462,7 +3462,7 @@ class IBIS_OptForm(Form):
 		self.Controls.Add(self._Button_CaseView)
 		self.Controls.Add(self._GroupBox_Tx)
 		self.Controls.Add(self._Button_Run)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.Name = "IBIS_Form"
 		self.Text = "IBIS Optimizer"
@@ -4180,7 +4180,7 @@ class IBIS_Viwer(Form):
 		self.Controls.Add(self._label1)
 		self.Controls.Add(self._richTextBox1)
 		self.Controls.Add(self._treeView1)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.Name = "MainForm"
 		if Flag:
@@ -4926,7 +4926,7 @@ class IBIS_Case(Form):
 		self.Controls.Add(self._Button_Delete)
 		self.Controls.Add(self._Button_Add)
 		self.Controls.Add(self._DataGridView)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)

@@ -342,7 +342,7 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 
 		# for New Eye
 		if sub_DB.Eyeflag:
-			Vref = float(sub_DB.Eye_Form._TextBox_VcentDQ.Text)
+			Vref = float(sub_DB.Vref)
 			V_high = Vref + float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
 			V_low = Vref - float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
 			T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
@@ -362,7 +362,7 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 
 		# for Old Eye
 		else:
-			Vref = float(sub_DB.Eye_Form._TextBox_Vref.Text)
+			Vref = float(sub_DB.Vref)
 
 			V_IHAC_DQ = Vref + float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
 			V_ILAC_DQ = Vref - float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)		
@@ -511,7 +511,7 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 
 		# for New Eye
 		if sub_DB.Eyeflag:	
-			Vref = float(sub_DB.Eye_Form._TextBox_VcentDQ.Text)
+			Vref = float(sub_DB.Vref)
 			V_high = Vref + float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
 			V_low = Vref - float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
 			T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
@@ -525,7 +525,7 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 
 		# for Old Eye
 		else:
-			Vref = float(sub_DB.Eye_Form._TextBox_Vref.Text)
+			Vref = float(sub_DB.Vref)
 
 			V_IHAC_DQ = Vref + float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
 			V_ILAC_DQ = Vref - float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)		

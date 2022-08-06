@@ -54,7 +54,7 @@ class StartForm(Form):
 		# 
 		# PictureBox_EM
 		#
-		LogoFile = path + "\\Resources\\Main1_off.jpg"
+		LogoFile = path + "\\Resources\\fig\\Main1_off.jpg"
 		self._PictureBox_EM.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_EM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_EM.Location = System.Drawing.Point(0, 24)
@@ -67,7 +67,7 @@ class StartForm(Form):
 		# 
 		# PictureBox_Tran
 		# 
-		LogoFile = path + "\\Resources\\Main2_off.jpg"
+		LogoFile = path + "\\Resources\\fig\\Main2_off.jpg"
 		self._PictureBox_Tran.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_Tran.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_Tran.Location = System.Drawing.Point(0, 104)
@@ -80,7 +80,7 @@ class StartForm(Form):
 		# 
 		# PictureBox_Comp
 		# 
-		LogoFile = path + "\\Resources\\Main3_off.jpg"
+		LogoFile = path + "\\Resources\\fig\\Main3_off.jpg"
 		self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		self._PictureBox_Comp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch				
 		self._PictureBox_Comp.Location = System.Drawing.Point(0, 179)
@@ -259,7 +259,7 @@ class StartForm(Form):
 		self.Controls.Add(self._MenuStrip)
 		self.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.MainMenuStrip = self._MenuStrip		
 		self.Name = "StartForm"
@@ -281,44 +281,44 @@ class StartForm(Form):
 	''' StartForm - Events '''
 	def StartFormLoad(self, sender, e):
 		# Load Preserved Definition File		
-		File = path + "\\Resources\\Ref.def"		
+		File = path + "\\Resources\\config\\Ref.def"		
 		Cenv = Load_env(File)
 		Cenv["File"] = File		
 		sub_DB.Cenv = Cenv
 		
 		# Load Preserved Configuration File
 		if sub_DB.Debug_Mode:
-			File = path + "\\Resources\\Test_0215.cnf"
+			File = path + "\\Resources\\config\\Ref.cnf"
 		else:
-			File = path + "\\Resources\\Ref.cnf"
+			File = path + "\\Resources\\config\\Ref.cnf"
 		Uenv = Load_env(File)
 		Uenv["File"] = File		
 		sub_DB.Uenv = Uenv
 
 	def PictureBox_EMClick(self, sender, e):
 		if self.EM_flag:
-			LogoFile = path + "\\Resources\\Main1_off.jpg"
+			LogoFile = path + "\\Resources\\fig\\Main1_off.jpg"
 			self._PictureBox_EM.BackgroundImage = Bitmap(LogoFile)
 		else:
-			LogoFile = path + "\\Resources\\Main1_on.jpg"
+			LogoFile = path + "\\Resources\\fig\\Main1_on.jpg"
 			self._PictureBox_EM.BackgroundImage = Bitmap(LogoFile)
 		self.EM_flag = not self.EM_flag		
 
 	def PictureBox_TranClick(self, sender, e):
 		if self.Tran_flag:
-			LogoFile = path + "\\Resources\\Main2_off.jpg"
+			LogoFile = path + "\\Resources\\fig\\Main2_off.jpg"
 			self._PictureBox_Tran.BackgroundImage = Bitmap(LogoFile)
 		else:
-			LogoFile = path + "\\Resources\\Main2_on.jpg"
+			LogoFile = path + "\\Resources\\fig\\Main2_on.jpg"
 			self._PictureBox_Tran.BackgroundImage = Bitmap(LogoFile)
 		self.Tran_flag = not self.Tran_flag
 
 	def PictureBox_CompClick(self, sender, e):
 		if self.Comp_flag:
-			LogoFile = path + "\\Resources\\Main3_off.jpg"
+			LogoFile = path + "\\Resources\\fig\\Main3_off.jpg"
 			self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		else:
-			LogoFile = path + "\\Resources\\Main3_on.jpg"
+			LogoFile = path + "\\Resources\\fig\\Main3_on.jpg"
 			self._PictureBox_Comp.BackgroundImage = Bitmap(LogoFile)
 		self.Comp_flag = not self.Comp_flag
 

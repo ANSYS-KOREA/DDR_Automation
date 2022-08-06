@@ -155,7 +155,7 @@ def Load_Spec(self):
         Log("            = Target DDR Type : DDR3")
 
         # Set the specification file according to the DDR type in Resources folder
-        File = path + r'\Resources\Compliance_Spec_DDR3.xlsx'
+        File = path + r'\Resources\spec\Compliance_Spec_DDR3.xlsx'
         Log("	        = Spec. File : %s" % File)
 
         # Data setup and hold time - 1 & 2
@@ -250,7 +250,7 @@ def Load_Spec(self):
         Log("            = Target DDR Type : DDR4")
         
         # Set the specification file according to the DDR type in Resources folder
-        File = path + r'\Resources\Compliance_Spec_DDR4.xlsx'
+        File = path + r'\Resources\spec\Compliance_Spec_DDR4.xlsx'
         Log("	        = Spec. File : %s" % File)
 
         # Data setup and hold time - 1 & 2
