@@ -2,6 +2,9 @@ Version = "v0.51"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 
+datarate = ""
+UI = ""
+
 start_time = ""
 Start_Form = ""
 Eye_Form = ""

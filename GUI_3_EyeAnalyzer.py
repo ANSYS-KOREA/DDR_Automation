@@ -2719,6 +2719,8 @@ class Eye_Form(Form):
 						self._Button_Analyze.Enabled = True
 						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
 						break
+			sub_DB.datarate = int(self._ComboBox_DataRate.Text)
+			sub_DB.UI = 1.0/(sub_DB.datarate*1e6)*1e12
 
 		except Exception as e:			
 			Log("[DDR datarate] = Failed")

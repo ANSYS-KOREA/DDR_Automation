@@ -12,7 +12,7 @@ def Create_Excel_Report():
 		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:			
 			Report_Name += item + ""
 
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0] + " : " + Report_Name
+		xlApp.Caption = sub_DB.Eye_Form._ComboBox_Design.Text + " : " + Report_Name
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 
@@ -49,10 +49,10 @@ def Create_Excel_Report():
 		# Create Column
 		xlsheet_table.Cells[1,1] = ""
 		xlsheet_table.Cells[1,2] = "Analyze Group"
-		xlsheet_table.Cells[1,3] = "Width [ps]"
-		xlsheet_table.Cells[1,4] = "Jitter_RMS [ps]"
-		xlsheet_table.Cells[1,5] = "Jitter [ps]"
-		xlsheet_table.Cells[1,6] = "Timin Margin [ps]"
+		xlsheet_table.Cells[1,3] = "Width [ps]"		
+		xlsheet_table.Cells[1,4] = "Timing Margin [ps]"
+		xlsheet_table.Cells[1,5] = "Width [%]"
+		xlsheet_table.Cells[1,6] = "Timing Margin [%]"
 		xlsheet_table.Cells[1,7] = "Vcent_DQ [mV]"
 		Log("		(Create Column) = Done")
 
@@ -85,11 +85,10 @@ def Create_Excel_Report():
 				net_name = row.Cells[1].Value
 				xlsheet_table.Cells[row_idx,1] = net_name
 				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
-				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width
-				#xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
-				xlsheet_table.Cells[row_idx,4] = "N/A"
-				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
-				xlsheet_table.Cells[row_idx,6] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
+				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0]							# Width [ps]				
+				xlsheet_table.Cells[row_idx,4] = sub_DB.Eye_Measure_Results[net_name][2]							# Margin [ps]
+				xlsheet_table.Cells[row_idx,5] = round((sub_DB.Eye_Measure_Results[net_name][0]/sub_DB.UI)*100, 1)	# Width [%]
+				xlsheet_table.Cells[row_idx,6] = round((sub_DB.Eye_Measure_Results[net_name][2]/sub_DB.UI)*100, 1)	# Margin [%]
 				xlsheet_table.Cells[row_idx,7] = round(sub_DB.Vref, 1) # Vref
 				row_idx += 1
 		row_idx -= 1
@@ -174,7 +173,7 @@ def Create_Excel_Report_wo_fig():
 		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:			
 			Report_Name += item + ""
 
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0] + " : " + Report_Name
+		xlApp.Caption = sub_DB.Eye_Form._ComboBox_Design.Text + " : " + Report_Name
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 
@@ -192,10 +191,10 @@ def Create_Excel_Report_wo_fig():
 		# Create Column
 		xlsheet_table.Cells[1,1] = ""
 		xlsheet_table.Cells[1,2] = "Analyze Group"
-		xlsheet_table.Cells[1,3] = "Width [ps]"
-		xlsheet_table.Cells[1,4] = "Jitter_RMS [ps]"
-		xlsheet_table.Cells[1,5] = "Jitter [ps]"
-		xlsheet_table.Cells[1,6] = "Timin Margin [ps]"
+		xlsheet_table.Cells[1,3] = "Width [ps]"		
+		xlsheet_table.Cells[1,4] = "Timing Margin [ps]"
+		xlsheet_table.Cells[1,5] = "Width [%]"		
+		xlsheet_table.Cells[1,6] = "Timing Margin [%]"
 		xlsheet_table.Cells[1,7] = "Vcent_DQ [mV]"
 		Log("		(Create Column) = Done")
 
@@ -228,11 +227,10 @@ def Create_Excel_Report_wo_fig():
 				net_name = row.Cells[1].Value
 				xlsheet_table.Cells[row_idx,1] = net_name
 				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
-				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width
-				#xlsheet_table.Cells[row_idx,4] = round(sub_DB.Jitter_RMS[net_name], 1) # Jitter_RMS
-				xlsheet_table.Cells[row_idx,4] = "N/A"
-				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
-				xlsheet_table.Cells[row_idx,6] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
+				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0]							# Width [ps]				
+				xlsheet_table.Cells[row_idx,4] = sub_DB.Eye_Measure_Results[net_name][2]							# Margin [ps]
+				xlsheet_table.Cells[row_idx,5] = round((sub_DB.Eye_Measure_Results[net_name][0]/sub_DB.UI)*100, 1)	# Width [%]
+				xlsheet_table.Cells[row_idx,6] = round((sub_DB.Eye_Measure_Results[net_name][2]/sub_DB.UI)*100, 1)	# Margin [%]
 				xlsheet_table.Cells[row_idx,7] = round(sub_DB.Vref, 1) # Vref
 				row_idx += 1
 		row_idx -= 1
@@ -313,7 +311,7 @@ def Create_Excel_Report_wo_fig():
 def Create_Excel_Report_Imported():
 	try:
 		xlApp = Excel.ApplicationClass()
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
+		xlApp.Caption = sub_DB.Eye_Form._ComboBox_Design.Text + " : " + Report_Name
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 		xlbook = xlApp.Workbooks.Add()
@@ -350,14 +348,15 @@ def Create_Excel_Report_Imported():
 		# Create Column
 		xlsheet_table.Cells[1,1] = ""
 		xlsheet_table.Cells[1,2] = "Analyze Group"
-		xlsheet_table.Cells[1,3] = "Width [ps]"	
-		xlsheet_table.Cells[1,4] = "Jitter [ps]"
-		xlsheet_table.Cells[1,5] = "Timin Margin [ps]"
-		xlsheet_table.Cells[1,6] = "Vcent_DQ [mV]"
+		xlsheet_table.Cells[1,3] = "Width [ps]"
+		xlsheet_table.Cells[1,4] = "Timing Margin [ps]"
+		xlsheet_table.Cells[1,5] = "Width [%]"
+		xlsheet_table.Cells[1,6] = "Timing Margin [%]"
+		xlsheet_table.Cells[1,7] = "Vcent_DQ [mV]"
 		Log("		(Create Column) = Done")
 
 		# Create Column Range
-		Col_Header = xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[1, 6]]
+		Col_Header = xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[1, 7]]
 
 		# Set Column Font
 		Col_Header.Font.Name = "Arial"
@@ -385,10 +384,11 @@ def Create_Excel_Report_Imported():
 				net_name = row.Cells[1].Value
 				xlsheet_table.Cells[row_idx,1] = net_name
 				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
-				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width			
-				xlsheet_table.Cells[row_idx,4] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
-				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
-				xlsheet_table.Cells[row_idx,6] = round(sub_DB.Vref, 1) # Vref
+				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0]							# Width [ps]				
+				xlsheet_table.Cells[row_idx,4] = sub_DB.Eye_Measure_Results[net_name][2]							# Margin [ps]
+				xlsheet_table.Cells[row_idx,5] = round((sub_DB.Eye_Measure_Results[net_name][0]/sub_DB.UI)*100, 1)	# Width [%]
+				xlsheet_table.Cells[row_idx,6] = round((sub_DB.Eye_Measure_Results[net_name][2]/sub_DB.UI)*100, 1)	# Margin [%]
+				xlsheet_table.Cells[row_idx,7] = round(sub_DB.Vref, 1) # Vref
 				row_idx += 1
 		row_idx -= 1
 		Log("		(Add Data) = Done")
@@ -412,7 +412,7 @@ def Create_Excel_Report_Imported():
 		Log("		(Set Row Color) = Done")
 
 		# Create Merge Cell Range
-		Merge_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 6], xlsheet_table.Cells[row_idx, 6]]
+		Merge_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 7], xlsheet_table.Cells[row_idx, 7]]
 		Merge_Cell.Merge(False)
 		Merge_Cell.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
 		Merge_Cell.Cells.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter
@@ -435,7 +435,7 @@ def Create_Excel_Report_Imported():
 		Log("		(Cell Merge by Group) = Done")
 
 		# Create Data Range
-		Data_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 2], xlsheet_table.Cells[row_idx, 6]]
+		Data_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 2], xlsheet_table.Cells[row_idx, 7]]
 		Data_Cell.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
 		Data_Cell.Borders.Weight = Excel.XlBorderWeight.xlThin
 
@@ -468,7 +468,7 @@ def Create_Excel_Report_Imported():
 def Create_Excel_Report_Imported_wo_fig():
 	try:
 		xlApp = Excel.ApplicationClass()		
-		xlApp.Caption = sub_DB.File.split("\\")[-1].split(".")[0]		
+		xlApp.Caption = sub_DB.Eye_Form._ComboBox_Design.Text + " : " + Report_Name
 		xlApp.Visible = True
 		xlApp.DisplayAlerts = False	
 		xlbook = xlApp.Workbooks.Add()
@@ -485,14 +485,15 @@ def Create_Excel_Report_Imported_wo_fig():
 		# Create Column
 		xlsheet_table.Cells[1,1] = ""
 		xlsheet_table.Cells[1,2] = "Analyze Group"
-		xlsheet_table.Cells[1,3] = "Width [ps]"	
-		xlsheet_table.Cells[1,4] = "Jitter [ps]"
-		xlsheet_table.Cells[1,5] = "Timin Margin [ps]"
-		xlsheet_table.Cells[1,6] = "Vcent_DQ [mV]"
+		xlsheet_table.Cells[1,3] = "Width [ps]"		
+		xlsheet_table.Cells[1,4] = "Timing Margin [ps]"
+		xlsheet_table.Cells[1,5] = "Width [%]"		
+		xlsheet_table.Cells[1,6] = "Timing Margin [%]"
+		xlsheet_table.Cells[1,7] = "Vcent_DQ [mV]"
 		Log("		(Create Column) = Done")
 
 		# Create Column Range
-		Col_Header = xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[1, 6]]
+		Col_Header = xlsheet_table.Range[xlsheet_table.Cells[1, 1], xlsheet_table.Cells[1, 7]]
 
 		# Set Column Font
 		Col_Header.Font.Name = "Arial"
@@ -520,10 +521,11 @@ def Create_Excel_Report_Imported_wo_fig():
 				net_name = row.Cells[1].Value
 				xlsheet_table.Cells[row_idx,1] = net_name
 				xlsheet_table.Cells[row_idx,2] = row.Cells[4].Value
-				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0] # Width			
-				xlsheet_table.Cells[row_idx,4] = sub_DB.Eye_Measure_Results[net_name][1] # Jitter
-				xlsheet_table.Cells[row_idx,5] = sub_DB.Eye_Measure_Results[net_name][2] # Margin
-				xlsheet_table.Cells[row_idx,6] = round(sub_DB.Vref, 1) # Vref
+				xlsheet_table.Cells[row_idx,3] = sub_DB.Eye_Measure_Results[net_name][0]							# Width [ps]				
+				xlsheet_table.Cells[row_idx,4] = sub_DB.Eye_Measure_Results[net_name][2]							# Margin [ps]
+				xlsheet_table.Cells[row_idx,5] = round((sub_DB.Eye_Measure_Results[net_name][0]/sub_DB.UI)*100, 1)	# Width [%]
+				xlsheet_table.Cells[row_idx,6] = round((sub_DB.Eye_Measure_Results[net_name][2]/sub_DB.UI)*100, 1)	# Margin [%]
+				xlsheet_table.Cells[row_idx,7] = round(sub_DB.Vref, 1) # Vref
 				row_idx += 1
 		row_idx -= 1
 		Log("		(Add Data) = Done")
@@ -547,7 +549,7 @@ def Create_Excel_Report_Imported_wo_fig():
 		Log("		(Set Row Color) = Done")
 
 		# Create Merge Cell Range
-		Merge_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 6], xlsheet_table.Cells[row_idx, 6]]
+		Merge_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 7], xlsheet_table.Cells[row_idx, 7]]
 		Merge_Cell.Merge(False)
 		Merge_Cell.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter
 		Merge_Cell.Cells.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter
@@ -570,7 +572,7 @@ def Create_Excel_Report_Imported_wo_fig():
 		Log("		(Cell Merge by Group) = Done")
 
 		# Create Data Range
-		Data_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 2], xlsheet_table.Cells[row_idx, 6]]
+		Data_Cell = xlsheet_table.Range[xlsheet_table.Cells[2, 2], xlsheet_table.Cells[row_idx, 7]]
 		Data_Cell.Borders.LineStyle = Excel.XlLineStyle.xlContinuous
 		Data_Cell.Borders.Weight = Excel.XlBorderWeight.xlThin
 
@@ -646,7 +648,7 @@ def Create_Setup_Hold_Excel_Report():
 		xlsheet_table.Cells[1,3] = "Width [ps]"
 		xlsheet_table.Cells[1,4] = "Jitter_RMS [ps]"
 		xlsheet_table.Cells[1,5] = "Jitter [ps]"
-		xlsheet_table.Cells[1,6] = "Timin Margin [ps]"
+		xlsheet_table.Cells[1,6] = "Timing Margin [ps]"
 		xlsheet_table.Cells[1,7] = "Setup Time [ps]"
 		xlsheet_table.Cells[1,8] = "Hold Time [ps]"
 		xlsheet_table.Cells[1,9] = "Vcent_DQ [mV]"
@@ -793,7 +795,7 @@ def Create_Setup_Hold_Excel_Report_wo_fig():
 		xlsheet_table.Cells[1,3] = "Width [ps]"
 		xlsheet_table.Cells[1,4] = "Jitter_RMS [ps]"
 		xlsheet_table.Cells[1,5] = "Jitter [ps]"
-		xlsheet_table.Cells[1,6] = "Timin Margin [ps]"
+		xlsheet_table.Cells[1,6] = "Timing Margin [ps]"
 		xlsheet_table.Cells[1,7] = "Setup Time [ps]"
 		xlsheet_table.Cells[1,8] = "Hold Time [ps]"
 		xlsheet_table.Cells[1,9] = "Vcent_DQ [mV]"
