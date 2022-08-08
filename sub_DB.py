@@ -13,7 +13,7 @@
 
 [v0.5.3] - '22.08.08
     -. IBIS bug fix    
-
+    -. Show result window for each IBIS cases
 '''
 
 
@@ -71,6 +71,7 @@ Waveform_File = ""
 Excel_Img_File = []
 NetSort_Flag = False
 Eye_Measure_Results = {}
+IBIS_Eye_Measure_Results = {}
 Setup = {}
 Hold = {}
 Vref = ""

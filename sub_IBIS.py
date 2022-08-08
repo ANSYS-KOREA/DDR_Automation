@@ -481,6 +481,8 @@ def IBIS_Opt_Run(self):
 			sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[7].Value = round(Worst_Margin, 1)
 			sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[8].Value = round(Vref, 1)
 
+		sub_DB.IBIS_Eye_Measure_Results = Eye_Measure_Results
+
 	except Exception as e:		
 		#Log("	<Run IBIS Opt> = Failed")
 		#Log(traceback.format_exc())

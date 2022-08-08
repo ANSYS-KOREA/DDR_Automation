@@ -4846,6 +4846,7 @@ class IBIS_Case(Form):
 		self._DataGridView.Size = System.Drawing.Size(259, 300)
 		self._DataGridView.TabIndex = 36
 		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
+		self._DataGridView.CellContentClick += self.DataGridViewCellContentClick
 		# 
 		# Col_CaseNum
 		# 
@@ -5048,6 +5049,56 @@ class IBIS_Case(Form):
 				break
 			else:
 				self._Button_Delete.Enabled = False
+
+	def DataGridViewCellContentClick(self, sender, e):
+		try:		
+			if e.ColumnIndex == 3:
+				# Create IBIS Result Net Form
+				sub_DB.IBIS_Case_ResultForm = NetForm()
+				sub_DB.IBIS_Case_ResultForm.NetFormLoad(sub_DB.Eye_Form, sender)
+
+				# Get Eye Measurement Result
+				case = int(self._DataGridView.Rows[e.RowIndex].Cells[0].Value)
+				Eye_Measure_Results = sub_DB.IBIS_Eye_Measure_Results["case%d" % case]
+
+				# View Analyze Result
+				sub_DB.Eye_Analyze_Flag = True
+				sub_DB.IBIS_Case_ResultForm._Label_GroupName.Visible = False
+				sub_DB.IBIS_Case_ResultForm._ComboBox_AnalyzeGroup.Visible = False
+				sub_DB.IBIS_Case_ResultForm._Button_Update.Visible = False
+				sub_DB.IBIS_Case_ResultForm._Button_Auto.Visible = False
+				sub_DB.IBIS_Case_ResultForm._Button_EditRule.Visible = False
+				sub_DB.IBIS_Case_ResultForm._Button_Identify.Visible = False
+
+				if sub_DB.Eye_Analyze_Flag:
+					sub_DB.IBIS_Case_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_Case_ResultForm._Col_Width)
+					sub_DB.IBIS_Case_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_Case_ResultForm._Col_Margin)
+					sub_DB.Eye_Analyze_Flag = False
+				else:
+					for row in sub_DB.IBIS_Case_ResultForm._DataGridView.Rows:
+						row.Cells[5].Value = ""
+						row.Cells[6].Value = ""
+				
+				sub_DB.IBIS_Case_ResultForm._DataGridView.Columns[5].DisplayIndex = 2
+				sub_DB.IBIS_Case_ResultForm._DataGridView.Columns[6].DisplayIndex = 3
+				sub_DB.IBIS_Case_ResultForm._DataGridView.Columns[4].DisplayIndex = 4
+
+				for row in sub_DB.IBIS_Case_ResultForm._DataGridView.Rows:
+					if row.Cells[0].Value:								
+						row.Cells[5].Value = str(Eye_Measure_Results[row.Cells[1].Value][0])
+						row.Cells[6].Value = str(Eye_Measure_Results[row.Cells[1].Value][2])
+				sub_DB.IBIS_Case_ResultForm.Init_Flag = False
+
+				sub_DB.IBIS_Case_ResultForm.Text = "Eye Analyze Results - IBIS case%d" % case
+
+				sub_DB.IBIS_Case_ResultForm.ShowDialog()
+
+		except Exception as e:						
+			Log("	<Launch IBIS case result form> = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to launch IBIS case result form","Warning")						
+			EXIT()
 
 	def Button_AddClick(self, sender, e):
 		self._DataGridView.Rows.Add(self.case, "", "")
