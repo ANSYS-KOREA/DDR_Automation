@@ -358,9 +358,9 @@ def IBIS_Opt_Run(self):
 		else:
 			rx_data = "0"
 
-		oModule = oDesign.GetModule("Optimetrics")
+		oModule = oDesign.GetModule("Optimetrics")		
 		oModule.InsertSetup("OptiParametric", 
-			["NAME:ParametricSetup1",
+			["NAME:%s_ParametricSetup" % Design.split(";")[-1],
 			"UseFastCalculationUpdateAlgo:=", True,
 			"FastCalcOptCtrledByUser:=", False,
 			"IsEnabled:="		, True,
@@ -399,8 +399,7 @@ def IBIS_Opt_Run(self):
 	try:
 		oProject.Save()
 		oModule = oDesign.GetModule("Optimetrics")
-		oModule.SolveSetup("ParametricSetup1")
-		pass
+		oModule.SolveSetup("%s_ParametricSetup" % Design.split(";")[-1])		
 
 	except Exception as e:		
 		#Log("	<Run IBIS Opt> = Failed")
