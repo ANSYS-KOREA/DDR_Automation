@@ -11,15 +11,14 @@
     -. Jitter, Jitter_RMS 열 삭제
     -. Width & Margin UI 단위 열 추가
 
+[v0.5.3] - '22.08.08
+    -. IBIS bug fix    
+
 '''
 
 
 
-
-
-
-
-Version = "v0.5.2"
+Version = "v0.5.3"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 
