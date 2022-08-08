@@ -3537,7 +3537,7 @@ class IBIS_OptForm(Form):
 					#########################					
 					sub_DB.IBIS_Rx = IBIS_Parsing(File)
 					#sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
-
+					
 					###################
 					# 3.Add Component #
 					###################				
@@ -3647,7 +3647,7 @@ class IBIS_OptForm(Form):
 		self.FormSize_H = self.Size.Height
 
 	def ComboBox_IBIS_TxSelectedIndexChanged(self, sender, e):		
-		try:
+		try:			
 			self.Cursor = Cursors.WaitCursor
 			####################
 			# 0.Initialization #
@@ -3666,10 +3666,10 @@ class IBIS_OptForm(Form):
 
 			#########################
 			# 2.Parsing for Tx IBIS #
-			#########################			
+			#########################
 			sub_DB.IBIS_Tx = IBIS_Parsing(File)
 			#sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)
-
+			
 			###################
 			# 3.Add Component #
 			###################
@@ -3692,26 +3692,43 @@ class IBIS_OptForm(Form):
 			################
 			# 5.Add Models #
 			################
+			oProject = sub_DB.AEDT['Project']
+			oDesktop = sub_DB.AEDT['Desktop']		
+			oDesign = sub_DB.AEDT['Design']	
+			oDesktop.RestoreWindow()			
+			oEditor = oDesign.SetActiveEditor("SchematicEditor")
+			comp_array = oEditor.GetAllComponents()			
+			
+			temp = []
+			for model in sub_DB.Parsing_data['IBIS_Model']:
+				for comp in comp_array:
+					if model in comp:
+						if not model in temp:
+							temp.append(model)
+
 			# If [Model Selector] exists
 			if not len(sub_DB.IBIS_Tx["Model Selector"]) == 0:
 				for models in sub_DB.IBIS_Tx["Model Selector"].keys():
 					self._ComboBox_Model_Tx.Items.Add(models)
-			
+
 				# Set Default Model
-				for models in sub_DB.IBIS_Tx["Model Selector"].keys():				
-					for model in sub_DB.IBIS_Tx["Model Selector"][models]:					
-						if model[0] in sub_DB.Parsing_data['IBIS_Model']:
-							self.def_Tx_model = model[0]
-							self._ComboBox_Model_Tx.Text = models
-							break
+				for models in sub_DB.IBIS_Tx["Model Selector"].keys():					
+					for model in sub_DB.IBIS_Tx["Model Selector"][models]:
+						for sub_model in model:
+							for def_model in sub_DB.Parsing_data['IBIS_Tx']:
+								if sub_model in def_model:
+									self.def_Tx_model = sub_model
+									self._ComboBox_Model_Tx.Text = models
+									break
 
 			# If [Model Selector] is not exists
 			else:				
 				self._ComboBox_Model_Tx.Text = "N/A"
 				for model in sub_DB.IBIS_Tx["Model"]:
-					if model in sub_DB.Parsing_data['IBIS_Model']:
-						self.def_Tx_model = model
-						break
+					for def_model in sub_DB.Parsing_data['IBIS_Tx']:
+						if model in def_model:					
+							self.def_Tx_model = model
+							break
 				iter = 0
 				for model in sub_DB.IBIS_Tx["Model"]:
 					if model == self.def_Tx_model:
@@ -3781,26 +3798,43 @@ class IBIS_OptForm(Form):
 			################
 			# 5.Add Models #
 			################
+			oProject = sub_DB.AEDT['Project']
+			oDesktop = sub_DB.AEDT['Desktop']		
+			oDesign = sub_DB.AEDT['Design']	
+			oDesktop.RestoreWindow()			
+			oEditor = oDesign.SetActiveEditor("SchematicEditor")
+			comp_array = oEditor.GetAllComponents()			
+			
+			temp = []
+			for model in sub_DB.Parsing_data['IBIS_Model']:
+				for comp in comp_array:
+					if model in comp:
+						if not model in temp:
+							temp.append(model)
+
 			# If [Model Selector] exists
 			if not len(sub_DB.IBIS_Rx["Model Selector"]) == 0:
 				for models in sub_DB.IBIS_Rx["Model Selector"].keys():
 					self._ComboBox_Model_Rx.Items.Add(models)
-			
+
 				# Set Default Model
-				for models in sub_DB.IBIS_Rx["Model Selector"].keys():				
-					for model in sub_DB.IBIS_Rx["Model Selector"][models]:					
-						if model[0] in sub_DB.Parsing_data['IBIS_Model']:
-							self.def_Rx_model = model[0]
-							self._ComboBox_Model_Rx.Text = models
-							break
+				for models in sub_DB.IBIS_Rx["Model Selector"].keys():					
+					for model in sub_DB.IBIS_Rx["Model Selector"][models]:
+						for sub_model in model:
+							for def_model in sub_DB.Parsing_data['IBIS_Rx']:
+								if sub_model in def_model:
+									self.def_Rx_model = sub_model
+									self._ComboBox_Model_Rx.Text = models
+									break
 
 			# If [Model Selector] is not exists
 			else:				
 				self._ComboBox_Model_Rx.Text = "N/A"
 				for model in sub_DB.IBIS_Rx["Model"]:
-					if model in sub_DB.Parsing_data['IBIS_Model']:
-						self.def_Rx_model = model
-						break
+					for def_model in sub_DB.Parsing_data['IBIS_Rx']:
+						if model in def_model:					
+							self.def_Rx_model = model
+							break
 				iter = 0
 				for model in sub_DB.IBIS_Rx["Model"]:
 					if model == self.def_Rx_model:
@@ -4036,8 +4070,7 @@ class IBIS_OptForm(Form):
 		sub_DB.Option_Form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
 		sub_DB.Option_Form.ShowDialog()
 
-	def Button_RunClick(self, sender, e):
-		print "Test Branch"
+	def Button_RunClick(self, sender, e):		
 		IBIS_Init()
 		self.Cursor = Cursors.WaitCursor
 		sub_DB.IBIS_Result_Init_Flag = True

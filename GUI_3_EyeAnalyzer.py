@@ -1835,7 +1835,7 @@ class Eye_Form(Form):
 				Cenv = Load_env(File)
 				Cenv["File"] = File
 				sub_DB.Cenv = Cenv
-				Initial()
+				Initial(True)
 				self._ComboBox_DDRGen.Items.Clear()
 				self._ComboBox_DataRate.Items.Clear()
 				
@@ -2096,8 +2096,7 @@ class Eye_Form(Form):
 
 					else:
 						File = self._TextBox_InputFile.Text
-						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
-
+						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)						
 						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = "Select"						
 						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = "Select"
 						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Info
@@ -2737,7 +2736,7 @@ class Eye_Form(Form):
 				self.Init_Flag = True
 				self._CheckedListBox_ReportName.SetItemChecked(e.Index, e.NewValue)
 
-				Initial()
+				Initial(True)				
 				sub_AEDT.Get_AEDT_Info(self, self._TextBox_InputFile.Text)
 				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
@@ -2781,7 +2780,7 @@ class Eye_Form(Form):
 				self._TextBox_InputFile.Text = File
 
 				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension				
-				Initial()
+				Initial(True)
 
 				# for *.aedt File
 				if extension == "aedt":					
@@ -3399,7 +3398,7 @@ class Eye_Form(Form):
 		File.append(r'D:\1_Work\20220106_DDR_Compliance\1_Work\CNF\4.cnf')
 
 		for CNF_file in File:
-			Initial()
+			Initial(True)
 			Debug_Load_CNF(self, sender, CNF_file)
 			self.Button_ViewNetClick(self, sender)
 			self.Button_AnalyzeClick(self, sender)						

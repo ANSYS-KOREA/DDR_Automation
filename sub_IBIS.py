@@ -245,7 +245,7 @@ def IBIS_Opt_Run(self):
 		# Get All Component Info
 		oEditor = oDesign.SetActiveEditor("SchematicEditor")
 		comp_array = oEditor.GetAllComponents()
-
+		
 		# Get Tx/Rx Component List
 		tx_comp = []
 		tx_comp.append("NAME:PropServers")
@@ -256,14 +256,50 @@ def IBIS_Opt_Run(self):
 				tx_comp.append(comp)
 			elif self.def_Rx_model in comp:
 				rx_comp.append(comp)
+		
+		## Apply Variables to Tx IBIS
+		#oEditor.ChangeProperty(
+		#	["NAME:AllTabs",
+		#		["NAME:PassedParameterTab",
+		#			tx_comp,
+		#			["NAME:ChangedProps",
+		#				["NAME:model",
+		#					"OverridingDef:="	, True,
+		#					"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
+		#					"HasPin:="		, False,
+		#					"ShowPin:="		, False,
+		#					"Display:="		, False,
+		#					"Sweep:="		, False,
+		#					"DefaultOutput:="	, False,
+		#					"SDB:="			, False]]]])
+
+		## Apply Variables to Rx IBIS
+		#oEditor.ChangeProperty(
+		#	["NAME:AllTabs",
+		#		["NAME:PassedParameterTab",
+		#			rx_comp,
+		#			["NAME:ChangedProps",
+		#				["NAME:model",
+		#					"OverridingDef:="	, True,
+		#					"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
+		#					"HasPin:="		, False,
+		#					"ShowPin:="		, False,
+		#					"Display:="		, False,
+		#					"Sweep:="		, False,
+		#					"DefaultOutput:="	, False,
+		#					"SDB:="			, False]]]])
 
 		# Apply Variables to Tx IBIS
 		oEditor.ChangeProperty(
-			["NAME:AllTabs",
-				["NAME:PassedParameterTab",
+			[
+				"NAME:AllTabs",
+				[
+					"NAME:Buffer_Pin",
 					tx_comp,
-					["NAME:ChangedProps",
-						["NAME:model",
+					[
+						"NAME:ChangedProps",
+						[
+							"NAME:model",
 							"OverridingDef:="	, True,
 							"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
 							"HasPin:="		, False,
@@ -271,15 +307,23 @@ def IBIS_Opt_Run(self):
 							"Display:="		, False,
 							"Sweep:="		, False,
 							"DefaultOutput:="	, False,
-							"SDB:="			, False]]]])
+							"SDB:="			, False
+						]
+					]
+				]
+			])
 
 		# Apply Variables to Rx IBIS
 		oEditor.ChangeProperty(
-			["NAME:AllTabs",
-				["NAME:PassedParameterTab",
+			[
+				"NAME:AllTabs",
+				[
+					"NAME:Buffer_Pin",
 					rx_comp,
-					["NAME:ChangedProps",
-						["NAME:model",
+					[
+						"NAME:ChangedProps",
+						[
+							"NAME:model",
 							"OverridingDef:="	, True,
 							"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
 							"HasPin:="		, False,
@@ -287,7 +331,11 @@ def IBIS_Opt_Run(self):
 							"Display:="		, False,
 							"Sweep:="		, False,
 							"DefaultOutput:="	, False,
-							"SDB:="			, False]]]])
+							"SDB:="			, False
+						]
+					]
+				]
+			])
 
 	except Exception as e:		
 		#Log("	<Run IBIS Opt> = Failed")
