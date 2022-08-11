@@ -14,11 +14,14 @@
 [v0.5.3] - '22.08.08
     -. IBIS bug fix    
     -. Show result window for each IBIS cases
+
+[v0.6] - '22.08.09
+    -. Release to SEC
 '''
 
 
 
-Version = "v0.5.3"
+Version = "v0.6"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 
