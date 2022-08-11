@@ -3100,16 +3100,20 @@ class IBIS_OptForm(Form):
 		self._Label_IBIS_Tx = System.Windows.Forms.Label()
 		self._Label_Comp_Tx = System.Windows.Forms.Label()
 		self._Label_Model_Tx = System.Windows.Forms.Label()
+		self._Label_Buffer_Tx = System.Windows.Forms.Label()
 		self._Label_IBIS_Rx = System.Windows.Forms.Label()
 		self._Label_Comp_Rx = System.Windows.Forms.Label()
 		self._Label_Model_Rx = System.Windows.Forms.Label()
+		self._Label_Buffer_Rx = System.Windows.Forms.Label()
 
 		self._ComboBox_IBIS_Tx = System.Windows.Forms.ComboBox()
 		self._ComboBox_Comp_Tx = System.Windows.Forms.ComboBox()
 		self._ComboBox_Model_Tx = System.Windows.Forms.ComboBox()
+		self._ComboBox_Buffer_Tx = System.Windows.Forms.ComboBox()
 		self._ComboBox_IBIS_Rx = System.Windows.Forms.ComboBox()
 		self._ComboBox_Comp_Rx = System.Windows.Forms.ComboBox()
 		self._ComboBox_Model_Rx = System.Windows.Forms.ComboBox()
+		self._ComboBox_Buffer_Rx = System.Windows.Forms.ComboBox()
 
 		self._DataGridView_Tx = System.Windows.Forms.DataGridView()
 		self._DataGridView_Tx_CheckBoxColumn = System.Windows.Forms.DataGridViewCheckBoxColumn()
@@ -3137,37 +3141,41 @@ class IBIS_OptForm(Form):
 		self.SuspendLayout()
 		# 
 		# GroupBox_Tx
-		# 		
+		#
+		self._GroupBox_Tx.Controls.Add(self._ComboBox_Buffer_Tx)
 		self._GroupBox_Tx.Controls.Add(self._ComboBox_Model_Tx)
 		self._GroupBox_Tx.Controls.Add(self._ComboBox_Comp_Tx)		
 		self._GroupBox_Tx.Controls.Add(self._DataGridView_Tx)
 		self._GroupBox_Tx.Controls.Add(self._Button_View_Tx)
 		self._GroupBox_Tx.Controls.Add(self._ComboBox_IBIS_Tx)
+		self._GroupBox_Tx.Controls.Add(self._Label_Buffer_Tx)
 		self._GroupBox_Tx.Controls.Add(self._Label_Comp_Tx)
 		self._GroupBox_Tx.Controls.Add(self._Label_Model_Tx)
 		self._GroupBox_Tx.Controls.Add(self._Label_IBIS_Tx)
 		self._GroupBox_Tx.Font = System.Drawing.Font("Arial", 10)
 		self._GroupBox_Tx.Location = System.Drawing.Point(12, 12)
 		self._GroupBox_Tx.Name = "GroupBox_Tx"
-		self._GroupBox_Tx.Size = System.Drawing.Size(286, 275)
+		self._GroupBox_Tx.Size = System.Drawing.Size(286, 305)
 		self._GroupBox_Tx.TabIndex = 43
 		self._GroupBox_Tx.TabStop = False
 		self._GroupBox_Tx.Text = "Tx"
 		# 
 		# GroupBox_Rx
-		# 		
+		#
+		self._GroupBox_Rx.Controls.Add(self._ComboBox_Buffer_Rx)
 		self._GroupBox_Rx.Controls.Add(self._ComboBox_Model_Rx)
 		self._GroupBox_Rx.Controls.Add(self._ComboBox_Comp_Rx)		
 		self._GroupBox_Rx.Controls.Add(self._DataGridView_Rx)
 		self._GroupBox_Rx.Controls.Add(self._Button_View_Rx)
 		self._GroupBox_Rx.Controls.Add(self._ComboBox_IBIS_Rx)
+		self._GroupBox_Rx.Controls.Add(self._Label_Buffer_Rx)
 		self._GroupBox_Rx.Controls.Add(self._Label_Comp_Rx)
 		self._GroupBox_Rx.Controls.Add(self._Label_Model_Rx)
 		self._GroupBox_Rx.Controls.Add(self._Label_IBIS_Rx)
 		self._GroupBox_Rx.Font = System.Drawing.Font("Arial", 10)
 		self._GroupBox_Rx.Location = System.Drawing.Point(319, 12)
 		self._GroupBox_Rx.Name = "GroupBox_Rx"
-		self._GroupBox_Rx.Size = System.Drawing.Size(286, 275)
+		self._GroupBox_Rx.Size = System.Drawing.Size(286, 305)
 		self._GroupBox_Rx.TabIndex = 45
 		self._GroupBox_Rx.TabStop = False
 		self._GroupBox_Rx.Text = "Rx"
@@ -3177,78 +3185,98 @@ class IBIS_OptForm(Form):
 		self._Label_IBIS_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Label_IBIS_Tx.Location = System.Drawing.Point(6, 19)
 		self._Label_IBIS_Tx.Name = "Label_IBIS_Tx"
-		self._Label_IBIS_Tx.Size = System.Drawing.Size(42, 28)
+		self._Label_IBIS_Tx.Size = System.Drawing.Size(78, 28)
 		self._Label_IBIS_Tx.TabIndex = 30
 		self._Label_IBIS_Tx.Text = "IBIS :"
-		self._Label_IBIS_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		self._Label_IBIS_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# Label_Comp_Tx
 		# 
 		self._Label_Comp_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Label_Comp_Tx.Location = System.Drawing.Point(6, 47)
 		self._Label_Comp_Tx.Name = "Label_Comp_Tx"
-		self._Label_Comp_Tx.Size = System.Drawing.Size(68, 28)
+		self._Label_Comp_Tx.Size = System.Drawing.Size(78, 28)
 		self._Label_Comp_Tx.TabIndex = 38
 		self._Label_Comp_Tx.Text = "Comp. :"
-		self._Label_Comp_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		self._Label_Comp_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# Label_Model_Tx
 		# 
 		self._Label_Model_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Label_Model_Tx.Location = System.Drawing.Point(6, 77)
 		self._Label_Model_Tx.Name = "Label_Model_Tx"
-		self._Label_Model_Tx.Size = System.Drawing.Size(68, 28)
+		self._Label_Model_Tx.Size = System.Drawing.Size(78, 28)
 		self._Label_Model_Tx.TabIndex = 38
 		self._Label_Model_Tx.Text = "Model :"
-		self._Label_Model_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		self._Label_Model_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		# 
+		# Label_Buffer_Tx
+		# 
+		self._Label_Buffer_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Buffer_Tx.Location = System.Drawing.Point(6, 107)
+		self._Label_Buffer_Tx.Name = "Label_Buffer_Tx"
+		self._Label_Buffer_Tx.Size = System.Drawing.Size(78, 28)
+		self._Label_Buffer_Tx.TabIndex = 38
+		self._Label_Buffer_Tx.Text = "Init. Buffer :"
+		self._Label_Buffer_Tx.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# Label_IBIS_Rx
 		# 
 		self._Label_IBIS_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Label_IBIS_Rx.Location = System.Drawing.Point(6, 19)
 		self._Label_IBIS_Rx.Name = "Label_IBIS_Rx"
-		self._Label_IBIS_Rx.Size = System.Drawing.Size(42, 28)
+		self._Label_IBIS_Rx.Size = System.Drawing.Size(78, 28)
 		self._Label_IBIS_Rx.TabIndex = 30
 		self._Label_IBIS_Rx.Text = "IBIS :"
-		self._Label_IBIS_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		self._Label_IBIS_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# Label_Comp_Rx
 		# 
 		self._Label_Comp_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Label_Comp_Rx.Location = System.Drawing.Point(6, 47)
 		self._Label_Comp_Rx.Name = "Label_Comp_Rx"
-		self._Label_Comp_Rx.Size = System.Drawing.Size(68, 28)
+		self._Label_Comp_Rx.Size = System.Drawing.Size(78, 28)
 		self._Label_Comp_Rx.TabIndex = 38
 		self._Label_Comp_Rx.Text = "Comp. :"
-		self._Label_Comp_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		self._Label_Comp_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# Label_Model_Rx
 		# 
 		self._Label_Model_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Label_Model_Rx.Location = System.Drawing.Point(6, 77)
 		self._Label_Model_Rx.Name = "Label_Model_Rx"
-		self._Label_Model_Rx.Size = System.Drawing.Size(68, 28)
+		self._Label_Model_Rx.Size = System.Drawing.Size(78, 28)
 		self._Label_Model_Rx.TabIndex = 38
 		self._Label_Model_Rx.Text = "Model :"
-		self._Label_Model_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		self._Label_Model_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		# 
+		# Label_Buffer_Rx
+		# 
+		self._Label_Buffer_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_Buffer_Rx.Location = System.Drawing.Point(6, 107)
+		self._Label_Buffer_Rx.Name = "Label_Buffer_Rx"
+		self._Label_Buffer_Rx.Size = System.Drawing.Size(78, 28)
+		self._Label_Buffer_Rx.TabIndex = 38
+		self._Label_Buffer_Rx.Text = "Init. Buffer :"
+		self._Label_Buffer_Rx.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# ComboBox_IBIS_Tx
 		# 
 		self._ComboBox_IBIS_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_IBIS_Tx.FormattingEnabled = True
-		self._ComboBox_IBIS_Tx.Location = System.Drawing.Point(59, 22)
+		self._ComboBox_IBIS_Tx.Location = System.Drawing.Point(89, 22)
 		self._ComboBox_IBIS_Tx.Name = "ComboBox_IBIS_Tx"
-		self._ComboBox_IBIS_Tx.Size = System.Drawing.Size(170, 24)
-		self._ComboBox_IBIS_Tx.TabIndex = 31		
+		self._ComboBox_IBIS_Tx.Size = System.Drawing.Size(190, 24)
+		self._ComboBox_IBIS_Tx.TabIndex = 31
 		self._ComboBox_IBIS_Tx.SelectedIndexChanged += self.ComboBox_IBIS_TxSelectedIndexChanged
 		# 
 		# ComboBox_Comp_Tx
 		# 
 		self._ComboBox_Comp_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_Comp_Tx.FormattingEnabled = True
-		self._ComboBox_Comp_Tx.Location = System.Drawing.Point(59, 52)
+		self._ComboBox_Comp_Tx.Location = System.Drawing.Point(89, 52)
 		self._ComboBox_Comp_Tx.Name = "ComboBox_Comp_Tx"
-		self._ComboBox_Comp_Tx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Comp_Tx.Size = System.Drawing.Size(190, 24)
 		self._ComboBox_Comp_Tx.TabIndex = 39		
 		self._ComboBox_Comp_Tx.SelectedIndexChanged += self.ComboBox_Comp_TxSelectedIndexChanged
 		# 
@@ -3256,19 +3284,29 @@ class IBIS_OptForm(Form):
 		# 
 		self._ComboBox_Model_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_Model_Tx.FormattingEnabled = True
-		self._ComboBox_Model_Tx.Location = System.Drawing.Point(59, 82)
+		self._ComboBox_Model_Tx.Location = System.Drawing.Point(89, 82)
 		self._ComboBox_Model_Tx.Name = "ComboBox_Model_Tx"
-		self._ComboBox_Model_Tx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Model_Tx.Size = System.Drawing.Size(190, 24)
 		self._ComboBox_Model_Tx.TabIndex = 39
 		self._ComboBox_Model_Tx.SelectedIndexChanged += self.ComboBox_Model_TxSelectedIndexChanged
+		# 
+		# ComboBox_Buffer_Tx
+		# 
+		self._ComboBox_Buffer_Tx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_Buffer_Tx.FormattingEnabled = True
+		self._ComboBox_Buffer_Tx.Location = System.Drawing.Point(89, 112)
+		self._ComboBox_Buffer_Tx.Name = "ComboBox_Buffer_Tx"
+		self._ComboBox_Buffer_Tx.Size = System.Drawing.Size(190, 24)
+		self._ComboBox_Buffer_Tx.TabIndex = 39
+		self._ComboBox_Buffer_Tx.SelectedIndexChanged += self.ComboBox_Buffer_TxSelectedIndexChanged
 		# 
 		# ComboBox_IBIS_Rx
 		# 
 		self._ComboBox_IBIS_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_IBIS_Rx.FormattingEnabled = True
-		self._ComboBox_IBIS_Rx.Location = System.Drawing.Point(59, 22)
+		self._ComboBox_IBIS_Rx.Location = System.Drawing.Point(89, 22)
 		self._ComboBox_IBIS_Rx.Name = "ComboBox_IBIS_Rx"
-		self._ComboBox_IBIS_Rx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_IBIS_Rx.Size = System.Drawing.Size(190, 24)
 		self._ComboBox_IBIS_Rx.TabIndex = 31
 		self._ComboBox_IBIS_Rx.SelectedIndexChanged += self.ComboBox_IBIS_RxSelectedIndexChanged
 		# 
@@ -3276,9 +3314,9 @@ class IBIS_OptForm(Form):
 		# 
 		self._ComboBox_Comp_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_Comp_Rx.FormattingEnabled = True
-		self._ComboBox_Comp_Rx.Location = System.Drawing.Point(59, 52)
+		self._ComboBox_Comp_Rx.Location = System.Drawing.Point(89, 52)
 		self._ComboBox_Comp_Rx.Name = "ComboBox_Comp_Rx"
-		self._ComboBox_Comp_Rx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Comp_Rx.Size = System.Drawing.Size(190, 24)
 		self._ComboBox_Comp_Rx.TabIndex = 39
 		self._ComboBox_Comp_Rx.SelectedIndexChanged += self.ComboBox_Comp_RxSelectedIndexChanged
 		# 
@@ -3286,11 +3324,21 @@ class IBIS_OptForm(Form):
 		# 
 		self._ComboBox_Model_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._ComboBox_Model_Rx.FormattingEnabled = True
-		self._ComboBox_Model_Rx.Location = System.Drawing.Point(59, 82)
+		self._ComboBox_Model_Rx.Location = System.Drawing.Point(89, 82)
 		self._ComboBox_Model_Rx.Name = "ComboBox_Model_Rx"
-		self._ComboBox_Model_Rx.Size = System.Drawing.Size(170, 24)
+		self._ComboBox_Model_Rx.Size = System.Drawing.Size(190, 24)
 		self._ComboBox_Model_Rx.TabIndex = 39
 		self._ComboBox_Model_Rx.SelectedIndexChanged += self.ComboBox_Model_RxSelectedIndexChanged
+		# 
+		# ComboBox_Buffer_Rx
+		# 
+		self._ComboBox_Buffer_Rx.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_Buffer_Rx.FormattingEnabled = True
+		self._ComboBox_Buffer_Rx.Location = System.Drawing.Point(89, 112)
+		self._ComboBox_Buffer_Rx.Name = "ComboBox_Buffer_Rx"
+		self._ComboBox_Buffer_Rx.Size = System.Drawing.Size(190, 24)
+		self._ComboBox_Buffer_Rx.TabIndex = 39
+		self._ComboBox_Buffer_Rx.SelectedIndexChanged += self.ComboBox_Buffer_RxSelectedIndexChanged
 		# 
 		# DataGridView_Tx
 		# 
@@ -3305,7 +3353,7 @@ class IBIS_OptForm(Form):
 			self._DataGridView_Tx_TextBoxColumn,
 			self._DataGridView_Tx_TextBoxColumn1]))
 		self._DataGridView_Tx.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-		self._DataGridView_Tx.Location = System.Drawing.Point(6, 112)
+		self._DataGridView_Tx.Location = System.Drawing.Point(6, 142)
 		self._DataGridView_Tx.Name = "DataGridView_Tx"
 		self._DataGridView_Tx.RowHeadersVisible = False
 		self._DataGridView_Tx.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -3349,7 +3397,7 @@ class IBIS_OptForm(Form):
 			self._DataGridView_Rx_TextBoxColumn,
 			self._DataGridView_Rx_TextBoxColumn1]))
 		self._DataGridView_Rx.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
-		self._DataGridView_Rx.Location = System.Drawing.Point(6, 112)
+		self._DataGridView_Rx.Location = System.Drawing.Point(6, 142)
 		self._DataGridView_Rx.Name = "DataGridView_Rx"
 		self._DataGridView_Rx.RowHeadersVisible = False
 		self._DataGridView_Rx.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -3389,6 +3437,7 @@ class IBIS_OptForm(Form):
 		self._Button_View_Tx.Text = "View"
 		self._Button_View_Tx.Enabled = False
 		self._Button_View_Tx.UseVisualStyleBackColor = True
+		self._Button_View_Tx.Visible = False
 		self._Button_View_Tx.Click += self.Button_View_TxClick
 		# 
 		# Button_View_Rx
@@ -3401,12 +3450,13 @@ class IBIS_OptForm(Form):
 		self._Button_View_Rx.Text = "View"
 		self._Button_View_Rx.Enabled = False
 		self._Button_View_Rx.UseVisualStyleBackColor = True
+		self._Button_View_Rx.Visible = False
 		self._Button_View_Rx.Click += self.Button_View_RxClick
 		# 
 		# Button_CaseView
 		# 
 		self._Button_CaseView.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_CaseView.Location = System.Drawing.Point(12, 293)
+		self._Button_CaseView.Location = System.Drawing.Point(12, 323)
 		self._Button_CaseView.Name = "Button_CaseView"
 		self._Button_CaseView.Size = System.Drawing.Size(135, 35)
 		self._Button_CaseView.TabIndex = 44
@@ -3417,7 +3467,7 @@ class IBIS_OptForm(Form):
 		# Button_AnalysisOption
 		# 
 		self._Button_AnalysisOption.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_AnalysisOption.Location = System.Drawing.Point(164, 293)
+		self._Button_AnalysisOption.Location = System.Drawing.Point(164, 323)
 		self._Button_AnalysisOption.Name = "Button_AnalysisOption"
 		self._Button_AnalysisOption.Size = System.Drawing.Size(135, 35)
 		self._Button_AnalysisOption.TabIndex = 46
@@ -3428,7 +3478,7 @@ class IBIS_OptForm(Form):
 		# Button_Run
 		# 
 		self._Button_Run.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_Run.Location = System.Drawing.Point(316, 293)
+		self._Button_Run.Location = System.Drawing.Point(316, 323)
 		self._Button_Run.Name = "Button_Run"
 		self._Button_Run.Size = System.Drawing.Size(135, 35)
 		self._Button_Run.TabIndex = 42
@@ -3439,7 +3489,7 @@ class IBIS_OptForm(Form):
 		# Button_ResultView
 		# 
 		self._Button_ResultView.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_ResultView.Location = System.Drawing.Point(470, 293)
+		self._Button_ResultView.Location = System.Drawing.Point(470, 323)
 		self._Button_ResultView.Name = "Button_ResultView"
 		self._Button_ResultView.Size = System.Drawing.Size(135, 35)
 		self._Button_ResultView.TabIndex = 44
@@ -3452,7 +3502,7 @@ class IBIS_OptForm(Form):
 		#
 		self.def_Tx_model = ""
 		self.def_Rx_model = ""
-		self.ClientSize = System.Drawing.Size(618, 339)
+		self.ClientSize = System.Drawing.Size(618, 369)
 		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
@@ -3591,9 +3641,11 @@ class IBIS_OptForm(Form):
 			self._ComboBox_IBIS_Tx.Size = System.Drawing.Size(self._ComboBox_IBIS_Tx.Width + Gap_W/2, self._ComboBox_IBIS_Tx.Height)
 			self._ComboBox_Comp_Tx.Size = System.Drawing.Size(self._ComboBox_Comp_Tx.Width + Gap_W/2, self._ComboBox_Comp_Tx.Height)
 			self._ComboBox_Model_Tx.Size = System.Drawing.Size(self._ComboBox_Model_Tx.Width + Gap_W/2, self._ComboBox_Model_Tx.Height)
+			self._ComboBox_Buffer_Tx.Size = System.Drawing.Size(self._ComboBox_Buffer_Tx.Width + Gap_W/2, self._ComboBox_Buffer_Tx.Height)
 			self._ComboBox_IBIS_Rx.Size = System.Drawing.Size(self._ComboBox_IBIS_Rx.Width + Gap_W/2, self._ComboBox_IBIS_Rx.Height)
 			self._ComboBox_Comp_Rx.Size = System.Drawing.Size(self._ComboBox_Comp_Rx.Width + Gap_W/2, self._ComboBox_Comp_Rx.Height)
 			self._ComboBox_Model_Rx.Size = System.Drawing.Size(self._ComboBox_Model_Rx.Width + Gap_W/2, self._ComboBox_Model_Rx.Height)
+			self._ComboBox_Buffer_Rx.Size = System.Drawing.Size(self._ComboBox_Buffer_Rx.Width + Gap_W/2, self._ComboBox_Buffer_Rx.Height)
 			
 			# Relocate
 			self._GroupBox_Rx.Location = System.Drawing.Point(self._GroupBox_Rx.Location.X + Gap_W/2, self._GroupBox_Rx.Location.Y)
@@ -3652,9 +3704,16 @@ class IBIS_OptForm(Form):
 			####################
 			# 0.Initialization #
 			####################
+			self._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Window
+
 			self._DataGridView_Tx.Rows.Clear()
 			self._ComboBox_Comp_Tx.Items.Clear()
 			self._ComboBox_Model_Tx.Items.Clear()
+			self._ComboBox_Buffer_Tx.Items.Clear()
+
+			self._ComboBox_Comp_Tx.Text = ''
+			self._ComboBox_Model_Tx.Text = ''
+			self._ComboBox_Buffer_Tx.Text = ''
 
 			###############################
 			# 1.Get full path for Tx IBIS #
@@ -3712,7 +3771,7 @@ class IBIS_OptForm(Form):
 					self._ComboBox_Model_Tx.Items.Add(models)
 
 				# Set Default Model
-				for models in sub_DB.IBIS_Tx["Model Selector"].keys():					
+				for models in sub_DB.IBIS_Tx["Model Selector"].keys():
 					for model in sub_DB.IBIS_Tx["Model Selector"][models]:
 						for sub_model in model:
 							for def_model in sub_DB.Parsing_data['IBIS_Tx']:
@@ -3758,9 +3817,16 @@ class IBIS_OptForm(Form):
 			####################
 			# 0.Initialization #
 			####################
+			self._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Window
+
 			self._DataGridView_Rx.Rows.Clear()
 			self._ComboBox_Comp_Rx.Items.Clear()
 			self._ComboBox_Model_Rx.Items.Clear()
+			self._ComboBox_Buffer_Rx.Items.Clear()
+
+			self._ComboBox_Comp_Rx.Text = ''
+			self._ComboBox_Model_Rx.Text = ''
+			self._ComboBox_Buffer_Rx.Text = ''
 
 			###############################
 			# 1.Get full path for Tx IBIS #
@@ -3771,7 +3837,7 @@ class IBIS_OptForm(Form):
 					break
 
 			#########################
-			# 2.Parsing for Tx IBIS #
+			# 2.Parsing for Rx IBIS #
 			#########################			
 			sub_DB.IBIS_Rx = IBIS_Parsing(File)
 			#sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
@@ -3879,15 +3945,24 @@ class IBIS_OptForm(Form):
 		#self.IBIS_FormDoubleClick(self, sender)
 		self._ComboBox_Model_Tx.BackColor = System.Drawing.SystemColors.Window
 		self._DataGridView_Tx.Rows.Clear()
+		self._ComboBox_Buffer_Tx.Items.Clear()		
 		iter = 0
+
 		for item in sub_DB.IBIS_Tx["Model Selector"][self._ComboBox_Model_Tx.Text]:
+			if not item[0] in self._ComboBox_Buffer_Tx.Items:
+				self._ComboBox_Buffer_Tx.Items.Add(item[0])				
+
 			if item[0] == self.def_Tx_model:
 				self._DataGridView_Tx.Rows.Add(True, item[0], item[1])
 				self._DataGridView_Tx.Rows[iter].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+				self._ComboBox_Buffer_Tx.Text = item[0]				
 				iter += 1
+
 			else:
 				self._DataGridView_Tx.Rows.Add(False, item[0], item[1])
-				iter += 1		
+				self._ComboBox_Buffer_Tx.Text = 'Select'
+				self._ComboBox_Buffer_Tx.BackColor = System.Drawing.SystemColors.Info
+				iter += 1
 
 		#Gap = self._DataGridView_Tx_TextBoxColumn.Width + self._DataGridView_Tx_TextBoxColumn1.Width - 275
 		#self._GroupBox_Tx.Size = System.Drawing.Size(self._GroupBox_Tx.Width + Gap, self._GroupBox_Tx.Height)
@@ -3904,14 +3979,23 @@ class IBIS_OptForm(Form):
 		#self.IBIS_FormDoubleClick(self, sender)
 		self._ComboBox_Model_Rx.BackColor = System.Drawing.SystemColors.Window
 		self._DataGridView_Rx.Rows.Clear()
+		self._ComboBox_Buffer_Rx.Items.Clear()
 		iter = 0
+
 		for item in sub_DB.IBIS_Rx["Model Selector"][self._ComboBox_Model_Rx.Text]:
+			if not item[0] in self._ComboBox_Buffer_Rx.Items:
+				self._ComboBox_Buffer_Rx.Items.Add(item[0])
+
 			if item[0] == self.def_Rx_model:
 				self._DataGridView_Rx.Rows.Add(True, item[0], item[1])
 				self._DataGridView_Rx.Rows[iter].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+				self._ComboBox_Buffer_Rx.Text = item[0]
 				iter += 1
+
 			else:
 				self._DataGridView_Rx.Rows.Add(False, item[0], item[1])
+				self._ComboBox_Buffer_Rx.Text = 'Select'
+				self._ComboBox_Buffer_Rx.BackColor = System.Drawing.SystemColors.Info
 				iter += 1
 
 		#Gap = self._DataGridView_Rx_TextBoxColumn.Width + self._DataGridView_Rx_TextBoxColumn1.Width - 275
@@ -3923,6 +4007,14 @@ class IBIS_OptForm(Form):
 		#self.ClientSize = System.Drawing.Size(self.Size.Width + Gap, self.Size.Height)
 		#self._Button_View_Rx.Location = System.Drawing.Point(self._Button_View_Rx.Location.X + Gap, self._Button_View_Rx.Location.Y)
 		pass
+
+	def ComboBox_Buffer_TxSelectedIndexChanged(self, sender, e):
+
+		self._ComboBox_Buffer_Tx.BackColor = System.Drawing.SystemColors.Window
+
+	def ComboBox_Buffer_RxSelectedIndexChanged(self, sender, e):
+
+		self._ComboBox_Buffer_Rx.BackColor = System.Drawing.SystemColors.Window
 
 	def DataGridView_TxKeyPress(self, sender, e):
 		try:
@@ -4071,6 +4163,7 @@ class IBIS_OptForm(Form):
 		sub_DB.Option_Form.ShowDialog()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	def Button_RunClick(self, sender, e):
 =======
 	def Button_RunClick(self, sender, e):		
@@ -4093,6 +4186,33 @@ class IBIS_OptForm(Form):
 		self.Cursor = Cursors.Default
 		self._Button_ResultView.Enabled = True
 		sub_DB.IBIS_ResultForm.ShowDialog()
+=======
+	def Button_RunClick(self, sender, e):
+		flag, show_msg_flag, msg = IBIS_Check(self)
+		if flag:
+			IBIS_Init()
+			self.Cursor = Cursors.WaitCursor
+			sub_DB.IBIS_Result_Init_Flag = True
+			sub_DB.IBIS_ResultForm = IBIS_Case()		
+			sub_DB.IBIS_ResultForm.IBIS_CaseFormLoad(self, sender)		
+			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Results)
+			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Avg_Width)
+			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Avg_Margin)
+			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Worst_Width)
+			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Worst_Margin)
+			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Vref)
+			sub_DB.IBIS_ResultForm._DataGridView.Size = System.Drawing.Size(659, 300)
+			sub_DB.IBIS_ResultForm.Size = System.Drawing.Size(700, 390)
+			sub_DB.IBIS_ResultForm.Text = "IBIS Optimization Results"
+			IBIS_Opt_Run(self)
+			self.Cursor = Cursors.Default
+			self._Button_ResultView.Enabled = True
+			sub_DB.IBIS_ResultForm.ShowDialog()
+
+		else:
+			if show_msg_flag:
+				MessageBox.Show("The following entries are missing :\n\n" + msg + "\nPlease enter so that nothing is missing","Warning")
+>>>>>>> hotfix_v0.6.1
 
 	def Button_ResultViewClick(self, sender, e):
 		sub_DB.IBIS_ResultForm.ShowDialog()

@@ -2106,14 +2106,14 @@ class Eye_Form(Form):
 							IBIS_File_name = item.split('\\')[-1]
 							sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Items.Add(IBIS_File_name)
 							sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Items.Add(IBIS_File_name)										
-							Group, Match = IBIS_Identify(IBIS_File_name, sub_DB.Cenv)							
+							Group, Match = IBIS_Identify(IBIS_File_name, sub_DB.Cenv)
 							if Group == "Tx":								
 								sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = IBIS_File_name
 								sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Window
 							elif Group == "Rx":								
 								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = IBIS_File_name
 								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Window
-						# Target Net Setup				
+						
 						sub_DB.IBIS_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
 						sub_DB.IBIS_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)						
 						sub_DB.IBIS_Form.ShowDialog()
