@@ -15,7 +15,10 @@
     -. IBIS bug fix    
     -. Show result window for each IBIS cases
 
-[v0.5.4] - '22.08.08
+[v0.6] - '22.08.09
+    -. Release to SEC
+
+[v0.6.1] - '22.08.12
     -. Modify IBIS Optimization example (buffer -> pin import)
     -. Bug fix for IBIS New & pin import case
 '''
