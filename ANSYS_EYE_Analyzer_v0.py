@@ -35,7 +35,7 @@ sub_DB.start_time = time.strftime('%Y.%m.%d, %H:%M:%S')
 # Load Preserved Definition File #
 ##################################
 sub_DB.resource_dir = path + r'\Resources'
-File = sub_DB.resource_dir + r'\Ref.def'
+File = sub_DB.resource_dir + r'\config\Ref.def'
 Cenv = Load_env(File)
 Cenv["File"] = File
 sub_DB.Cenv = Cenv
@@ -45,9 +45,9 @@ Log("[Definition File] = %s" % File)
 # Load Preserved Configuration File #
 #####################################
 if sub_DB.Debug_Mode:    
-    File = sub_DB.resource_dir + r'\Ref.cnf'
+    File = sub_DB.resource_dir + r'\config\Ref.cnf'
 else:
-    File = sub_DB.resource_dir + r'\Ref.cnf'
+    File = sub_DB.resource_dir + r'\config\Ref.cnf'
 Uenv = Load_env(File)
 Uenv["File"] = File
 sub_DB.Uenv = Uenv

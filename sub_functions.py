@@ -362,7 +362,7 @@ def Plot_Eye(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Bitmap_Flag
 
 		# for Old Eye
 		else:
-			Vref = float(sub_DB.Eye_Form._TextBox_Vref.Text)
+			Vref = float(sub_DB.Vref)
 
 			V_IHAC_DQ = Vref + float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
 			V_ILAC_DQ = Vref - float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)		
@@ -525,7 +525,7 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 
 		# for Old Eye
 		else:
-			Vref = float(sub_DB.Eye_Form._TextBox_Vref.Text)
+			Vref = float(sub_DB.Vref)
 
 			V_IHAC_DQ = Vref + float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
 			V_ILAC_DQ = Vref - float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)		
@@ -1992,12 +1992,27 @@ def ReleaseObject(obj):
 	System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
 	System.GC.Collect()
 
-def Initial():
+def Initial(Init_AEDT = True):
+	'''
+	Initialize level for AEDT object
+		0 : Initialize all
+		1 : Initialize Project
+		2 : Initialize Design
+		3 : Initialize Nothing
+	'''
 	Log("\n\n")
 	sub_DB.TBD_flag = True
 	sub_DB.CSV_flag = True
 	sub_ScriptEnv.Release()
-	sub_DB.AEDT = {}
+	if Init_AEDT:	
+		sub_DB.AEDT = {}	
+	#elif level == 1: # Initialize Project
+	#	sub_DB.AEDT = {}
+	#elif level == 2: # Initialize Design
+	#	pass
+	#elif level == 3: # Initialize Nothing
+	#	pass
+	
 	sub_DB.Eye_Form._TextBox_VcentDQ.Text = "Auto"	
 	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()
 	
@@ -2171,10 +2186,53 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 
 								if '$end \'Compdefs\'' in temp_data:
 									flag = False
+		
+		IBIS_Tx = []
+		IBIS_Rx = []		
+		flag1 = True
+		flag2 = True
+		with open(File) as fp:
+			while(flag1):
+				# Read line
+				flag2 = True
+				temp_data = fp.readline()				
+				if '$begin \'Compinst\'' in temp_data:					
+					while(flag2):
+						# Read line
+						temp_data = fp.readline()
+
+						if 'CompName' in temp_data:							
+							model = temp_data.split("=")[-1].replace('\'','').strip()							
+							tx_flag = False
+							save_flag = False
+							while(1):
+								# Read line
+								temp_data = fp.readline()
+								if 'buffer_mode' in temp_data:
+									save_flag = True
+
+								if 'UIorBPSValue' in temp_data:
+									tx_flag = True									
+
+								if '$end \'Compinst\'' in temp_data:
+									flag2 = False
+									break
+							if save_flag:
+								if tx_flag:
+									if not model in IBIS_Tx:
+										IBIS_Tx.append(model)
+								else:
+									if not model in IBIS_Rx:
+										IBIS_Rx.append(model)
+
+				if '$end \'CompInstances\'' in temp_data:
+					flag1 = False
 
 		DB['IBIS_File'] = IBIS_files
 		DB['IBIS_Component'] = IBIS_default_Comp
 		DB['IBIS_Model'] = IBIS_default_Model
+		DB['IBIS_Tx'] = IBIS_Tx
+		DB['IBIS_Rx'] = IBIS_Rx
 		
 	return DB
 

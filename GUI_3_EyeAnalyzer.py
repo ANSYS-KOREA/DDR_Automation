@@ -392,7 +392,7 @@ class Eye_Form(Form):
 		# toolStrip_Input_Button
 		#
 		#File = path + r'\Resources\open-folder.png'
-		File = path + r'\Resources\folder.png'
+		File = path + r'\Resources\fig\folder.png'
 		self._toolStrip_Input_Button.AutoToolTip = False
 		self._toolStrip_Input_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_Input_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -413,7 +413,7 @@ class Eye_Form(Form):
 		#
 		# toolStrip_DefLoad_Button
 		#
-		File = path + r'\Resources\import.png'
+		File = path + r'\Resources\fig\import.png'
 		self._toolStrip_DefLoad_Button.AutoToolTip = False
 		self._toolStrip_DefLoad_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_DefLoad_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -429,7 +429,7 @@ class Eye_Form(Form):
 		#
 		# toolStrip_DefEdit_Button
 		#
-		File = path + r'\Resources\edit.png'
+		File = path + r'\Resources\fig\edit.png'
 		self._toolStrip_DefEdit_Button.AutoToolTip = False
 		self._toolStrip_DefEdit_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_DefEdit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -450,7 +450,7 @@ class Eye_Form(Form):
 		#
 		# toolStrip_CnfLoad_Button
 		#
-		File = path + r'\Resources\import.png'
+		File = path + r'\Resources\fig\import.png'
 		self._toolStrip_CnfLoad_Button.AutoToolTip = False
 		self._toolStrip_CnfLoad_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_CnfLoad_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -466,7 +466,7 @@ class Eye_Form(Form):
 		#
 		# toolStrip_CnfSave_Button
 		#
-		File = path + r'\Resources\save.png'
+		File = path + r'\Resources\fig\save.png'
 		self._toolStrip_CnfSave_Button.AutoToolTip = False
 		self._toolStrip_CnfSave_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_CnfSave_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -482,7 +482,7 @@ class Eye_Form(Form):
 		#
 		# toolStrip_CnfEdit_Button
 		#
-		File = path + r'\Resources\edit.png'
+		File = path + r'\Resources\fig\edit.png'
 		self._toolStrip_CnfEdit_Button.AutoToolTip = False
 		self._toolStrip_CnfEdit_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_CnfEdit_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -503,7 +503,7 @@ class Eye_Form(Form):
 		#
 		# toolStrip_Option_Button
 		#
-		File = path + r'\Resources\options.png'
+		File = path + r'\Resources\fig\options.png'
 		self._toolStrip_Option_Button.AutoToolTip = False
 		self._toolStrip_Option_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_Option_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -519,7 +519,7 @@ class Eye_Form(Form):
 		#
 		# toolStrip_IBIS_Button
 		#
-		File = path + r'\Resources\IBIS.png'
+		File = path + r'\Resources\fig\IBIS.png'
 		self._toolStrip_IBIS_Button.AutoToolTip = False
 		self._toolStrip_IBIS_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_IBIS_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -535,7 +535,7 @@ class Eye_Form(Form):
 		#
 		# toolStrip_Batch_Button
 		#
-		File = path + r'\Resources\batch.png'
+		File = path + r'\Resources\fig\batch.png'
 		self._toolStrip_Batch_Button.AutoToolTip = False
 		self._toolStrip_Batch_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStrip_Batch_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -557,7 +557,7 @@ class Eye_Form(Form):
 		# 
 		# toolStripSplit_Help_Button
 		# 
-		File = path + r'\Resources\help.png'
+		File = path + r'\Resources\fig\help.png'
 		self._toolStripSplit_Help_Button.AutoToolTip = False
 		self._toolStripSplit_Help_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._toolStripSplit_Help_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
@@ -614,7 +614,7 @@ class Eye_Form(Form):
 		# 
 		# PictureBox_OldEye
 		# 
-		File = path + "\\Resources\\EYE_Measuer_Old.jpg"
+		File = path + "\\Resources\\fig\\EYE_Measuer_Old.jpg"
 		self._PictureBox_OldEye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_OldEye.ErrorImage = None
 		self._PictureBox_OldEye.Image = Bitmap(File)
@@ -627,7 +627,7 @@ class Eye_Form(Form):
 		# 
 		# PictureBox_NewEye
 		#
-		File = path + "\\Resources\\EYE_Measuer_New.jpg"
+		File = path + "\\Resources\\fig\\EYE_Measuer_New.jpg"
 		self._PictureBox_NewEye.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
 		self._PictureBox_NewEye.ErrorImage = None
 		self._PictureBox_NewEye.Image = Bitmap(File)
@@ -1670,7 +1670,7 @@ class Eye_Form(Form):
 		
 		self.Controls.Add(self._MenuStrip)
 		self.MainMenuStrip = self._MenuStrip
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Eye_Form"
@@ -1835,7 +1835,7 @@ class Eye_Form(Form):
 				Cenv = Load_env(File)
 				Cenv["File"] = File
 				sub_DB.Cenv = Cenv
-				Initial()
+				Initial(True)
 				self._ComboBox_DDRGen.Items.Clear()
 				self._ComboBox_DataRate.Items.Clear()
 				
@@ -2096,8 +2096,7 @@ class Eye_Form(Form):
 
 					else:
 						File = self._TextBox_InputFile.Text
-						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
-
+						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)						
 						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = "Select"						
 						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = "Select"
 						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Info
@@ -2141,11 +2140,11 @@ class Eye_Form(Form):
 		pass
 
 	def Help_DDRHelp_ToolStripMenuItemClick(self, sender, e):		
-		os.startfile(path + r'\Resources\User_Guide.pdf')
+		os.startfile(path + r'\Resources\help\User_Guide.pdf')
 		pass
 
 	def Help_DDRGuid_ToolStripMenuItemClick(self, sender, e):
-		os.startfile(path + r'\Resources\Quick_Guide.pdf')
+		os.startfile(path + r'\Resources\help\Quick_Guide.pdf')
 		pass
 
 	def Help_DDRNew_ToolStripMenuItemClick(self, sender, e):
@@ -2719,6 +2718,8 @@ class Eye_Form(Form):
 						self._Button_Analyze.Enabled = True
 						self._Button_Analyze.BackColor = System.Drawing.SystemColors.Info
 						break
+			sub_DB.datarate = int(self._ComboBox_DataRate.Text)
+			sub_DB.UI = 1.0/(sub_DB.datarate*1e6)*1e12
 
 		except Exception as e:			
 			Log("[DDR datarate] = Failed")
@@ -2735,7 +2736,7 @@ class Eye_Form(Form):
 				self.Init_Flag = True
 				self._CheckedListBox_ReportName.SetItemChecked(e.Index, e.NewValue)
 
-				Initial()
+				Initial(True)				
 				sub_AEDT.Get_AEDT_Info(self, self._TextBox_InputFile.Text)
 				self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 
@@ -2763,7 +2764,8 @@ class Eye_Form(Form):
 			self.Init_Flag = True
 			self._ComboBox_Design.Text = ""
 			dialog = OpenFileDialog()			
-			dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
+			#dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
+			dialog.Filter = "AEDT Project file|*.aedt"
 
 			if dialog.ShowDialog(self) == DialogResult.OK:
 				File = dialog.FileName
@@ -2778,7 +2780,7 @@ class Eye_Form(Form):
 				self._TextBox_InputFile.Text = File
 
 				extension = File.split("\\")[-1].split(".")[-1] # Get File Extension				
-				Initial()
+				Initial(True)
 
 				# for *.aedt File
 				if extension == "aedt":					
@@ -2955,7 +2957,8 @@ class Eye_Form(Form):
 				self.Text = " : ".join(sub_DB.Title)
 
 			else:
-				MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
+				#MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
+				MessageBox.Show("Please Select the Input File(*.aedt)","Warning")
 
 			# Set ToopTip
 			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			
@@ -3396,7 +3399,7 @@ class Eye_Form(Form):
 		File.append(r'D:\1_Work\20220106_DDR_Compliance\1_Work\CNF\4.cnf')
 
 		for CNF_file in File:
-			Initial()
+			Initial(True)
 			Debug_Load_CNF(self, sender, CNF_file)
 			self.Button_ViewNetClick(self, sender)
 			self.Button_AnalyzeClick(self, sender)						

@@ -139,7 +139,7 @@ class EnvEditor(Form):
 		self.Controls.Add(self._Button_SaveAs)
 		self.Controls.Add(self._RichTextBox)
 		self.Controls.Add(self._TreeView)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent		
 		self.Name = "Env_Editor"
@@ -570,7 +570,7 @@ class NetForm(Form):
 		self._ComboBox_AnalyzeGroup.FormattingEnabled = True
 		self._ComboBox_AnalyzeGroup.Location = System.Drawing.Point(121, 801)
 		self._ComboBox_AnalyzeGroup.Name = "ComboBox_AnalyzeGroup"
-		self._ComboBox_AnalyzeGroup.Items.AddRange(System.Array[System.Object](["None","Byte0","Byte1","Byte2","Byte3"]))
+		self._ComboBox_AnalyzeGroup.Items.AddRange(System.Array[System.Object](["None","CA", "Byte0","Byte1","Byte2","Byte3"]))
 		self._ComboBox_AnalyzeGroup.Size = System.Drawing.Size(125, 21)
 		self._ComboBox_AnalyzeGroup.TabIndex = 40		
 		# 
@@ -696,7 +696,7 @@ class NetForm(Form):
 		self.Controls.Add(self._Button_Close)				
 		self.Controls.Add(self._Label_GroupName)
 		self.Controls.Add(self._DataGridView)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)
@@ -1501,7 +1501,7 @@ class CalForm(Form):
 		self.ClientSize = System.Drawing.Size(324, 74)
 		self.Controls.Add(self._ProgressBar_Vref)
 		self.Controls.Add(self._Label_Vref)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(Location[0], Location[1])		
@@ -2104,7 +2104,7 @@ class OptionForm(Form):
 		self.Controls.Add(self._GroupBox_Comp)
 		self.Controls.Add(self._Button_OK)
 		self.Controls.Add(self._Button_Cancel)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Option_Form"
@@ -2780,7 +2780,7 @@ class ComplianceForm(Form):
 		self.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
 		self.Checked_Num = 0
 		self.Init_flag = True
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(sub_DB.Option_Form.Location.X + sub_DB.Option_Form.Size.Width*2, sub_DB.Option_Form.Location.Y + sub_DB.Option_Form.Size.Height)
@@ -3462,7 +3462,7 @@ class IBIS_OptForm(Form):
 		self.Controls.Add(self._Button_CaseView)
 		self.Controls.Add(self._GroupBox_Tx)
 		self.Controls.Add(self._Button_Run)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.Name = "IBIS_Form"
 		self.Text = "IBIS Optimizer"
@@ -3537,7 +3537,7 @@ class IBIS_OptForm(Form):
 					#########################					
 					sub_DB.IBIS_Rx = IBIS_Parsing(File)
 					#sub_DB.IBISInfo_Rx_Form = IBIS_Viwer(File, False)
-
+					
 					###################
 					# 3.Add Component #
 					###################				
@@ -3647,7 +3647,7 @@ class IBIS_OptForm(Form):
 		self.FormSize_H = self.Size.Height
 
 	def ComboBox_IBIS_TxSelectedIndexChanged(self, sender, e):		
-		try:
+		try:			
 			self.Cursor = Cursors.WaitCursor
 			####################
 			# 0.Initialization #
@@ -3666,10 +3666,10 @@ class IBIS_OptForm(Form):
 
 			#########################
 			# 2.Parsing for Tx IBIS #
-			#########################			
+			#########################
 			sub_DB.IBIS_Tx = IBIS_Parsing(File)
 			#sub_DB.IBISInfo_Tx_Form = IBIS_Viwer(File, True)
-
+			
 			###################
 			# 3.Add Component #
 			###################
@@ -3692,26 +3692,43 @@ class IBIS_OptForm(Form):
 			################
 			# 5.Add Models #
 			################
+			oProject = sub_DB.AEDT['Project']
+			oDesktop = sub_DB.AEDT['Desktop']		
+			oDesign = sub_DB.AEDT['Design']	
+			oDesktop.RestoreWindow()			
+			oEditor = oDesign.SetActiveEditor("SchematicEditor")
+			comp_array = oEditor.GetAllComponents()			
+			
+			temp = []
+			for model in sub_DB.Parsing_data['IBIS_Model']:
+				for comp in comp_array:
+					if model in comp:
+						if not model in temp:
+							temp.append(model)
+
 			# If [Model Selector] exists
 			if not len(sub_DB.IBIS_Tx["Model Selector"]) == 0:
 				for models in sub_DB.IBIS_Tx["Model Selector"].keys():
 					self._ComboBox_Model_Tx.Items.Add(models)
-			
+
 				# Set Default Model
-				for models in sub_DB.IBIS_Tx["Model Selector"].keys():				
-					for model in sub_DB.IBIS_Tx["Model Selector"][models]:					
-						if model[0] in sub_DB.Parsing_data['IBIS_Model']:
-							self.def_Tx_model = model[0]
-							self._ComboBox_Model_Tx.Text = models
-							break
+				for models in sub_DB.IBIS_Tx["Model Selector"].keys():					
+					for model in sub_DB.IBIS_Tx["Model Selector"][models]:
+						for sub_model in model:
+							for def_model in sub_DB.Parsing_data['IBIS_Tx']:
+								if sub_model in def_model:
+									self.def_Tx_model = sub_model
+									self._ComboBox_Model_Tx.Text = models
+									break
 
 			# If [Model Selector] is not exists
 			else:				
 				self._ComboBox_Model_Tx.Text = "N/A"
 				for model in sub_DB.IBIS_Tx["Model"]:
-					if model in sub_DB.Parsing_data['IBIS_Model']:
-						self.def_Tx_model = model
-						break
+					for def_model in sub_DB.Parsing_data['IBIS_Tx']:
+						if model in def_model:					
+							self.def_Tx_model = model
+							break
 				iter = 0
 				for model in sub_DB.IBIS_Tx["Model"]:
 					if model == self.def_Tx_model:
@@ -3781,26 +3798,43 @@ class IBIS_OptForm(Form):
 			################
 			# 5.Add Models #
 			################
+			oProject = sub_DB.AEDT['Project']
+			oDesktop = sub_DB.AEDT['Desktop']		
+			oDesign = sub_DB.AEDT['Design']	
+			oDesktop.RestoreWindow()			
+			oEditor = oDesign.SetActiveEditor("SchematicEditor")
+			comp_array = oEditor.GetAllComponents()			
+			
+			temp = []
+			for model in sub_DB.Parsing_data['IBIS_Model']:
+				for comp in comp_array:
+					if model in comp:
+						if not model in temp:
+							temp.append(model)
+
 			# If [Model Selector] exists
 			if not len(sub_DB.IBIS_Rx["Model Selector"]) == 0:
 				for models in sub_DB.IBIS_Rx["Model Selector"].keys():
 					self._ComboBox_Model_Rx.Items.Add(models)
-			
+
 				# Set Default Model
-				for models in sub_DB.IBIS_Rx["Model Selector"].keys():				
-					for model in sub_DB.IBIS_Rx["Model Selector"][models]:					
-						if model[0] in sub_DB.Parsing_data['IBIS_Model']:
-							self.def_Rx_model = model[0]
-							self._ComboBox_Model_Rx.Text = models
-							break
+				for models in sub_DB.IBIS_Rx["Model Selector"].keys():					
+					for model in sub_DB.IBIS_Rx["Model Selector"][models]:
+						for sub_model in model:
+							for def_model in sub_DB.Parsing_data['IBIS_Rx']:
+								if sub_model in def_model:
+									self.def_Rx_model = sub_model
+									self._ComboBox_Model_Rx.Text = models
+									break
 
 			# If [Model Selector] is not exists
 			else:				
 				self._ComboBox_Model_Rx.Text = "N/A"
 				for model in sub_DB.IBIS_Rx["Model"]:
-					if model in sub_DB.Parsing_data['IBIS_Model']:
-						self.def_Rx_model = model
-						break
+					for def_model in sub_DB.Parsing_data['IBIS_Rx']:
+						if model in def_model:					
+							self.def_Rx_model = model
+							break
 				iter = 0
 				for model in sub_DB.IBIS_Rx["Model"]:
 					if model == self.def_Rx_model:
@@ -4036,7 +4070,11 @@ class IBIS_OptForm(Form):
 		sub_DB.Option_Form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
 		sub_DB.Option_Form.ShowDialog()
 
+<<<<<<< HEAD
 	def Button_RunClick(self, sender, e):
+=======
+	def Button_RunClick(self, sender, e):		
+>>>>>>> release
 		IBIS_Init()
 		self.Cursor = Cursors.WaitCursor
 		sub_DB.IBIS_Result_Init_Flag = True
@@ -4179,7 +4217,7 @@ class IBIS_Viwer(Form):
 		self.Controls.Add(self._label1)
 		self.Controls.Add(self._richTextBox1)
 		self.Controls.Add(self._treeView1)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.Name = "MainForm"
 		if Flag:
@@ -4926,7 +4964,7 @@ class IBIS_Case(Form):
 		self.Controls.Add(self._Button_Delete)
 		self.Controls.Add(self._Button_Add)
 		self.Controls.Add(self._DataGridView)
-		IconFile = path + "\\Resources\\LOGO.ico"
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.Manual		
 		self.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)

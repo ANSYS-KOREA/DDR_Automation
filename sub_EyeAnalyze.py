@@ -1593,9 +1593,6 @@ def Old_SetupHold(self):
 		EXIT()
 
 
-
-
-
 ##########################################################################################
 # sub functions #
 ##########################################################################################
@@ -1822,7 +1819,7 @@ def Setup_Hold(self):
     #####################################
 	try:
 		Log("		(Load Data setup & hold spec.) = Start")		
-		File = path + r'\Resources\Compliance_Spec_DDR4.xlsx'
+		File = path + r'\Resources\spec\Compliance_Spec_DDR4.xlsx'
 		# Open Excel spec. file and set Excel instances		
 		try:
 			xlApp = Excel.ApplicationClass()
@@ -2232,7 +2229,9 @@ def Measure_Eye(self, Location):
 		else:
 			# Default - Same as VB
 			if sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 0:
-				for key in Waveform:				
+				for key in Waveform:
+					setuptime_list = []
+					holdtime_list = []
 					sub_DB.Cal_Form._ProgressBar_Vref.Value += 1
 					
 					toff = 0
@@ -2260,24 +2259,28 @@ def Measure_Eye(self, Location):
 							v2 = Waveform[key][i]
 
 							if v1 < V_high and v2 > V_high: # V_high crossing point for rising transition
-								crosstime = Interpolate_VB(t1, t2, v1, v2, V_high)
+								crosstime = Interpolate_VB(t1, t2, v1, v2, V_high)								
 								if crosstime > setuptime and crosstime < pw:
 									setuptime = crosstime
+									setuptime_list.append(crosstime)
 
 							if v1 > V_high and v2 < V_high: # V_high crossing point for falling transition
-								crosstime = Interpolate_VB(t1, t2, v1, v2, V_high)
+								crosstime = Interpolate_VB(t1, t2, v1, v2, V_high)								
 								if crosstime < holdtime and crosstime > pw:
 									holdtime = crosstime
+									holdtime_list.append(holdtime)
 
 							if v1 < V_low and v2 > V_low: # V_low crossing point for rising transition
-								crosstime = Interpolate_VB(t1, t2, v1, v2, V_low)
+								crosstime = Interpolate_VB(t1, t2, v1, v2, V_low)								
 								if crosstime < holdtime and crosstime > pw:
 									holdtime = crosstime
+									holdtime_list.append(holdtime)
 
 							if v1 > V_low and v2 < V_low: # V_low crossing point for falling transition
-								crosstime = Interpolate_VB(t1, t2, v1, v2, V_low)
+								crosstime = Interpolate_VB(t1, t2, v1, v2, V_low)								
 								if crosstime > setuptime and crosstime < pw:
 									setuptime = crosstime
+									setuptime_list.append(crosstime)
 
 					# Calculate eye width, jitter, and margin
 					width = int(round((holdtime - setuptime)*1000))
@@ -2288,7 +2291,9 @@ def Measure_Eye(self, Location):
 					Eye_Measure_Results[key] = []
 					Eye_Measure_Results[key].append(width)
 					Eye_Measure_Results[key].append(jitter)
-					Eye_Measure_Results[key].append(margin)
+					Eye_Measure_Results[key].append(margin)					
+					Eye_Measure_Results[key].append(setuptime_list)
+					Eye_Measure_Results[key].append(holdtime_list)
 
 			# Auto-delay
 			elif sub_DB.Option_Form._ComboBox_Analyze.SelectedIndex == 1:
@@ -2494,32 +2499,58 @@ def Measure_Eye(self, Location):
 				if not row.Cells[4].Value in Group:
 					Group.append(row.Cells[4].Value)
 
-		# Initialize
+		# Initialize - for Auto-delay / Tr-by-Tr / Latest Method
 		Group_Eye_Measure_Result = {}
-		for key in Group:
+		for key in Group:			
 			Group_Eye_Measure_Result[key] = []
-			T_Vhigh=[]
-			T_Vlow=[]
-			T_Vref=[]		
-			for row in sub_DB.Net_Form._DataGridView.Rows:		
-				if key == row.Cells[4].Value:				
+			setuptime = []
+			holdtime = []			
+			for row in sub_DB.Net_Form._DataGridView.Rows:
+				if key == row.Cells[4].Value:
 					for data in Eye_Measure_Results[row.Cells[1].Value][3]:
-						T_Vhigh.append(data)
+						setuptime.append(data)
 					for data in Eye_Measure_Results[row.Cells[1].Value][4]:
-						T_Vref.append(data)
-					for data in Eye_Measure_Results[row.Cells[1].Value][5]:
-						T_Vlow.append(data)
+						holdtime.append(data)					
+						
 
-			margin = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)])) - float(self._TextBox_TdIVW.Text)*UI
-			jitter = max(T_Vref) - min(T_Vref)
-			#width = UI - jitter
-			width = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)]))
+			width = int(round((min(holdtime) - max(setuptime))*1000))
+			margin = int(round((min(holdtime) - max(setuptime) - pw*float(self._TextBox_TdIVW.Text))*1000))
+			jitter = 0
 
 			for row in sub_DB.Net_Form._DataGridView.Rows:
 				if key == row.Cells[4].Value:
 					Eye_Measure_Results[row.Cells[1].Value][0] = width
 					Eye_Measure_Results[row.Cells[1].Value][1] = jitter
-					Eye_Measure_Results[row.Cells[1].Value][2] = margin		
+					Eye_Measure_Results[row.Cells[1].Value][2] = margin
+
+		# Initialize - for Auto-delay / Tr-by-Tr / Latest Method
+		#Group_Eye_Measure_Result = {}
+		#for key in Group:
+		#	print "key:%s" % key
+		#	Group_Eye_Measure_Result[key] = []
+		#	T_Vhigh=[]
+		#	T_Vlow=[]
+		#	T_Vref=[]
+		#	for row in sub_DB.Net_Form._DataGridView.Rows:				
+		#		print Eye_Measure_Results[row.Cells[1].Value]
+		#		if key == row.Cells[4].Value:
+		#			for data in Eye_Measure_Results[row.Cells[1].Value][3]:
+		#				T_Vhigh.append(data)
+		#			for data in Eye_Measure_Results[row.Cells[1].Value][4]:
+		#				T_Vref.append(data)
+		#			for data in Eye_Measure_Results[row.Cells[1].Value][5]:
+		#				T_Vlow.append(data)
+
+		#	margin = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)])) - float(self._TextBox_TdIVW.Text)*UI
+		#	jitter = max(T_Vref) - min(T_Vref)
+		#	#width = UI - jitter
+		#	width = UI - (max([max(T_Vhigh), max(T_Vlow)]) - min([min(T_Vhigh), min(T_Vlow)]))
+
+		#	for row in sub_DB.Net_Form._DataGridView.Rows:
+		#		if key == row.Cells[4].Value:
+		#			Eye_Measure_Results[row.Cells[1].Value][0] = width
+		#			Eye_Measure_Results[row.Cells[1].Value][1] = jitter
+		#			Eye_Measure_Results[row.Cells[1].Value][2] = margin		
 
 		sub_DB.Eye_Measure_Results = Eye_Measure_Results
 		Log("		(Eye Measure) = Done")

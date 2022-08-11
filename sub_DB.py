@@ -1,6 +1,32 @@
-Version = "v0.5"
+# -*- coding: utf-8 -*-
+'''
+[v0.5.1] - '22.08.06
+    -. Eye 계측 Algorithm Classic Version(VB) 으로 변경 후, Excel report 생성 bug 수정
+    -. Resource 폴더 정리
+    -. 예제 Archive file 추가
+    -. CSV input disable
+
+[v0.5.2] - '22.08.07
+    -. Excel report format 변경
+    -. Jitter, Jitter_RMS 열 삭제
+    -. Width & Margin UI 단위 열 추가
+
+[v0.5.3] - '22.08.08
+    -. IBIS bug fix    
+    -. Show result window for each IBIS cases
+
+[v0.6] - '22.08.09
+    -. Release to SEC
+'''
+
+
+
+Version = "v0.6"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
+
+datarate = ""
+UI = ""
 
 start_time = ""
 Start_Form = ""
@@ -33,7 +59,6 @@ Cenv = {}
 Uenv = {}
 
 AEDT = {}
-
 # Eye_flag
 #   True = New Eye
 #   False = Old Eye
