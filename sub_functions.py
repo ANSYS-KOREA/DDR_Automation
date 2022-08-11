@@ -630,6 +630,101 @@ def Gen_waveform_file(Input_File, Plot_list, Group_flag):
 		MessageBox.Show("Fail to plot eye","Warning")						
 		EXIT()
 
+def IBIS_Check(self):
+	flag = True
+	show_msg_flag = False
+	msg = ""
+
+	self._DataGridView_Tx
+	self._DataGridView_Rx
+
+	if self._ComboBox_IBIS_Tx.Text == 'Select':
+		msg += "   * Tx IBIS File\n"
+		flag = False
+		show_msg_flag = True
+
+	if self._ComboBox_IBIS_Rx.Text == 'Select':
+		msg += "   * Rx IBIS File\n"
+		flag = False
+		show_msg_flag = True
+
+	#if self._ComboBox_Comp_Tx.Text == '':
+	#	msg += "   * Tx IBIS Component\n"
+	#	flag = False
+	#	show_msg_flag = True
+
+	#if self._ComboBox_Comp_Rx.Text == '':
+	#	msg += "   * Rx IBIS Component\n"
+	#	flag = False
+	#	show_msg_flag = True
+
+	#if self._ComboBox_Model_Tx.Text == '':
+	#	msg += "   * Tx IBIS Model\n"
+	#	flag = False
+	#	show_msg_flag = True
+
+	#if self._ComboBox_Model_Rx.Text == '':
+	#	msg += "   * Rx IBIS Model\n"
+	#	flag = False
+	#	show_msg_flag = True
+
+	if self._ComboBox_Buffer_Tx.Text == 'Select' or self._ComboBox_Buffer_Tx.Text == '':
+		msg += "   * Tx IBIS Buffer\n"
+		flag = False
+		show_msg_flag = True
+
+	if self._ComboBox_Buffer_Rx.Text == 'Select' or self._ComboBox_Buffer_Rx.Text == '':
+		msg += "   * Rx IBIS Buffer\n"
+		flag = False
+		show_msg_flag = True
+
+	if not self._DataGridView_Tx.Rows.Count == 0:
+		iter = 0
+		for row in self._DataGridView_Tx.Rows:		
+			if row.Cells[0].Value:
+				iter = 1
+				break
+
+		if iter == 0:
+			flag = False
+			show_msg_flag = False
+			MessageBox.Show("At least one buffer model for Tx must be selected")
+
+	if not self._DataGridView_Rx.Rows.Count == 0:
+		iter = 0
+		for row in self._DataGridView_Rx.Rows:
+			if row.Cells[0].Value:
+				iter = 1
+				break
+
+		if iter == 0:
+			flag = False
+			show_msg_flag = False
+			MessageBox.Show("At least one buffer model for Rx must be selected")
+
+	if flag:
+		if not self._ComboBox_Buffer_Tx.Text in sub_DB.Cenv['<Tx>[IBIS Model Identification]']:
+			sub_DB.Cenv['<Tx>[IBIS Model Identification]'].append(sub_DB.IBIS_Form._ComboBox_Buffer_Tx.Text)			
+			sub_DB.Parsing_data = AEDT_Parsing(sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.Eye_Form._ComboBox_Design.Text, True)
+
+		if len(sub_DB.Parsing_data['IBIS_Tx_comp']) == 0:
+			flag = False
+			show_msg_flag = False
+			self._ComboBox_Buffer_Tx.BackColor = System.Drawing.SystemColors.Info
+			MessageBox.Show("Init. Buffer for Tx seems to have been selected incorrectly. \nPlease choose again")
+
+		if not self._ComboBox_Buffer_Rx.Text in sub_DB.Cenv['<Rx>[IBIS Model Identification]']:
+			sub_DB.Cenv['<Rx>[IBIS Model Identification]'].append(sub_DB.IBIS_Form._ComboBox_Buffer_Rx.Text)			
+			sub_DB.Parsing_data = AEDT_Parsing(sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.Eye_Form._ComboBox_Design.Text, True)
+
+		if len(sub_DB.Parsing_data['IBIS_Rx_comp']) == 0:
+			flag = False
+			show_msg_flag = False
+			self._ComboBox_Buffer_Rx.BackColor = System.Drawing.SystemColors.Info
+			MessageBox.Show("Init. Buffer for Rx seems to have been selected incorrectly. \nPlease choose again")
+
+	return flag, show_msg_flag, msg
+
 def Check_Input(self):
 	flag = True
 	show_msg_flag = False
@@ -2184,52 +2279,78 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 									flag = False
 		
 		IBIS_Tx = []
-		IBIS_Rx = []		
+		IBIS_Rx = []
+		IBIS_Tx_comp = []
+		IBIS_Rx_comp = []
 		flag1 = True
 		flag2 = True
+		
 		with open(File) as fp:
 			while(flag1):
 				# Read line
 				flag2 = True
-				temp_data = fp.readline()				
+				temp_data = fp.readline()
+				
 				if '$begin \'Compinst\'' in temp_data:					
 					while(flag2):
 						# Read line
 						temp_data = fp.readline()
+						if 'CompName' in temp_data:
+							comp = temp_data.split("=")[-1].replace('\'', '').strip()
 
-						if 'CompName' in temp_data:							
-							model = temp_data.split("=")[-1].replace('\'','').strip()							
+						#MenuValueProp('model', 'OD', 'Name of model (required)', 'DQ_RON34_ODT_OFF,DQ_ODT_120,DQ_ODT_20,DQ_ODT_30,DQ_ODT_60,DQ_RON40_ODT_OFF,DQ_ODT_40', 4, Attrs(Info('', 0, '', IsUnconstrained=false), 'In', 'BeforeAnalogSolver', false, false, false, '', false, false))
+						if '$begin \'Parameters\'' in temp_data:
 							tx_flag = False
 							save_flag = False
+
 							while(1):
 								# Read line
 								temp_data = fp.readline()
-								if 'buffer_mode' in temp_data:
-									save_flag = True
 
-								if 'UIorBPSValue' in temp_data:
-									tx_flag = True									
+								if 'MenuValueProp(\'model\'' in temp_data:
+									model_list = temp_data.split("\',")[3].replace('\'','').strip().split(",")
+									model_idx = temp_data.split("\',")[4].strip().split(',')[0]
+									model = model_list[int(model_idx)]
+
+									for key in sub_DB.Cenv['<Tx>[IBIS Model Identification]']:
+										if key.lower() in model.lower():
+											if not comp in IBIS_Tx_comp:
+												IBIS_Tx_comp.append(comp)
+											if not model in IBIS_Tx:
+												IBIS_Tx.append(model)
+												break
+
+									for key in sub_DB.Cenv['<Rx>[IBIS Model Identification]']:
+										if key.lower() in model.lower():
+											if not comp in IBIS_Rx_comp:
+												IBIS_Rx_comp.append(comp)
+											if not model in IBIS_Rx:
+												IBIS_Rx.append(model)
+												break
 
 								if '$end \'Compinst\'' in temp_data:
-									flag2 = False
+									flag2 = False									
 									break
-							if save_flag:
-								if tx_flag:
-									if not model in IBIS_Tx:
-										IBIS_Tx.append(model)
-								else:
-									if not model in IBIS_Rx:
-										IBIS_Rx.append(model)
 
 				if '$end \'CompInstances\'' in temp_data:
 					flag1 = False
+					#print "END"
 
 		DB['IBIS_File'] = IBIS_files
 		DB['IBIS_Component'] = IBIS_default_Comp
 		DB['IBIS_Model'] = IBIS_default_Model
 		DB['IBIS_Tx'] = IBIS_Tx
 		DB['IBIS_Rx'] = IBIS_Rx
-		
+		DB['IBIS_Tx_comp'] = IBIS_Tx_comp
+		DB['IBIS_Rx_comp'] = IBIS_Rx_comp
+		#print IBIS_files
+		#print IBIS_default_Comp
+		#print IBIS_default_Model
+		#print IBIS_Tx
+		#print IBIS_Rx
+		#print IBIS_Tx_comp
+		#print IBIS_Rx_comp
+
 	return DB
 
 

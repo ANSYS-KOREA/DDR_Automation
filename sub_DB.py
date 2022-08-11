@@ -14,11 +14,15 @@
 [v0.5.3] - '22.08.08
     -. IBIS bug fix    
     -. Show result window for each IBIS cases
+
+[v0.5.4] - '22.08.08
+    -. Modify IBIS Optimization example (buffer -> pin import)
+    -. Bug fix for IBIS New & pin import case
 '''
 
 
 
-Version = "v0.5.3"
+Version = "v0.5.4"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 
