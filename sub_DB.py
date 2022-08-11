@@ -25,7 +25,7 @@
 
 
 
-Version = "v0.5.4"
+Version = "v0.6.1"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 
