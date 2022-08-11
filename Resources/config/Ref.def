@@ -277,11 +277,22 @@
 	<Ignore>
 
 [IBIS Identification]
+	# keywords for Tx/Rx *.ibs file name
 	# ? : arbitrary number in range [0~99]
 	# It is not case sensitive.
-	<Tx> = TX, DS, drv, SoC
-	<Rx> = RX, ODT, DDR
-	<Ignore> = ddr3
+	<Tx> = tx, drv, driver
+	<Rx> = rx, mem
+	<Ignore> = ignored
+	
+[IBIS Model Identification]
+	# keywords for Tx/Rx IBIS buffer model file name
+	# ? : arbitrary number in range [0~99]
+	# It is not case sensitive.
+	<Tx> = ds, strength, level, ocd
+	<Rx> = term
+	<Ignore> = ignored
+
+
 
 
 
