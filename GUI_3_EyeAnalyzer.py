@@ -1698,7 +1698,7 @@ class Eye_Form(Form):
 
 	''' Eye_Form - Events '''
 	def Eye_FormLoad(self, sender, e):
-		try:
+		try:			
 			# initialization
 			self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Info
 			self._TextBox_Offset.Text = "7.5"
@@ -1741,6 +1741,7 @@ class Eye_Form(Form):
 		except Exception as e:			
 			Log("[Eye_FormLoad] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to load Eye Analyzer main GUI","Warning")			
 			EXIT()
 
@@ -2095,24 +2096,36 @@ class Eye_Form(Form):
 						MessageBox.Show("IBIS Optimization is not Supported for AEDT Circuit Netlist Input Files.", "Warning")
 
 					else:
-						File = self._TextBox_InputFile.Text
-						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)						
+						File = self._TextBox_InputFile.Text						
 						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = "Select"						
 						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = "Select"
 						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Info
 						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Info
 
-						for item in sub_DB.Parsing_data['IBIS_File']:
-							IBIS_File_name = item.split('\\')[-1]
-							sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Items.Add(IBIS_File_name)
-							sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Items.Add(IBIS_File_name)										
-							Group, Match = IBIS_Identify(IBIS_File_name, sub_DB.Cenv)
-							if Group == "Tx":								
-								sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = IBIS_File_name
-								sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Window
-							elif Group == "Rx":								
-								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = IBIS_File_name
-								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Window
+						#for item in sub_DB.Parsing_data['IBIS_File']:
+						#	#print ''
+						#	#print item
+						#	#IBIS = IBIS_Parsing(File)
+						#	#print IBIS
+						#	#print ''
+						#	#for key in IBIS.keys():
+						#	#	print ''
+						#	#	print key
+						#	#	for item in IBIS[key]:
+						#	#		print item
+
+						#	#print JH
+
+						#	IBIS_File_name = item.split('\\')[-1]
+						#	sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Items.Add(IBIS_File_name)
+						#	sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Items.Add(IBIS_File_name)										
+						#	Group, Match = IBIS_Identify(IBIS_File_name, sub_DB.Cenv)
+						#	if Group == "Tx":								
+						#		sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = IBIS_File_name
+						#		sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Window
+						#	elif Group == "Rx":								
+						#		sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = IBIS_File_name
+						#		sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Window
 						
 						sub_DB.IBIS_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
 						sub_DB.IBIS_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)						
@@ -2959,6 +2972,23 @@ class Eye_Form(Form):
 			else:
 				#MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
 				MessageBox.Show("Please Select the Input File(*.aedt)","Warning")
+
+			# AEDT Parsing
+			sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
+
+			datarate_flag = False
+			for item in self._ComboBox_DataRate.Items:
+				if item == str(sub_DB.Parsing_data['datarate']):
+					datarate_flag = True
+					break
+
+			if not datarate_flag:
+				self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+				MessageBox.Show("Data-rate is automatically detected")
+
+			if self._ComboBox_DataRate.Text != str(sub_DB.Parsing_data['datarate']):
+				self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+				MessageBox.Show("Data-rate is automatically detected")
 
 			# Set ToopTip
 			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			

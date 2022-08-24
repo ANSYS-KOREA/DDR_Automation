@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import clr
 import re
@@ -244,35 +245,6 @@ def IBIS_Opt_Run(self):
 	try:
 		# Get All Component Info
 		oEditor = oDesign.SetActiveEditor("SchematicEditor")
-		comp_array = oEditor.GetAllComponents()
-		
-		# Get Tx/Rx Component List
-		tx_comp = []
-		tx_comp.append("NAME:PropServers")
-		rx_comp = []
-		rx_comp.append("NAME:PropServers")
-		
-		if len(sub_DB.Parsing_data['IBIS_Tx_comp']) == 0:
-			sub_DB.Cenv['<Tx>[IBIS Model Identification]'].append(sub_DB.IBIS_Form._ComboBox_Buffer_Tx.Text)			
-			sub_DB.Parsing_data = AEDT_Parsing(sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.Eye_Form._ComboBox_Design.Text, True)
-				
-		for comp_tx in sub_DB.Parsing_data['IBIS_Tx_comp']:
-			for comp in comp_array:
-				if comp_tx in comp:
-					if not comp in tx_comp:
-						tx_comp.append(comp)
-					break
-
-		if len(sub_DB.Parsing_data['IBIS_Rx_comp']) == 0:
-			sub_DB.Cenv['<Rx>[IBIS Model Identification]'].append(sub_DB.IBIS_Form._ComboBox_Buffer_Rx.Text)			
-			sub_DB.Parsing_data = AEDT_Parsing(sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.Eye_Form._ComboBox_Design.Text, True)
-		
-		for comp_rx in sub_DB.Parsing_data['IBIS_Rx_comp']:
-			for comp in comp_array:
-				if comp_rx in comp:
-					if not comp in rx_comp:
-						rx_comp.append(comp)
-					break
 		
 		## Apply Variables to Tx IBIS
 		#oEditor.ChangeProperty(
@@ -312,7 +284,7 @@ def IBIS_Opt_Run(self):
 				"NAME:AllTabs",
 				[
 					"NAME:Buffer_Pin",
-					tx_comp,
+					sub_DB.IBIS_Tx_comp,
 					[
 						"NAME:ChangedProps",
 						[
@@ -336,7 +308,7 @@ def IBIS_Opt_Run(self):
 				"NAME:AllTabs",
 				[
 					"NAME:Buffer_Pin",
-					rx_comp,
+					sub_DB.IBIS_Rx_comp,
 					[
 						"NAME:ChangedProps",
 						[

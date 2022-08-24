@@ -17,13 +17,18 @@
 
 [v0.6] - '22.08.09
     -. Release to SEC
-<<<<<<< HEAD
-=======
 
 [v0.6.1] - '22.08.12
     -. Modify IBIS Optimization example (buffer -> pin import)
     -. Bug fix for IBIS New & pin import case
->>>>>>> hotfix_v0.6.1
+
+[v0.6.2] - '22.08.24
+    -. IBIS Model check시 sim case 바로 반영되지 않던 문제 수정
+    -. IBIS Model refresh button click시 sim case 초기화 되지 않던 문제 수정
+    -. IBIS Run Click시 초기화 문제 수정
+    -. Tx/Rx 같은 *.ibs file 사용 Case update
+    -. IBIS form resize event update
+    -. Automatic data-rate detect algorithm are updated
 '''
 
 
@@ -99,11 +104,16 @@ Spec = {}
 TBD_flag = True
 AutoLoad_flag = False
 Parsing_data = "" # AEDT Parsing data
-IBIS_Tx = ""
-IBIS_Rx = ""
-IBIS_Tx_Model = []
-IBIS_Tx_Model_idx = []
-IBIS_Rx_Model = []
-IBIS_Rx_Model_idx = []
+IBIS_Tx = "" # Tx의 *.ibs를 Parsing한 data
+IBIS_Rx = "" # Tx의 *.ibs를 Parsing한 data
+IBIS_Init_Tx = [] # Input Schematic에 Setting된 초기 IBIS tx buffer model
+IBIS_Init_Rx = [] # Input Schematic에 Setting된 초기 IBIS rx buffer model
+IBIS_Tx_Model = [] # Parametric sweep에 setup될 IBIS tx buffer model
+IBIS_Tx_Model_idx = [] # Parametric sweep에 setup될 IBIS tx buffer model index
+IBIS_Rx_Model = [] # Parametric sweep에 setup될 IBIS rx buffer model
+IBIS_Rx_Model_idx = [] # Parametric sweep에 setup될 IBIS rx buffer model index
+IBIS_Tx_comp = [] # Parametric sweep 적용할 Input Schematic의 tx component list
+IBIS_Rx_comp = [] # Parametric sweep 적용할 Input Schematic의 rx component list
 IBIS_Sim_Case = []
 IBIS_Result_Init_Flag = True
+UI_tolerance = 10e-12
