@@ -2424,6 +2424,8 @@ def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
 
 														if 'ValuePropNU(\'UIorBPSValue\'' in temp_data:
 															speed = temp_data.split(",")[-3].replace('\'','').strip()
+																														
+															# M, meg, G
 															if BPS_flag:
 																temp_datarate = int(float(speed.replace('s','').strip())/1e6)
 															else:

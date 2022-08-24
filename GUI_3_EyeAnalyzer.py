@@ -2969,26 +2969,30 @@ class Eye_Form(Form):
 					sub_DB.Title[5] = "False"
 				self.Text = " : ".join(sub_DB.Title)
 
+				# AEDT Parsing
+				sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
+
+				datarate_flag = False
+				for item in self._ComboBox_DataRate.Items:
+					if item == str(sub_DB.Parsing_data['datarate']):
+						datarate_flag = True
+						break
+
+				if not datarate_flag:
+					self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+					self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+					#MessageBox.Show("Data-rate is automatically detected")
+
+				if self._ComboBox_DataRate.Text != str(sub_DB.Parsing_data['datarate']):
+					self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+					self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+					#MessageBox.Show("Data-rate is automatically detected")
+
 			else:
 				#MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
 				MessageBox.Show("Please Select the Input File(*.aedt)","Warning")
 
-			# AEDT Parsing
-			sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
-
-			datarate_flag = False
-			for item in self._ComboBox_DataRate.Items:
-				if item == str(sub_DB.Parsing_data['datarate']):
-					datarate_flag = True
-					break
-
-			if not datarate_flag:
-				self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
-				MessageBox.Show("Data-rate is automatically detected")
-
-			if self._ComboBox_DataRate.Text != str(sub_DB.Parsing_data['datarate']):
-				self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
-				MessageBox.Show("Data-rate is automatically detected")
+			
 
 			# Set ToopTip
 			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			
