@@ -2330,7 +2330,7 @@ def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
 	DB = {}	
 	IBIS_file = []
 	IBIS_comp = {}
-	datarate = None
+	datarate = ''
 		
 	line = 0
 	flag = True
@@ -2470,17 +2470,3 @@ def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
 		#		print comp
 
 	return DB
-
-
-
-
-
-
-
-
-
-
-
-
-
-

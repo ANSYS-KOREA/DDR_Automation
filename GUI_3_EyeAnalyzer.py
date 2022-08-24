@@ -2349,7 +2349,7 @@ class Eye_Form(Form):
 
 			# Get Solutions
 			self._ComboBox_SolutionName.Items.Clear()
-			Sim_type = oDesign.GetDesignType()			
+			Sim_type = oDesign.GetDesignType()
 			if Sim_type == "Circuit Netlist":
 				self._ComboBox_SolutionName.Items.Add("TRAN")
 				self._ComboBox_SolutionName.SelectedIndex = 0
@@ -2818,6 +2818,28 @@ class Eye_Form(Form):
 					self._ComboBox_Design.SelectedIndex = 0
 					sub_DB.InputFile_Flag = 1
 
+					# AEDT Parsing
+					sim_type = sub_DB.AEDT["Design"].GetDesignType()
+					if sim_type == 'Circuit Design':
+						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
+
+						datarate_flag = False
+						for item in self._ComboBox_DataRate.Items:
+							if item == str(sub_DB.Parsing_data['datarate']):
+								datarate_flag = True
+								break
+
+						if not datarate_flag:
+							self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+							self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+
+						if self._ComboBox_DataRate.Text != str(sub_DB.Parsing_data['datarate']):
+							self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+							self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+					elif sim_type == 'Circuit Netlist':
+						#TODO.220824 : AEDT parsing for circuit netlist input
+						pass
+
 				# for *.csv File
 				elif extension == "csv":
 					Log("[Input File Type] = CSV")
@@ -2968,25 +2990,6 @@ class Eye_Form(Form):
 				else:
 					sub_DB.Title[5] = "False"
 				self.Text = " : ".join(sub_DB.Title)
-
-				# AEDT Parsing
-				sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
-
-				datarate_flag = False
-				for item in self._ComboBox_DataRate.Items:
-					if item == str(sub_DB.Parsing_data['datarate']):
-						datarate_flag = True
-						break
-
-				if not datarate_flag:
-					self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
-					self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
-					#MessageBox.Show("Data-rate is automatically detected")
-
-				if self._ComboBox_DataRate.Text != str(sub_DB.Parsing_data['datarate']):
-					self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
-					self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
-					#MessageBox.Show("Data-rate is automatically detected")
 
 			else:
 				#MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
