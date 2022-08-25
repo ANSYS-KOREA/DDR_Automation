@@ -2385,6 +2385,7 @@ def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
 											design_flag = True
 
 									if '$begin \'Compinst\'' in temp_data and design_flag:
+										Old_IBIS_flag = False
 										IBIS_flag = False
 										BPS_flag = True
 										comp_name = None
@@ -2405,7 +2406,9 @@ def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
 												if '$begin \'Parameters\'' in temp_data:
 													while(1):
 														temp_data = fp.readline()
-														line += 1
+
+														if 'SeparatorProp(\'Eye Source Parameters\'' in temp_data:
+															Old_IBIS_flag = True
 
 														if 'MenuProp(\'ramp' in temp_data:
 															IBIS_flag = True
