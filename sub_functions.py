@@ -2427,7 +2427,7 @@ def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
 
 														if 'ValuePropNU(\'UIorBPSValue\'' in temp_data:
 															speed = temp_data.split(",")[-3].replace('\'','').strip()
-																														
+															
 															# M, meg, G
 															if BPS_flag:
 																temp_datarate = int(float(speed.replace('s','').strip())/1e6)
@@ -2462,6 +2462,7 @@ def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
 		DB['IBIS_File'] = IBIS_file
 		DB['IBIS_comp'] = IBIS_comp
 		DB['datarate'] = datarate
+		DB['Old_IBIS_flag'] = Old_IBIS_flag
 		#for file in IBIS_file:
 		#	print file
 

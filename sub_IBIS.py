@@ -246,85 +246,86 @@ def IBIS_Opt_Run(self):
 		# Get All Component Info
 		oEditor = oDesign.SetActiveEditor("SchematicEditor")
 		
-		## Apply Variables to Tx IBIS
-		#oEditor.ChangeProperty(
-		#	["NAME:AllTabs",
-		#		["NAME:PassedParameterTab",
-		#			tx_comp,
-		#			["NAME:ChangedProps",
-		#				["NAME:model",
-		#					"OverridingDef:="	, True,
-		#					"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
-		#					"HasPin:="		, False,
-		#					"ShowPin:="		, False,
-		#					"Display:="		, False,
-		#					"Sweep:="		, False,
-		#					"DefaultOutput:="	, False,
-		#					"SDB:="			, False]]]])
+		if sub_DB.Parsing_data['Old_IBIS_flag']:
+			# Apply Variables to Tx IBIS
+			oEditor.ChangeProperty(
+				["NAME:AllTabs",
+					["NAME:PassedParameterTab",
+						sub_DB.IBIS_Tx_comp,
+						["NAME:ChangedProps",
+							["NAME:model",
+								"OverridingDef:="	, True,
+								"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
+								"HasPin:="		, False,
+								"ShowPin:="		, False,
+								"Display:="		, False,
+								"Sweep:="		, False,
+								"DefaultOutput:="	, False,
+								"SDB:="			, False]]]])
 
-		## Apply Variables to Rx IBIS
-		#oEditor.ChangeProperty(
-		#	["NAME:AllTabs",
-		#		["NAME:PassedParameterTab",
-		#			rx_comp,
-		#			["NAME:ChangedProps",
-		#				["NAME:model",
-		#					"OverridingDef:="	, True,
-		#					"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
-		#					"HasPin:="		, False,
-		#					"ShowPin:="		, False,
-		#					"Display:="		, False,
-		#					"Sweep:="		, False,
-		#					"DefaultOutput:="	, False,
-		#					"SDB:="			, False]]]])
-
-		# Apply Variables to Tx IBIS
-		oEditor.ChangeProperty(
-			[
-				"NAME:AllTabs",
+			# Apply Variables to Rx IBIS
+			oEditor.ChangeProperty(
+				["NAME:AllTabs",
+					["NAME:PassedParameterTab",
+						sub_DB.IBIS_Rx_comp,
+						["NAME:ChangedProps",
+							["NAME:model",
+								"OverridingDef:="	, True,
+								"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
+								"HasPin:="		, False,
+								"ShowPin:="		, False,
+								"Display:="		, False,
+								"Sweep:="		, False,
+								"DefaultOutput:="	, False,
+								"SDB:="			, False]]]])
+		else:
+			# Apply Variables to Tx IBIS
+			oEditor.ChangeProperty(
 				[
-					"NAME:Buffer_Pin",
-					sub_DB.IBIS_Tx_comp,
+					"NAME:AllTabs",
 					[
-						"NAME:ChangedProps",
+						"NAME:Buffer_Pin",
+						sub_DB.IBIS_Tx_comp,
 						[
-							"NAME:model",
-							"OverridingDef:="	, True,
-							"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
-							"HasPin:="		, False,
-							"ShowPin:="		, False,
-							"Display:="		, False,
-							"Sweep:="		, False,
-							"DefaultOutput:="	, False,
-							"SDB:="			, False
+							"NAME:ChangedProps",
+							[
+								"NAME:model",
+								"OverridingDef:="	, True,
+								"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
+								"HasPin:="		, False,
+								"ShowPin:="		, False,
+								"Display:="		, False,
+								"Sweep:="		, False,
+								"DefaultOutput:="	, False,
+								"SDB:="			, False
+							]
 						]
 					]
-				]
-			])
+				])
 
-		# Apply Variables to Rx IBIS
-		oEditor.ChangeProperty(
-			[
-				"NAME:AllTabs",
+			# Apply Variables to Rx IBIS
+			oEditor.ChangeProperty(
 				[
-					"NAME:Buffer_Pin",
-					sub_DB.IBIS_Rx_comp,
+					"NAME:AllTabs",
 					[
-						"NAME:ChangedProps",
+						"NAME:Buffer_Pin",
+						sub_DB.IBIS_Rx_comp,
 						[
-							"NAME:model",
-							"OverridingDef:="	, True,
-							"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
-							"HasPin:="		, False,
-							"ShowPin:="		, False,
-							"Display:="		, False,
-							"Sweep:="		, False,
-							"DefaultOutput:="	, False,
-							"SDB:="			, False
+							"NAME:ChangedProps",
+							[
+								"NAME:model",
+								"OverridingDef:="	, True,
+								"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
+								"HasPin:="		, False,
+								"ShowPin:="		, False,
+								"Display:="		, False,
+								"Sweep:="		, False,
+								"DefaultOutput:="	, False,
+								"SDB:="			, False
+							]
 						]
 					]
-				]
-			])
+				])
 
 	except Exception as e:		
 		#Log("	<Run IBIS Opt> = Failed")

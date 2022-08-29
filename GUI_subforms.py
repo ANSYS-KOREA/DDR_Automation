@@ -2083,7 +2083,7 @@ class OptionForm(Form):
 		self._CheckBox_Compiance.Text = "Check DDR Compliance"
 		self._CheckBox_Compiance.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		self._CheckBox_Compiance.UseVisualStyleBackColor = True
-		self._CheckBox_Compiance.Visible = False
+		self._CheckBox_Compiance.Visible = True
 		self._CheckBox_Compiance.CheckedChanged += self.CheckBox_CompianceCheckedChanged
 		# 
 		# openFileDialog1
@@ -3904,7 +3904,7 @@ class IBIS_OptForm(Form):
 				sub_DB.IBIS_Tx_comp = tx_comp
 				
 			else:				
-				for comp_parse in sub_DB.Parsing_data['IBIS_comp'].keys():					
+				for comp_parse in sub_DB.Parsing_data['IBIS_comp'].keys():
 					if sub_DB.Parsing_data['IBIS_comp'][comp_parse][0] in sub_DB.IBIS_Init_Tx:
 						comp_idx = [i for i in range(len(comp_array)) if comp_parse in comp_array[i]]
 						tx_comp.append(comp_array[comp_idx[0]])

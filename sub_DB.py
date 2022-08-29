@@ -29,12 +29,14 @@
     -. Tx/Rx 같은 *.ibs file 사용 Case update
     -. IBIS form resize event update
     -. Automatic data-rate detect algorithm are updated
+[v0.6.3] - '22.08.30
+    -. 
 '''
 
 
 
 
-Version = "v0.6.1"
+Version = "v0.6.3"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 
