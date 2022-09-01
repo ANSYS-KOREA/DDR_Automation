@@ -829,7 +829,8 @@ class NetForm(Form):
 
 				# Add Report Format into Combo Box
 				for item in sub_DB.Option_Form._ComboBox_ReportFormat.Items:
-					self._ComboBox_Report.Items.Add(item)
+					if item not in self._ComboBox_Report.Items:
+						self._ComboBox_Report.Items.Add(item)
 				self._ComboBox_Report.SelectedIndex = 0
 
 			for row in self._DataGridView.Rows:

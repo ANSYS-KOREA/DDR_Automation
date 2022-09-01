@@ -29,15 +29,21 @@
     -. Tx/Rx 같은 *.ibs file 사용 Case update
     -. IBIS form resize event update
     -. Automatic data-rate detect algorithm are updated
+
 [v0.6.3] - '22.08.30
     -. 이전 IBIS 형식으로 작성된 Schematic에서도 IBIS opt. 동작하도록 update.
     -. 이전 IBIS 형식의 예제 Schematic update (LPDDR4_2133_IBIS_Example_for_Old_IBIS.aedtz)
+
+[v0.6.4] - '22.09.01
+    -. 예제 Archive file 재정비
+    -. 자동 Datarate 입력 기능 Disable
+    -. QC Routine 및 QC 결과표 작성
 '''
 
 
 
 
-Version = "v0.6.3"
+Version = "v0.6.4"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 

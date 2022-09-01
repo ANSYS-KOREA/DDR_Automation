@@ -2823,19 +2823,19 @@ class Eye_Form(Form):
 					if sim_type == 'Circuit Design':
 						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
 
-						datarate_flag = False
-						for item in self._ComboBox_DataRate.Items:
-							if item == str(sub_DB.Parsing_data['datarate']):
-								datarate_flag = True
-								break
+						#datarate_flag = False
+						#for item in self._ComboBox_DataRate.Items:
+						#	if item == str(sub_DB.Parsing_data['datarate']):
+						#		datarate_flag = True
+						#		break
 
-						if not datarate_flag:
-							self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
-							self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+						#if not datarate_flag:
+						#	self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+						#	self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
 
-						if self._ComboBox_DataRate.Text != str(sub_DB.Parsing_data['datarate']):
-							self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
-							self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+						#if self._ComboBox_DataRate.Text != str(sub_DB.Parsing_data['datarate']):
+						#	self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+						#	self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
 					elif sim_type == 'Circuit Netlist':
 						#TODO.220824 : AEDT parsing for circuit netlist input
 						pass
@@ -3228,7 +3228,7 @@ class Eye_Form(Form):
 
 			self._Label_Info.Location = System.Drawing.Point(10, 423)
 
-			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 455)
+			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 420)
 
 			self._Label_TimingSpec.Location = System.Drawing.Point(298, 285)
 			self._Label_VoltageSpec.Location = System.Drawing.Point(60, 261)
@@ -3378,7 +3378,7 @@ class Eye_Form(Form):
 			self._CheckBox_Vref.Location = System.Drawing.Point(103, 254)		
 			self._CheckBox_EditEnable_OldEye.Location = System.Drawing.Point(590, 423)
 
-			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 455)
+			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 420)
 
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
 			self.Height = 660

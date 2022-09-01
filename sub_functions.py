@@ -2427,16 +2427,17 @@ def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
 
 														if 'ValuePropNU(\'UIorBPSValue\'' in temp_data:
 															speed = temp_data.split(",")[-3].replace('\'','').strip()
-															
-															# M, meg, G
-															if BPS_flag:
-																temp_datarate = int(float(speed.replace('s','').strip())/1e6)
-															else:
-																temp_datarate = int(1/float(speed.replace('s','').strip())/1e6)
 
-															for item in sub_DB.Eye_Form._ComboBox_DataRate.Items:
-																if item == str(temp_datarate):
-																	datarate = temp_datarate
+															## M, meg, G
+															#if BPS_flag:
+															#	temp_datarate = int(float(speed.replace('s','').strip())/1e6)
+															#else:
+															#	temp_datarate = int(1/float(speed.replace('s','').strip())/1e6)
+
+															#for item in sub_DB.Eye_Form._ComboBox_DataRate.Items:
+															#	if item == str(temp_datarate):
+															#		datarate = temp_datarate
+															pass
 
 														if '$end \'Parameters\'' in temp_data:
 															break
