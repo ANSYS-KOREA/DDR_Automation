@@ -2091,6 +2091,7 @@ def Initial(Init_AEDT = True):
 	Log("\n\n")
 	sub_DB.TBD_flag = True
 	sub_DB.CSV_flag = True
+	#sub_DB.NetSort_Flag = False
 	sub_ScriptEnv.Release()
 	if Init_AEDT:	
 		sub_DB.AEDT = {}	

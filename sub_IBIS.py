@@ -33,6 +33,10 @@ def IBIS_Init():
 	sub_DB.IBIS_Rx_Model = []
 	sub_DB.IBIS_Rx_Model_idx = []
 	sub_DB.IBIS_Sim_Case = []
+	
+	for row in sub_DB.Net_Form._DataGridView.Rows:
+		if row.Cells[4].Value != 'None':
+			row.Cells[4].Value = 'None'
 
 def IBIS_Parsing(File):
 	IBIS = {}

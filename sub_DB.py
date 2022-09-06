@@ -38,12 +38,18 @@
     -. 예제 Archive file 재정비
     -. 자동 Datarate 입력 기능 Disable
     -. QC Routine 및 QC 결과표 작성
+
+[v0.6.5] - '22.09.06
+    -. 연속 해석 진행시, 이전 해석에서 설정했던 Report Export option이 초기화 되지 않는 문제 수정.
+    -. IBIS opt. 해석 진행 후, detailed report창에서 report export할 수 없도록 수정 -> 대신 전체 optimization 결과를 export할 수 있도록 update할 예정임.
+    -. IBIS opt. 해석 전 또는 해석 후 result 버튼 click하면 error 발생하던 문제 수정
+    -. Analysis Group 설정 하고 Eye 해석 진행 후, IBIS opt. 해석 진행하면 결과가 grouping되어 보이던 문제 수정
 '''
 
 
 
 
-Version = "v0.6.4"
+Version = "v0.6.5"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 

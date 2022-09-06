@@ -2084,7 +2084,8 @@ class Eye_Form(Form):
 
 	def Options_IBISStripMenuItemClick(self, sender, e):
 		try:
-			IBIS_Init()
+			if sub_DB.IBIS_Result_Init_Flag:
+				IBIS_Init()			
 			self.Cursor = Cursors.WaitCursor
 			Log("[IBIS Form Launch]")
 			flag, show_msg_flag, msg = Check_Input(self)
@@ -2096,8 +2097,8 @@ class Eye_Form(Form):
 						MessageBox.Show("IBIS Optimization is not Supported for AEDT Circuit Netlist Input Files.", "Warning")
 
 					else:
-						File = self._TextBox_InputFile.Text						
-						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = "Select"						
+						File = self._TextBox_InputFile.Text
+						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = "Select"
 						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = "Select"
 						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Info
 						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Info

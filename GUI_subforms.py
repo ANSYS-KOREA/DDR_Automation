@@ -1436,6 +1436,8 @@ class NetForm(Form):
 							Log("		= %s, %s, %s, %s, %s, %s, %s, %s" % (row.Cells[1].Value, row.Cells[5].Value, row.Cells[7].Value, row.Cells[8].Value, row.Cells[6].Value, row.Cells[4].Value, row.Cells[2].Value, row.Cells[3].Value))
 
 				sub_DB.Net_Form = self
+				sub_DB.Option_Form._CheckBox_ExportExcelReport.Checked = False
+				sub_DB.Option_Form._CheckBox_PlotEye.Checked = False				
 				self.Close()
 
 			except Exception as e:
@@ -5379,6 +5381,7 @@ class IBIS_Case(Form):
 
 				# View Analyze Result
 				sub_DB.Eye_Analyze_Flag = True
+				sub_DB.IBIS_Case_ResultForm._Button_Export.Enabled = False
 				sub_DB.IBIS_Case_ResultForm._Label_GroupName.Visible = False
 				sub_DB.IBIS_Case_ResultForm._ComboBox_AnalyzeGroup.Visible = False
 				sub_DB.IBIS_Case_ResultForm._Button_Update.Visible = False
@@ -5437,7 +5440,7 @@ class IBIS_Case(Form):
 			print traceback.format_exc()			
 
 	def Button_CloseClick(self, sender, e):
-
+		sub_DB.IBIS_Case_ResultForm._Button_Export.Enabled = True
 		self.Close()
 
 
