@@ -424,7 +424,7 @@ class NetForm(Form):
 		self._ComboBox_AnalyzeGroup = System.Windows.Forms.ComboBox()
 		self._ComboBox_Report = System.Windows.Forms.ComboBox()
 		self._CheckBox_PlotEye = System.Windows.Forms.CheckBox()
-		self._TextBox_ImageWidth = System.Windows.Forms.TextBox()		
+		self._TextBox_ImageWidth = System.Windows.Forms.TextBox()
 		self._Button_Update = System.Windows.Forms.Button()
 		self._Button_Auto = System.Windows.Forms.Button()
 		self._Button_EditRule = System.Windows.Forms.Button()		
@@ -4375,6 +4375,15 @@ class IBIS_OptForm(Form):
 		sub_DB.IBIS_Form = self
 		sub_DB.IBIS_Result_Init_Flag = True
 		sub_DB.IBIS_CaseForm = IBIS_Case()
+		sub_DB.IBIS_CaseForm._CheckBox_PlotEye.Visible = False
+		sub_DB.IBIS_CaseForm._Label_ImageWidth.Visible = False
+		sub_DB.IBIS_CaseForm._TextBox_ImageWidth.Visible = False
+		sub_DB.IBIS_CaseForm._Label_ImageWidth_Unit.Visible = False
+		sub_DB.IBIS_CaseForm._Label_ReportFormat.Visible = False
+		sub_DB.IBIS_CaseForm._ComboBox_Report.Visible = False
+		sub_DB.IBIS_CaseForm._Button_Export.Visible = False
+		sub_DB.IBIS_CaseForm._Button_Add.Visible = True
+		sub_DB.IBIS_CaseForm._Button_Delete.Visible = True		
 		sub_DB.IBIS_CaseForm.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
 		sub_DB.IBIS_CaseForm.ShowDialog()
 
@@ -4388,16 +4397,17 @@ class IBIS_OptForm(Form):
 			#IBIS_Init()
 			self.Cursor = Cursors.WaitCursor
 			sub_DB.IBIS_Result_Init_Flag = True
-			sub_DB.IBIS_ResultForm = IBIS_Case()		
-			sub_DB.IBIS_ResultForm.IBIS_CaseFormLoad(self, sender)		
+			sub_DB.IBIS_ResultForm = IBIS_Case()
+			sub_DB.IBIS_ResultForm.IBIS_CaseFormLoad(self, sender)
+			sub_DB.IBIS_ResultForm._Button_Export.Visible = True
+			sub_DB.IBIS_ResultForm._Button_Add.Visible = False
+			sub_DB.IBIS_ResultForm._Button_Delete.Visible = False
 			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Results)
 			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Avg_Width)
 			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Avg_Margin)
 			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Worst_Width)
 			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Worst_Margin)
 			sub_DB.IBIS_ResultForm._DataGridView.Columns.Add(sub_DB.IBIS_ResultForm._Col_Vref)
-			sub_DB.IBIS_ResultForm._DataGridView.Size = System.Drawing.Size(699, 300)
-			sub_DB.IBIS_ResultForm.Size = System.Drawing.Size(740, 390)
 			sub_DB.IBIS_ResultForm.Text = "IBIS Optimization Results"
 			IBIS_Opt_Run(self)
 			self.Cursor = Cursors.Default
@@ -5138,8 +5148,19 @@ class IBIS_Case(Form):
 		self._Col_Worst_Margin = System.Windows.Forms.DataGridViewTextBoxColumn()
 		self._Col_Vref = System.Windows.Forms.DataGridViewTextBoxColumn()
 
+		self._Label_ImageWidth = System.Windows.Forms.Label()
+		self._Label_ImageWidth_Unit = System.Windows.Forms.Label()
+		self._Label_ReportFormat = System.Windows.Forms.Label()
+
+		self._TextBox_ImageWidth = System.Windows.Forms.TextBox()
+
+		self._CheckBox_PlotEye = System.Windows.Forms.CheckBox()
+
+		self._ComboBox_Report = System.Windows.Forms.ComboBox()
+
 		self._Button_Add = System.Windows.Forms.Button()
 		self._Button_Delete = System.Windows.Forms.Button()
+		self._Button_Export = System.Windows.Forms.Button()
 		self._Button_Close = System.Windows.Forms.Button()
 
 		self.SuspendLayout()
@@ -5161,7 +5182,7 @@ class IBIS_Case(Form):
 		self._DataGridView.Name = "DataGridView"
 		self._DataGridView.RowHeadersVisible = False
 		self._DataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-		self._DataGridView.Size = System.Drawing.Size(289, 300)
+		self._DataGridView.Size = System.Drawing.Size(699, 300)
 		self._DataGridView.TabIndex = 36
 		self._DataGridView.CellMouseClick += self.DataGridViewCellMouseClick
 		self._DataGridView.CellContentClick += self.DataGridViewCellContentClick
@@ -5232,6 +5253,71 @@ class IBIS_Case(Form):
 		self._Col_Vref.Name = "Col_Vref"
 		self._Col_Vref.Width = 80
 		# 
+		# Label_ReportFormat
+		# 
+		self._Label_ReportFormat.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_ReportFormat.Location = System.Drawing.Point(275, 317)
+		self._Label_ReportFormat.Name = "Label_ReportFormat"
+		self._Label_ReportFormat.Size = System.Drawing.Size(109, 28)
+		self._Label_ReportFormat.TabIndex = 30
+		self._Label_ReportFormat.Text = "Report Format :"
+		self._Label_ReportFormat.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		# 
+		# Label_ImageWidth
+		# 
+		self._Label_ImageWidth.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_ImageWidth.Location = System.Drawing.Point(102, 317)
+		self._Label_ImageWidth.Name = "Label_ImageWidth"
+		self._Label_ImageWidth.Size = System.Drawing.Size(85, 28)
+		self._Label_ImageWidth.TabIndex = 47
+		self._Label_ImageWidth.Text = "Image Width :"
+		self._Label_ImageWidth.Visible = False
+		self._Label_ImageWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# Label_ImageWidth_Unit
+		# 
+		self._Label_ImageWidth_Unit.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(240, 317)
+		self._Label_ImageWidth_Unit.Name = "Label_ImageWidth_Unit"
+		self._Label_ImageWidth_Unit.Size = System.Drawing.Size(55, 28)
+		self._Label_ImageWidth_Unit.TabIndex = 49
+		self._Label_ImageWidth_Unit.Text = "[pixel]"
+		self._Label_ImageWidth_Unit.Visible = False
+		self._Label_ImageWidth_Unit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+		# 
+		# TextBox_ImageWidth
+		# 
+		self._TextBox_ImageWidth.BackColor = System.Drawing.SystemColors.Window
+		self._TextBox_ImageWidth.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._TextBox_ImageWidth.Location = System.Drawing.Point(184, 320)
+		self._TextBox_ImageWidth.Name = "TextBox_ImageWidth"
+		self._TextBox_ImageWidth.Size = System.Drawing.Size(53, 23)
+		self._TextBox_ImageWidth.Text = "200"
+		self._TextBox_ImageWidth.Visible = False
+		self._TextBox_ImageWidth.TabIndex = 48		
+		# 
+		# CheckBox_PlotEye
+		# 
+		self._CheckBox_PlotEye.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._CheckBox_PlotEye.Location = System.Drawing.Point(12, 317)
+		self._CheckBox_PlotEye.Name = "CheckBox_PlotEye"
+		self._CheckBox_PlotEye.Size = System.Drawing.Size(76, 29)
+		self._CheckBox_PlotEye.TabIndex = 45
+		self._CheckBox_PlotEye.Text = "Plot EYE"
+		self._CheckBox_PlotEye.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		self._CheckBox_PlotEye.Checked = False
+		self._CheckBox_PlotEye.UseVisualStyleBackColor = True
+		self._CheckBox_PlotEye.CheckedChanged += self.CheckBox_PlotEyeCheckedChanged
+		# 
+		# ComboBox_Report
+		# 
+		self._ComboBox_Report.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_Report.FormattingEnabled = True
+		self._ComboBox_Report.Location = System.Drawing.Point(387, 320)
+		self._ComboBox_Report.Name = "ComboBox_Report"		
+		self._ComboBox_Report.Size = System.Drawing.Size(125, 25)
+		self._ComboBox_Report.TabIndex = 40
+		# 
 		# Button_Add
 		# 
 		self._Button_Add.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
@@ -5256,25 +5342,42 @@ class IBIS_Case(Form):
 		self._Button_Delete.Enabled = False
 		self._Button_Delete.Click += self.Button_DeleteClick
 		# 
+		# Button_Export
+		# 
+		self._Button_Export.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._Button_Export.Location = System.Drawing.Point(542, 320)
+		self._Button_Export.Name = "Button_Export"
+		self._Button_Export.Size = System.Drawing.Size(80, 25)
+		self._Button_Export.TabIndex = 35
+		self._Button_Export.Text = "Export"
+		self._Button_Export.UseVisualStyleBackColor = True		
+		self._Button_Export.Click += self.Button_ExportClick
+		# 
 		# Button_Close
 		# 
 		self._Button_Close.Font = System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Button_Close.Location = System.Drawing.Point(192, 320)
+		self._Button_Close.Location = System.Drawing.Point(632, 320)
 		self._Button_Close.Name = "Button_Close"
 		self._Button_Close.Size = System.Drawing.Size(80, 25)
 		self._Button_Close.TabIndex = 33
 		self._Button_Close.Text = "Close"		
 		self._Button_Close.UseVisualStyleBackColor = True
 		self._Button_Close.Click += self.Button_CloseClick
-
 		# 
 		# IBIS_CaseForm
 		#
-		self.Size = System.Drawing.Size(300, 390)
-		self.MinimumSize = System.Drawing.Size(300, 390)
+		self.Size = System.Drawing.Size(740, 390)
+		self.MinimumSize = System.Drawing.Size(740, 390)
 		self.FormSize_W = self.Size.Width
-		self.FormSize_H = self.Size.Height
+		self.FormSize_H = self.Size.Height		
+		self.Controls.Add(self._ComboBox_Report)
+		self.Controls.Add(self._CheckBox_PlotEye)
+		self.Controls.Add(self._TextBox_ImageWidth)
+		self.Controls.Add(self._Label_ReportFormat)
+		self.Controls.Add(self._Label_ImageWidth_Unit)
+		self.Controls.Add(self._Label_ImageWidth)		
 		self.Controls.Add(self._Button_Close)
+		self.Controls.Add(self._Button_Export)
 		self.Controls.Add(self._Button_Delete)
 		self.Controls.Add(self._Button_Add)
 		self.Controls.Add(self._DataGridView)
@@ -5332,10 +5435,17 @@ class IBIS_Case(Form):
 			# Resize
 			self._DataGridView.Size = System.Drawing.Size(self._DataGridView.Width + Gap_W, self._DataGridView.Height + Gap_H)
 			
-			# Relocate			
+			# Relocate
+			self._CheckBox_PlotEye.Location = System.Drawing.Point(self._CheckBox_PlotEye.Location.X, self._CheckBox_PlotEye.Location.Y + Gap_H)
+			self._Label_ImageWidth.Location = System.Drawing.Point(self._Label_ImageWidth.Location.X, self._Label_ImageWidth.Location.Y + Gap_H)
+			self._TextBox_ImageWidth.Location = System.Drawing.Point(self._TextBox_ImageWidth.Location.X, self._TextBox_ImageWidth.Location.Y + Gap_H)
+			self._Label_ImageWidth_Unit.Location = System.Drawing.Point(self._Label_ImageWidth_Unit.Location.X, self._Label_ImageWidth_Unit.Location.Y + Gap_H)
+			self._Label_ReportFormat.Location = System.Drawing.Point(self._Label_ReportFormat.Location.X, self._Label_ReportFormat.Location.Y + Gap_H)
+			self._ComboBox_Report.Location = System.Drawing.Point(self._ComboBox_Report.Location.X, self._ComboBox_Report.Location.Y + Gap_H)
+			self._Button_Export.Location = System.Drawing.Point(self._Button_Export.Location.X  + Gap_W , self._Button_Export.Location.Y + Gap_H)
 			self._Button_Add.Location = System.Drawing.Point(self._Button_Add.Location.X, self._Button_Add.Location.Y + Gap_H)
 			self._Button_Delete.Location = System.Drawing.Point(self._Button_Delete.Location.X, self._Button_Delete.Location.Y + Gap_H)
-			self._Button_Close.Location = System.Drawing.Point(self._Button_Close.Location.X, self._Button_Close.Location.Y + Gap_H)
+			self._Button_Close.Location = System.Drawing.Point(self._Button_Close.Location.X  + Gap_W , self._Button_Close.Location.Y + Gap_H)
 
 		except Exception as e:			
 			Log("[IBIS_CaseFormResizeEnd] = Failed")
@@ -5344,19 +5454,23 @@ class IBIS_Case(Form):
 			MessageBox.Show("Fail to resize Eye Analyzer IBIS Result GUI","Warning")			
 			EXIT()
 
-	def IBIS_CaseFormDoubleClick(self, sender, e):		
-		self._DataGridView.Size = System.Drawing.Size(259, 300)		
-		self._Col_CaseNum.Width = 26		
-		self._Col_Tx_IBIS_Model.Width = 130				
-		self._Col_Rx_IBIS_Model.Width = 130		
+	def IBIS_CaseFormDoubleClick(self, sender, e):
+		self._DataGridView.Size = System.Drawing.Size(699, 300)
+		self._Col_CaseNum.Width = 26
+		self._Col_Tx_IBIS_Model.Width = 130
+		self._Col_Rx_IBIS_Model.Width = 130
+		self._Label_ReportFormat.Location = System.Drawing.Point(275, 317)
+		self._Label_ImageWidth.Location = System.Drawing.Point(102, 317)
+		self._Label_ImageWidth_Unit.Location = System.Drawing.Point(240, 317)
+		self._TextBox_ImageWidth.Location = System.Drawing.Point(184, 320)
+		self._CheckBox_PlotEye.Location = System.Drawing.Point(12, 317)
+		self._ComboBox_Report.Location = System.Drawing.Point(387, 320)
+		self._Button_Export.Location = System.Drawing.Point(542, 320)
 		self._Button_Add.Location = System.Drawing.Point(12, 320)
-		self._Button_Add.Size = System.Drawing.Size(80, 25)
 		self._Button_Delete.Location = System.Drawing.Point(102, 320)
-		self._Button_Delete.Size = System.Drawing.Size(80, 25)
-		self._Button_Close.Location = System.Drawing.Point(192, 320)
-		self._Button_Close.Size = System.Drawing.Size(80, 25)
-		self.Size = System.Drawing.Size(300, 390)
-		self.MinimumSize = System.Drawing.Size(300, 390)
+		self._Button_Close.Location = System.Drawing.Point(632, 320)
+		self.Size = System.Drawing.Size(740, 390)
+		self.MinimumSize = System.Drawing.Size(740, 390)
 		self.FormSize_W = self.Size.Width
 		self.FormSize_H = self.Size.Height
 
@@ -5419,6 +5533,11 @@ class IBIS_Case(Form):
 			MessageBox.Show("Fail to launch IBIS case result form","Warning")						
 			EXIT()
 
+	def CheckBox_PlotEyeCheckedChanged(self, sender, e):
+		self._Label_ImageWidth.Visible = sender.Checked
+		self._Label_ImageWidth_Unit.Visible = sender.Checked
+		self._TextBox_ImageWidth.Visible = sender.Checked
+
 	def Button_AddClick(self, sender, e):
 		self._DataGridView.Rows.Add(self.case, "", "")
 		self.case += 1
@@ -5437,7 +5556,10 @@ class IBIS_Case(Form):
 			self.Refresh()
 
 		except Exception as e:						
-			print traceback.format_exc()			
+			print traceback.format_exc()
+
+	def Button_ExportClick(self, sender, e):
+		pass
 
 	def Button_CloseClick(self, sender, e):
 		sub_DB.IBIS_Case_ResultForm._Button_Export.Enabled = True

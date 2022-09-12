@@ -14,6 +14,8 @@ def Get_AEDT_Version():
 		temp_version = ansysEmInstallDirectory.split("\\")[-2].replace("AnsysEM","")
 		if temp_version == "v221":
 			temp_version = "22.1"
+		if temp_version == "v222":
+			temp_version = "22.2"
 		version = "20" + temp_version
 
 	else:
