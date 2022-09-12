@@ -1,60 +1,81 @@
 <h1 id="ansys-ddr-eye-analyzer-adea-v0-6-5">Ansys DDR Eye Analyzer - ADEA v0.6.5</h1>
 <!-- ![Main GUI](./Resources/fig/main_GUI.bmp) -->
-<h2 id="introduction">Introduction</h2>
-<hr>
 <h2 id="what-is-adea-">What is ADEA?</h2>
-<hr>
+<blockquote>
+<h3 id="a-new-solution-for-ddr-analysis-by-ansys-korea-">A new Solution for DDR analysis by Ansys Korea.</h3>
+<h2 id="-ex_screenshot-resources-fig-adea_intro-png-"><img src="../fig/ADEA_Intro.png" alt="ex_screenshot"></h2>
 <h2 id="why-adea-">Why ADEA?</h2>
-<hr>
-<h2 id="documentations">Documentations</h2>
+<h2 id="1-easy">1. Easy</h2>
+<blockquote>
+<ul>
+<li><h3 id="pre-defined-user-configurations">Pre-defined User Configurations</h3>
+</li>
+<li><h3 id="pre-defined-ddr-specifications">Pre-defined DDR Specifications</h3>
+</li>
+<li><h3 id="automatic-net-classification-target-net-assign-algorithm">Automatic Net Classification &amp; Target Net Assign Algorithm</h3>
+</li>
+<li><h3 id="selective-verification-process">Selective Verification Process</h3>
+<img src="../fig/easy.png" alt="ex_screenshot"><h2 id="2-simple">2. Simple</h2>
+</li>
+<li><h3 id="one-click-verification-process">One-Click Verification Process</h3>
+<img src="../fig/simple.png" alt="ex_screenshot"><h2 id="3-customizable">3. Customizable</h2>
+</li>
+<li><h3 id="customziable-verification-algorithm-process">Customziable Verification Algorithm &amp; Process</h3>
+</li>
+<li><h3 id="customziable-final-report-excel-html-etc-">Customziable Final Report (Excel, HTML, etc.)</h3>
+<img src="../fig/customizable.png" alt="ex_screenshot"></li>
+</ul>
 <hr>
 <h2 id="user-guide">User Guide</h2>
-<hr>
-<h2 id="development-request">Development Request</h2>
+<h3 id="-quick-guide-en-pdf-resources-help-quick_guide_en-pdf-"><a href="./Quick_Guide_EN.pdf">Quick Guide (EN) - PDF</a></h3>
+<h3 id="-user-guide-en-pdf-resources-help-user_guide_en-pdf-"><a href="./User_Guide_EN.pdf">User Guide (EN) - PDF</a></h3>
+<h3 id="-quick-guide-ko-pdf-resources-help-quick_guide_ko-pdf-"><a href="./Quick_Guide_KO.pdf">Quick Guide (KO) - PDF</a></h3>
+<h3 id="-user-guide-ko-pdf-resources-help-user_guide_ko-pdf-"><a href="./User_Guide_KO.pdf">User Guide (KO) - PDF</a></h3>
+<h3 id="-guide-videos-http-"><a href="http://">Guide Videos</a></h3>
 <hr>
 <!-- ## History
-> ### [v0.5.1] - '22.08.06
->>- ##### Eye 계측 Algorithm Classic Version(VB) 으로 변경 후, Excel report 생성 bug 수정
->>- ##### Resource 폴더 정리
->>- ##### 예제 Archive file 추가
->>- ##### CSV input disable
+### [v0.5.1] - '22.08.06
+>- ##### Eye 계측 Algorithm Classic Version(VB) 으로 변경 후, Excel report 생성 bug 수정
+>- ##### Resource 폴더 정리
+>- ##### 예제 Archive file 추가
+>- ##### CSV input disable
 
-> ### [v0.5.2] - '22.08.07
->>- ##### Excel report format 변경
->>- ##### Jitter, Jitter_RMS 열 삭제
->>- ##### Width & Margin UI 단위 열 추가
+### [v0.5.2] - '22.08.07
+>- ##### Excel report format 변경
+>- ##### Jitter, Jitter_RMS 열 삭제
+>- ##### Width & Margin UI 단위 열 추가
 
-> ### [v0.5.3] - '22.08.08
->>- ##### IBIS bug fix    
->>- ##### Show result window for each IBIS cases
+### [v0.5.3] - '22.08.08
+>- ##### IBIS bug fix    
+>- ##### Show result window for each IBIS cases
 
-> ### [v0.6] - '22.08.09
->>- ##### Release to SEC
+### [v0.6] - '22.08.09
+>- ##### Release to SEC
 
-> ### [v0.6.1] - '22.08.12
->>- ##### Modify IBIS Optimization example (buffer -> pin import)
->>- ##### Bug fix for IBIS New & pin import case
+### [v0.6.1] - '22.08.12
+>- ##### Modify IBIS Optimization example (buffer -> pin import)
+>- ##### Bug fix for IBIS New & pin import case
 
-> ### [v0.6.2] - '22.08.24
->>- ##### IBIS Model check시 sim case 바로 반영되지 않던 문제 수정
->>- ##### IBIS Model refresh button click시 sim case 초기화 되지 않던 문제 수정
->>- ##### IBIS Run Click시 초기화 문제 수정
->>- ##### Tx/Rx 같은 *.ibs file 사용 Case update
->>- ##### IBIS form resize event update
->>- ##### Automatic data-rate detect algorithm are updated
+### [v0.6.2] - '22.08.24
+>- ##### IBIS Model check시 sim case 바로 반영되지 않던 문제 수정
+>- ##### IBIS Model refresh button click시 sim case 초기화 되지 않던 문제 수정
+>- ##### IBIS Run Click시 초기화 문제 수정
+>- ##### Tx/Rx 같은 *.ibs file 사용 Case update
+>- ##### IBIS form resize event update
+>- ##### Automatic data-rate detect algorithm are updated
 
-> ### [v0.6.3] - '22.08.30
->>- ##### 이전 IBIS 형식으로 작성된 Schematic에서도 IBIS opt. 동작하도록 update.
->>- ##### 이전 IBIS 형식의 예제 Schematic update (LPDDR4_2133_IBIS_Example_for_Old_IBIS.aedtz)
+### [v0.6.3] - '22.08.30
+>- ##### 이전 IBIS 형식으로 작성된 Schematic에서도 IBIS opt. 동작하도록 update.
+>- ##### 이전 IBIS 형식의 예제 Schematic update (LPDDR4_2133_IBIS_Example_for_Old_IBIS.aedtz)
 
-> ### [v0.6.4] - '22.09.01
->>- ##### 예제 Archive file 재정비
->>- ##### 자동 Datarate 입력 기능 Disable
->>- ##### QC Routine 및 QC 결과표 작성
+### [v0.6.4] - '22.09.01
+>- ##### 예제 Archive file 재정비
+>- ##### 자동 Datarate 입력 기능 Disable
+>- ##### QC Routine 및 QC 결과표 작성
 
-> ### [v0.6.5] - '22.09.06
->>- ##### 연속 해석 진행시, 이전 해석에서 설정했던 Report Export option이 초기화 되지 않는 문제 수정.
->>- ##### IBIS opt. 해석 진행 후, detailed report창에서 report export할 수 없도록 수정 -> 대신 전체 optimization 결과를 export할 수 있도록 update할 예정임.
->>- ##### IBIS opt. 해석 전 또는 해석 후 result 버튼 click하면 error 발생하던 문제 수정
->>- ##### Analysis Group 설정 하고 Eye 해석 진행 후, IBIS opt. 해석 진행하면 결과가 grouping되어 보이던 문제 수정
->>- ##### Update IBIS optimization result report -->
+### [v0.6.5] - '22.09.06
+>- ##### 연속 해석 진행시, 이전 해석에서 설정했던 Report Export option이 초기화 되지 않는 문제 수정.
+>- ##### IBIS opt. 해석 진행 후, detailed report창에서 report export할 수 없도록 수정 -> 대신 전체 optimization 결과를 export할 수 있도록 update할 예정임.
+>- ##### IBIS opt. 해석 전 또는 해석 후 result 버튼 click하면 error 발생하던 문제 수정
+>- ##### Analysis Group 설정 하고 Eye 해석 진행 후, IBIS opt. 해석 진행하면 결과가 grouping되어 보이던 문제 수정
+>- ##### Update IBIS optimization result report --></blockquote>

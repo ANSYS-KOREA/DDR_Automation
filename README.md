@@ -22,8 +22,11 @@
 >   > ![ex_screenshot](./Resources/fig/customizable.png)
 ---
 ## User Guide
----
-## Development Request
+> ### [Quick Guide (EN) - PDF](./Resources/help/Quick_Guide_EN.pdf)
+> ### [User Guide (EN) - PDF](./Resources/help/User_Guide_EN.pdf)
+> ### [Quick Guide (KO) - PDF](./Resources/help/Quick_Guide_KO.pdf)
+> ### [User Guide (KO) - PDF](./Resources/help/User_Guide_KO.pdf)
+> ### [Guide Videos](http://)
 ---
 <!-- ## History
 > ### [v0.5.1] - '22.08.06
