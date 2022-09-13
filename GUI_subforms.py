@@ -4394,7 +4394,7 @@ class IBIS_OptForm(Form):
 	def Button_RunClick(self, sender, e):
 		flag, show_msg_flag, msg = IBIS_Check(self)
 		if flag:
-			#IBIS_Init()
+			IBIS_Init()			
 			self.Cursor = Cursors.WaitCursor
 			sub_DB.IBIS_Result_Init_Flag = True
 			sub_DB.IBIS_ResultForm = IBIS_Case()

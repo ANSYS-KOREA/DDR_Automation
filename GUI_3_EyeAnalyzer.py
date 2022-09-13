@@ -346,8 +346,7 @@ class Eye_Form(Form):
 		# 
 		self._Help_DDRAbout_ToolStripMenuItem.Name = "Help_DDRAbout_ToolStripMenuItem"
 		self._Help_DDRAbout_ToolStripMenuItem.Size = System.Drawing.Size(300, 22)
-		self._Help_DDRAbout_ToolStripMenuItem.Text = "About Ansys DDR Wizard"
-		self._Help_DDRAbout_ToolStripMenuItem.Visible = False
+		self._Help_DDRAbout_ToolStripMenuItem.Text = "About Ansys DDR Wizard"		
 		self._Help_DDRAbout_ToolStripMenuItem.Click += self.Help_DDRAbout_ToolStripMenuItemClick
 		# 
 		# toolStripSeparator1
@@ -358,8 +357,7 @@ class Eye_Form(Form):
 		# toolStripSeparator2
 		#
 		self._toolStripSeparator2.Name = "toolStripSeparator2"
-		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)
-		self._toolStripSeparator2.Visible = False
+		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)		
 		# 
 		# toolStrip1
 		#
@@ -592,8 +590,7 @@ class Eye_Form(Form):
 		# 
 		# toolStripSeparator7
 		# 
-		self._toolStripSeparator7.Name = "toolStripSeparator1"
-		self._toolStripSeparator7.Visible = False
+		self._toolStripSeparator7.Name = "toolStripSeparator1"		
 		self._toolStripSeparator7.Size = System.Drawing.Size(240, 6)
 		# 
 		# WhatsNewInThisReleaseToolStripMenuItem
@@ -608,8 +605,7 @@ class Eye_Form(Form):
 		# 
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Name = "AboutAnsysDDREyeAnalyzerToolStripMenuItem"
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Size = System.Drawing.Size(243, 22)
-		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Text = "About Ansys DDR Eye Analyzer"
-		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Visible = False
+		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Text = "About Ansys DDR Eye Analyzer"		
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Click += self.AboutAnsysDDREyeAnalyzerToolStripMenuItemClick
 		# 
 		# PictureBox_OldEye
@@ -2154,11 +2150,11 @@ class Eye_Form(Form):
 		pass
 
 	def Help_DDRHelp_ToolStripMenuItemClick(self, sender, e):		
-		os.startfile(path + r'\Resources\help\User_Guide.pdf')
+		os.startfile(path + r'\Resources\help\User_Guide_EN.pdf')
 		pass
 
 	def Help_DDRGuid_ToolStripMenuItemClick(self, sender, e):
-		os.startfile(path + r'\Resources\help\Quick_Guide.pdf')
+		os.startfile(path + r'\Resources\help\Quick_Guide_EN.pdf')
 		pass
 
 	def Help_DDRNew_ToolStripMenuItemClick(self, sender, e):
@@ -2166,7 +2162,7 @@ class Eye_Form(Form):
 		pass
 
 	def Help_DDRAbout_ToolStripMenuItemClick(self, sender, e):
-		MessageBox.Show("About ANSYS DDR Wizard", "To be done")
+		os.startfile(path + r'\Resources\help\Readme.html')
 		pass
 
 	########################################################################
@@ -2200,7 +2196,7 @@ class Eye_Form(Form):
 		
 	def toolStrip_IBIS_ButtonClick(self, sender, e):
 		
-		self.Options_IBISStripMenuItemClick(self, sender)		
+		self.Options_IBISStripMenuItemClick(self, sender)
 
 	def toolStrip_Batch_ButtonClick(self, sender, e):
 
@@ -2208,7 +2204,7 @@ class Eye_Form(Form):
 
 	def ADEAHelpToolStripMenuItemClick(self, sender, e):
 
-		self.Help_DDRHelp_ToolStripMenuItemClick(self, sender)		
+		self.Help_DDRHelp_ToolStripMenuItemClick(self, sender)
 
 	def ADEAQuickGuideToolStripMenuItemClick(self, sender, e):
 
@@ -2220,7 +2216,7 @@ class Eye_Form(Form):
 
 	def AboutAnsysDDREyeAnalyzerToolStripMenuItemClick(self, sender, e):
 
-		print "About DDR Analyzer"
+		self.Help_DDRAbout_ToolStripMenuItemClick(self, sender)
 
 	########################################################################
 	def TextBox_OffsetTextChanged(self, sender, e):		
@@ -2772,16 +2768,16 @@ class Eye_Form(Form):
 			EXIT()
 
 	########################################################################
-	def Button_ImportClick(self, sender, e):		
-		try:			
+	def Button_ImportClick(self, sender, e):
+		try:
 			sub_DB.TBD_flag = True
 			self.Init_Flag = True
-			self._ComboBox_Design.Text = ""
-			dialog = OpenFileDialog()			
+			dialog = OpenFileDialog()
 			#dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
 			dialog.Filter = "AEDT Project file|*.aedt"
 
 			if dialog.ShowDialog(self) == DialogResult.OK:
+				self._ComboBox_Design.Text = ""
 				File = dialog.FileName
 				sub_DB.File = File
 				result_dir = File.split(".")[0] + "_DDR_Results"
@@ -2993,19 +2989,18 @@ class Eye_Form(Form):
 				self.Text = " : ".join(sub_DB.Title)
 
 			else:
-				#MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
-				MessageBox.Show("Please Select the Input File(*.aedt)","Warning")
+				pass
 
 			
 
 			# Set ToopTip
-			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			
+			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)
 			
-		except Exception as e:			
+		except Exception as e:
 			Log("[Input File Import] = Failed")
 			Log(traceback.format_exc())
 			print traceback.format_exc()
-			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")			
+			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")
 			EXIT()
 
 	def Button_ViewNetClick(self, sender, e):
@@ -3235,7 +3230,7 @@ class Eye_Form(Form):
 			self._Label_VoltageSpec.Location = System.Drawing.Point(60, 261)
 
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
-			self.Height = 660			
+			self.Height = 660
 			 
 	def Button_ImgShow_OldClick(self, sender, e):		
 		self.Image_flag_Old = not self.Image_flag_Old

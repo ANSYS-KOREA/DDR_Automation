@@ -68,9 +68,13 @@
 >>- ##### 자동 Datarate 입력 기능 Disable
 >>- ##### QC Routine 및 QC 결과표 작성
 
-> ### [v0.6.5] - '22.09.06
+> ### [v0.6.5] - '22.09.13
 >>- ##### 연속 해석 진행시, 이전 해석에서 설정했던 Report Export option이 초기화 되지 않는 문제 수정.
 >>- ##### IBIS opt. 해석 진행 후, detailed report창에서 report export할 수 없도록 수정 -> 대신 전체 optimization 결과를 export할 수 있도록 update할 예정임.
 >>- ##### IBIS opt. 해석 전 또는 해석 후 result 버튼 click하면 error 발생하던 문제 수정
 >>- ##### Analysis Group 설정 하고 Eye 해석 진행 후, IBIS opt. 해석 진행하면 결과가 grouping되어 보이던 문제 수정
+>>- ##### IBIS opt. 연속 수행하면, AEDT에서 Sim case가 누적되어 해석되던 문제 수정
+>>- ##### Input file을 load 한 뒤, 새로운 file을 load 하려다 cancel 하면, 기존 입력되어 있던 design name이 삭제되던 현상 수정.
+>>- ##### v0.6.5 기준 한글 + 영문 User manual, Quick Guide, Readme.md, Readme.html update.
+>>- ##### GUI 에서 About ADEA Menu 다시 활성화 함.
 >>- ##### Update IBIS optimization result report -->
