@@ -49,7 +49,7 @@
 <details>
 <summary><span style="font-size:200%"> User Guide - PDF </span></summary>
 
-> ### [Quick Guide (EN) - PDF](./Resources/help/Quick_Guide_EN.pdf)
+> ### [Quick Guide (EN) - PDF](./Resources/help/Quick_Guide_EN.pdf){:target="_blank"}
 > ### [User Guide (EN) - PDF](./Resources/help/User_Guide_EN.pdf)
 > ### [Quick Guide (KO) - PDF](./Resources/help/Quick_Guide_KO.pdf)
 > ### [User Guide (KO) - PDF](./Resources/help/User_Guide_KO.pdf)
@@ -61,7 +61,7 @@
 <summary><span style="font-size:200%"> User Guide - Video </span></summary>
 
 > ### [Guide Videos](http://www.rfdh.com/pds/adea)
->	> * ### [Getting Start with AEDA](http://www.rfdh.com/pds/adea/Getting_Start_with_ADEA.mp4)
+>	> * ### [Getting Start with AEDA](http://www.rfdh.com/pds/adea/Getting_Start_with_ADEA.mp4){:target="_blank"}
 >	> * ### [Quick Guide for DQ Eye Analyze](http://www.rfdh.com/pds/adea/Quick_Guide_for_DQ_Eye_Analyze.mp4)
 >	> * ### Quick Guide for IBIS Optimization
 >   > ---
