@@ -65,11 +65,13 @@
 >	> * ### Quick Guide for IBIS Optimization
 >   > ---
 >	> * ### Problem in Running ADEA
+>	> * ### Select Version of Ansys Electronics Desktop
 >	> * ### What is Deifnition File?
 >	>   > * ### Modify and/or Add DDR Specifications
 >	>   > * ### Automatic Net Classifications
 >	>   > * ### Automatic IBIS Identification
 >	> * ### What is Configuration File?
+>	> * ### Analyze with 'Analyze Group'
 </details>
 
 ---
@@ -113,7 +115,7 @@
 >>- ##### 자동 Datarate 입력 기능 Disable
 >>- ##### QC Routine 및 QC 결과표 작성
 
-> ### [v0.6.5] - '22.09.13
+> ### [v0.6.5] - '22.09.16
 >>- ##### 연속 해석 진행시, 이전 해석에서 설정했던 Report Export option이 초기화 되지 않는 문제 수정.
 >>- ##### IBIS opt. 해석 진행 후, detailed report창에서 report export할 수 없도록 수정 -> 대신 전체 optimization 결과를 export할 수 있도록 update할 예정임.
 >>- ##### IBIS opt. 해석 전 또는 해석 후 result 버튼 click하면 error 발생하던 문제 수정
