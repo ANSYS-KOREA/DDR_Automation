@@ -26,7 +26,9 @@
 > ### [User Guide (EN) - PDF](./Resources/help/User_Guide_EN.pdf)
 > ### [Quick Guide (KO) - PDF](./Resources/help/Quick_Guide_KO.pdf)
 > ### [User Guide (KO) - PDF](./Resources/help/User_Guide_KO.pdf)
-> ### [Guide Videos](http://)
+> ### [Guide Videos]
+>	> * ### 0. Getting Start with AEDA(https://user-images.githubusercontent.com/100827712/190356211-0965af21-615c-4752-9279-5f45b783fd23.mp4)
+
 ---
 <!-- ## History
 > ### [v0.5.1] - '22.08.06
