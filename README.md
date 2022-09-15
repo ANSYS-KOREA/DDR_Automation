@@ -13,21 +13,37 @@
 <details>
 <summary><span style="font-size:200%"> Why ADEA? </span></summary>
 
-> ## 1. Easy
->   > * ### Pre-defined User Configurations
->   > * ### Pre-defined DDR Specifications
->   > * ### Automatic Net Classification & Target Net Assign Algorithm
->   > * ### Selective Verification Process
->   > ![ex_screenshot](./Resources/fig/easy.png)
-> ## 2. Simple
->   > * ### One-Click Verification Process
->   > ![ex_screenshot](./Resources/fig/simple.png)
-> ## 3. Customizable
->   > * ### Customziable Verification Algorithm & Process
->   > * ### Customziable Final Report (Excel, HTML, etc.)
->   > ![ex_screenshot](./Resources/fig/customizable.png)
-</details>
+<blockquote>
+<details>
+<summary><span style="font-size:200%"> 1. Easy </span></summary>
 
+>   * ### Pre-defined User Configurations
+>   * ### Pre-defined DDR Specifications
+>   * ### Automatic Net Classification & Target Net Assign Algorithm
+>   * ### Selective Verification Process
+>   ![ex_screenshot](./Resources/fig/easy.png)
+</details>
+</blockquote>
+
+<blockquote>
+<details>
+<summary><span style="font-size:200%"> 2. Simple </span></summary>
+
+>   * ### One-Click Verification Process
+>   ![ex_screenshot](./Resources/fig/simple.png)
+</details>
+</blockquote>
+
+<blockquote>
+<details>
+<summary><span style="font-size:200%"> 3. Customizable </span></summary>
+
+>   * ### Customziable Verification Algorithm & Process
+>   * ### Customziable Final Report (Excel, HTML, etc.)
+>   ![ex_screenshot](./Resources/fig/customizable.png)
+</details>
+</blockquote>
+</details>
 
 ---
 <details>
