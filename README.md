@@ -2,11 +2,17 @@
 
 
 <!-- ![Main GUI](./Resources/fig/main_GUI.bmp) -->
-## What is ADEA?
+<details>
+<summary><span style="font-size:200%"> What is ADEA? </span></summary>
+
 >### A new Solution for DDR analysis by Ansys Korea.
 >![ex_screenshot](./Resources/fig/ADEA_Intro.png)
+</details>
+
 ---
-## Why ADEA?
+<details>
+<summary><span style="font-size:200%"> Why ADEA? </span></summary>
+
 > ## 1. Easy
 >   > * ### Pre-defined User Configurations
 >   > * ### Pre-defined DDR Specifications
@@ -20,14 +26,35 @@
 >   > * ### Customziable Verification Algorithm & Process
 >   > * ### Customziable Final Report (Excel, HTML, etc.)
 >   > ![ex_screenshot](./Resources/fig/customizable.png)
+</details>
+
+
 ---
-## User Guide
+<details>
+<summary><span style="font-size:200%"> User Guide - PDF </span></summary>
+
 > ### [Quick Guide (EN) - PDF](./Resources/help/Quick_Guide_EN.pdf)
 > ### [User Guide (EN) - PDF](./Resources/help/User_Guide_EN.pdf)
 > ### [Quick Guide (KO) - PDF](./Resources/help/Quick_Guide_KO.pdf)
 > ### [User Guide (KO) - PDF](./Resources/help/User_Guide_KO.pdf)
-> ### [Guide Videos]
->	> * ### 0. Getting Start with AEDA(https://user-images.githubusercontent.com/100827712/190356211-0965af21-615c-4752-9279-5f45b783fd23.mp4)
+</details>
+
+---
+<details>
+<summary><span style="font-size:200%"> User Guide - Video </span></summary>
+
+> ### [Guide Videos](http://www.rfdh.com/pds/adea)
+>	> * ### [Getting Start with AEDA](http://www.rfdh.com/pds/adea/Getting_Start_with_ADEA.mp4)
+>	> * ### [Quick Guide for DQ Eye Analyze](http://www.rfdh.com/pds/adea/Quick_Guide_for_DQ_Eye_Analyze.mp4)
+>	> * ### Quick Guide for IBIS Optimization
+>   > ---
+>	> * ### Problem in Running ADEA
+>	> * ### What is Deifnition File?
+>	>   > * ### Modify and/or Add DDR Specifications
+>	>   > * ### Automatic Net Classifications
+>	>   > * ### Automatic IBIS Identification
+>	> * ### What is Configuration File?
+</details>
 
 ---
 <!-- ## History
