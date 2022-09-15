@@ -53,6 +53,7 @@
 > ### [User Guide (EN) - PDF](./Resources/help/User_Guide_EN.pdf)
 > ### [Quick Guide (KO) - PDF](./Resources/help/Quick_Guide_KO.pdf)
 > ### [User Guide (KO) - PDF](./Resources/help/User_Guide_KO.pdf)
+> <h3><a href="./Resources/help/User_Guide_KO.pdf" target='_blank'>Quick Guide (EN) - PDF</a></h3>
 </details>
 
 ---
