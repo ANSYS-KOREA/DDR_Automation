@@ -4,7 +4,7 @@
 : 			ex)C:\Program Files\AnsysEM\AnsysEM20.2\Win64
 
 : Launch Option 2 - Latest version of ANSYS EM Suite
-:	You don't have to do anything because SerDes 3D Model Wizard will automatically find the ANSYS EM Suite of the latest version on your PC.
+:	You don't have to do anything because ADEA will automatically find the ANSYS EM Suite of the latest version on your PC.
 
 set PATH=%SIWAVE_INSTALL_DIR%\common\IronPython"
 
