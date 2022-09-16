@@ -71,5 +71,11 @@ sub_DB.IBIS_Form = IBIS_OptForm()
 ###########################
 sub_DB.Eye_Form.ShowDialog()
 
+#sub_DB.IBIS_ResultForm = IBIS_Case()
+#sub_DB.IBIS_ResultForm._DataGridView.Size = System.Drawing.Size(699, 300)
+#sub_DB.IBIS_ResultForm.Size = System.Drawing.Size(740, 390)
+#sub_DB.IBIS_ResultForm.Text = "IBIS Optimization Results"
+#sub_DB.IBIS_ResultForm.ShowDialog()
+
 # End Ansys DDR Wizard
 # exit()

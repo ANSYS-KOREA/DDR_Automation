@@ -703,21 +703,13 @@ def IBIS_Check(self):
 			MessageBox.Show("At least one buffer model for Rx must be selected")
 
 	if flag:
-		if not self._ComboBox_Buffer_Tx.Text in sub_DB.Cenv['<Tx>[IBIS Model Identification]']:
-			sub_DB.Cenv['<Tx>[IBIS Model Identification]'].append(sub_DB.IBIS_Form._ComboBox_Buffer_Tx.Text)			
-			sub_DB.Parsing_data = AEDT_Parsing(sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.Eye_Form._ComboBox_Design.Text, True)
-
-		if len(sub_DB.Parsing_data['IBIS_Tx_comp']) == 0:
+		if not self._ComboBox_Buffer_Tx.Text in sub_DB.IBIS_Init_Tx:
 			flag = False
 			show_msg_flag = False
 			self._ComboBox_Buffer_Tx.BackColor = System.Drawing.SystemColors.Info
 			MessageBox.Show("Init. Buffer for Tx seems to have been selected incorrectly. \nPlease choose again")
 
-		if not self._ComboBox_Buffer_Rx.Text in sub_DB.Cenv['<Rx>[IBIS Model Identification]']:
-			sub_DB.Cenv['<Rx>[IBIS Model Identification]'].append(sub_DB.IBIS_Form._ComboBox_Buffer_Rx.Text)			
-			sub_DB.Parsing_data = AEDT_Parsing(sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.Eye_Form._ComboBox_Design.Text, True)
-
-		if len(sub_DB.Parsing_data['IBIS_Rx_comp']) == 0:
+		if not self._ComboBox_Buffer_Rx.Text in sub_DB.IBIS_Init_Rx:
 			flag = False
 			show_msg_flag = False
 			self._ComboBox_Buffer_Rx.BackColor = System.Drawing.SystemColors.Info
@@ -2071,6 +2063,7 @@ def CnfAutoLoad(self):
 				except Exception as e:		
 					Log("		(Auto Load Eye) : Failed")
 					Log(traceback.format_exc())
+					print traceback.format_exc()
 					MessageBox.Show("Fail to Load Auto Saved Cnf for Eye Analyzer","Warning")						
 					EXIT()
 
@@ -2098,6 +2091,7 @@ def Initial(Init_AEDT = True):
 	Log("\n\n")
 	sub_DB.TBD_flag = True
 	sub_DB.CSV_flag = True
+	#sub_DB.NetSort_Flag = False
 	sub_ScriptEnv.Release()
 	if Init_AEDT:	
 		sub_DB.AEDT = {}	
@@ -2200,38 +2194,13 @@ def temp_get_waveform(self):
 		
 	return Waveform
 
-def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
+def AEDT_Parsing_pre(File, Design, IBIS_File=False, Spara_File=False):
 	DB = {}
 	if IBIS_File:		
 		#
 		IBIS_files = []
 		temp_IBIS_files = []
 		flag = True
-		#with open(File) as fp:
-		#	while(flag):
-		#		# Read line
-		#		temp_data = fp.readline()
-
-		#		if "$begin \'NexximCircuit\'" in temp_data:
-		#			while(flag):
-		#				# Read line
-		#				temp_data = fp.readline()
-
-		#				if Design in temp_data:
-		#					while(flag):
-		#						# Read line
-		#						temp_data = fp.readline()
-
-		#						if 'Name of IBIS file' in temp_data:									
-		#							item = temp_data.split(',')[4].replace('\'','').replace('\\\\','\\').strip()
-		#							if '<Project>' in item:
-		#								item = File.replace(File.split('\\')[-1],'') + item.replace('<Project>','')
-		#							if not item in IBIS_files:
-		#								print item
-		#								IBIS_files.append(item)
-
-		#						if "$end \'NexximCircuit\'" in temp_data:
-		#							flag = False
 
 		with open(File) as fp:
 			while(flag):
@@ -2288,7 +2257,8 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 		IBIS_Rx_comp = []
 		flag1 = True
 		flag2 = True
-		
+		#ramp_fwf
+		#ramp_rwf
 		with open(File) as fp:
 			while(flag1):
 				# Read line
@@ -2357,17 +2327,152 @@ def AEDT_Parsing(File, Design, IBIS_File=False, Spara_File=False):
 
 	return DB
 
+def AEDT_Parsing(File, Design, IBIS=False, Spara_File=False):
+	DB = {}	
+	IBIS_file = []
+	IBIS_comp = {}
+	datarate = ''
+		
+	line = 0
+	flag = True
+	with open(File) as fp:
+		while(flag):
+			# Read line
+			temp_data = fp.readline()
+			line += 1
+
+			if '$begin \'AnsoftProject\'' in temp_data:
+				while(1):
+					temp_data = fp.readline()
+					line += 1
+
+					if '$begin \'Definitions\'' in temp_data:
+						while(1):
+							temp_data = fp.readline()
+							line += 1
+
+							if '$begin \'Compdefs\'' in temp_data:
+								while(1):
+									temp_data = fp.readline()
+									line += 1
+
+									if IBIS:
+										if 'Name of IBIS file' in temp_data:									
+											item = temp_data.split(',')[4].replace('\'','').replace('\\\\','\\').replace('/','\\').strip()
+											if '<Project>' in item:
+												item = File.replace(File.split('\\')[-1],'') + item.replace('<Project>','')
+											if not item in IBIS_file:
+												if os.path.isfile(item):
+													IBIS_file.append(item)
+
+									if '$end \'Compdefs\'' in temp_data:
+										break
+							if '$end \'Definitions\'' in temp_data:
+								break
+
+					if '$begin \'NexximCircuit\'' in temp_data:
+						while(1):
+							temp_data = fp.readline()
+							line += 1
+							
+							design_flag = False
+							if '$begin \'Circuit\'' in temp_data:
+								while(1):
+									temp_data = fp.readline()
+									line += 1
+									
+									if 'ComponentName' in temp_data:										
+										if sub_DB.Eye_Form._ComboBox_Design.Text == temp_data.split('=')[-1].replace('\'','').strip():
+											design_flag = True
+
+									if '$begin \'Compinst\'' in temp_data and design_flag:
+										Old_IBIS_flag = False
+										IBIS_flag = False
+										BPS_flag = True
+										comp_name = None
+										buffer = None
+										ID = None
+
+										while(1):
+											temp_data = fp.readline()
+											line += 1
+
+											if IBIS:
+												if 'ID=' in temp_data:
+													ID = temp_data.split('=')[-1].replace('\'','').strip()
+
+												if 'CompName' in temp_data:
+													comp_name = temp_data.split("=")[-1].replace('\'','').strip() + ';' + ID
+
+												if '$begin \'Parameters\'' in temp_data:
+													while(1):
+														temp_data = fp.readline()
+
+														if 'SeparatorProp(\'Eye Source Parameters\'' in temp_data:
+															Old_IBIS_flag = True
+
+														if 'MenuProp(\'ramp' in temp_data:
+															IBIS_flag = True
+
+														if 'MenuValueProp(\'model\'' in temp_data:
+															buffer_list = temp_data.split("\',")[3].replace('\'','').strip().split(",")
+															buffer_idx = temp_data.split("\',")[4].strip().split(',')[0]
+															buffer = buffer_list[int(buffer_idx)]
+
+														if 'MenuProp(\'UIorBPS\'' in temp_data:
+															UIorBPS_list = temp_data.split("\',")[-2].replace('\'','').strip().split(",")
+															UIorBPS_idx = temp_data.split("\',")[-1].replace(')','').strip()
+															UIorBPS = UIorBPS_list[int(UIorBPS_idx)]
+															if UIorBPS == 'UnitInterval': BPS_flag = False
+															else: BPS_flag = True
+
+														if 'ValuePropNU(\'UIorBPSValue\'' in temp_data:
+															speed = temp_data.split(",")[-3].replace('\'','').strip()
+
+															## M, meg, G
+															#if BPS_flag:
+															#	temp_datarate = int(float(speed.replace('s','').strip())/1e6)
+															#else:
+															#	temp_datarate = int(1/float(speed.replace('s','').strip())/1e6)
+
+															#for item in sub_DB.Eye_Form._ComboBox_DataRate.Items:
+															#	if item == str(temp_datarate):
+															#		datarate = temp_datarate
+															pass
+
+														if '$end \'Parameters\'' in temp_data:
+															break
+
+											if '$end \'Compinst\'' in temp_data:
+												if IBIS_flag:
+													IBIS_comp.update({comp_name:[buffer, BPS_flag, speed]})
+
+												break
+
+									if '$end \'Circuit\'' in temp_data:
+										break
 
 
+							if '$end \'NexximCircuit\'' in temp_data:
+								break
+
+					if '$end \'AnsoftProject\'' in temp_data:
+						flag = False
+						break
 
 
+		DB['IBIS_File'] = IBIS_file
+		DB['IBIS_comp'] = IBIS_comp
+		DB['datarate'] = datarate
+		DB['Old_IBIS_flag'] = Old_IBIS_flag
+		#for file in IBIS_file:
+		#	print file
 
+		#print ''
 
+		#for key in IBIS_comp.keys():
+		#	print key
+		#	for comp in IBIS_comp[key]:
+		#		print comp
 
-
-
-
-
-
-
-
+	return DB

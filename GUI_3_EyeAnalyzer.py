@@ -346,8 +346,7 @@ class Eye_Form(Form):
 		# 
 		self._Help_DDRAbout_ToolStripMenuItem.Name = "Help_DDRAbout_ToolStripMenuItem"
 		self._Help_DDRAbout_ToolStripMenuItem.Size = System.Drawing.Size(300, 22)
-		self._Help_DDRAbout_ToolStripMenuItem.Text = "About Ansys DDR Wizard"
-		self._Help_DDRAbout_ToolStripMenuItem.Visible = False
+		self._Help_DDRAbout_ToolStripMenuItem.Text = "About Ansys DDR Wizard"		
 		self._Help_DDRAbout_ToolStripMenuItem.Click += self.Help_DDRAbout_ToolStripMenuItemClick
 		# 
 		# toolStripSeparator1
@@ -358,8 +357,7 @@ class Eye_Form(Form):
 		# toolStripSeparator2
 		#
 		self._toolStripSeparator2.Name = "toolStripSeparator2"
-		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)
-		self._toolStripSeparator2.Visible = False
+		self._toolStripSeparator2.Size = System.Drawing.Size(297, 6)		
 		# 
 		# toolStrip1
 		#
@@ -592,8 +590,7 @@ class Eye_Form(Form):
 		# 
 		# toolStripSeparator7
 		# 
-		self._toolStripSeparator7.Name = "toolStripSeparator1"
-		self._toolStripSeparator7.Visible = False
+		self._toolStripSeparator7.Name = "toolStripSeparator1"		
 		self._toolStripSeparator7.Size = System.Drawing.Size(240, 6)
 		# 
 		# WhatsNewInThisReleaseToolStripMenuItem
@@ -608,8 +605,7 @@ class Eye_Form(Form):
 		# 
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Name = "AboutAnsysDDREyeAnalyzerToolStripMenuItem"
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Size = System.Drawing.Size(243, 22)
-		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Text = "About Ansys DDR Eye Analyzer"
-		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Visible = False
+		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Text = "About Ansys DDR Eye Analyzer"		
 		self._AboutAnsysDDREyeAnalyzerToolStripMenuItem.Click += self.AboutAnsysDDREyeAnalyzerToolStripMenuItemClick
 		# 
 		# PictureBox_OldEye
@@ -1698,7 +1694,7 @@ class Eye_Form(Form):
 
 	''' Eye_Form - Events '''
 	def Eye_FormLoad(self, sender, e):
-		try:
+		try:			
 			# initialization
 			self._TextBox_InputFile.BackColor = System.Drawing.SystemColors.Info
 			self._TextBox_Offset.Text = "7.5"
@@ -1741,6 +1737,7 @@ class Eye_Form(Form):
 		except Exception as e:			
 			Log("[Eye_FormLoad] = Failed")
 			Log(traceback.format_exc())
+			print traceback.format_exc()
 			MessageBox.Show("Fail to load Eye Analyzer main GUI","Warning")			
 			EXIT()
 
@@ -2083,7 +2080,8 @@ class Eye_Form(Form):
 
 	def Options_IBISStripMenuItemClick(self, sender, e):
 		try:
-			IBIS_Init()
+			if sub_DB.IBIS_Result_Init_Flag:
+				IBIS_Init()			
 			self.Cursor = Cursors.WaitCursor
 			Log("[IBIS Form Launch]")
 			flag, show_msg_flag, msg = Check_Input(self)
@@ -2096,23 +2094,35 @@ class Eye_Form(Form):
 
 					else:
 						File = self._TextBox_InputFile.Text
-						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)						
-						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = "Select"						
+						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = "Select"
 						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = "Select"
 						sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Info
 						sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Info
 
-						for item in sub_DB.Parsing_data['IBIS_File']:
-							IBIS_File_name = item.split('\\')[-1]
-							sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Items.Add(IBIS_File_name)
-							sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Items.Add(IBIS_File_name)										
-							Group, Match = IBIS_Identify(IBIS_File_name, sub_DB.Cenv)
-							if Group == "Tx":								
-								sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = IBIS_File_name
-								sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Window
-							elif Group == "Rx":								
-								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = IBIS_File_name
-								sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Window
+						#for item in sub_DB.Parsing_data['IBIS_File']:
+						#	#print ''
+						#	#print item
+						#	#IBIS = IBIS_Parsing(File)
+						#	#print IBIS
+						#	#print ''
+						#	#for key in IBIS.keys():
+						#	#	print ''
+						#	#	print key
+						#	#	for item in IBIS[key]:
+						#	#		print item
+
+						#	#print JH
+
+						#	IBIS_File_name = item.split('\\')[-1]
+						#	sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Items.Add(IBIS_File_name)
+						#	sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Items.Add(IBIS_File_name)										
+						#	Group, Match = IBIS_Identify(IBIS_File_name, sub_DB.Cenv)
+						#	if Group == "Tx":								
+						#		sub_DB.IBIS_Form._ComboBox_IBIS_Tx.Text = IBIS_File_name
+						#		sub_DB.IBIS_Form._ComboBox_IBIS_Tx.BackColor = System.Drawing.SystemColors.Window
+						#	elif Group == "Rx":								
+						#		sub_DB.IBIS_Form._ComboBox_IBIS_Rx.Text = IBIS_File_name
+						#		sub_DB.IBIS_Form._ComboBox_IBIS_Rx.BackColor = System.Drawing.SystemColors.Window
 						
 						sub_DB.IBIS_Form.StartPosition = System.Windows.Forms.FormStartPosition.Manual
 						sub_DB.IBIS_Form.Location = System.Drawing.Point(sub_DB.Eye_Form.Location.X + sub_DB.Eye_Form.Size.Width, sub_DB.Eye_Form.Location.Y)						
@@ -2140,11 +2150,11 @@ class Eye_Form(Form):
 		pass
 
 	def Help_DDRHelp_ToolStripMenuItemClick(self, sender, e):		
-		os.startfile(path + r'\Resources\help\User_Guide.pdf')
+		os.startfile(path + r'\Resources\help\User_Guide_EN.pdf')
 		pass
 
 	def Help_DDRGuid_ToolStripMenuItemClick(self, sender, e):
-		os.startfile(path + r'\Resources\help\Quick_Guide.pdf')
+		os.startfile(path + r'\Resources\help\Quick_Guide_EN.pdf')
 		pass
 
 	def Help_DDRNew_ToolStripMenuItemClick(self, sender, e):
@@ -2152,7 +2162,7 @@ class Eye_Form(Form):
 		pass
 
 	def Help_DDRAbout_ToolStripMenuItemClick(self, sender, e):
-		MessageBox.Show("About ANSYS DDR Wizard", "To be done")
+		os.startfile(path + r'\Resources\help\Readme.html')
 		pass
 
 	########################################################################
@@ -2186,7 +2196,7 @@ class Eye_Form(Form):
 		
 	def toolStrip_IBIS_ButtonClick(self, sender, e):
 		
-		self.Options_IBISStripMenuItemClick(self, sender)		
+		self.Options_IBISStripMenuItemClick(self, sender)
 
 	def toolStrip_Batch_ButtonClick(self, sender, e):
 
@@ -2194,7 +2204,7 @@ class Eye_Form(Form):
 
 	def ADEAHelpToolStripMenuItemClick(self, sender, e):
 
-		self.Help_DDRHelp_ToolStripMenuItemClick(self, sender)		
+		self.Help_DDRHelp_ToolStripMenuItemClick(self, sender)
 
 	def ADEAQuickGuideToolStripMenuItemClick(self, sender, e):
 
@@ -2206,7 +2216,7 @@ class Eye_Form(Form):
 
 	def AboutAnsysDDREyeAnalyzerToolStripMenuItemClick(self, sender, e):
 
-		print "About DDR Analyzer"
+		self.Help_DDRAbout_ToolStripMenuItemClick(self, sender)
 
 	########################################################################
 	def TextBox_OffsetTextChanged(self, sender, e):		
@@ -2336,7 +2346,7 @@ class Eye_Form(Form):
 
 			# Get Solutions
 			self._ComboBox_SolutionName.Items.Clear()
-			Sim_type = oDesign.GetDesignType()			
+			Sim_type = oDesign.GetDesignType()
 			if Sim_type == "Circuit Netlist":
 				self._ComboBox_SolutionName.Items.Add("TRAN")
 				self._ComboBox_SolutionName.SelectedIndex = 0
@@ -2758,16 +2768,16 @@ class Eye_Form(Form):
 			EXIT()
 
 	########################################################################
-	def Button_ImportClick(self, sender, e):		
-		try:			
+	def Button_ImportClick(self, sender, e):
+		try:
 			sub_DB.TBD_flag = True
 			self.Init_Flag = True
-			self._ComboBox_Design.Text = ""
-			dialog = OpenFileDialog()			
+			dialog = OpenFileDialog()
 			#dialog.Filter = "AEDT Project file|*.aedt|Comma Separated Values|*.csv"
 			dialog.Filter = "AEDT Project file|*.aedt"
 
 			if dialog.ShowDialog(self) == DialogResult.OK:
+				self._ComboBox_Design.Text = ""
 				File = dialog.FileName
 				sub_DB.File = File
 				result_dir = File.split(".")[0] + "_DDR_Results"
@@ -2804,6 +2814,28 @@ class Eye_Form(Form):
 					self._Button_ViewNet.BackColor = System.Drawing.SystemColors.Info
 					self._ComboBox_Design.SelectedIndex = 0
 					sub_DB.InputFile_Flag = 1
+
+					# AEDT Parsing
+					sim_type = sub_DB.AEDT["Design"].GetDesignType()
+					if sim_type == 'Circuit Design':
+						sub_DB.Parsing_data = AEDT_Parsing(File, self._ComboBox_Design.Text, True)
+
+						#datarate_flag = False
+						#for item in self._ComboBox_DataRate.Items:
+						#	if item == str(sub_DB.Parsing_data['datarate']):
+						#		datarate_flag = True
+						#		break
+
+						#if not datarate_flag:
+						#	self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+						#	self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+
+						#if self._ComboBox_DataRate.Text != str(sub_DB.Parsing_data['datarate']):
+						#	self._ComboBox_DataRate.Text = str(sub_DB.Parsing_data['datarate'])
+						#	self._ComboBox_DataRate.BackColor = System.Drawing.SystemColors.Info
+					elif sim_type == 'Circuit Netlist':
+						#TODO.220824 : AEDT parsing for circuit netlist input
+						pass
 
 				# for *.csv File
 				elif extension == "csv":
@@ -2957,17 +2989,18 @@ class Eye_Form(Form):
 				self.Text = " : ".join(sub_DB.Title)
 
 			else:
-				#MessageBox.Show("Please Select the Input File(*.aedt or *.csv)","Warning")
-				MessageBox.Show("Please Select the Input File(*.aedt)","Warning")
+				pass
+
+			
 
 			# Set ToopTip
-			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)			
+			self._TextBox_InputFile_ToopTip.SetToolTip(self._TextBox_InputFile, self._TextBox_InputFile.Text)
 			
-		except Exception as e:			
+		except Exception as e:
 			Log("[Input File Import] = Failed")
 			Log(traceback.format_exc())
 			print traceback.format_exc()
-			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")			
+			MessageBox.Show("Fail to import Input File\n%s" % File,"Warning")
 			EXIT()
 
 	def Button_ViewNetClick(self, sender, e):
@@ -3192,13 +3225,13 @@ class Eye_Form(Form):
 
 			self._Label_Info.Location = System.Drawing.Point(10, 423)
 
-			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 455)
+			self._GroupBox_NewEye.Size = System.Drawing.Size(690, 420)
 
 			self._Label_TimingSpec.Location = System.Drawing.Point(298, 285)
 			self._Label_VoltageSpec.Location = System.Drawing.Point(60, 261)
 
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
-			self.Height = 660			
+			self.Height = 660
 			 
 	def Button_ImgShow_OldClick(self, sender, e):		
 		self.Image_flag_Old = not self.Image_flag_Old
@@ -3342,7 +3375,7 @@ class Eye_Form(Form):
 			self._CheckBox_Vref.Location = System.Drawing.Point(103, 254)		
 			self._CheckBox_EditEnable_OldEye.Location = System.Drawing.Point(590, 423)
 
-			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 455)
+			self._GroupBox_OldEye.Size = System.Drawing.Size(690, 420)
 
 			self.MinimumSize = System.Drawing.Size(self.Size.Width, 660)
 			self.Height = 660

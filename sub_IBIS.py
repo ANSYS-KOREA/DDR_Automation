@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import clr
 import re
@@ -34,6 +35,10 @@ def IBIS_Init():
 	sub_DB.IBIS_Rx_Model = []
 	sub_DB.IBIS_Rx_Model_idx = []
 	sub_DB.IBIS_Sim_Case = []
+	
+	for row in sub_DB.Net_Form._DataGridView.Rows:
+		if row.Cells[4].Value != 'None':
+			row.Cells[4].Value = 'None'
 
 def IBIS_Parsing(File):
 	IBIS = {}
@@ -246,115 +251,87 @@ def IBIS_Opt_Run(self):
 	try:
 		# Get All Component Info
 		oEditor = oDesign.SetActiveEditor("SchematicEditor")
-		comp_array = oEditor.GetAllComponents()
 		
-		# Get Tx/Rx Component List
-		tx_comp = []
-		tx_comp.append("NAME:PropServers")
-		rx_comp = []
-		rx_comp.append("NAME:PropServers")
-		
-		if len(sub_DB.Parsing_data['IBIS_Tx_comp']) == 0:
-			sub_DB.Cenv['<Tx>[IBIS Model Identification]'].append(sub_DB.IBIS_Form._ComboBox_Buffer_Tx.Text)			
-			sub_DB.Parsing_data = AEDT_Parsing(sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.Eye_Form._ComboBox_Design.Text, True)
-				
-		for comp_tx in sub_DB.Parsing_data['IBIS_Tx_comp']:
-			for comp in comp_array:
-				if comp_tx in comp:
-					if not comp in tx_comp:
-						tx_comp.append(comp)
-					break
+		if sub_DB.Parsing_data['Old_IBIS_flag']:
+			# Apply Variables to Tx IBIS
+			oEditor.ChangeProperty(
+				["NAME:AllTabs",
+					["NAME:PassedParameterTab",
+						sub_DB.IBIS_Tx_comp,
+						["NAME:ChangedProps",
+							["NAME:model",
+								"OverridingDef:="	, True,
+								"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
+								"HasPin:="		, False,
+								"ShowPin:="		, False,
+								"Display:="		, False,
+								"Sweep:="		, False,
+								"DefaultOutput:="	, False,
+								"SDB:="			, False]]]])
 
-		if len(sub_DB.Parsing_data['IBIS_Rx_comp']) == 0:
-			sub_DB.Cenv['<Rx>[IBIS Model Identification]'].append(sub_DB.IBIS_Form._ComboBox_Buffer_Rx.Text)			
-			sub_DB.Parsing_data = AEDT_Parsing(sub_DB.Eye_Form._TextBox_InputFile.Text, sub_DB.Eye_Form._ComboBox_Design.Text, True)
-		
-		for comp_rx in sub_DB.Parsing_data['IBIS_Rx_comp']:
-			for comp in comp_array:
-				if comp_rx in comp:
-					if not comp in rx_comp:
-						rx_comp.append(comp)
-					break
-		
-		## Apply Variables to Tx IBIS
-		#oEditor.ChangeProperty(
-		#	["NAME:AllTabs",
-		#		["NAME:PassedParameterTab",
-		#			tx_comp,
-		#			["NAME:ChangedProps",
-		#				["NAME:model",
-		#					"OverridingDef:="	, True,
-		#					"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
-		#					"HasPin:="		, False,
-		#					"ShowPin:="		, False,
-		#					"Display:="		, False,
-		#					"Sweep:="		, False,
-		#					"DefaultOutput:="	, False,
-		#					"SDB:="			, False]]]])
-
-		## Apply Variables to Rx IBIS
-		#oEditor.ChangeProperty(
-		#	["NAME:AllTabs",
-		#		["NAME:PassedParameterTab",
-		#			rx_comp,
-		#			["NAME:ChangedProps",
-		#				["NAME:model",
-		#					"OverridingDef:="	, True,
-		#					"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
-		#					"HasPin:="		, False,
-		#					"ShowPin:="		, False,
-		#					"Display:="		, False,
-		#					"Sweep:="		, False,
-		#					"DefaultOutput:="	, False,
-		#					"SDB:="			, False]]]])
-
-		# Apply Variables to Tx IBIS
-		oEditor.ChangeProperty(
-			[
-				"NAME:AllTabs",
+			# Apply Variables to Rx IBIS
+			oEditor.ChangeProperty(
+				["NAME:AllTabs",
+					["NAME:PassedParameterTab",
+						sub_DB.IBIS_Rx_comp,
+						["NAME:ChangedProps",
+							["NAME:model",
+								"OverridingDef:="	, True,
+								"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
+								"HasPin:="		, False,
+								"ShowPin:="		, False,
+								"Display:="		, False,
+								"Sweep:="		, False,
+								"DefaultOutput:="	, False,
+								"SDB:="			, False]]]])
+		else:
+			# Apply Variables to Tx IBIS
+			oEditor.ChangeProperty(
 				[
-					"NAME:Buffer_Pin",
-					tx_comp,
+					"NAME:AllTabs",
 					[
-						"NAME:ChangedProps",
+						"NAME:Buffer_Pin",
+						sub_DB.IBIS_Tx_comp,
 						[
-							"NAME:model",
-							"OverridingDef:="	, True,
-							"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
-							"HasPin:="		, False,
-							"ShowPin:="		, False,
-							"Display:="		, False,
-							"Sweep:="		, False,
-							"DefaultOutput:="	, False,
-							"SDB:="			, False
+							"NAME:ChangedProps",
+							[
+								"NAME:model",
+								"OverridingDef:="	, True,
+								"Value:="		, "Tx_IBIS_Model[Tx_IBIS_Model_idx]",
+								"HasPin:="		, False,
+								"ShowPin:="		, False,
+								"Display:="		, False,
+								"Sweep:="		, False,
+								"DefaultOutput:="	, False,
+								"SDB:="			, False
+							]
 						]
 					]
-				]
-			])
+				])
 
-		# Apply Variables to Rx IBIS
-		oEditor.ChangeProperty(
-			[
-				"NAME:AllTabs",
+			# Apply Variables to Rx IBIS
+			oEditor.ChangeProperty(
 				[
-					"NAME:Buffer_Pin",
-					rx_comp,
+					"NAME:AllTabs",
 					[
-						"NAME:ChangedProps",
+						"NAME:Buffer_Pin",
+						sub_DB.IBIS_Rx_comp,
 						[
-							"NAME:model",
-							"OverridingDef:="	, True,
-							"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
-							"HasPin:="		, False,
-							"ShowPin:="		, False,
-							"Display:="		, False,
-							"Sweep:="		, False,
-							"DefaultOutput:="	, False,
-							"SDB:="			, False
+							"NAME:ChangedProps",
+							[
+								"NAME:model",
+								"OverridingDef:="	, True,
+								"Value:="		, "Rx_IBIS_Model[Rx_IBIS_Model_idx]",
+								"HasPin:="		, False,
+								"ShowPin:="		, False,
+								"Display:="		, False,
+								"Sweep:="		, False,
+								"DefaultOutput:="	, False,
+								"SDB:="			, False
+							]
 						]
 					]
-				]
-			])
+				])
 
 	except Exception as e:		
 		#Log("	<Run IBIS Opt> = Failed")
