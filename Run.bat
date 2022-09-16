@@ -8,4 +8,4 @@
 
 set PATH=%SIWAVE_INSTALL_DIR%\common\IronPython"
 
-ipyw64 ".\ANSYS_EYE_Analyzer_v0.py"
+ipyw64 ".\ANSYS_EYE_Analyzer.py"
