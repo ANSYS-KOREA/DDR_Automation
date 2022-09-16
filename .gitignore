@@ -3,3 +3,10 @@ temp*/
 *.sln
 *.suo
 Test/
+.gitattributes
+.gitignore
+.gitmessage.txt
+.idea
+.github
+ANSYS_DDR_Wizard_v0.sln
+ANSYS_DDR_Wizard_v0.pyproj
