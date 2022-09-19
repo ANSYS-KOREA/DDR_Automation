@@ -1,6 +1,7 @@
 # Ansys DDR Eye Analyzer - ADEA v0.6.5
 
 
+
 <!-- ![Main GUI](./Resources/fig/main_GUI.bmp) -->
 <details>
 <summary><span style="font-size:200%"> What is ADEA? </span></summary>
@@ -123,5 +124,4 @@
 >>- ##### IBIS opt. 연속 수행하면, AEDT에서 Sim case가 누적되어 해석되던 문제 수정
 >>- ##### Input file을 load 한 뒤, 새로운 file을 load 하려다 cancel 하면, 기존 입력되어 있던 design name이 삭제되던 현상 수정.
 >>- ##### v0.6.5 기준 한글 + 영문 User manual, Quick Guide, Readme.md, Readme.html update.
->>- ##### GUI 에서 About ADEA Menu 다시 활성화 함.
->>- ##### Update IBIS optimization result report -->
+>>- ##### GUI 에서 About ADEA Menu 다시 활성화 함. -->
