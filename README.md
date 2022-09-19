@@ -146,7 +146,7 @@
 
 > ### [v1.1] - '22.09.xx
 >>- ##### IBIS 최적화 Report 자동 생성 기능 Update
->>- ##### Problems in Running ADEA Guide Video Update
+>>- ##### Problems in Running ADEA Guide Video Update 
 >>- ##### Quick Guide for IBIS Optimization Guide Video Update
 
 
