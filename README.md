@@ -1,8 +1,17 @@
-# Ansys DDR Eye Analyzer - ADEA v0.6.5
+# Ansys DDR Eye Analyzer - ADEA v1.1
 
+<!-- What is ADEA? -->
+<details>
+<summary><span style="font-size:200%"> What's new in ADEA v1.1? </span></summary>
 
+>* ## Excel report exporting for IBIS optimization
+>* ## Guide Video for [IBIS optimization](http://www.rfdh.com/pds/adea/Quick_Guide_for_IBIS_Optimization.mp4)
+>* ## Guide Video for [Problem in Running ADEA](http://www.rfdh.com/pds/adea/Problem_in_Running_ADEA.mp4)
+</details>
 
-<!-- ![Main GUI](./Resources/fig/main_GUI.bmp) -->
+---
+
+<!-- What is ADEA? -->
 <details>
 <summary><span style="font-size:200%"> What is ADEA? </span></summary>
 
@@ -11,6 +20,8 @@
 </details>
 
 ---
+
+<!-- Why is ADEA? -->
 <details>
 <summary><span style="font-size:200%"> Why ADEA? </span></summary>
 
@@ -47,6 +58,8 @@
 </details>
 
 ---
+
+<!-- User Guide - PDF -->
 <details>
 <summary><span style="font-size:200%"> User Guide - PDF </span></summary>
 
@@ -57,15 +70,17 @@
 </details>
 
 ---
+
+<!-- User Guide - Vidoe -->
 <details>
 <summary><span style="font-size:200%"> User Guide - Video </span></summary>
 
 > ### [Guide Videos](http://www.rfdh.com/pds/adea)
 >	> * ### [Getting Start with AEDA](http://www.rfdh.com/pds/adea/Getting_Start_with_ADEA.mp4)
 >	> * ### [Quick Guide for DQ Eye Analyze](http://www.rfdh.com/pds/adea/Quick_Guide_for_DQ_Eye_Analyze.mp4)
->	> * ### Quick Guide for IBIS Optimization
+>	> * ### [Quick Guide for IBIS Optimization](http://www.rfdh.com/pds/adea/Quick_Guide_for_IBIS_Optimization.mp4)
 >   > ---
->	> * ### Problem in Running ADEA
+>	> * ### [Problem in Running ADEA](http://www.rfdh.com/pds/adea/Problem_in_Running_ADEA.mp4)
 >	> * ### Select Version of Ansys Electronics Desktop
 >	> * ### What is Deifnition File?
 >	>   > * ### Modify and/or Add DDR Specifications
@@ -124,4 +139,15 @@
 >>- ##### IBIS opt. 연속 수행하면, AEDT에서 Sim case가 누적되어 해석되던 문제 수정
 >>- ##### Input file을 load 한 뒤, 새로운 file을 load 하려다 cancel 하면, 기존 입력되어 있던 design name이 삭제되던 현상 수정.
 >>- ##### v0.6.5 기준 한글 + 영문 User manual, Quick Guide, Readme.md, Readme.html update.
->>- ##### GUI 에서 About ADEA Menu 다시 활성화 함. -->
+>>- ##### GUI 에서 About ADEA Menu 다시 활성화 함. 
+
+> ### [v1.0] - '22.09.16
+>>- ##### v1.0 Release
+
+> ### [v1.1] - '22.09.xx
+>>- ##### IBIS 최적화 Report 자동 생성 기능 Update
+>>- ##### Problems in Running ADEA Guide Video Update
+>>- ##### Quick Guide for IBIS Optimization Guide Video Update
+
+
+-->
