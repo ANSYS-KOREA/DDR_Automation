@@ -5559,17 +5559,7 @@ class IBIS_Case(Form):
 			print traceback.format_exc()
 
 	def Button_ExportClick(self, sender, e):
-		#Eye_Measure_Results = sub_DB.IBIS_Eye_Measure_Results
-
-		#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[4].Value # Avg_Width
-		#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[5].Value # Avg_Margin
-		#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[6].Value # Worst_Width
-		#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[7].Value # Worst_Margin
-		#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[8].Value # Vref
-
-		#print self._ComboBox_Report.SelectedIndex
-		#print self._ComboBox_Report.Text
-		#print 'test'
+		Create_IBIS_Excel_Report()
 		pass
 
 	def Button_CloseClick(self, sender, e):

@@ -912,3 +912,37 @@ def Create_Setup_Hold_Excel_Report_wo_fig():
 		Log(traceback.format_exc())
 		MessageBox.Show("Fail to create excel report","Warning")						
 		EXIT()
+
+def Create_IBIS_Excel_Report():
+	flag = False
+	if flag:
+		xlApp = Excel.ApplicationClass()
+		Report_Name = ""
+		for item in sub_DB.Eye_Form._CheckedListBox_ReportName.CheckedItems:			
+			Report_Name += item + ""
+
+		xlApp.Caption = '[IBIS Opt.] - ' + sub_DB.Eye_Form._ComboBox_Design.Text + " : " + Report_Name
+		xlApp.Visible = True
+		xlApp.DisplayAlerts = False	
+
+		xlbook = xlApp.Workbooks.Add()
+
+		# Create Eye Diagram Image Report Worksheet
+		xlsheet_table = xlbook.Worksheets.Add()
+		xlsheet.Name = "EYE Diagrams"
+
+	Eye_Measure_Results = sub_DB.IBIS_Eye_Measure_Results
+	print('Here')
+
+	
+
+	#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[4].Value # Avg_Width
+	#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[5].Value # Avg_Margin
+	#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[6].Value # Worst_Width
+	#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[7].Value # Worst_Margin
+	#sub_DB.IBIS_ResultForm._DataGridView.Rows[case-1].Cells[8].Value # Vref
+
+	#print self._ComboBox_Report.SelectedIndex
+	#print self._ComboBox_Report.Text
+	#print 'test'
+	pass
