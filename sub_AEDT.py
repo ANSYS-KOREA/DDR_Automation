@@ -10,7 +10,7 @@ def Get_AEDT_Version():
 	max = 0.0
 	ANSYSEM_Env_Var = [s for s in os.environ.keys() if 'ANSYSEM' in s]
 	if 'ANSYSEM_INSTALL_DIR' in ANSYSEM_Env_Var:
-		ansysEmInstallDirectory = os.environ['ANSYSEM_INSTALL_DIR']
+		ansysEmInstallDirectory = os.environ['ANSYSEM_INSTALL_DIR']		
 		temp_version = ansysEmInstallDirectory.split("\\")[-2].replace("AnsysEM","")
 		if temp_version == "v221":
 			temp_version = "22.1"
