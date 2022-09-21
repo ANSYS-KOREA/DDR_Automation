@@ -60,7 +60,7 @@
 <details>
 <summary><span style="font-size:200%"> User Guide - Video </span></summary>
 
-> ### [Guide Videos](http://www.rfdh.com/pds/adea)
+> ### [Guide Videos]
 >	> * ### [Getting Start with AEDA](http://www.rfdh.com/pds/adea/Getting_Start_with_ADEA.mp4)
 >	> * ### [Quick Guide for DQ Eye Analyze](http://www.rfdh.com/pds/adea/Quick_Guide_for_DQ_Eye_Analyze.mp4)
 >	> * ### Quick Guide for IBIS Optimization
