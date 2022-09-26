@@ -25,8 +25,7 @@ def Get_AEDT_Version():
 				max = version
 				ansysEmInstallDirectory = os.environ[var]
 		max = max/10
-		version = "20" + str(max)
-
+		version = "20" + str(max)	
 	return version
 
 def Get_AEDT_Dir():    
