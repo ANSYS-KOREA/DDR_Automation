@@ -123,4 +123,16 @@
 >>- ##### IBIS opt. 연속 수행하면, AEDT에서 Sim case가 누적되어 해석되던 문제 수정
 >>- ##### Input file을 load 한 뒤, 새로운 file을 load 하려다 cancel 하면, 기존 입력되어 있던 design name이 삭제되던 현상 수정.
 >>- ##### v0.6.5 기준 한글 + 영문 User manual, Quick Guide, Readme.md, Readme.html update.
->>- ##### GUI 에서 About ADEA Menu 다시 활성화 함. -->
+>>- ##### GUI 에서 About ADEA Menu 다시 활성화 함.
+
+> ### [v1.0] - '22.09.16
+>>- ##### Release ADEA v1.0.
+
+> ### [v1.0.1] - '22.09.26
+>>- ##### hotfix ADEA v1.0.1
+>>- ##### AEDT 실행 version 선택을 환경 변수를 참고하던 기존의 방식에서,
+>>- ##### 사용자의 입력을 받아 선택하도록 변경함.
+>>- ##### 2020 R1 부터 2022 R2 까지 List-up 하였으며,
+>>- ##### PC에 설치되지 않은 Version을 선택할 경우
+>>- ##### 기본 앱 설정에 따라 AEDT가 실행되도록 업데이트 하였음.
+-->
