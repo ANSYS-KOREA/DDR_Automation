@@ -42,6 +42,7 @@ class Eye_Form(Form):
 		self._ComboBox_Design = System.Windows.Forms.ComboBox()
 		self._ComboBox_AC_DQ = System.Windows.Forms.ComboBox()
 		self._ComboBox_AC_ADDR = System.Windows.Forms.ComboBox()
+		self._ComboBox_AEDT = System.Windows.Forms.ComboBox()
 
 		self._CheckedListBox_ReportName = System.Windows.Forms.CheckedListBox()
 
@@ -78,6 +79,7 @@ class Eye_Form(Form):
 		self._Label_Vref = System.Windows.Forms.Label()
 		self._Label_dq = System.Windows.Forms.Label()
 		self._Label_addr = System.Windows.Forms.Label()
+		self._Label_AEDT = System.Windows.Forms.Label()
 
 		self._H_Border_1 = System.Windows.Forms.Label()
 		self._H_Border_2 = System.Windows.Forms.Label()
@@ -639,6 +641,7 @@ class Eye_Form(Form):
 		self._GroupBox_Setup.Controls.Add(self._TextBox_Offset)
 		self._GroupBox_Setup.Controls.Add(self._Label_ns)
 		self._GroupBox_Setup.Controls.Add(self._Label_Offset)
+		self._GroupBox_Setup.Controls.Add(self._ComboBox_AEDT)
 		self._GroupBox_Setup.Controls.Add(self._CheckedListBox_ReportName)
 		self._GroupBox_Setup.Controls.Add(self._ComboBox_Design)
 		self._GroupBox_Setup.Controls.Add(self._ComboBox_SolutionName)		
@@ -840,11 +843,11 @@ class Eye_Form(Form):
 		# Label_InputFile
 		# 
 		self._Label_InputFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_InputFile.Location = System.Drawing.Point(11, 19)
+		self._Label_InputFile.Location = System.Drawing.Point(6, 19)
 		self._Label_InputFile.Name = "Label_InputFile"
-		self._Label_InputFile.Size = System.Drawing.Size(106, 28)
+		self._Label_InputFile.Size = System.Drawing.Size(110, 28)
 		self._Label_InputFile.TabIndex = 9
-		self._Label_InputFile.Text = "Input File :"
+		self._Label_InputFile.Text = "Ver. && Input File :"
 		self._Label_InputFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# Label_ReportName
@@ -859,7 +862,7 @@ class Eye_Form(Form):
 		# 
 		# Label_SolutionName
 		# 
-		self._Label_SolutionName.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)		
+		self._Label_SolutionName.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Label_SolutionName.Location = System.Drawing.Point(11, 76)
 		self._Label_SolutionName.Name = "Label_ReportName"
 		self._Label_SolutionName.Size = System.Drawing.Size(106, 28)
@@ -1254,6 +1257,22 @@ class Eye_Form(Form):
 		self._ComboBox_Design.TabIndex = 28		
 		self._ComboBox_Design.SelectedIndexChanged += self.ComboBox_DesignSelectedIndexChanged
 		# 
+		# ComboBox_AEDT
+		# 
+		self._ComboBox_AEDT.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._ComboBox_AEDT.FormattingEnabled = True
+		self._ComboBox_AEDT.Location = System.Drawing.Point(120, 22)
+		self._ComboBox_AEDT.Name = "ComboBox_AEDT"
+		self._ComboBox_AEDT.Size = System.Drawing.Size(80, 24)
+		self._ComboBox_AEDT.TabIndex = 14
+		self._ComboBox_AEDT.Text = 'Default'
+		self._ComboBox_AEDT.Items.Add('2022 R2')
+		self._ComboBox_AEDT.Items.Add('2022 R1')
+		self._ComboBox_AEDT.Items.Add('2021 R2')
+		self._ComboBox_AEDT.Items.Add('2021 R1')
+		self._ComboBox_AEDT.Items.Add('2020 R2')
+		self._ComboBox_AEDT.Items.Add('2020 R1')
+		# 
 		# ComboBox_AC_DQ
 		# 
 		self._ComboBox_AC_DQ.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
@@ -1279,9 +1298,9 @@ class Eye_Form(Form):
 		# TextBox_InputFile
 		# 
 		self._TextBox_InputFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_InputFile.Location = System.Drawing.Point(120, 22)
+		self._TextBox_InputFile.Location = System.Drawing.Point(204, 22)
 		self._TextBox_InputFile.Name = "TextBox_InputFile"
-		self._TextBox_InputFile.Size = System.Drawing.Size(414, 23)
+		self._TextBox_InputFile.Size = System.Drawing.Size(330, 23)
 		self._TextBox_InputFile.TabIndex = 13
 		# 
 		# TextBox_Offset
@@ -1651,7 +1670,7 @@ class Eye_Form(Form):
 		self.Image_flag_New = False
 		self.Image_flag_Old = False
 		self.Full_Size_flag = True
-		self.Init_Flag = True
+		self.Init_Flag = True		
 		self.Controls.Add(self._toolStrip1)
 		self.Controls.Add(self._CheckBox_Debug)
 		self.Controls.Add(self._Button_LoadCnf)
@@ -1660,9 +1679,9 @@ class Eye_Form(Form):
 		self.Controls.Add(self._Button_Analyze)
 		self.Controls.Add(self._Button_ViewNet)
 		self.Controls.Add(self._Button_ViewResult)
-		self.Controls.Add(self._GroupBox_OldEye)		
+		self.Controls.Add(self._GroupBox_OldEye)
 		self.Controls.Add(self._Label_Version)
-		self.Controls.Add(self._GroupBox_Setup)		
+		self.Controls.Add(self._GroupBox_Setup)
 		
 		self.Controls.Add(self._MenuStrip)
 		self.MainMenuStrip = self._MenuStrip
