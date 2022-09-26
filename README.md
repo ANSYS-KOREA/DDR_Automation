@@ -124,7 +124,7 @@
 >>- ##### Input file을 load 한 뒤, 새로운 file을 load 하려다 cancel 하면, 기존 입력되어 있던 design name이 삭제되던 현상 수정.
 >>- ##### v0.6.5 기준 한글 + 영문 User manual, Quick Guide, Readme.md, Readme.html update.
 >>- ##### GUI 에서 About ADEA Menu 다시 활성화 함.
-
+	
 > ### [v1.0] - '22.09.16
 >>- ##### Release ADEA v1.0.
 -->
