@@ -7,25 +7,25 @@ import traceback
 from sub_functions import *
 
 def Get_AEDT_Version():	
-	max = 0.0    
-	ANSYSEM_Env_Var = [s for s in os.environ.keys() if 'ANSYSEM' in s]
-	if 'ANSYSEM_INSTALL_DIR' in ANSYSEM_Env_Var:
-		ansysEmInstallDirectory = os.environ['ANSYSEM_INSTALL_DIR']		
-		temp_version = ansysEmInstallDirectory.split("\\")[-2].replace("AnsysEM","")
-		if temp_version == "v221":
-			temp_version = "22.1"
-		if temp_version == "v222":
-			temp_version = "22.2"
-		version = "20" + temp_version
+	#max = 0.0    
+	#ANSYSEM_Env_Var = [s for s in os.environ.keys() if 'ANSYSEM' in s]
+	#if 'ANSYSEM_INSTALL_DIR' in ANSYSEM_Env_Var:
+	#	ansysEmInstallDirectory = os.environ['ANSYSEM_INSTALL_DIR']		
+	#	temp_version = ansysEmInstallDirectory.split("\\")[-2].replace("AnsysEM","")
+	#	if temp_version == "v221":
+	#		temp_version = "22.1"
+	#	if temp_version == "v222":
+	#		temp_version = "22.2"
+	#	version = "20" + temp_version
 
-	else:
-		for var in ANSYSEM_Env_Var:
-			version = float(var.replace('ANSYSEM_ROOT','').replace('.',''))
-			if version > max:
-				max = version
-				ansysEmInstallDirectory = os.environ[var]
-		max = max/10
-		version = "20" + str(max)	
+	#else:
+	#	for var in ANSYSEM_Env_Var:
+	#		version = float(var.replace('ANSYSEM_ROOT','').replace('.',''))
+	#		if version > max:
+	#			max = version
+	#			ansysEmInstallDirectory = os.environ[var]
+	#	max = max/10
+	#	version = "20" + str(max)	
 	return version
 
 def Get_AEDT_Dir():    
