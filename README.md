@@ -12,7 +12,7 @@
 
 >   #### The process for choosing a version of Ansys Electronics Desktop(AEDT) has been modified.
 >   * ##### v1.0 : AEDT executes in a specific version with reference to environmental variables.
->   * ##### v1.0.1 : The version of AEDT that user select in dropdown menu will be executed.
+>   * ##### v1.0.1 : The version of AEDT can be selected using 'Version Selection' window.
 
 </details>
 </blockquote>

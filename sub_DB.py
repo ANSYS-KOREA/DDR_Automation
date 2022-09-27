@@ -19,6 +19,7 @@ IBISInfo_Tx_Form = ""
 IBISInfo_Rx_Form = ""
 IBIS_CaseForm = ""
 IBIS_ResultForm = ""
+Var_Form = ""
 
 File = ""
 Input_File = ""

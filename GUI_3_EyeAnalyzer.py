@@ -41,8 +41,7 @@ class Eye_Form(Form):
 		self._ComboBox_SolutionName = System.Windows.Forms.ComboBox()
 		self._ComboBox_Design = System.Windows.Forms.ComboBox()
 		self._ComboBox_AC_DQ = System.Windows.Forms.ComboBox()
-		self._ComboBox_AC_ADDR = System.Windows.Forms.ComboBox()
-		self._ComboBox_AEDT = System.Windows.Forms.ComboBox()
+		self._ComboBox_AC_ADDR = System.Windows.Forms.ComboBox()		
 
 		self._CheckedListBox_ReportName = System.Windows.Forms.CheckedListBox()
 
@@ -78,8 +77,7 @@ class Eye_Form(Form):
 		self._Label_Hold = System.Windows.Forms.Label()
 		self._Label_Vref = System.Windows.Forms.Label()
 		self._Label_dq = System.Windows.Forms.Label()
-		self._Label_addr = System.Windows.Forms.Label()
-		self._Label_AEDT = System.Windows.Forms.Label()
+		self._Label_addr = System.Windows.Forms.Label()		
 
 		self._H_Border_1 = System.Windows.Forms.Label()
 		self._H_Border_2 = System.Windows.Forms.Label()
@@ -149,11 +147,13 @@ class Eye_Form(Form):
 		self._Help_DDRNew_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Help_DDRAbout_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Tool_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._Options_VersionStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_IBISStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_BatchStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._toolStripSeparator1 = System.Windows.Forms.ToolStripSeparator()
 		self._toolStripSeparator2 = System.Windows.Forms.ToolStripSeparator()
+		self._toolStripSeparator10 = System.Windows.Forms.ToolStripSeparator()
 
 		self._toolStrip1 = System.Windows.Forms.ToolStrip()
 		self._toolStrip_Input_Button = System.Windows.Forms.ToolStripButton()		
@@ -281,12 +281,21 @@ class Eye_Form(Form):
 		# Tool_ToolStripMenuItem
 		# 
 		self._Tool_ToolStripMenuItem.DropDownItems.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
-			[self._Options_ToolStripMenuItem,
-			 self._Options_IBISStripMenuItem,
-			 self._Options_BatchStripMenuItem]))
+			[self._Options_VersionStripMenuItem,
+			self._toolStripSeparator10,
+			self._Options_ToolStripMenuItem,
+			self._Options_IBISStripMenuItem,
+			self._Options_BatchStripMenuItem]))
 		self._Tool_ToolStripMenuItem.Name = "Tool_ToolStripMenuItem"
 		self._Tool_ToolStripMenuItem.Size = System.Drawing.Size(46, 20)
 		self._Tool_ToolStripMenuItem.Text = "Tool"
+		# 
+		# Options_VersionStripMenuItem
+		# 
+		self._Options_VersionStripMenuItem.Name = "Options_VersionStripMenuItem"
+		self._Options_VersionStripMenuItem.Size = System.Drawing.Size(152, 22)
+		self._Options_VersionStripMenuItem.Text = "AEDT Version"
+		self._Options_VersionStripMenuItem.Click += self.Options_VersionStripMenuItemClick
 		# 
 		# Options_ToolStripMenuItem
 		# 
@@ -640,8 +649,7 @@ class Eye_Form(Form):
 		#
 		self._GroupBox_Setup.Controls.Add(self._TextBox_Offset)
 		self._GroupBox_Setup.Controls.Add(self._Label_ns)
-		self._GroupBox_Setup.Controls.Add(self._Label_Offset)
-		self._GroupBox_Setup.Controls.Add(self._ComboBox_AEDT)
+		self._GroupBox_Setup.Controls.Add(self._Label_Offset)		
 		self._GroupBox_Setup.Controls.Add(self._CheckedListBox_ReportName)
 		self._GroupBox_Setup.Controls.Add(self._ComboBox_Design)
 		self._GroupBox_Setup.Controls.Add(self._ComboBox_SolutionName)		
@@ -843,11 +851,11 @@ class Eye_Form(Form):
 		# Label_InputFile
 		# 
 		self._Label_InputFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._Label_InputFile.Location = System.Drawing.Point(6, 19)
+		self._Label_InputFile.Location = System.Drawing.Point(11, 19)
 		self._Label_InputFile.Name = "Label_InputFile"
-		self._Label_InputFile.Size = System.Drawing.Size(110, 28)
+		self._Label_InputFile.Size = System.Drawing.Size(106, 28)
 		self._Label_InputFile.TabIndex = 9
-		self._Label_InputFile.Text = "Ver. && Input File :"
+		self._Label_InputFile.Text = "Input File :"
 		self._Label_InputFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
 		# 
 		# Label_ReportName
@@ -1255,23 +1263,7 @@ class Eye_Form(Form):
 		self._ComboBox_Design.Name = "ComboBox_Design"
 		self._ComboBox_Design.Size = System.Drawing.Size(150, 24)
 		self._ComboBox_Design.TabIndex = 28		
-		self._ComboBox_Design.SelectedIndexChanged += self.ComboBox_DesignSelectedIndexChanged
-		# 
-		# ComboBox_AEDT
-		# 
-		self._ComboBox_AEDT.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._ComboBox_AEDT.FormattingEnabled = True
-		self._ComboBox_AEDT.Location = System.Drawing.Point(120, 22)
-		self._ComboBox_AEDT.Name = "ComboBox_AEDT"
-		self._ComboBox_AEDT.Size = System.Drawing.Size(80, 24)
-		self._ComboBox_AEDT.TabIndex = 14
-		self._ComboBox_AEDT.Text = 'Default'
-		self._ComboBox_AEDT.Items.Add('2022 R2')
-		self._ComboBox_AEDT.Items.Add('2022 R1')
-		self._ComboBox_AEDT.Items.Add('2021 R2')
-		self._ComboBox_AEDT.Items.Add('2021 R1')
-		self._ComboBox_AEDT.Items.Add('2020 R2')
-		self._ComboBox_AEDT.Items.Add('2020 R1')
+		self._ComboBox_Design.SelectedIndexChanged += self.ComboBox_DesignSelectedIndexChanged		
 		# 
 		# ComboBox_AC_DQ
 		# 
@@ -1298,9 +1290,9 @@ class Eye_Form(Form):
 		# TextBox_InputFile
 		# 
 		self._TextBox_InputFile.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
-		self._TextBox_InputFile.Location = System.Drawing.Point(204, 22)
+		self._TextBox_InputFile.Location = System.Drawing.Point(120, 22)
 		self._TextBox_InputFile.Name = "TextBox_InputFile"
-		self._TextBox_InputFile.Size = System.Drawing.Size(330, 23)
+		self._TextBox_InputFile.Size = System.Drawing.Size(414, 23)
 		self._TextBox_InputFile.TabIndex = 13
 		# 
 		# TextBox_Offset
@@ -2085,6 +2077,17 @@ class Eye_Form(Form):
 		LogSave(sub_DB.exit_iter)
 		sub_ScriptEnv.Release()		
 		os._exit(0)
+
+	def Options_VersionStripMenuItemClick(self, sender, e):
+		try:
+			Log("[Version Form Launch]")
+			sub_DB.Var_Form.ShowDialog()
+
+		except Exception as e:			
+			Log("[Version Form Launch] = Failed")
+			Log(traceback.format_exc())
+			MessageBox.Show("Fail to load Version Form","Warning")
+			EXIT()
 
 	def Options_ToolStripMenuItemClick(self, sender, e):
 		try:
