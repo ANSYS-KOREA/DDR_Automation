@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-Version = "v1.0"
+Version = "v1.0.1"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 
@@ -19,6 +19,7 @@ IBISInfo_Tx_Form = ""
 IBISInfo_Rx_Form = ""
 IBIS_CaseForm = ""
 IBIS_ResultForm = ""
+Var_Form = ""
 
 File = ""
 Input_File = ""
