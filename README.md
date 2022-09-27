@@ -4,6 +4,22 @@
 
 <!-- ![Main GUI](./Resources/fig/main_GUI.bmp) -->
 <details>
+<summary><span style="font-size:200%"> What's New? </span></summary>
+
+<blockquote>
+<details>
+<summary><span style="font-size:200%"> v1.0.1 </span></summary>
+
+>   ### The process for choosing a version of Ansys Electronics Desktop(AEDT) has been modified.
+>   * #### v1.0 : AEDT executes in a specific version with reference to environmental variables.
+>   * #### v1.0.1 : The version of AEDT that user select in dropdown menu will be executed.
+
+</details>
+</blockquote>
+</details>
+
+---
+<details>
 <summary><span style="font-size:200%"> What is ADEA? </span></summary>
 
 >### A new Solution for DDR analysis by Ansys Korea.
