@@ -10,9 +10,9 @@
 <details>
 <summary><span style="font-size:200%"> v1.0.1 </span></summary>
 
->   ### The process for choosing a version of Ansys Electronics Desktop(AEDT) has been modified.
->   * #### v1.0 : AEDT executes in a specific version with reference to environmental variables.
->   * #### v1.0.1 : The version of AEDT that user select in dropdown menu will be executed.
+>   #### The process for choosing a version of Ansys Electronics Desktop(AEDT) has been modified.
+>   * ##### v1.0 : AEDT executes in a specific version with reference to environmental variables.
+>   * ##### v1.0.1 : The version of AEDT that user select in dropdown menu will be executed.
 
 </details>
 </blockquote>
