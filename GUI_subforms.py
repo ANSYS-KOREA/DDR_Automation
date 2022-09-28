@@ -5656,7 +5656,7 @@ class Env_variable(Form):
 		self.Icon = Icon(IconFile)
 		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
 		self.Name = "Env_Form"
-		self.Text = "Environment Variables for Ansys Electronics Desktop"
+		self.Text = "Versions for Ansys Electronics Desktop"
 		#self.Load += self.Env_FormLoad
 		self.ResizeEnd += self.Env_FormResizeEnd
 		self.DoubleClick += self.Env_FormDoubleClick
