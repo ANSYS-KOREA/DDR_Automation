@@ -7,47 +7,29 @@ import traceback
 from sub_functions import *
 
 def Get_AEDT_Version():	
-	max = 0.0
-	ANSYSEM_Env_Var = [s for s in os.environ.keys() if 'ANSYSEM' in s]
-	if 'ANSYSEM_INSTALL_DIR' in ANSYSEM_Env_Var:
-		ansysEmInstallDirectory = os.environ['ANSYSEM_INSTALL_DIR']		
-		temp_version = ansysEmInstallDirectory.split("\\")[-2].replace("AnsysEM","")
-		if temp_version == "v221":
-			temp_version = "22.1"
-		if temp_version == "v222":
-			temp_version = "22.2"
-		version = "20" + temp_version
-
-	else:
-		for var in ANSYSEM_Env_Var:
-			version = float(var.replace('ANSYSEM_ROOT','').replace('.',''))
-			if version > max:
-				max = version
-				ansysEmInstallDirectory = os.environ[var]
-		max = max/10
-		version = "20" + str(max)	
+	for row in sub_DB.Var_Form._dataGridView.Rows:
+		if row.Cells[0].Value:
+			version = row.Cells[1].Value	
 	return version
 
-def Get_AEDT_Dir():    
-    max = 0.0
-    ANSYSEM_Env_Var = [s for s in os.environ.keys() if 'ANSYSEM' in s]
-    if 'ANSYSEM_INSTALL_DIR' in ANSYSEM_Env_Var:
-        ansysEmInstallDirectory = os.environ['ANSYSEM_INSTALL_DIR']
-    else:
-        for var in ANSYSEM_Env_Var:
-            version = float(var.replace('ANSYSEM_ROOT','').replace('.',''))
-            if version > max:
-                max = version
-                ansysEmInstallDirectory = os.environ[var]
-                
-    return ansysEmInstallDirectory
+def Get_AEDT_Dir():
+	for row in sub_DB.Var_Form._dataGridView.Rows:
+		if row.Cells[0].Value:
+			ansysEmInstallDirectory = row.Cells[3].Value	
+	return ansysEmInstallDirectory
 
 def Get_AEDT_Info(self, File):
 	try:
 		Delete_LockFile(File)
 		Version = Get_AEDT_Version()		
 		Log("[AEDT Version] : %s" % Version)
-		oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Version)
+		try:
+			oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop." + Version)			
+
+		except:
+			MessageBox.Show("AEDT %s is not installed. Run as default version." % Version.replace('.', ' R'),"Warning")
+			oApp, oDesktop = sub_ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
+
 		oDesktop.RestoreWindow()
 
 		Project_list = oDesktop.GetProjectList()
@@ -108,7 +90,7 @@ def Get_AEDT_Info(self, File):
 		Log("[AEDT Launch] : Failed")
 		Log(traceback.format_exc())
 		print traceback.format_exc()
-		MessageBox.Show("Fail to run AEDT","Warning")		
+		MessageBox.Show("Fail to run AEDT","Warning")
 		EXIT()
 
 def Set_AEDT_Info(self, File):

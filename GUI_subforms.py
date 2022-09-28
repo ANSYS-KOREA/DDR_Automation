@@ -5565,6 +5565,241 @@ class IBIS_Case(Form):
 		sub_DB.IBIS_Case_ResultForm._Button_Export.Enabled = True
 		self.Close()
 
+class Env_variable(Form):
+	def __init__(self):
+
+		self.InitializeComponent()
+	
+	def InitializeComponent(self):
+		self._Col_Check = System.Windows.Forms.DataGridViewCheckBoxColumn()
+		self._Col_Version= System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Env = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._Col_Var = System.Windows.Forms.DataGridViewTextBoxColumn()
+		self._folderBrowserDialog1 = System.Windows.Forms.FolderBrowserDialog()
+		self._dataGridView = System.Windows.Forms.DataGridView()
+		self._button1 = System.Windows.Forms.Button()
+		self._dataGridView.BeginInit()
+		self.SuspendLayout()
+		# 
+		# Col_Check
+		# 
+		self._Col_Check.HeaderText = ""
+		self._Col_Check.Name = "Col_Check"
+		self._Col_Check.Width = 26
+		# 
+		# Col_Version
+		# 
+		self._Col_Version.HeaderText = "Version"
+		self._Col_Version.Name = "Col_Version"
+		self._Col_Version.Width = 60
+		# 
+		# Col_Env
+		# 
+		self._Col_Env.HeaderText = "Variable Name"
+		self._Col_Env.Name = "Col_Env"
+		self._Col_Env.Width = 130
+		# 
+		# Col_Var
+		# 
+		self._Col_Var.HeaderText = "Variable Value"
+		self._Col_Var.Name = "Col_Var"
+		self._Col_Var.Width = 257
+		# 
+		# dataGridView
+		# 
+		self._dataGridView.AllowUserToAddRows = False
+		self._dataGridView.AllowUserToDeleteRows = False
+		self._dataGridView.AllowUserToOrderColumns = False
+		self._dataGridView.AllowUserToResizeRows = False		
+		self._dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+		self._dataGridView.Columns.AddRange(System.Array[System.Windows.Forms.DataGridViewColumn](
+			[self._Col_Check,
+			self._Col_Version,
+			self._Col_Env,
+			self._Col_Var]))
+		self._dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2
+		self._dataGridView.Location = System.Drawing.Point(11, 12)
+		self._dataGridView.Name = "dataGridView"
+		self._dataGridView.RowHeadersVisible = False
+		self._dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+		self._dataGridView.Size = System.Drawing.Size(476, 150)
+		self._dataGridView.TabIndex = 4
+		self._dataGridView.Columns[0].ReadOnly = False		
+		self._dataGridView.Columns[1].ReadOnly = True
+		self._dataGridView.Columns[2].ReadOnly = True
+		self._dataGridView.Columns[3].ReadOnly = True		
+		self._dataGridView.KeyPress += self.dataGridViewKeyPress
+		self._dataGridView.ColumnHeaderMouseClick += self.dataGridViewColumnHeaderMouseClick
+		self._dataGridView.CellMouseClick += self.dataGridViewCellMouseClick		
+		# 
+		# button1
+		# 
+		self._button1.FlatStyle = System.Windows.Forms.FlatStyle.Standard
+		self._button1.Font = System.Drawing.Font("Arial", 8, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+		self._button1.Location = System.Drawing.Point(412, 170)
+		self._button1.Name = "button1"
+		self._button1.Size = System.Drawing.Size(75, 23)
+		self._button1.TabIndex = 5
+		self._button1.Text = "Close"
+		self._button1.UseVisualStyleBackColor = True
+		self._button1.Click += self.button1Click
+		# 
+		# MainForm
+		# 
+		self.ClientSize = System.Drawing.Size(500, 204)
+		self.MinimumSize = System.Drawing.Size(self.Size.Width, self.Size.Height)
+		self.FormSize_W = self.Size.Width
+		self.FormSize_H = self.Size.Height
+		self.Controls.Add(self._button1)
+		self.Controls.Add(self._dataGridView)
+		IconFile = path + "\\Resources\\fig\\LOGO.ico"
+		self.Icon = Icon(IconFile)
+		self.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen		
+		self.Name = "Env_Form"
+		self.Text = "Versions for Ansys Electronics Desktop" 
+		#self.Load += self.Env_FormLoad
+		self.ResizeEnd += self.Env_FormResizeEnd
+		self.DoubleClick += self.Env_FormDoubleClick
+		self.ResumeLayout(False)
+
+	#def Env_FormLoad(self, sender, e):
+		max = 0
+		ANSYSEM_Env_Var = [s for s in os.environ.keys() if 'ANSYSEM_ROOT' in s]
+		temp_version  = []		
+		for var in ANSYSEM_Env_Var:			
+			version = int(var.replace('ANSYSEM_ROOT','').replace('.',''))
+			if version < 193:
+				version = version - 10				
+			self._dataGridView.Rows.Add(False, '20'+str(version/10.0), var, os.environ[var])
+			temp_version.append(version)
+			if version > max:
+				max = version
+				ansysEmInstallDirectory = os.environ[var]
+
+		max = max/10.0
+		version = "20" + str(max)
+
+		Backup_row = []		
+		for row in self._dataGridView.Rows:
+			Backup_row.append(row)
+		
+		temp_version = sorted(range(len(temp_version)),key=lambda k: temp_version[k], reverse=True)
+
+		self._dataGridView.Rows.Clear()
+		for i in range(0, len(temp_version)):			
+			if float(Backup_row[temp_version[i]].Cells[1].Value) >= 2020:
+				self._dataGridView.Rows.Add(Backup_row[temp_version[i]])
+
+		self._dataGridView.Rows[0].Cells[0].Value = True
+		self._dataGridView.Rows[0].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+				
+	def dataGridViewCellMouseClick(self, sender, e):
+		if e.ColumnIndex == 0:
+			if self._dataGridView.Rows[e.RowIndex].Cells[0].EditedFormattedValue:
+				self._dataGridView.Rows[e.RowIndex].Cells[0].Value = False
+				self._dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+			else:
+				self._dataGridView.Rows[e.RowIndex].Cells[0].Value = True
+				self._dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+			checked = 0
+			for row in self._dataGridView.Rows:
+				if row.Cells[0].Value:
+					checked += 1
+			
+			if checked > 1:
+				for row in self._dataGridView.Rows:
+					row.Cells[0].Value = False
+					row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+				self._dataGridView.Rows[e.RowIndex].Cells[0].Value = True
+				self._dataGridView.Rows[e.RowIndex].DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+
+	def Env_FormResizeEnd(self, sender, e):
+		try:
+			# Get previous Eye_Form width/height and resized Eye_Form width/height
+			# Calculate Gap betweent previous and resized width/height		
+			Gap_W = self.Size.Width - self.FormSize_W
+			Gap_H = self.Size.Height - self.FormSize_H
+			
+			# Backup the resized Eye_Form width/height as previous MainFomr width/height
+			self.FormSize_W = self.Size.Width
+			self.FormSize_H = self.Size.Height
+
+			# Resize
+			self._dataGridView.Size = System.Drawing.Size(self._dataGridView.Width + Gap_W, self._dataGridView.Height + Gap_H)
+			self._Col_Var.Width = self._Col_Var.Width + Gap_W
+
+			# Relocate
+			self._button1.Location = System.Drawing.Point(self._button1.Location.X + Gap_W, self._button1.Location.Y + Gap_H)
+
+		except Exception as e:			
+			Log("[Var_FormResizeEnd] = Failed")
+			Log(traceback.format_exc())
+			print traceback.format_exc()
+			MessageBox.Show("Fail to resize environment variable GUI","Warning")			
+			EXIT()
+
+	def Env_FormDoubleClick(self, sender, e):		
+		self._dataGridView.Location = System.Drawing.Point(11, 12)		
+		self._dataGridView.Size = System.Drawing.Size(476, 150)		
+		self._Col_Check.Width = 26		
+		self._Col_Version.Width = 60		
+		self._Col_Env.Width = 130		
+		self._Col_Var.Width = 257
+
+		self._button1.Location = System.Drawing.Point(412, 168)		
+		self._button1.Size = System.Drawing.Size(75, 23)
+
+		self.ClientSize = System.Drawing.Size(500, 204)
+		self.FormSize_W = self.Size.Width
+		self.FormSize_H = self.Size.Height
+
+	def dataGridViewKeyPress(self, sender, e):		
+		try:
+			# Spacebar = Check/Uncheck all the selected rows
+			if e.KeyChar == chr(32):
+				for row in self._dataGridView.SelectedRows:
+					row.Cells[0].Value = not row.Cells[0].Value
+					if row.Cells[0].Value:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+					else:
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+
+				checked = 0
+				for row in self._dataGridView.Rows:
+					if row.Cells[0].Value:
+						checked += 1
+			
+				if checked > 1:
+					for row in self._dataGridView.Rows:
+						row.Cells[0].Value = False
+						row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Window
+					if len(self._dataGridView.SelectedRows) > 1:
+						MessageBox.Show("You must select only one AEDT version.","Warning")
+					else:
+						for row in self._dataGridView.SelectedRows:
+							row.Cells[0].Value = True
+							row.DefaultCellStyle.BackColor = System.Drawing.SystemColors.Info
+
+		except Exception as e:		
+			Log("[Variable Form Key Press] = Failed")
+			Log(traceback.format_exc())
+			print(traceback.format_exc())
+			MessageBox.Show("Fail to press key in Variable Form","Warning")
+			EXIT()
+
+	def dataGridViewColumnHeaderMouseClick(self, sender, e):
+		pass
+
+	def button1Click(self, sender, e):
+		count = 0
+		for row in self._dataGridView.Rows:
+			if row.Cells[0].Value:
+				count += 1
+		if count == 0:
+			MessageBox.Show("You must select one AEDT version.", "Warning")
+		else:
+			self.Close()
+
 
 def HighLight_IBIS(self, key):
 	for temp_key in self.Line:

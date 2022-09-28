@@ -1,8 +1,24 @@
-# Ansys DDR Eye Analyzer - ADEA v1.0
+# Ansys DDR Eye Analyzer - ADEA v1.0.1
 
 
 
 <!-- ![Main GUI](./Resources/fig/main_GUI.bmp) -->
+<details>
+<summary><span style="font-size:200%"> What's New? </span></summary>
+
+<blockquote>
+<details>
+<summary><span style="font-size:200%"> v1.0.1 </span></summary>
+
+>   #### The process for choosing a version of Ansys Electronics Desktop(AEDT) has been modified.
+>   * ##### v1.0 : AEDT executes in a specific version with reference to environmental variables.
+>   * ##### v1.0.1 : The version of AEDT can be selected using 'Version Selection' window.
+
+</details>
+</blockquote>
+</details>
+
+---
 <details>
 <summary><span style="font-size:200%"> What is ADEA? </span></summary>
 
@@ -127,4 +143,13 @@
 	
 > ### [v1.0] - '22.09.16
 >>- ##### Release ADEA v1.0.
+
+> ### [v1.0.1] - '22.09.26
+>>- ##### hotfix ADEA v1.0.1
+>>- ##### AEDT 실행 version 선택을 환경 변수를 참고하던 기존의 방식에서,
+>>- ##### 사용자의 입력을 받아 선택하도록 변경함.
+>>- ##### 2020 R1 이상 version에서만 ADEA를 사용할 수 있도록 설정.
+>>- ##### PC에 설치되지 않은 Version을 선택할 경우
+>>- ##### 기본 앱 설정에 따라 AEDT가 실행되도록 업데이트 하였음.
+>>- ##### Excel report exporting error가 중국어 문제로 의심되어, UTF-8 encoding script 추가함.
 -->
