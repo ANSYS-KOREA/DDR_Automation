@@ -1,3 +1,4 @@
+#coding: utf8
 import clr
 
 clr.AddReference('Microsoft.Office.Interop.Excel')

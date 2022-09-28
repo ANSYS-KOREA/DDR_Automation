@@ -65,11 +65,17 @@ sub_DB.Option_Form = OptionForm(2)
 sub_DB.Net_Form = NetForm()
 sub_DB.Compliance_Form = ComplianceForm()
 sub_DB.IBIS_Form = IBIS_OptForm()
-
+sub_DB.Var_Form = Env_variable()
 ###########################
 # Launch Eye Analyzer GUI #
 ###########################
 sub_DB.Eye_Form.ShowDialog()
+#sub_DB.Env_Form.ShowDialog()
+#sub_DB.IBIS_ResultForm = IBIS_Case()
+#sub_DB.IBIS_ResultForm._DataGridView.Size = System.Drawing.Size(699, 300)
+#sub_DB.IBIS_ResultForm.Size = System.Drawing.Size(740, 390)
+#sub_DB.IBIS_ResultForm.Text = "IBIS Optimization Results"
+#sub_DB.IBIS_ResultForm.ShowDialog()
 
 #sub_DB.IBIS_ResultForm = IBIS_Case()
 #sub_DB.IBIS_ResultForm._DataGridView.Size = System.Drawing.Size(699, 300)

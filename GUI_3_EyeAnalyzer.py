@@ -41,7 +41,7 @@ class Eye_Form(Form):
 		self._ComboBox_SolutionName = System.Windows.Forms.ComboBox()
 		self._ComboBox_Design = System.Windows.Forms.ComboBox()
 		self._ComboBox_AC_DQ = System.Windows.Forms.ComboBox()
-		self._ComboBox_AC_ADDR = System.Windows.Forms.ComboBox()
+		self._ComboBox_AC_ADDR = System.Windows.Forms.ComboBox()		
 
 		self._CheckedListBox_ReportName = System.Windows.Forms.CheckedListBox()
 
@@ -77,7 +77,7 @@ class Eye_Form(Form):
 		self._Label_Hold = System.Windows.Forms.Label()
 		self._Label_Vref = System.Windows.Forms.Label()
 		self._Label_dq = System.Windows.Forms.Label()
-		self._Label_addr = System.Windows.Forms.Label()
+		self._Label_addr = System.Windows.Forms.Label()		
 
 		self._H_Border_1 = System.Windows.Forms.Label()
 		self._H_Border_2 = System.Windows.Forms.Label()
@@ -147,11 +147,13 @@ class Eye_Form(Form):
 		self._Help_DDRNew_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Help_DDRAbout_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Tool_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
+		self._Options_VersionStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_ToolStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_IBISStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._Options_BatchStripMenuItem = System.Windows.Forms.ToolStripMenuItem()
 		self._toolStripSeparator1 = System.Windows.Forms.ToolStripSeparator()
 		self._toolStripSeparator2 = System.Windows.Forms.ToolStripSeparator()
+		self._toolStripSeparator10 = System.Windows.Forms.ToolStripSeparator()
 
 		self._toolStrip1 = System.Windows.Forms.ToolStrip()
 		self._toolStrip_Input_Button = System.Windows.Forms.ToolStripButton()		
@@ -279,12 +281,21 @@ class Eye_Form(Form):
 		# Tool_ToolStripMenuItem
 		# 
 		self._Tool_ToolStripMenuItem.DropDownItems.AddRange(System.Array[System.Windows.Forms.ToolStripItem](
-			[self._Options_ToolStripMenuItem,
-			 self._Options_IBISStripMenuItem,
-			 self._Options_BatchStripMenuItem]))
+			[self._Options_VersionStripMenuItem,
+			self._toolStripSeparator10,
+			self._Options_ToolStripMenuItem,
+			self._Options_IBISStripMenuItem,
+			self._Options_BatchStripMenuItem]))
 		self._Tool_ToolStripMenuItem.Name = "Tool_ToolStripMenuItem"
 		self._Tool_ToolStripMenuItem.Size = System.Drawing.Size(46, 20)
 		self._Tool_ToolStripMenuItem.Text = "Tool"
+		# 
+		# Options_VersionStripMenuItem
+		# 
+		self._Options_VersionStripMenuItem.Name = "Options_VersionStripMenuItem"
+		self._Options_VersionStripMenuItem.Size = System.Drawing.Size(152, 22)
+		self._Options_VersionStripMenuItem.Text = "AEDT Version"
+		self._Options_VersionStripMenuItem.Click += self.Options_VersionStripMenuItemClick
 		# 
 		# Options_ToolStripMenuItem
 		# 
@@ -638,7 +649,7 @@ class Eye_Form(Form):
 		#
 		self._GroupBox_Setup.Controls.Add(self._TextBox_Offset)
 		self._GroupBox_Setup.Controls.Add(self._Label_ns)
-		self._GroupBox_Setup.Controls.Add(self._Label_Offset)
+		self._GroupBox_Setup.Controls.Add(self._Label_Offset)		
 		self._GroupBox_Setup.Controls.Add(self._CheckedListBox_ReportName)
 		self._GroupBox_Setup.Controls.Add(self._ComboBox_Design)
 		self._GroupBox_Setup.Controls.Add(self._ComboBox_SolutionName)		
@@ -859,7 +870,7 @@ class Eye_Form(Form):
 		# 
 		# Label_SolutionName
 		# 
-		self._Label_SolutionName.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)		
+		self._Label_SolutionName.Font = System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
 		self._Label_SolutionName.Location = System.Drawing.Point(11, 76)
 		self._Label_SolutionName.Name = "Label_ReportName"
 		self._Label_SolutionName.Size = System.Drawing.Size(106, 28)
@@ -1252,7 +1263,7 @@ class Eye_Form(Form):
 		self._ComboBox_Design.Name = "ComboBox_Design"
 		self._ComboBox_Design.Size = System.Drawing.Size(150, 24)
 		self._ComboBox_Design.TabIndex = 28		
-		self._ComboBox_Design.SelectedIndexChanged += self.ComboBox_DesignSelectedIndexChanged
+		self._ComboBox_Design.SelectedIndexChanged += self.ComboBox_DesignSelectedIndexChanged		
 		# 
 		# ComboBox_AC_DQ
 		# 
@@ -1651,7 +1662,7 @@ class Eye_Form(Form):
 		self.Image_flag_New = False
 		self.Image_flag_Old = False
 		self.Full_Size_flag = True
-		self.Init_Flag = True
+		self.Init_Flag = True		
 		self.Controls.Add(self._toolStrip1)
 		self.Controls.Add(self._CheckBox_Debug)
 		self.Controls.Add(self._Button_LoadCnf)
@@ -1660,9 +1671,9 @@ class Eye_Form(Form):
 		self.Controls.Add(self._Button_Analyze)
 		self.Controls.Add(self._Button_ViewNet)
 		self.Controls.Add(self._Button_ViewResult)
-		self.Controls.Add(self._GroupBox_OldEye)		
+		self.Controls.Add(self._GroupBox_OldEye)
 		self.Controls.Add(self._Label_Version)
-		self.Controls.Add(self._GroupBox_Setup)		
+		self.Controls.Add(self._GroupBox_Setup)
 		
 		self.Controls.Add(self._MenuStrip)
 		self.MainMenuStrip = self._MenuStrip
@@ -1893,7 +1904,7 @@ class Eye_Form(Form):
 					sub_AEDT.Set_AEDT_Info(self, self._TextBox_InputFile.Text)
 					flag, show_msg_flag, msg = Check_Input(self)
 					if flag:				
-						sub_DB.Net_Form.NetFormLoad(self, sender)
+						sub_DB.Net_Form.NetFormLoad(self, sender)						
 						for row in sub_DB.Net_Form._DataGridView.Rows:
 							if row.Cells[0].Value:
 								self._Button_Analyze.Enabled = True
@@ -2066,6 +2077,17 @@ class Eye_Form(Form):
 		LogSave(sub_DB.exit_iter)
 		sub_ScriptEnv.Release()		
 		os._exit(0)
+
+	def Options_VersionStripMenuItemClick(self, sender, e):
+		try:
+			Log("[Version Form Launch]")
+			sub_DB.Var_Form.ShowDialog()
+
+		except Exception as e:			
+			Log("[Version Form Launch] = Failed")
+			Log(traceback.format_exc())
+			MessageBox.Show("Fail to load Version Form","Warning")
+			EXIT()
 
 	def Options_ToolStripMenuItemClick(self, sender, e):
 		try:
@@ -2380,7 +2402,7 @@ class Eye_Form(Form):
 
 			flag, show_msg_flag, msg = Check_Input(self)
 			if flag:
-				sub_DB.Net_Form.NetFormLoad(self, sender)
+				sub_DB.Net_Form.NetFormLoad(self, sender)				
 				for row in sub_DB.Net_Form._DataGridView.Rows:
 					if row.Cells[0].Value:
 						self._Button_Analyze.Enabled = True
@@ -2722,7 +2744,7 @@ class Eye_Form(Form):
 
 			flag, show_msg_flag, msg = Check_Input(self)
 			if flag:				
-				sub_DB.Net_Form.NetFormLoad(self, sender)
+				sub_DB.Net_Form.NetFormLoad(self, sender)				
 				for row in sub_DB.Net_Form._DataGridView.Rows:
 					if row.Cells[0].Value:
 						self._Button_Analyze.Enabled = True
@@ -2752,7 +2774,7 @@ class Eye_Form(Form):
 
 				flag, show_msg_flag, msg = Check_Input(self)			
 				if flag:
-					sub_DB.Net_Form.NetFormLoad(self, sender)
+					sub_DB.Net_Form.NetFormLoad(self, sender)										
 					for row in sub_DB.Net_Form._DataGridView.Rows:
 						if row.Cells[0].Value:
 							self._Button_Analyze.Enabled = True
@@ -2964,7 +2986,7 @@ class Eye_Form(Form):
 
 					flag, show_msg_flag, msg = Check_Input(self)
 					if flag:
-						sub_DB.Net_Form.NetFormLoad(self, sender)
+						sub_DB.Net_Form.NetFormLoad(self, sender)						
 						for row in sub_DB.Net_Form._DataGridView.Rows:
 							if row.Cells[0].Value:
 								self._Button_Analyze.Enabled = True
@@ -3121,7 +3143,8 @@ class Eye_Form(Form):
 				sub_DB.Net_Form._CheckBox_PlotEye.Visible = True
 				sub_DB.Net_Form._Label_ReportFormat.Visible = True
 				sub_DB.Net_Form._ComboBox_Report.Visible = True
-				sub_DB.Net_Form._Button_Export.Visible = True				
+				sub_DB.Net_Form._Button_Export.Visible = True
+				sub_DB.Net_Form.Text += ' - Vref = %s[mV]' % sub_DB.Vref
 				sub_DB.Net_Form.ShowDialog()
 				sub_DB.Result_Flag = False
 				self._Button_Analyze.BackColor = System.Drawing.SystemColors.Control
