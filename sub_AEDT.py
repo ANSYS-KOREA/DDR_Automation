@@ -38,7 +38,6 @@ def Get_AEDT_Info(self, File):
 			oDesktop.OpenProject(File)
 
 		oProject = oDesktop.SetActiveProject(Input_Project_Name)
-		
 		sub_DB.AEDT["App"] = oApp
 		sub_DB.AEDT["Desktop"] = oDesktop
 		sub_DB.AEDT["Project"] = oProject

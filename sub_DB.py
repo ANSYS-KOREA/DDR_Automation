@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-Version = "v1.0.1"
+Version = "v1.1"
 Title = ["0:Main","1:Input File","2:Vref","3:Analyze Method", "False", "False"]
 Title[0] = "ADEA %s" % Version
 
@@ -46,6 +46,8 @@ Eyeflag = True
 Netlist = []
 Waveform = {}
 Waveform_Vref = {}
+Waveform_IBIS = {}
+Waveform_Vref_IBIS = {}
 Strobe_Waveform = {}
 Jitter_RMS = {}
 total_waveform_length = ""

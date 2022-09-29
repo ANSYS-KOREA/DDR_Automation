@@ -5317,6 +5317,8 @@ class IBIS_Case(Form):
 		self._ComboBox_Report.Name = "ComboBox_Report"		
 		self._ComboBox_Report.Size = System.Drawing.Size(125, 25)
 		self._ComboBox_Report.TabIndex = 40
+		self._ComboBox_Report.Items.Add('Default')
+		self._ComboBox_Report.SelectedIndex = 0
 		# 
 		# Button_Add
 		# 
@@ -5559,8 +5561,63 @@ class IBIS_Case(Form):
 			print traceback.format_exc()
 
 	def Button_ExportClick(self, sender, e):
-		Create_IBIS_Excel_Report()
-		pass
+		try:
+			Log("	<IBIS Export Excel Report> = Start")
+			Log("		(IBIS Report Format) = %s" % self._ComboBox_Report.Text)
+			# AEDT Input
+			if sub_DB.InputFile_Flag == 1:
+				# Eye plot checked
+				if self._CheckBox_PlotEye.Checked:
+					# Eye diagrams were generated
+					sub_DB.Excel_Img_File = []
+
+					for row in sub_DB.IBIS_ResultForm._DataGridView.Rows:
+						key_case = 'case' + str(row.Cells[0].Value)
+						Tx_IBIS_Model_idx = sub_DB.IBIS_Tx_Model.index(row.Cells[1].Value)
+						Rx_IBIS_Model_idx = sub_DB.IBIS_Rx_Model.index(row.Cells[2].Value)
+
+						# Find min./max. voltage value for Y-axis setup
+						vol_max = []
+						vol_min = []
+						for key in sub_DB.Waveform_IBIS[key_case]:
+							vol_max.append(max(sub_DB.Waveform_IBIS[key_case][key]))
+							vol_min.append(min(sub_DB.Waveform_IBIS[key_case][key]))
+						vmax = (max(vol_max)//100 + 1)*100
+						if min(vol_min) < 0:
+							vmin = (min(vol_min)//100)*100
+						else:
+							vmin = (min(vol_min)//100-1)*100
+						Log("		(Y-axis Max.) = %s[mV]" % vmax)
+						Log("		(Y-axis Min.) = %s[mV]" % vmin)
+
+						Eye_Measure_Results = sub_DB.IBIS_Eye_Measure_Results[key_case]
+						min_margin = 10000000
+						for key in Eye_Measure_Results.keys():
+							if Eye_Measure_Results[key][2] < min_margin:
+								min_margin = Eye_Measure_Results[key][2]
+								Plot_net = key
+
+						# Plot
+						Report_Name = "case%d_worst_eye" % row.Cells[0].Value
+						Log("		= %s" % Report_Name)
+						Plot_Eye_IBIS(Report_Name, [Plot_net], vmin, vmax, Eye_Measure_Results, Tx_IBIS_Model_idx, Rx_IBIS_Model_idx, True)
+
+					# Default
+					if self._ComboBox_Report.SelectedIndex == 0:
+						Create_IBIS_Excel_Report()
+
+				# Eye plot unchecked
+				else:
+					# Default w/o figure
+					if self._ComboBox_Report.SelectedIndex == 0:
+						Create_IBIS_Excel_Report_wo_fig()
+
+		except Exception as e:
+			Log("	<IBIS Export Excel Report> = Failed")
+			Log(traceback.format_exc())
+			print(traceback.format_exc())
+			MessageBox.Show("Fail to export IBIS excel report","Warning")
+			EXIT()
 
 	def Button_CloseClick(self, sender, e):
 		sub_DB.IBIS_Case_ResultForm._Button_Export.Enabled = True

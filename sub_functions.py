@@ -575,6 +575,203 @@ def Plot_Eye_Import(Report_Name, Import_file, PlotList, vmin, vmax, Eye_Measure_
 		MessageBox.Show("Fail to plot eye","Warning")						
 		EXIT()
 
+def Plot_Eye_IBIS(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Tx_IBIS_Model_idx, Rx_IBIS_Model_idx, Bitmap_Flag):
+	try:
+		oProject = sub_DB.AEDT["Project"]
+		oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Text + "_IBIS_Opt")
+		sub_DB.AEDT["Design"] = oDesign
+		oModule = oDesign.GetModule("ReportSetup")
+		Log("		(AEDT Setup) = Done")
+
+		Report_names = oModule.GetAllReportNames()
+		if Report_Name in Report_names:
+			oModule.DeleteReports([Report_Name])
+		Log("		(Delete Duplicate Reports) = Done")
+
+		# Create Variable List
+		Var_list = []
+		Var_list.append("Time:=")
+		Var_list.append(["All"])
+		Var_list.append(["NAME:VariableValues", "Rx_IBIS_Model_idx:=", str(Rx_IBIS_Model_idx), "Tx_IBIS_Model_idx:=", str(Tx_IBIS_Model_idx)])
+		Sim_type = oDesign.GetDesignType()
+		if Sim_type == "Circuit Netlist":
+			pass
+		else:
+			Global_Varlist = oProject.GetVariables()
+			Local_Varlist = oDesign.GetVariables()
+			for var in Global_Varlist:
+				Var_list.append(var + ":=")
+				Var_list.append(["All"])
+		Log("		(Create Variable List) = Done")
+
+		# Plot Eye
+		oModule.CreateReport(Report_Name, "Eye Diagram", "Rectangular Plot", sub_DB.Eye_Form._ComboBox_SolutionName.Text, 
+		[
+			"NAME:Context",
+			"SimValueContext:="	, [1,0,2,0,False,False,-1,1,0,1,1,"",0,0,"DE",False,"0","DP",False,"500000000","DT",False,"0.001","NUMLEVELS",False,"0","WE",False,sub_DB.total_waveform_length,"WM",False,sub_DB.total_waveform_length,"WN",False,"0ps","WS",False,"0ps"]
+		], 
+		Var_list, 
+		[
+			"Component:="		, PlotList
+		], 
+		[
+			"Unit Interval:="	, str(1/(float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000))+"s",
+			"Offset:="		, str(sub_DB.Option_Form._TextBox_EyeOffset.Text) + "ns",
+			"Auto Delay:="		, True,
+			"Manual Delay:="	, "0ps",
+			"AutoCompCrossAmplitude:=", True,
+			"CrossingAmplitude:="	, "0mV",
+			"AutoCompEyeMeasurementPoint:=", True,
+			"EyeMeasurementPoint:="	, (1/(float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000))/2
+		])
+		Log("		(Plot Eye) = Done")
+
+		Log("		(Change Property)")
+		for eyename in PlotList:
+			oModule.ChangeProperty(["NAME:AllTabs",
+										["NAME:Eye",
+											["NAME:PropServers", Report_Name + ":EyeDisplayTypeProperty"],
+											["NAME:ChangedProps",
+												["NAME:Rectangular Plot", "Value:=", False]
+											]
+										],
+										["NAME:Attributes",
+											["NAME:PropServers", Report_Name + ":" + eyename + ":" + 'Rx_IBIS_Model_idx=\'' + str(Rx_IBIS_Model_idx) + '\'' + ' Tx_IBIS_Model_idx=\'' + str(Tx_IBIS_Model_idx) + '\'' + " [Curve1]:Eye"],
+											["NAME:ChangedProps",
+												["NAME:View Type", "Value:=", "Line"],
+												["NAME:Line Color", "R:=", 0, "G:=", 0, "B:=", 255],
+												["NAME:Line Width", "Value:=", "2"]
+											]
+										],
+										["NAME:Legend",
+											["NAME:PropServers", Report_Name + ":Legend"],
+											["NAME:ChangedProps",
+												["NAME:Show Trace Name", "Value:=", False],
+												["NAME:Show Variation Key", "Value:=", False],
+												["NAME:Show Solution Name", "Value:=", True]
+											]
+										],
+										["NAME:Axis",
+											["NAME:PropServers", Report_Name + ":AxisY1"],
+											["NAME:ChangedProps",
+												["NAME:Display Name", "Value:=", False]
+											]
+										],
+										["NAME:Scaling",
+											["NAME:PropServers", Report_Name + ":AxisY1"],
+											["NAME:ChangedProps",
+												["NAME:Specify Min", "Value:=", True],
+												["NAME:Specify Max", "Value:=", True],
+												["NAME:Min", "Value:=", str(vmin) + "mV"],
+												["NAME:Max", "Value:=", str(vmax) + "mV"]
+											]
+										]
+									])
+		Log("			= Report Name Changed, %s" % Report_Name)
+		Log("			= Line Width Changed, 2")
+		Log("			= Line Color Changed, R:0, G:0, B:255")
+		Log("			= Y Axis Changed, Max.:%s[mV] Min.:%s[mV]" % (str(vmax), str(vmin)))
+	
+		oModule.ChangeProperty(["NAME:AllTabs",
+			["NAME:Axis", ["NAME:PropServers", Report_Name + ":AxisX"], ["NAME:ChangedProps", ["NAME:Display Name", "Value:=", False]]],
+			["NAME:Scaling", ["NAME:PropServers", Report_Name + ":AxisX"], ["NAME:ChangedProps", ["NAME:Specify Max", "Value:=", True],
+			["NAME:Max", "Value:=", str(2/(float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000)) + "s"]]]])
+		Log("			= X Axis Changed")
+
+		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
+				["NAME:ChangedProps",["NAME:Show Trace Name","Value:=", False]]]])
+		Log("			= Show Trace Name, False")
+
+		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
+				["NAME:ChangedProps",["NAME:Show Solution Name","Value:=", False]]]])
+		Log("			= Show Solution Name, False")
+
+		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
+				["NAME:ChangedProps",["NAME:Show Variation Key","Value:=", False]]]])
+
+		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
+				["NAME:ChangedProps",["NAME:Legend Name","Value:=", PlotList[0]]]]])
+
+		Log("			= Show Variation Key, False")
+	
+		#oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
+		#		["NAME:ChangedProps",["NAME:DockMode","Value:=", "Dock Left"]]]])
+		#Log("			= Legend Location (Dock Left)")	
+
+		# for New Eye
+		if sub_DB.Eyeflag:
+			Vref = float(sub_DB.Vref)
+			V_high = Vref + float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
+			V_low = Vref - float(sub_DB.Eye_Form._TextBox_VdIVW.Text)/2
+			T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
+			T_right = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) + Eye_Measure_Results[PlotList[0]][0]/float(2)
+	
+			oModule.ChangeProperty(["NAME:AllTabs", ["NAME:Mask", ["NAME:PropServers",
+					  Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps", ["NAME:Mask", "Version:=",
+					  1, "ShowLimits:=", False, "UpperLimit:=", 1, "LowerLimit:=", 0, "XUnits:=", "ps", "YUnits:=",
+					  "mV", ["NAME:MaskPoints",T_left, V_high,T_left, V_low,T_right, V_low,T_right, V_high]]]]])
+			Log("			= Create Eye Mask")
+
+			#noteh = (vmax - Vref) / (vmax - vmin) * 9500
+			#oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
+			#				"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
+			#				noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0]) + " / " + str(round(sub_DB.Jitter_RMS[PlotList[0]],1))]])
+			#Log("			= Add Note, Width:%s[ps] Jitter(RMS):%s[ps]" % (str(Eye_Measure_Results[PlotList[0]][0]), str(round(sub_DB.Jitter_RMS[PlotList[0]],1))))
+
+		# for Old Eye
+		else:
+			Vref = float(sub_DB.Vref)
+
+			V_IHAC_DQ = Vref + float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)
+			V_ILAC_DQ = Vref - float(sub_DB.Eye_Form._ComboBox_AC_DQ.Text)		
+			V_IHAC_ADDR = Vref + float(sub_DB.Eye_Form._ComboBox_AC_ADDR.Text)
+			V_ILAC_ADDR = Vref - float(sub_DB.Eye_Form._ComboBox_AC_ADDR.Text)
+			V_IHDC_DQ = Vref + float(sub_DB.Eye_Form._TextBox_DC_DQ.Text)
+			V_ILDC_DQ = Vref - float(sub_DB.Eye_Form._TextBox_DC_DQ.Text)		
+			V_IHDC_ADDR = Vref + float(sub_DB.Eye_Form._TextBox_DC_ADDR.Text)
+			V_ILDC_ADDR = Vref - float(sub_DB.Eye_Form._TextBox_DC_ADDR.Text)
+
+			T_left = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) - Eye_Measure_Results[PlotList[0]][0]/float(2)
+			T_right = round(1/float(sub_DB.Eye_Form._ComboBox_DataRate.Text)*1000000) + Eye_Measure_Results[PlotList[0]][0]/float(2)
+
+			oModule.ChangeProperty(["NAME:AllTabs", ["NAME:Mask", ["NAME:PropServers",
+					  Report_Name + ":EyeDisplayTypeProperty"], ["NAME:ChangedProps", ["NAME:Mask", "Version:=",
+					  1, "ShowLimits:=", False, "UpperLimit:=", 1, "LowerLimit:=", 0, "XUnits:=", "ps", "YUnits:=",
+					  "mV", ["NAME:MaskPoints",T_left, V_IHAC_DQ, T_left, V_ILAC_DQ, T_right, V_ILDC_DQ, T_right, V_IHDC_DQ]]]]])
+			Log("			= Create Eye Mask")
+
+		noteh = (vmax - Vref) / (vmax - vmin) * 9500
+		oModule.AddNote(Report_Name, ["NAME:NoteDataSource", ["NAME:NoteDataSource", "SourceName:=",
+						"Note1", "HaveDefaultPos:=", True, "DefaultXPos:=", 4500, "DefaultYPos:=",
+						noteh, "String:=", str(Eye_Measure_Results[PlotList[0]][0])]])
+		Log("			= Add Note, Width:%s[ps]" % str(Eye_Measure_Results[PlotList[0]][0]))
+
+
+		oModule.ChangeProperty(["NAME:AllTabs",
+						["NAME:Note", ["NAME:PropServers", Report_Name + ":Note1"], ["NAME:ChangedProps"
+						, ["NAME:Background Visibility", "Value:=", False]
+						, ["NAME:Border Visibility", "Value:=", False]
+						, ["NAME:Note Font", "Height:=", -17, "Width:=",
+						0, "Escapement:=", 0, "Orientation:=", 0, "Weight:=", 700, "Italic:=", 0, "Underline:=",
+						0, "StrikeOut:=", 0, "CharSet:=", 0, "OutPrecision:=", 3, "ClipPrecision:=", 2, "Quality:=",
+						1, "PitchAndFamily:=", 34, "FaceName:=", "Arial", "R:=", 0, "G:=", 0, "B:=", 0]]]])
+
+		if Bitmap_Flag:		
+			imgw = int(sub_DB.Option_Form._TextBox_ImageWidth.Text)
+			imgh = imgw / 5 * 4
+			img_path = sub_DB.result_dir
+			#img_path = img_path.replace("\\"+img_path.split("\\")[-1],"")
+			oModule.ExportImageToFile(Report_Name, img_path + "\\" + Report_Name + ".gif", imgw * 2, imgh * 2)
+			sub_DB.Excel_Img_File.append(img_path + "\\" + Report_Name + ".gif")
+			Log("			= Save Image File, %s" % img_path + "\\" + Report_Name + ".gif")
+
+	except Exception as e:		
+		Log("	<Eye Plot> = Failed")
+		Log(traceback.format_exc())
+		print traceback.format_exc()
+		MessageBox.Show("Fail to plot eye","Warning")						
+		EXIT()
+
 def Interpolate_1st(x1,y1,x2,y2,y3):
 	x = abs(y3-y1)*(x2-x1)/abs(y2-y1)+x1
 	return int(round(x))
@@ -2093,8 +2290,13 @@ def Initial(Init_AEDT = True):
 	sub_DB.CSV_flag = True
 	#sub_DB.NetSort_Flag = False
 	sub_ScriptEnv.Release()
-	if Init_AEDT:	
-		sub_DB.AEDT = {}	
+	if Init_AEDT:
+		AEDT_key = ["App", "Desktop"]
+		for key in sub_DB.AEDT:
+			if not key in AEDT_key:
+				sub_DB.AEDT[key]=''
+		#sub_DB.AEDT = {}
+
 	#elif level == 1: # Initialize Project
 	#	sub_DB.AEDT = {}
 	#elif level == 2: # Initialize Design
@@ -2102,7 +2304,7 @@ def Initial(Init_AEDT = True):
 	#elif level == 3: # Initialize Nothing
 	#	pass
 	
-	sub_DB.Eye_Form._TextBox_VcentDQ.Text = "Auto"	
+	sub_DB.Eye_Form._TextBox_VcentDQ.Text = "Auto"
 	sub_DB.Eye_Form._ComboBox_Design.Items.Clear()
 	
 	sub_DB.Eye_Form._ComboBox_Design.BackColor = System.Drawing.SystemColors.Window

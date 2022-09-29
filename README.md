@@ -1,4 +1,4 @@
-# Ansys DDR Eye Analyzer - ADEA v1.0.1
+# Ansys DDR Eye Analyzer - ADEA v1.1
 
 
 
@@ -7,6 +7,7 @@
 <summary><span style="font-size:200%"> What's New? </span></summary>
 
 <blockquote>
+
 <details>
 <summary><span style="font-size:200%"> v1.0.1 </span></summary>
 
@@ -14,8 +15,22 @@
 >   * ##### v1.0 : AEDT executes in a specific version with reference to environmental variables.
 >   * ##### v1.0.1 : The version of AEDT can be selected using 'Version Selection' window.
 
+</details><br>
+
+<details>
+<summary><span style="font-size:200%"> v1.1 </span></summary>
+
+>   #### Exporting IBIS optimization results to an Excel report has been updated.
+
 </details>
+
 </blockquote>
+</details>
+
+---
+<details>
+<summary><span style="font-size:200%"> What's coming? </span></summary>
+
 </details>
 
 ---
@@ -152,4 +167,9 @@
 >>- ##### PC에 설치되지 않은 Version을 선택할 경우
 >>- ##### 기본 앱 설정에 따라 AEDT가 실행되도록 업데이트 하였음.
 >>- ##### Excel report exporting error가 중국어 문제로 의심되어, UTF-8 encoding script 추가함.
+
+> ### [v1.1] - '22.09.30
+>>- ##### feature/IBIS_report ADEA v1.1
+>>- ##### IBIS optimization 해석 결과를 Excel로 export할 수 있도록 Update.
+>>- ##### 각 Case별 worst case eye-diagram 그림 포함 기능 추가
 -->
