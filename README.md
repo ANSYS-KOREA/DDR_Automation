@@ -15,7 +15,7 @@
 >   * ##### v1.0 : AEDT executes in a specific version with reference to environmental variables.
 >   * ##### v1.0.1 : The version of AEDT can be selected using 'Version Selection' window.
 >   ![ex_screenshot](./Resources/fig/v1p0p1.png)
-</details><br>
+</details>
 
 <details>
 <summary><span style="font-size:200%"> v1.1 </span></summary>
