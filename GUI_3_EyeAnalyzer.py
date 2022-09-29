@@ -1797,30 +1797,31 @@ class Eye_Form(Form):
 			self.FormSize_H = self.Size.Height
 
 			# Resize
-			self._GroupBox_Setup.Size = System.Drawing.Size(self._GroupBox_Setup.Width + Gap_W, self._GroupBox_Setup.Height)
+			self._GroupBox_Setup.Size = System.Drawing.Size(self._GroupBox_Setup.Width + Gap_W, self._GroupBox_Setup.Height + Gap_H)
 			self._TextBox_InputFile.Size = System.Drawing.Size(self._TextBox_InputFile.Width + Gap_W, self._TextBox_InputFile.Height)
 			self._ComboBox_Design.Size = System.Drawing.Size(self._ComboBox_Design.Width + Gap_W/2, self._ComboBox_Design.Height)
 			self._ComboBox_SolutionName.Size = System.Drawing.Size(self._ComboBox_SolutionName.Width + Gap_W/2, self._ComboBox_SolutionName.Height)
 			self._ComboBox_DDRGen.Size = System.Drawing.Size(self._ComboBox_DDRGen.Width + Gap_W/2, self._ComboBox_DDRGen.Height)
 			self._ComboBox_DataRate.Size = System.Drawing.Size(self._ComboBox_DataRate.Width + Gap_W/4, self._ComboBox_DataRate.Height)
-			self._CheckedListBox_ReportName.Size = System.Drawing.Size(self._CheckedListBox_ReportName.Width + Gap_W/2, self._CheckedListBox_ReportName.Height)
+			self._CheckedListBox_ReportName.Size = System.Drawing.Size(self._CheckedListBox_ReportName.Width + Gap_W/2, self._CheckedListBox_ReportName.Height + Gap_H)
 			self._TextBox_Offset.Size = System.Drawing.Size(self._TextBox_Offset.Width + Gap_W/4, self._TextBox_Offset.Height)
 			
 
 			# Relocate
 			self._Button_Import.Location = System.Drawing.Point(self._Button_Import.Location.X + Gap_W, self._Button_Import.Location.Y)
 			self._Label_ReportName.Location = System.Drawing.Point(self._Label_ReportName.Location.X + Gap_W/2, self._Label_ReportName.Location.Y)
-			self._Label_Datarate.Location = System.Drawing.Point(self._Label_Datarate.Location.X + Gap_W/2, self._Label_Datarate.Location.Y)
-			self._Label_Mbps.Location = System.Drawing.Point(self._Label_Mbps.Location.X + Gap_W, self._Label_Mbps.Location.Y)
+			self._Label_Datarate.Location = System.Drawing.Point(self._Label_Datarate.Location.X + Gap_W/2, self._Label_Datarate.Location.Y + Gap_H)
+			self._Label_Mbps.Location = System.Drawing.Point(self._Label_Mbps.Location.X + Gap_W, self._Label_Mbps.Location.Y + Gap_H)
 			self._CheckedListBox_ReportName.Location = System.Drawing.Point(self._CheckedListBox_ReportName.Location.X + Gap_W/2, self._CheckedListBox_ReportName.Location.Y)
-			self._ComboBox_DataRate.Location = System.Drawing.Point(self._ComboBox_DataRate.Location.X + Gap_W/2, self._ComboBox_DataRate.Location.Y)
+			self._ComboBox_DataRate.Location = System.Drawing.Point(self._ComboBox_DataRate.Location.X + Gap_W/2, self._ComboBox_DataRate.Location.Y + Gap_H)
 			self._Button_ViewNet.Location = System.Drawing.Point(self._Button_ViewNet.Location.X + Gap_W, self._Button_ViewNet.Location.Y)
 			self._Button_Analyze.Location = System.Drawing.Point(self._Button_Analyze.Location.X + Gap_W, self._Button_Analyze.Location.Y)
 			self._Button_ViewResult.Location = System.Drawing.Point(self._Button_ViewResult.Location.X + Gap_W, self._Button_ViewResult.Location.Y)
-			self._Label_Offset.Location = System.Drawing.Point(self._Label_Offset.Location.X + Gap_W*3/4, self._Label_Offset.Location.Y)
-			self._TextBox_Offset.Location = System.Drawing.Point(self._TextBox_Offset.Location.X + Gap_W*3/4, self._TextBox_Offset.Location.Y)
-			
-			self._Label_ns.Location = System.Drawing.Point(self._Label_ns.Location.X + Gap_W, self._Label_ns.Location.Y)
+			self._Label_Offset.Location = System.Drawing.Point(self._Label_Offset.Location.X + Gap_W*3/4, self._Label_Offset.Location.Y + Gap_H)
+			self._TextBox_Offset.Location = System.Drawing.Point(self._TextBox_Offset.Location.X + Gap_W*3/4, self._TextBox_Offset.Location.Y + Gap_H)
+			self._Label_ns.Location = System.Drawing.Point(self._Label_ns.Location.X + Gap_W, self._Label_ns.Location.Y + Gap_H)
+			self._GroupBox_NewEye.Location = System.Drawing.Point(self._GroupBox_NewEye.Location.X, self._GroupBox_NewEye.Location.Y + Gap_H)
+			self._GroupBox_OldEye.Location = System.Drawing.Point(self._GroupBox_OldEye.Location.X, self._GroupBox_OldEye.Location.Y + Gap_H)
 
 		except Exception as e:			
 			Log("[Eye_FormResizeEnd] = Failed")
@@ -1865,7 +1866,6 @@ class Eye_Form(Form):
 				
 				Log("[Load Definition File] = %s" % File)
 				MessageBox.Show("DDR wizard definition file \"%s\" is loaded" % File.split("\\")[-1], "Load")
-				
 
 			else:
 				MessageBox.Show("Please Select the DDR wizard definition file(*.def)","Warning")
@@ -1873,6 +1873,7 @@ class Eye_Form(Form):
 		except Exception as e:			
 			Log("[Load Definition File] = Failed")
 			Log(traceback.format_exc())
+			print(traceback.format_exc())
 			MessageBox.Show("Fail to load DDR Wizard definition file","Warning")
 			EXIT()
 

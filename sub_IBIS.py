@@ -103,7 +103,7 @@ def IBIS_Opt_Run(self):
 		# Set AEDT Objects
 		oProject = sub_DB.AEDT['Project']
 		oDesktop = sub_DB.AEDT['Desktop']		
-		oDesign = sub_DB.AEDT['Design']	
+		oDesign = oProject.SetActiveDesign(sub_DB.Eye_Form._ComboBox_Design.Text)
 		oDesktop.RestoreWindow()
 		Design = oDesign.GetName()
 
@@ -457,7 +457,7 @@ def IBIS_Opt_Run(self):
 
 			# for New Eye
 			# Vref Calculation
-			Vref = float(Cal_Vref_AEDT_IBIS(report_name, Design.split(";")[-1], Tx_IBIS_Model_idx, Rx_IBIS_Model_idx))			
+			Vref = float(Cal_Vref_AEDT_IBIS(report_name, Design.split(";")[-1], Tx_IBIS_Model_idx, Rx_IBIS_Model_idx, case))			
 			
 			# Measure Eye Diagram
 			#Eye_Measure_Results["case%d" % case] = Measure_Eye_IBIS(sub_DB.Eye_Form, Vref)
@@ -500,7 +500,7 @@ def IBIS_Opt_Run(self):
 
 
 # Default Vref for IBIS
-def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Model_idx):	
+def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Model_idx, case):	
 	##############
 	# Initialize #
 	##############
@@ -722,6 +722,7 @@ def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Mode
 					Waveform[key][i] = Waveform[key][i]*1000
 
 		sub_DB.Waveform = Waveform
+		sub_DB.Waveform_IBIS['case'+str(case)] = Waveform
 		sub_DB.Time = Time
 
 		##################################
@@ -774,6 +775,7 @@ def Cal_Vref_AEDT_IBIS(report_name, design_name, Tx_IBIS_Model_idx, Rx_IBIS_Mode
 					Waveform_Vref[key][i] = Waveform_Vref[key][i]*1000
 
 		sub_DB.Waveform_Vref = Waveform_Vref
+		sub_DB.Waveform_Vref_IBIS['case'+str(case)] = Waveform_Vref
 
 	except Exception as e:		
 		Log("	<Vref Calculation> = Failed to Get Waveforms")

@@ -280,17 +280,15 @@
 [IBIS Identification]
 	# ? : arbitrary number in range [0~99]
 	# It is not case sensitive.
-	<Tx> = tx, drv, driver
-	<Rx> = rx, mem
+	<Tx> = driver, ds, strength, level, ocd
+	<Rx> = term, ohm
 	<Ignore> = ignored
-	
-[IBIS Model Identification]
-	# keywords for Tx/Rx IBIS buffer model file name
-	# ? : arbitrary number in range [0~99]
-	# It is not case sensitive.
-	<Tx> = ds, strength, level, ocd
-	<Rx> = term
-	<Ignore> = ignored
+
+
+
+
+
+
 
 
 
