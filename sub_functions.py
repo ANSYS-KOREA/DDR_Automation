@@ -679,8 +679,8 @@ def Plot_Eye_IBIS(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Tx_IBI
 		Log("			= X Axis Changed")
 
 		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
-				["NAME:ChangedProps",["NAME:Show Trace Name","Value:=", False]]]])
-		Log("			= Show Trace Name, False")
+				["NAME:ChangedProps",["NAME:Show Trace Name","Value:=", True]]]])
+		Log("			= Show Trace Name, True")
 
 		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
 				["NAME:ChangedProps",["NAME:Show Solution Name","Value:=", False]]]])
@@ -688,9 +688,6 @@ def Plot_Eye_IBIS(Report_Name, PlotList, vmin, vmax, Eye_Measure_Results, Tx_IBI
 
 		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
 				["NAME:ChangedProps",["NAME:Show Variation Key","Value:=", False]]]])
-
-		oModule.ChangeProperty(["NAME:AllTabs",["NAME:Legend",["NAME:PropServers", Report_Name + ":Legend"],
-				["NAME:ChangedProps",["NAME:Legend Name","Value:=", PlotList[0]]]]])
 
 		Log("			= Show Variation Key, False")
 	
