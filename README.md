@@ -14,13 +14,14 @@
 >   #### The process for choosing a version of Ansys Electronics Desktop(AEDT) has been modified.
 >   * ##### v1.0 : AEDT executes in a specific version with reference to environmental variables.
 >   * ##### v1.0.1 : The version of AEDT can be selected using 'Version Selection' window.
-
+>   ![ex_screenshot](./Resources/fig/v1p0p1.png)
 </details><br>
 
 <details>
 <summary><span style="font-size:200%"> v1.1 </span></summary>
 
 >   #### Exporting IBIS optimization results to an Excel report has been updated.
+>   ![ex_screenshot](./Resources/fig/v1p1.gif)
 
 </details>
 
