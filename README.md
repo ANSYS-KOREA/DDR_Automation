@@ -172,5 +172,5 @@
 > ### [v1.1] - '22.09.30
 >>- ##### feature/IBIS_report ADEA v1.1
 >>- ##### IBIS optimization 해석 결과를 Excel로 export할 수 있도록 Update.
->>- ##### 각 Case별 worst case eye-diagram 그림 포함 기능 추가
+>>- ##### 각 Case별 worst case eye-diagram 그림 포함 기능 추가  
 -->
