@@ -1,7 +1,6 @@
 # Ansys DDR Eye Analyzer - ADEA v1.1
 
 
-
 <!-- ![Main GUI](./Resources/fig/main_GUI.bmp) -->
 <details>
 <summary><span style="font-size:200%"> What's New? </span></summary>
