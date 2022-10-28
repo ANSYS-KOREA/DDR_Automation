@@ -1,4 +1,4 @@
-# Ansys DDR Eye Analyzer - ADEA v1.1
+# Ansys DDR Eye Analyzer - ADEA v1.1.1
 
 
 <!-- ![Main GUI](./Resources/fig/main_GUI.bmp) -->
@@ -8,7 +8,7 @@
 <blockquote>
 
 <details>
-<summary><span style="font-size:200%"> v1.0.1 </span></summary>
+<summary><span style="font-size:200%"> v1.0 </span></summary>
 
 >   #### The process for choosing a version of Ansys Electronics Desktop(AEDT) has been modified.
 >   * ##### v1.0 : AEDT executes in a specific version with reference to environmental variables.
@@ -21,7 +21,8 @@
 
 >   #### Exporting IBIS optimization results to an Excel report has been updated.
 >   ![ex_screenshot](./Resources/fig/v1p1.gif)
-
+>   * ##### v1.1.1 : Remove upper limit of eye offset input value (previous upper limit was 10ns)
+>       ![ex_screenshot](./Resources/fig/v1p1p1.gif)
 </details>
 
 </blockquote>
@@ -172,4 +173,9 @@
 >>- ##### feature/IBIS_report ADEA v1.1
 >>- ##### IBIS optimization 해석 결과를 Excel로 export할 수 있도록 Update.
 >>- ##### 각 Case별 worst case eye-diagram 그림 포함 기능 추가  
+
+> ### [v1.1.1] - '22.10.28
+>>- ##### hotfix_v1.1.1
+>>- ##### Eye offset maximum value 삭제
+>>- ##### 기존 Max. 10ns에서 Max. 값 삭제함.
 -->
