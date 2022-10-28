@@ -9,7 +9,7 @@
 <blockquote>
 
 <details>
-<summary><span style="font-size:200%"> v1.0.1 </span></summary>
+<summary><span style="font-size:200%"> v1.0 </span></summary>
 
 >   #### The process for choosing a version of Ansys Electronics Desktop(AEDT) has been modified.
 >   * ##### v1.0 : AEDT executes in a specific version with reference to environmental variables.
@@ -23,7 +23,7 @@
 >   #### Exporting IBIS optimization results to an Excel report has been updated.
 >   ![ex_screenshot](./Resources/fig/v1p1.gif)
 >   * ##### v1.1.1 : Remove upper limit of eye offset input value (previous upper limit was 10ns)
-
+>       ![ex_screenshot](./Resources/fig/v1p1p1.gif)
 </details>
 
 </blockquote>
