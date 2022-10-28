@@ -22,6 +22,7 @@
 
 >   #### Exporting IBIS optimization results to an Excel report has been updated.
 >   ![ex_screenshot](./Resources/fig/v1p1.gif)
+>   * ##### v1.1.1 : Remove upper limit of eye offset input value (previous upper limit was 10ns)
 
 </details>
 
@@ -173,4 +174,9 @@
 >>- ##### feature/IBIS_report ADEA v1.1
 >>- ##### IBIS optimization 해석 결과를 Excel로 export할 수 있도록 Update.
 >>- ##### 각 Case별 worst case eye-diagram 그림 포함 기능 추가  
+
+> ### [v1.1.1] - '22.10.28
+>>- ##### hotfix_v1.1.1
+>>- ##### Eye offset maximum value 삭제
+>>- ##### 기존 Max. 10ns에서 Max. 값 삭제함.
 -->

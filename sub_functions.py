@@ -967,10 +967,11 @@ def Check_Input(self):
 					break
 
 		if num_flag:
-			if float(self._TextBox_Offset.Text) > 10:
-				MessageBox.Show("The maximum eye offset is 10[ns].\nCheck the entered value for eye offset.\n\n" + "Entered Value : %s[ns]" % self._TextBox_Offset.Text)
-				flag = False
-				show_msg_flag = False
+			pass
+			#if float(self._TextBox_Offset.Text) > 10:
+			#	MessageBox.Show("The maximum eye offset is 10[ns].\nCheck the entered value for eye offset.\n\n" + "Entered Value : %s[ns]" % self._TextBox_Offset.Text)
+			#	flag = False
+			#	show_msg_flag = False
 			
 		else:
 			MessageBox.Show("Only numbers can be entered for eye offset.\n\n" + "You entered : %s" % self._TextBox_Offset.Text)
